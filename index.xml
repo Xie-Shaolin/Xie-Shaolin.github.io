@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>谢谢先生</title>
-    <link>https://github.com/Xie-Shaolin/Xie-Shaolin.github.io.git/</link>
+    <link>https://Xie-Shaolin.github.io.git/</link>
     <description>Recent content on 谢谢先生</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 08 Dec 2022 21:59:24 +0800</lastBuildDate><atom:link href="https://github.com/Xie-Shaolin/Xie-Shaolin.github.io.git/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 08 Dec 2022 21:59:24 +0800</lastBuildDate><atom:link href="https://Xie-Shaolin.github.io.git/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Python基础语法</title>
-      <link>https://github.com/Xie-Shaolin/Xie-Shaolin.github.io.git/notebook/python%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/</link>
+      <link>https://Xie-Shaolin.github.io.git/notebook/python%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/</link>
       <pubDate>Thu, 08 Dec 2022 21:59:24 +0800</pubDate>
       
-      <guid>https://github.com/Xie-Shaolin/Xie-Shaolin.github.io.git/notebook/python%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/</guid>
+      <guid>https://Xie-Shaolin.github.io.git/notebook/python%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/</guid>
       <description>参考资料：https://www.bilibili.com/video/BV1wD4y1o7AS 前置知识 print函数 print 函数的输出内容：数字、字符串、含有运算符的表达式
 print 函数输出的地方：显示器、文件
 print 函数输出的形式：换行与不换行
