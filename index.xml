@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>谢谢先生</title>
+    <link>https://github.com/Xie-Shaolin/Xie-Shaolin.github.io.git/</link>
+    <description>Recent content on 谢谢先生</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 08 Dec 2022 21:59:24 +0800</lastBuildDate><atom:link href="https://github.com/Xie-Shaolin/Xie-Shaolin.github.io.git/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Demo</title>
+      <link>https://github.com/Xie-Shaolin/Xie-Shaolin.github.io.git/notebook/demo/</link>
+      <pubDate>Thu, 08 Dec 2022 21:59:24 +0800</pubDate>
+      
+      <guid>https://github.com/Xie-Shaolin/Xie-Shaolin.github.io.git/notebook/demo/</guid>
+      <description>二级表达 ddddddddddd</description>
+    </item>
+    
+    <item>
+      <title>Python基础语法</title>
+      <link>https://github.com/Xie-Shaolin/Xie-Shaolin.github.io.git/notebook/python%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/</link>
+      <pubDate>Thu, 08 Dec 2022 21:59:24 +0800</pubDate>
+      
+      <guid>https://github.com/Xie-Shaolin/Xie-Shaolin.github.io.git/notebook/python%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/</guid>
+      <description>参考资料：https://www.bilibili.com/video/BV1wD4y1o7AS 前置知识 print函数 print 函数的输出内容：数字、字符串、含有运算符的表达式
+print 函数输出的地方：显示器、文件
+print 函数输出的形式：换行与不换行
+注释 单行注释：# 注释内容
+多行注释：&amp;rsquo;&amp;rsquo;&amp;rsquo; 注释内容 &amp;rsquo;&amp;rsquo;&amp;rsquo;
+使用jupetr需要在后面加代码才能识别为多行注释
+编码格式声明注释：
+#coding:gbk &amp;mdash;&amp;gt; 文件以gbk模式存储
+#coding:utf-8 &amp;mdash;&amp;gt; 文件以utf-8存储
+python3 默认格式为utf-8
+# 数字 print(1.2) # 字符串 print(&amp;#39;nihao&amp;#39;) # 含有运算符的表达式 # 3和1 为运算数， +-*/=等等为运算符。运算数+运算符的式子称为表达式 print(3+1) 1.2 nihao 4 # 输出到文件当中 # open(&amp;#39;文件路径&amp;#39;,‘选择那种方式打开文件’) # a+ 表示在该路径下，有文件就以读写的方式打开文件并在文件后面继续追加内容，没文件就创建文件 fp=open(&amp;#39;/Users/xieshaolin/workpalce/python/nihao.txt&amp;#39;,&amp;#39;a+&amp;#39;) print(&amp;#34;nihao&amp;#34;,file=fp) fp.close() # 用“，”进行分隔在一行进行输出 print(&amp;#39;ni&amp;#39;) print(&amp;#39;hao&amp;#39;) print(&amp;#39;ni&amp;#39;,&amp;#39;hao&amp;#39;) # print函数默认end=\n(换行符），end=&amp;#39;,&amp;#39;表示以&amp;#39;,&amp;#39;结尾 end=‘ ’ 表示以空格结尾 print(&amp;#39;bu&amp;#39;,end=&amp;#39; &amp;#39;) print(&amp;#39;hao&amp;#39;,end=&amp;#39; &amp;#39;) ni hao ni hao bu hao 转义字符 \n &amp;mdash;&amp;gt; 换行符 \t &amp;mdash;&amp;gt; 制表符 \&amp;mdash;&amp;gt; 反斜杠 &#39;&amp;mdash;&amp;gt; 单引号 不重要，遇到查一下就好</description>
+    </item>
+    
+  </channel>
+</rss>
