@@ -1,0 +1,1925 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>MySQL：慢查询日志、profile、explain | Notes</title>
+  <meta name="keywords" content=" MySQL ">
+  <meta name="description" content="MySQL：慢查询日志、profile、explain | Notes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="卸载MySQL停止MySQL服务 systemctl stop mysqld  查询MySQL的安装文件 [root@centos01 ~]# rpm -qa | grep -i mysql mysql-community-client-5.7.28-1.el7.x86_64 mysql-community-server-5.7.28-1.el7.x86_64 mysql-community-co">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL的安装、卸载和启动">
+<meta property="og:url" content="http://example.com/2024/09/25/InstallMySQL8/index.html">
+<meta property="og:site_name" content="Notes">
+<meta property="og:description" content="卸载MySQL停止MySQL服务 systemctl stop mysqld  查询MySQL的安装文件 [root@centos01 ~]# rpm -qa | grep -i mysql mysql-community-client-5.7.28-1.el7.x86_64 mysql-community-server-5.7.28-1.el7.x86_64 mysql-community-co">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2024/09/25/InstallMySQL8/InstallMySQL8/001.png">
+<meta property="og:image" content="http://example.com/2024/09/25/InstallMySQL8/InstallMySQL8/002.png">
+<meta property="og:image" content="http://example.com/2024/09/25/InstallMySQL8/InstallMySQL8/003.png">
+<meta property="article:published_time" content="2024-09-24T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-09-25T10:36:23.945Z">
+<meta property="article:author" content="XieShaoLin">
+<meta property="article:tag" content="MySQL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2024/09/25/InstallMySQL8/InstallMySQL8/001.png">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.1.0" rel="stylesheet">
+
+<link href="/css/hl_theme/github.css?v=1.1.0" rel="stylesheet">
+
+<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
+
+<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="/js/titleTip.js?v=1.1.0" ></script>
+
+<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.1.0" ></script>
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="">
+  <input class="theme_blog_path" value="">
+  <input id="theme_shortcut" value="true" />
+  <input id="theme_highlight_on" value="true" />
+  <input id="theme_code_copy" value="true" />
+</div>
+
+
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/"
+   class="avatar_target">
+    <img class="avatar"
+         src="/img/avatar.jpg"/>
+</a>
+<div class="author">
+    <span>XieShaoLin</span>
+</div>
+
+<div class="icon">
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            <a title="email"
+               href="mailto:1909773034@qq.com"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-email"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="qq"
+               href="http://wpa.qq.com/msgrd?v=3&uin=1909773034&site=qq&menu=yes"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-qq"></use>
+                    </svg>
+                
+            </a>
+        
+    
+</div>
+
+
+
+
+
+<ul>
+    <li>
+        <div class="all active" data-rel="全部文章">全部文章
+            
+                <small>(55)</small>
+            
+        </div>
+    </li>
+    
+        
+            
+                
+    <li>
+        <div data-rel="工具">
+            
+            工具
+            <small>(1)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="前端">
+            
+            前端
+            <small>(1)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="后端">
+            
+            后端
+            <small>(45)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="运维">
+            
+            运维
+            <small>(3)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="财经">
+            
+            财经
+            <small>(1)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="英语">
+            
+            英语
+            <small>(2)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+        
+            
+            
+            
+    </div>
+    <div>
+        
+        
+    </div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="55">
+<input type="hidden" id="yelog_site_word_count" value="299.4k">
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        友情链接
+        <i class="iconfont icon-left"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="http://yelog.org/">叶落阁</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <div class="right-top">
+        <div id="default-panel">
+            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
+            <div class="right-title">全部文章</div>
+            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
+        </div>
+        <div id="search-panel">
+            <i class="iconfont icon-left" data-title="返回"></i>
+            <input id="local-search-input" autocomplete="off"/>
+            <label class="border-line" for="input"></label>
+            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
+            <i class="iconfont icon-tag" data-title="标签"></i>
+        </div>
+        <div id="outline-panel" style="display: none">
+            <div class="right-title">大纲</div>
+            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
+        </div>
+    </div>
+
+    <div class="tags-list">
+    <input id="tag-search" />
+    <div class="tag-wrapper">
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>阿里云</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>跨域</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>前锋教育</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>虚拟机</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>AOF</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>CentOS</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>docker</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>economy</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>element-ui</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>English</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>ES6</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>ESLint</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Feign</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>finalshell</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Getway</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>git</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>grammer</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>gulimall</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>hexo</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>idea</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>java</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>JavaScript</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Jedis</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Js</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>JSR303</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Linux</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>listening</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>maven</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>mq</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Mysql</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>MySql</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>MySQL</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Nacos</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>node.js</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>NoSql</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>npm</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>nvm</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>OAuth2</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>OSS</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Prettier</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>python</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>RDB</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>redis</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>RedisTemplate</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>renren-fast</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>spring</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>springboot</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>SpringCloud</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>springSecurity</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>vue</a>
+            </li>
+        
+    </div>
+
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/InstallMySQL8/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL的安装、卸载和启动">MySQL的安装、卸载和启动</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/MysqlIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL的索引原理和语法">MySQL的索引原理和语法</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/MySQLLock/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：锁">MySQL：锁</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/SQLTips/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：建议MySQL使用哪个索引">MySQL：建议MySQL使用哪个索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/SQLOptimization/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：SQL优化">MySQL：SQL优化</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/combinedIndexColumnIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL:联合索引和单列索引">MySQL:联合索引和单列索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/coveringIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="覆盖索引与锁表">覆盖索引与锁表</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/indexDesign/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：如何设计索引">MySQL：如何设计索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/invalidIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：索引失效">MySQL：索引失效</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/mysqlEngine/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL的存储引擎">MySQL的存储引擎</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/performanceAnalysis/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：慢查询日志、profile、explain">MySQL：慢查询日志、profile、explain</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/prefixIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：前缀索引">MySQL：前缀索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/22/redisPubSub/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="Redis订阅发布">Redis订阅发布</span>
+            <span class="post-date" title="2024-09-22 15:21:35">2024/09/22</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisProblem/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="Redis：缓存穿透、缓存击穿和缓存雪崩">Redis：缓存穿透、缓存击穿和缓存雪崩</span>
+            <span class="post-date" title="2024-09-17 16:33:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisPersistence/"
+           data-tag="redis,RDB,AOF"
+           data-author="" >
+            <span class="post-title" title="Redis持久化">Redis持久化</span>
+            <span class="post-date" title="2024-09-17 16:20:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisTransaction/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="redis的事务">redis的事务</span>
+            <span class="post-date" title="2024-09-17 16:12:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisType/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="redis常用数据类型">redis常用数据类型</span>
+            <span class="post-date" title="2024-09-17 16:04:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisBrief/"
+           data-tag="redis,NoSql"
+           data-author="" >
+            <span class="post-title" title="redis与NoSql的简单介绍">redis与NoSql的简单介绍</span>
+            <span class="post-date" title="2024-09-17 15:59:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisSentinel/"
+           data-tag="Linux,CentOS,虚拟机,redis"
+           data-author="" >
+            <span class="post-title" title="Redis：主从复制与哨兵模式">Redis：主从复制与哨兵模式</span>
+            <span class="post-date" title="2024-09-17 15:59:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redis7SpringBoot/"
+           data-tag="redis,springboot,Jedis,RedisTemplate"
+           data-author="" >
+            <span class="post-title" title="springboot整合redis">springboot整合redis</span>
+            <span class="post-date" title="2024-09-17 15:42:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 运维 "
+           href="/2024/09/17/redis7Install/"
+           data-tag="CentOS,redis,前锋教育"
+           data-author="" >
+            <span class="post-title" title="Redis的安装、卸载、启动和客户端">Redis的安装、卸载、启动和客户端</span>
+            <span class="post-date" title="2024-09-17 15:19:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 前端 "
+           href="/2024/09/17/BasicFrontend/"
+           data-tag="JavaScript,Js,ES6,vue,element-ui"
+           data-author="" >
+            <span class="post-title" title="前端：ES5和Vue的基本用法">前端：ES5和Vue的基本用法</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/OAuth2/"
+           data-tag="OAuth2,spring"
+           data-author="" >
+            <span class="post-title" title="OAuth2和spring">OAuth2和spring</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/SpringCloudBaseUse/"
+           data-tag="SpringCloud,Nacos,Feign,Getway"
+           data-author="" >
+            <span class="post-title" title="SpringCloud：基本使用">SpringCloud：基本使用</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/adminSystem/"
+           data-tag="element-ui,SpringCloud,Feign,gulimall,Prettier,ESLint,跨域,JSR303,OSS,阿里云"
+           data-author="" >
+            <span class="post-title" title="谷粒商城：后台管理系统要点">谷粒商城：后台管理系统要点</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/giliEnviroment/"
+           data-tag="docker,idea,maven,renren-fast,git,nvm,node.js,npm"
+           data-author="" >
+            <span class="post-title" title="谷粒商城：环境搭建">谷粒商城：环境搭建</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/springsecurity/"
+           data-tag="springSecurity"
+           data-author="" >
+            <span class="post-title" title="SpringSecurity">SpringSecurity</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/16/MysqlTransaction/"
+           data-tag="Mysql"
+           data-author="" >
+            <span class="post-title" title="Mysql的事物">Mysql的事物</span>
+            <span class="post-date" title="2024-09-16 14:31:10">2024/09/16</span>
+        </a>
+        
+        
+        <a  class="全部文章 运维 "
+           href="/2024/09/08/finalshell/"
+           data-tag="finalshell,Linux,CentOS,虚拟机"
+           data-author="" >
+            <span class="post-title" title="finalshell与Linux虚拟机的网络配置">finalshell与Linux虚拟机的网络配置</span>
+            <span class="post-date" title="2024-09-08 22:19:10">2024/09/08</span>
+        </a>
+        
+        
+        <a  class="全部文章 英语 "
+           href="/2024/03/25/rabbitGrammer/"
+           data-tag="English,grammer"
+           data-author="" >
+            <span class="post-title" title="英语兔英语语法">英语兔英语语法</span>
+            <span class="post-date" title="2024-03-25 23:12:24">2024/03/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 工具 "
+           href="/2024/03/25/hexoStartFast/"
+           data-tag="hexo"
+           data-author="" >
+            <span class="post-title" title="hexo搭建静态博客">hexo搭建静态博客</span>
+            <span class="post-date" title="2024-03-25 22:14:10">2024/03/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/03/25/PythonBase/"
+           data-tag="python"
+           data-author="" >
+            <span class="post-title" title="Python语法基数">Python语法基数</span>
+            <span class="post-date" title="2024-03-25 22:08:07">2024/03/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 英语 "
+           href="/2023/12/14/heqiongListening/"
+           data-tag="listening"
+           data-author="" >
+            <span class="post-title" title="何琼雅思听力">何琼雅思听力</span>
+            <span class="post-date" title="2023-12-14 00:00:00">2023/12/14</span>
+        </a>
+        
+        
+        <a  class="全部文章 财经 "
+           href="/2023/05/23/EconomicMachine/"
+           data-tag="economy"
+           data-author="" >
+            <span class="post-title" title="经济机器是怎样运行的——RayDalio">经济机器是怎样运行的——RayDalio</span>
+            <span class="post-date" title="2023-05-23 00:00:00">2023/05/23</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-02-grammar/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:基本语法">java:基本语法</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-03-array/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:数组">java:数组</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-05-exception/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:异常">java:异常</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-01-install/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:概述+安装">java:概述+安装</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-04-opp/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:面向对象">java:面向对象</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-06-thread/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:多线程">java:多线程</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-08-time/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:时间相关API">java:时间相关API</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-07-string/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:字符串">java:字符串</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-09-sort/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:比较器">java:比较器</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-11-annotation/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:注解">java:注解</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-10-enum/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:枚举">java:枚举</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-12-collection/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:集合">java:集合</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-13-generics/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:泛型">java:泛型</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-14-IO/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:IO流">java:IO流</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-15-net/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:网络编程">java:网络编程</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-16-reflect/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:反射">java:反射</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 运维 "
+           href="/2020/07/13/dockerBase/"
+           data-tag="docker"
+           data-author="" >
+            <span class="post-title" title="docker 基础">docker 基础</span>
+            <span class="post-date" title="2020-07-13 20:46:25">2020/07/13</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/01/01/MySQLCrashCourse/"
+           data-tag="MySql"
+           data-author="" >
+            <span class="post-title" title="MySQL:必知必会">MySQL:必知必会</span>
+            <span class="post-date" title="2020-01-01 00:00:00">2020/01/01</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/01/01/RocketMq/"
+           data-tag="mq"
+           data-author="" >
+            <span class="post-title" title="RocketMq:分布式消息队列">RocketMq:分布式消息队列</span>
+            <span class="post-date" title="2020-01-01 00:00:00">2020/01/01</span>
+        </a>
+        
+        
+        <a  class="全部文章 "
+           href="/2019/09/29/java-17-new8/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java8新特性：lambda表达式+Stream流">java8新特性：lambda表达式+Stream流</span>
+            <span class="post-date" title="2019-09-29 00:00:00">2019/09/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 "
+           href="/2019/09/29/java-18-above8/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java8以后的新特性">java8以后的新特性</span>
+            <span class="post-date" title="2019-09-29 00:00:00">2019/09/29</span>
+        </a>
+        
+        <div id="no-item-tips">
+
+        </div>
+    </nav>
+    <div id="outline-list">
+    </div>
+</div>
+
+    </div>
+    <div class="hide-list">
+        <div class="semicircle" data-title="切换全屏 快捷键 s">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div id="post">
+    <div class="pjax">
+        <article id="post-performanceAnalysis" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">MySQL：慢查询日志、profile、explain</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            <i class="iconfont icon-category"></i>
+            
+            
+            <a  data-rel="后端">后端</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            <i class="iconfont icon-tag"></i>
+            
+            <a class="color1">MySQL</a>
+            
+        </span>
+        
+    </div>
+    <div class="article-meta">
+        
+            发布时间 : <time class="date" title='最后更新: 2024-09-25 18:45:00'>2024-09-25 00:00</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        <span>字数:5.7k</span>
+        
+        
+        <span id="busuanzi_container_page_pv">
+            阅读 :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#SQL%E6%89%A7%E8%A1%8C%E9%A2%91%E7%8E%87"><span class="toc-text">SQL执行频率</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%85%A2%E6%9F%A5%E8%AF%A2%E6%97%A5%E5%BF%97"><span class="toc-text">慢查询日志</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#mysqldumpslow"><span class="toc-text">mysqldumpslow</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#profile%E8%AF%A6%E6%83%85"><span class="toc-text">profile详情</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#explain"><span class="toc-text">explain</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%86%E5%A4%87%E6%B5%8B%E8%AF%95%E6%95%B0%E6%8D%AE"><span class="toc-text">准备测试数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#id%E5%AD%97%E6%AE%B5"><span class="toc-text">id字段</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#select-type-%E5%AD%97%E6%AE%B5"><span class="toc-text">select_type 字段</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#SIMPLE"><span class="toc-text">SIMPLE</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PRIMARY"><span class="toc-text">PRIMARY</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#UNION"><span class="toc-text">UNION</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#UNION-RESULT"><span class="toc-text">UNION RESULT</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SUBQUERY"><span class="toc-text">SUBQUERY</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DEPENDENT-SUBQUERY"><span class="toc-text">DEPENDENT SUBQUERY</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#table-%E5%AD%97%E6%AE%B5"><span class="toc-text">table 字段</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#partitions-%E5%AD%97%E6%AE%B5"><span class="toc-text">partitions 字段</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#type-%E5%AD%97%E6%AE%B5-%E9%87%8D%E8%A6%81"><span class="toc-text">type 字段 [重要]</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%86%E5%A4%87%E6%95%B0%E6%8D%AE%EF%BC%9A"><span class="toc-text">准备数据：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#type-%E7%9A%84%E5%80%BC%E6%98%AF-all"><span class="toc-text">type 的值是 all</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#type-%E7%9A%84%E5%80%BC%E6%98%AF-index"><span class="toc-text">type 的值是 index</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#type-%E7%9A%84%E5%80%BC%E6%98%AF-range"><span class="toc-text">type 的值是 range</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#type-%E7%9A%84%E5%80%BC%E6%98%AF-ref"><span class="toc-text">type 的值是 ref</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#type-%E7%9A%84%E5%80%BC%E6%98%AF-eq-ref"><span class="toc-text">type 的值是 eq_ref</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#type-%E7%9A%84%E5%80%BC%E6%98%AF-const"><span class="toc-text">type 的值是 const</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#type-%E7%9A%84%E5%80%BC%E6%98%AF-null"><span class="toc-text">type 的值是 null</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#key-len"><span class="toc-text">key_len</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E8%AE%A1%E7%AE%97%E5%AD%97%E8%8A%82%E6%95%B0"><span class="toc-text">如何计算字节数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%98%E9%95%BF%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%EF%BC%9A"><span class="toc-text">变长数据类型：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9A%E9%95%BF%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%EF%BC%9A"><span class="toc-text">定长数据类型：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98"><span class="toc-text">一些问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ref-%E5%AD%97%E6%AE%B5"><span class="toc-text">ref 字段</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#filtered-%E5%AD%97%E6%AE%B5"><span class="toc-text">filtered 字段</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#extra-%E5%AD%97%E6%AE%B5"><span class="toc-text">extra 字段</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8explain%E8%A6%81%E6%B3%A8%E6%84%8F%E7%9A%84%E4%BA%8B%E6%83%85"><span class="toc-text">使用explain要注意的事情</span></a></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Kr4y1i7ru?p=78&vd_source=1fec18257f053dbeeca90eafa8222946">21. 进阶-索引-性能分析-explain_哔哩哔哩_bilibili</a></p>
+<h1 id="SQL执行频率"><a href="#SQL执行频率" class="headerlink" title="SQL执行频率"></a>SQL执行频率</h1><p>MySQL 客户端连接成功后，通过 <code>show [session|global] status</code> 命令可以提供服务器状态信息。通过如下指令，可以查看当前数据库的INSERT、UPDATE、DELETE、SELECT的访问频次：</p>
+<pre><code class="mysql">-- session 是查看当前会话 ;
+-- global 是查询全局数据 ;
+-- com + 7个“_”
+SHOW GLOBAL STATUS LIKE &#39;Com_______&#39;;
+</code></pre>
+<img src="performanceAnalysis/001.jpg"  width="100%" />
+
+<p>Com_delete: 删除次数</p>
+<p>Com_insert: 插入次数</p>
+<p>Com_select: 查询次数</p>
+<p>Com_update: 更新次数</p>
+<p><strong>如果是以增删改为主，我们可以考虑不对其进行索引的优化。 如果是以查询为主，那么就要考虑对数据库的索引进行优化了。</strong></p>
+<blockquote>
+<p>【理由如下】</p>
+<ul>
+<li><strong>更新性能考虑</strong>：虽然索引可以提高查询性能，但它们也会降低更新操作的性能（如插入、删除和更新）。因为每当表中的数据发生变化时，相关的索引也需要被更新。因此，在更新密集型的应用中，过多的索引可能会成为性能瓶颈。</li>
+<li><strong>索引维护成本</strong>：索引需要占用额外的存储空间，并且需要定期维护（如重建或重组）以保持其性能。这也会增加数据库管理的复杂性和成本。</li>
+<li><strong>选择性考虑</strong>：并非所有的列都适合建立索引。索引的选择性（即索引列中不同值的数量与表中总行数之比）对于索引的效率至关重要。如果索引的选择性很低，那么查询时仍然需要扫描大量的索引条目，从而无法显著提高查询性能。</li>
+</ul>
+</blockquote>
+<h1 id="慢查询日志"><a href="#慢查询日志" class="headerlink" title="慢查询日志"></a>慢查询日志</h1><p>慢查询日志记录了所有执行时间超过指定参数（<code>long_query_time</code>，单位：秒，默认10秒）的所有SQL语句的日志。</p>
+<p>MySQL的慢查询日志默认没有开启，我们可以查看一下系统变量 <code>slow_query_log</code>。</p>
+<img src="performanceAnalysis/002.jpg"  width="100%" />
+
+<p>如果要开启慢查询日志，需要在MySQL的配置文件（<code>/etc/my.cnf</code>）中配置如下信息：</p>
+<pre><code class="mysql"># 开启MySQL慢日志查询开关: 1-ON-开启；0-OFF-关闭
+slow_query_log=1
+# 设置慢日志的时间为2秒，SQL语句执行时间超过2秒，就会视为慢查询，记录慢查询日志
+long_query_time=2
+# 指定了慢查询日志文件的路径 
+# 如果不设置，MySQL将使用默认的文件名（通常是host_name-slow.log）存储在数据目录下。
+slow_query_log_file = /var/log/mysql/mysql-slow.log 
+</code></pre>
+<p>配置完毕之后，通过以下指令重新启动MySQL服务器进行测试，查看慢日志文件中记录的信息</p>
+<img src="performanceAnalysis/003.jpg"  width="100%" />
+
+<p>测试：执行如下SQL语句 ：</p>
+<pre><code class="mysql">select * from tb_user; -- 这条SQL执行效率比较高, 执行耗时 0.00sec
+select count(*) from tb_sku; -- 由于tb_sku表中, 预先存入了1000w的记录, count一次,耗时 13.35sec
+</code></pre>
+<p>测试：接着检查慢查询日志<code>tail -f localhost-slow.log</code>，这个是在<code>/var/lib/mysql</code>的包下</p>
+<p><code>-f</code>参数表示实时跟踪文件的新增内容，这对于监控新发生的慢查询非常有用。</p>
+<img src="performanceAnalysis/004.jpg"  width="100%" />
+
+<h2 id="mysqldumpslow"><a href="#mysqldumpslow" class="headerlink" title="mysqldumpslow"></a>mysqldumpslow</h2><p>使用mysqldumpslow命令导出：在生产环境中，如果要手工分析日志，查找、分析SQL，显然是个体力活，MySQL提供了日志分析工具mysqldumpslow。</p>
+<img src="performanceAnalysis/006.png"  width="80%" />
+
+<pre><code class="mysql">#得到返回记录集最多的10个SQL
+mysqldumpslow -s r -t 10 /var/lib/mysql/atguigu-slow.log
+
+#得到访问次数最多的10个SQL
+mysqldumpslow -s c -t 10 /var/lib/mysql/atguigu-slow.log
+
+#得到按照时间排序的前10条里面含有左连接的查询语句
+mysqldumpslow -s t -t 10 -g &quot;left join&quot; /var/lib/mysql/atguigu-slow.log
+
+#另外建议在使用这些命令时结合 | 和more 使用 ，否则有可能出现爆屏情况
+mysqldumpslow -s r -t 10 /var/lib/mysql/atguigu-slow.log | more
+</code></pre>
+<p>以上命令运行在Linux上面，各参数的含义如下:</p>
+<ul>
+<li><p><code>-a</code>: 不将数字抽象成N，字符串抽象成S</p>
+</li>
+<li><p><code>-s</code>: 是表示按照何种方式排序；</p>
+</li>
+<li><ul>
+<li><code>c</code>: 访问次数</li>
+<li><code>l</code>: 锁定时间</li>
+<li><code>r</code>: 返回记录</li>
+<li><code>t</code>: 查询时间</li>
+<li><code>al</code>:平均锁定时间</li>
+<li><code>ar</code>:平均返回记录数</li>
+<li><code>at</code>:平均查询时间</li>
+</ul>
+</li>
+<li><p><code>-t</code>: 即为返回前面多少条的数据；</p>
+</li>
+<li><p><code>-g</code>: 后边搭配一个正则匹配模式，大小写不敏感的；</p>
+</li>
+</ul>
+<h1 id="profile详情"><a href="#profile详情" class="headerlink" title="profile详情"></a>profile详情</h1><p><strong>show profiles 能够在做SQL优化时帮助我们了解时间都耗费到哪里去了</strong>。通过have_profiling参数，能够看到当前MySQL是否支持profile操作</p>
+<p>查看到当前MySQL是否支持profile操作：</p>
+<pre><code class="mysql">SELECT  @@have_profiling ;
+</code></pre>
+<p>查看当前profile是否开启：1-ON-开启；0-OFF-关闭</p>
+<pre><code class="mysql">select @@profiling;
+</code></pre>
+<img src="performanceAnalysis/005.jpg"  width="100%" />
+
+<p>开启profile</p>
+<pre><code class="mysql"># 全局
+SET global profiling = 1;
+# 当前会话
+SET session profiling = 1;
+</code></pre>
+<p>令查看指令的执行耗时：</p>
+<pre><code class="mysql">-- 查看每一条SQL的耗时基本情况
+show profiles;
+</code></pre>
+<img src="performanceAnalysis/008.jpg"  width="100%" />
+
+<pre><code class="mysql">-- 查看指定query_id的SQL语句各个阶段的耗时情况
+show profile for query query_id;
+-- 查看指定query_id的SQL语句CPU的使用情况
+show profile cpu for query query_id;
+</code></pre>
+<img src="performanceAnalysis/007.jpg"  width="100%" />
+
+<h1 id="explain"><a href="#explain" class="headerlink" title="explain"></a>explain</h1><p>MySQL体系结构中，包含 SQL 解析器、优化器等组件。<strong>SQL 解析器</strong>解析 SQL之后，生成<strong>解析树</strong>。经过验证，解析树正确后，由优化器进一步优化解析树。</p>
+<p>使用 <code>EXPLAIN</code> 关键字可以<strong>模拟优化器执行 SQL 查询语句</strong>，从而知道 MySQL 是如何处理你的SQL 语句的。 </p>
+<p>语法：</p>
+<pre><code class="mysql">-- 直接在select语句之前加上关键字 explain / desc
+EXPLAIN SELECT 字段列表 FROM 表名 WHERE 条件 ;
+</code></pre>
+<img src="performanceAnalysis/009.jpg"  width="100%" />
+
+<p>Explain 执行计划中各个字段的含义：</p>
+<table>
+<thead>
+<tr>
+<th><strong>列名</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>id</strong></td>
+<td>select查询的序列号，表示查询中执行select子句或者是操作表的顺序（id相同，执行顺序从上到下；id不同，值越大，越先执行）。</td>
+</tr>
+<tr>
+<td>select_type</td>
+<td>表示 SELECT 的类型，常见的取值有：<br />- SIMPLE（简单表，即不使用表连接或者子查询）<br />- PRIMARY（主查询，即外层的查询）<br />- UNION（UNION 中的第二个或者后面的查询语句）<br />- SUBQUERY（SELECT&#x2F;WHERE之后包含了子查询）<br /><strong>总体的SQL 语句执行的『趟数』越少越好</strong></td>
+</tr>
+<tr>
+<td>table</td>
+<td>表名</td>
+</tr>
+<tr>
+<td>partitions</td>
+<td>匹配的分区信息</td>
+</tr>
+<tr>
+<td><strong>type</strong></td>
+<td>表示连接类型，性能由好到差的连接类型为：NULL、system、const、eq_ref、ref、range、index、all。</td>
+</tr>
+<tr>
+<td>possible_keys</td>
+<td>可能用到的索引</td>
+</tr>
+<tr>
+<td><strong>key</strong></td>
+<td>实际使用的索引，如果为NULL，则没有使用索引。</td>
+</tr>
+<tr>
+<td><strong>key_len</strong></td>
+<td>表示索引中使用的字节数，该值为索引字段最大可能长度，并非实际使用长度。这个字段有助于我们推测哪些索引命中了</td>
+</tr>
+<tr>
+<td>ref</td>
+<td>当使用索引列<strong>等值查询</strong>时，与<strong>索引列进行等值匹配的对象信息</strong></td>
+</tr>
+<tr>
+<td>rows</td>
+<td>预估的需要读取的记录条数</td>
+</tr>
+<tr>
+<td>filtered</td>
+<td>表示返回结果的行数占需读取行数的百分比，filtered 的值越大越好。</td>
+</tr>
+<tr>
+<td>Extra</td>
+<td>一些额外的信息</td>
+</tr>
+</tbody></table>
+<h2 id="准备测试数据"><a href="#准备测试数据" class="headerlink" title="准备测试数据"></a>准备测试数据</h2><pre><code class="mysql">create database db_hr;
+use db_hr;
+CREATE TABLE t1
+(
+    id      INT(10) AUTO_INCREMENT,
+    content VARCHAR(100) NULL,
+    PRIMARY KEY (id)
+);
+CREATE TABLE t2
+(
+    id      INT(10) AUTO_INCREMENT,
+    content VARCHAR(100) NULL,
+    PRIMARY KEY (id)
+);
+CREATE TABLE t3
+(
+    id      INT(10) AUTO_INCREMENT,
+    content VARCHAR(100) NULL,
+    PRIMARY KEY (id)
+);
+CREATE TABLE t4
+(
+    id      INT(10) AUTO_INCREMENT,
+    content VARCHAR(100) NULL,
+    PRIMARY KEY (id)
+);
+INSERT INTO t1(content)
+VALUES (CONCAT(&#39;t1_&#39;, FLOOR(1 + RAND() * 1000)));
+INSERT INTO t2(content)
+VALUES (CONCAT(&#39;t2_&#39;, FLOOR(1 + RAND() * 1000)));
+INSERT INTO t3(content)
+VALUES (CONCAT(&#39;t3_&#39;, FLOOR(1 + RAND() * 1000)));
+INSERT INTO t4(content)
+VALUES (CONCAT(&#39;t4_&#39;, FLOOR(1 + RAND() * 1000)));
+</code></pre>
+<h2 id="id字段"><a href="#id字段" class="headerlink" title="id字段"></a>id字段</h2><p>id值相同的情况：</p>
+<pre><code class="mysql">explain select t1.id,t2.id,t3.id,t4.id from t1,t2,t3,t4
+</code></pre>
+<img src="performanceAnalysis/010.png"  width="60%" />
+
+<p>id值不同的情况</p>
+<pre><code class="mysql">EXPLAIN
+SELECT t1.id
+FROM t1
+WHERE t1.id = (SELECT t2.id FROM t2 WHERE t2.id = (SELECT t3.id FROM t3 WHERE t3.content = &#39;t3_103&#39;))
+</code></pre>
+<img src="performanceAnalysis/011.png"  width="60%" />
+
+<p>相同的id 值和不同的 id 值都有</p>
+<pre><code class="mysql">EXPLAIN
+SELECT t1.id, (select t4.id from t4 where t4.id = t1.id) id4
+FROM t1,t2
+</code></pre>
+<img src="performanceAnalysis/012.png"  width="60%" />
+
+<p>有子查询但是id 值相同：这里id值相同是因为MySQL内部的优化器将子查询优化成了连接查询。</p>
+<pre><code class="mysql">explain
+select t1.id
+from t1
+where t1.id in (select t2.id from t2);
+</code></pre>
+<img src="performanceAnalysis/013.png"  width="50%" />
+
+<h2 id="select-type-字段"><a href="#select-type-字段" class="headerlink" title="select_type 字段"></a>select_type 字段</h2><p> 一条SQL 语句总体来看：其中可能会包含很多个 select 关键字。每一个 select 代表一次小的查询，而每一个 select关键字的每一次查询都有可能是不同类型的查询。<strong>select_type 字段就是用来描述每一个select 关键字的查询类型</strong>，意思是我们只要知道了某个小查询的select_type属性，就知道了这个小查询在整个大查询中扮演了一个什么角色。而通过查看各个小查询部分扮演的角色，我们可以了解到整体SQL 语句的结构，从而判断当前 SQL 语句的结构是否存在问题。</p>
+<table>
+<thead>
+<tr>
+<th><strong>取值</strong></th>
+<th><strong>含义</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>SIMPLE</td>
+<td>简单的   select 查询，查询中不包含子查询或者 UNION</td>
+</tr>
+<tr>
+<td>PRIMARY</td>
+<td>查询中若包含任何复杂的子部分，最外层查询则被标记为   primary</td>
+</tr>
+<tr>
+<td>SUBQUERY</td>
+<td>在   SELECT 或 WHERE 列表中包含了子查询</td>
+</tr>
+<tr>
+<td>DEPENDENT   SUBQUERY</td>
+<td>在   SELECT 或 WHERE 列表中包含了子查询，子查询基于外层</td>
+</tr>
+<tr>
+<td>UNCACHEABLE   SUBQUREY</td>
+<td>表示这个   subquery 的查询要受到外部表查询的影响</td>
+</tr>
+<tr>
+<td>DERIVED</td>
+<td>在 FROM   列表中包含的子查询被标记为 DERIVED(衍生)。MySQL 会递归执行这些子查询，把结果放在临时表里</td>
+</tr>
+<tr>
+<td>UNION</td>
+<td>这是   UNION 语句其中的一个 SQL 元素</td>
+</tr>
+<tr>
+<td>UNION   RESULT</td>
+<td>从 UNION   表获取结果的 SELECT，也就是在 UNION 合并查询结果的基础上，不使用全部字段，选取一部分字段。</td>
+</tr>
+</tbody></table>
+<h3 id="SIMPLE"><a href="#SIMPLE" class="headerlink" title="SIMPLE"></a>SIMPLE</h3><p>查询语句中不包含UNION、不包含子查询的查询都算作是SIMPLE类型，比方说<strong>单表查询</strong>的select_type的值就是SIMPLE：</p>
+<pre><code class="mysql">mysql&gt; EXPLAIN SELECT t1.content FROM t1;
++----+-------------+-------+------------+------+---------------+------+---------+------+------+----------+-------+
+| id | select_type | table | partitions | type | possible_keys | key  | key_len | ref  | rows | filtered | Extra |
++----+-------------+-------+------------+------+---------------+------+---------+------+------+----------+-------+
+|  1 | SIMPLE      | t1    | NULL       | ALL  | NULL          | NULL | NULL    | NULL |    1 |   100.00 | NULL  |
++----+-------------+-------+------------+------+---------------+------+---------+------+------+----------+-------+
+1 row in set, 1 warning (0.00 sec)
+</code></pre>
+<p>当然，连接查询也算是SIMPLE类型，比如：</p>
+<pre><code class="mysql">explain
+select t1.id,t2.id
+from t1 left join t2 on t2.id=t1.id
+</code></pre>
+<img src="performanceAnalysis/014.png"  width="50%" />
+
+<h3 id="PRIMARY"><a href="#PRIMARY" class="headerlink" title="PRIMARY"></a>PRIMARY</h3><p>对于包含UNION、UNION ALL或者子查询的大查询来说，它是由几个小查询组成的，其中<strong>最左边的那个查询的select_type值就是PRIMARY</strong></p>
+<h3 id="UNION"><a href="#UNION" class="headerlink" title="UNION"></a>UNION</h3><p>对于包含UNION或者UNION ALL的子查询来说，它是由几个小查询组成的，其中<strong>除了最左边的那个小查询以外，其余的小查询的select_type值就是UNION</strong>。</p>
+<h3 id="UNION-RESULT"><a href="#UNION-RESULT" class="headerlink" title="UNION RESULT"></a>UNION RESULT</h3><p><strong>MySQL选择使用临时表来完成UNION查询的去重工作</strong>，针对该临时表的查询的select_type就是UNION RESULT。</p>
+<pre><code class="mysql">EXPLAIN SELECT t1.content FROM t1 UNION  SELECT t2.content FROM t2;
+</code></pre>
+<img src="performanceAnalysis/015.png"  width="60%" />
+
+<ul>
+<li>PRIMARY对应的语句：SELECT t1.content FROM t1。</li>
+<li>UNION对应的语句：UNION  SELECT t2.content FROM t2。</li>
+<li>UNION RESULT对应的语句：临时表的去重查询语句，不是我们写的语句，是系统写的语句。</li>
+</ul>
+<blockquote>
+<p>UNION ALL是不去重的</p>
+<blockquote>
+<pre><code class="mysql">SELECT t1.content FROM t1 UNION ALL  SELECT t2.content FROM t2;
+</code></pre>
+<img src="performanceAnalysis/016.png"  width="30%" />
+</blockquote>
+<p>UNION去重</p>
+<blockquote>
+<pre><code class="mysql">SELECT t1.content FROM t1 UNION  SELECT t2.content FROM t2;
+</code></pre>
+<img src="performanceAnalysis/017.png"  width="30%" />
+</blockquote>
+</blockquote>
+<h3 id="SUBQUERY"><a href="#SUBQUERY" class="headerlink" title="SUBQUERY"></a>SUBQUERY</h3><p>如果包含子查询的查询语句不能够转为对应的semi-join的形式（不用管什么是 semi-join，只需要知道这是进一步优化），并且该子查询是不相关子查询，并且查询优化器决定采用将该子查询优化的方案来执行该子查询时，<strong>该子查询的第一个SELECT关键字代表的那个查询的select_type就是SUBQUERY</strong>。<strong>总之就是无法被优化器进一步优化的子查询就是SUBQUERY</strong></p>
+<p>比如下边这个查询：</p>
+<pre><code class="mysql">EXPLAIN
+SELECT *
+FROM t1
+WHERE t1.id = (SELECT t2.id FROM t2 WHERE t2.id = (SELECT t3.id FROM t3 WHERE t3.content = &#39;t3_103&#39;));
+</code></pre>
+<img src="performanceAnalysis/018.png"  width="80%" />
+
+<h3 id="DEPENDENT-SUBQUERY"><a href="#DEPENDENT-SUBQUERY" class="headerlink" title="DEPENDENT SUBQUERY"></a>DEPENDENT SUBQUERY</h3><p>如果整体 SQL 语句执行的顺序是：</p>
+<ul>
+<li>先执行外层查询</li>
+<li>再执行内层子查询</li>
+<li>然后外层查询结果中的每一条再去匹配内层子查询结果的每一条。</li>
+</ul>
+<p>这样，内外两层的查询结果就是相乘的关系。相乘就有可能导致总的查询操作次数非常大。所以经过 explain 分析后，如果发现查询类型是 DEPENDENT SUBQUERY 就需要引起各位注意了——这是一个危险的信号，通常是需要修复的一个问题！</p>
+<p>当然，就实际工作中来说：<strong>别说 DEPENDENT SUBQUERY，就连 SUBQUERY 都不应该出现</strong>。</p>
+<pre><code class="mysql">EXPLAIN
+SELECT t1.id, (select t4.id from t4 where t4.id = t1.id) id4
+FROM t1;
+</code></pre>
+<p>在子查询的where条件是这样的： where t4.id &#x3D; t1.id。其中的t1.id的值要根据SELECT t1.id FROM t1 的查询结果来判断</p>
+<img src="performanceAnalysis/019.png"  width="60%" />
+
+<h2 id="table-字段"><a href="#table-字段" class="headerlink" title="table 字段"></a>table 字段</h2><p>显示当前这一步查询操作所访问数据库中表名称（<strong>显示这一行的数据是关于哪张表的</strong>），有时不是真实的表名字，可能是别名。不论我们的查询语句有多复杂，里边儿包含了多少个表，<strong>到最后也是需要对每个表进行单表访问的</strong>，所以 MySQL规定EXPLAIN语句输出的每条记录都对应着某个单表的访问方法，该条记录的table列代表着该表的表名。</p>
+<h2 id="partitions-字段"><a href="#partitions-字段" class="headerlink" title="partitions 字段"></a>partitions 字段</h2><p>代表分区表中的命中情况。<strong>如果是非分区表，该项为 null</strong>。逻辑上是一个整体的数据，可以在物理层保存时，拆分成很多个分片。分片在分区中保存。<strong>数据分片</strong>的好处是：</p>
+<ul>
+<li>方便在很多个不同分区之间方便的移动分片，分摊负载，弹性扩容。</li>
+<li>给主分片创建复制分片可以增强数据安全性。</li>
+</ul>
+<img src="performanceAnalysis/020.png"  width="60%" />
+
+<h2 id="type-字段-重要"><a href="#type-字段-重要" class="headerlink" title="type 字段 [重要]"></a>type 字段 [重要]</h2><p>对表访问方式，表示MySQL在表中找到所需行的方式，又称“访问类型”。具体取值参见下表（<strong>从上到下，性能越来越好</strong>）：</p>
+<table>
+<thead>
+<tr>
+<th><strong>取值</strong></th>
+<th><strong>含义</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ALL</td>
+<td>全表扫描</td>
+</tr>
+<tr>
+<td>index</td>
+<td>在索引表（聚簇索引、非聚簇索引都算）中做全表扫描</td>
+</tr>
+<tr>
+<td><strong>range</strong></td>
+<td>在一定范围内查询索引表</td>
+</tr>
+<tr>
+<td><strong>ref</strong></td>
+<td>通过普通的（不唯一）二级索引列（非聚簇索引）与常量进行等值匹配时来查询某个表</td>
+</tr>
+<tr>
+<td>eq_ref</td>
+<td>在<strong>连接查询</strong>时，如果<strong>被驱动表</strong>（连接语句对应的表）是通过<strong>主键</strong>或者<strong>唯一二级索引列</strong>（非聚簇索引）等值匹配的方式进行访问的（如果该主键或者唯一二级索引是联合索引的话，所有的索引列都必须进行等值比较），则对该被驱动表的访问方法就是eq_ref</td>
+</tr>
+<tr>
+<td>const</td>
+<td>根据主键或者唯一二级索引列与常数进行等值匹配</td>
+</tr>
+<tr>
+<td>system</td>
+<td><strong>表仅有一行记录</strong>，这是const类型的特例，查询起来非常迅速</td>
+</tr>
+<tr>
+<td>null</td>
+<td>MySQL在优化过程中分解语句，执行时甚至不用访问表或索引，例如从一个索引列里选取最小值可以通过单独索引查找完成。</td>
+</tr>
+</tbody></table>
+<p>在上述查询方式中，从 eq_ref 开始，条件就很苛刻了，不容易达到。所以实际开发时要求，<strong>至少能达到 range 水平，最好能达到 ref</strong>。</p>
+<h3 id="准备数据："><a href="#准备数据：" class="headerlink" title="准备数据："></a>准备数据：</h3><pre><code class="mysql"># 创建数据库表
+create table t_emp
+(
+    emp_id     int auto_increment primary key,
+    emp_name   char(100),
+    emp_salary double(10, 5),
+    dept_id    int
+);
+
+create table t_dept
+(
+    dept_id   int auto_increment primary key,
+    dept_name char(100)
+);
+
+# emp_id 主键索引
+# emp_name 唯一索引
+create unique index idx_emp_name_unique on t_emp (emp_name);
+# emp_salary 普通索引
+create index idx_emp_salary on t_emp (emp_salary);
+# dept_name 普通索引
+create index idx_dept_name on t_dept (dept_name);
+</code></pre>
+<h3 id="type-的值是-all"><a href="#type-的值是-all" class="headerlink" title="type 的值是 all"></a>type 的值是 all</h3><p>原因：没有用到任何索引，全表扫描</p>
+<pre><code class="mysql">explain
+select emp_salary
+from t_emp;
+</code></pre>
+<img src="performanceAnalysis/021.png"  width="80%" />
+
+<h3 id="type-的值是-index"><a href="#type-的值是-index" class="headerlink" title="type 的值是 index"></a>type 的值是 index</h3><p>原因：查询的是建立了索引的字段，而且没有指定 where 条件。</p>
+<p>在执行查询时扫描索引的整个 B+Tree</p>
+<p>mysql 表中如果是单主键的话，那这个主键也会被 系统默认建为 索引</p>
+<pre><code class="mysql">explain
+select emp_name
+from t_emp;
+</code></pre>
+<img src="performanceAnalysis/022.png"  width="80%" />
+
+<h3 id="type-的值是-range"><a href="#type-的值是-range" class="headerlink" title="type 的值是 range"></a>type 的值是 range</h3><p>原因：在一定范围内访问索引 B+Tree。也就是索引用到了范围查询</p>
+<pre><code class="mysql">explain
+select emp_id, emp_name
+from t_emp
+where emp_salary between 1000 and 5000;
+</code></pre>
+<img src="performanceAnalysis/023.png"  width="80%" />
+
+<pre><code class="mysql">explain
+select emp_id, emp_name
+from t_emp
+where emp_id &gt; 1000;
+</code></pre>
+<img src="performanceAnalysis/024.png"  width="80%" />
+
+<pre><code class="mysql">explain
+select emp_id, emp_name
+from t_emp
+where emp_salary &gt; 1000;
+</code></pre>
+<img src="performanceAnalysis/025.png"  width="80%" />
+
+<p><font color=black style="background: #B05923"> 问题之后在解决吧 </font></p>
+<h3 id="type-的值是-ref"><a href="#type-的值是-ref" class="headerlink" title="type 的值是 ref"></a>type 的值是 ref</h3><p>通过普通的<strong>二级索引</strong>列与<strong>常量</strong>进行等值匹配时来查询</p>
+<pre><code class="mysql">explain
+select dept_name
+from t_dept
+where dept_name = &#39;研发部&#39;;
+</code></pre>
+<img src="performanceAnalysis/026.png"  width="80%" />
+
+<h3 id="type-的值是-eq-ref"><a href="#type-的值是-eq-ref" class="headerlink" title="type 的值是 eq_ref"></a>type 的值是 eq_ref</h3><p>在进行关联查询时，被驱动表是通过<strong>主键或者唯一二级索引列</strong>等值匹配的方式进行访问</p>
+<pre><code class="mysql">explain
+select emp_id, emp_name, emp_salary
+from t_emp e
+         left join t_dept td on e.dept_id = td.dept_id; # t_dept td 被驱动表
+</code></pre>
+<img src="performanceAnalysis/027.png"  width="80%" />
+
+<p>满足eq_ref所需条件：</p>
+<ul>
+<li>连接查询： left join</li>
+<li>被驱动表（连接语句对应的表）是通过主键或者唯一二级索引列（非聚簇索引）等值匹配的方式： e.dept_id &#x3D; td.dept_id</li>
+</ul>
+<p>关于<code>select emp_id, emp_name, emp_salary from t_emp e</code> 为什么是<code>ALL</code></p>
+<p>如果我们全部查询一个表中的某写字段的所有内容，那么type&#x3D;ALL，即便所有字段都有索引。因为这样显然全表扫描更加有效</p>
+<pre><code class="mysql">explain
+select emp_id,emp_name,emp_salary
+from t_emp
+</code></pre>
+<img src="performanceAnalysis/028.png"  width="80%" />
+
+<p>但是，对于如下查询语句，Type确实Index</p>
+<pre><code class="mysql">explain
+select emp_id, emp_name
+from t_emp
+</code></pre>
+<img src="performanceAnalysis/029.png"  width="80%" />
+
+<p>我的理解是：联想到索引的数据结构B+tree，emp_name这个索引的数据页存的就是：emp_name和对应的 emp_id</p>
+<p>所以，mysql会扫描整个索引（Index）而不是扫描整张表（All）</p>
+<h3 id="type-的值是-const"><a href="#type-的值是-const" class="headerlink" title="type 的值是 const"></a>type 的值是 const</h3><p>使用常量值查询一个唯一索引(包括主键），返回唯一一条记录</p>
+<pre><code class="mysql">explain
+select emp_id, emp_name, emp_salary
+from t_emp
+where emp_name = &#39;aaa&#39;;
+</code></pre>
+<img src="performanceAnalysis/030.png"  width="80%" />
+
+<h3 id="type-的值是-null"><a href="#type-的值是-null" class="headerlink" title="type 的值是 null"></a>type 的值是 null</h3><p>MySQL在优化过程中分解语句，执行时甚至<strong>不用访问表或索引</strong>，例如<strong>从一个索引列里选取最小值</strong>可以通过单独索引查找完成。</p>
+<pre><code class="mysql">explain
+SELECT 5+5
+</code></pre>
+<img src="performanceAnalysis/031.png"  width="100%" />
+
+<pre><code class="mysql">explain
+SELECT min(emp_salary) 
+from t_emp  
+</code></pre>
+<img src="performanceAnalysis/032.png"  width="100%" />
+
+<pre><code class="mysql"># 差一个唯一索引和主键中没有底值
+explain
+select emp_id, emp_name, emp_salary
+from t_emp
+where emp_name = &#39;bbb&#39;;
+
+explain
+select emp_id, emp_name, emp_salary
+from t_emp
+where emp_id = 2;
+</code></pre>
+<img src="performanceAnalysis/033.png"  width="100%" />
+
+<h2 id="key-len"><a href="#key-len" class="headerlink" title="key_len"></a>key_len</h2><p>key_len 表示索引使用的字节数，根据这个值可以判断索引的使用情况，特别是在组合索引的时候，判断该索引有多少部分被使用到非常重要。在索引不变的情况下，我们不断优化，那么这个值会越来越大。</p>
+<h3 id="如何计算字节数"><a href="#如何计算字节数" class="headerlink" title="如何计算字节数"></a>如何计算字节数</h3><h4 id="变长数据类型："><a href="#变长数据类型：" class="headerlink" title="变长数据类型："></a>变长数据类型：</h4><p>对于变长数据类型,比如varchar,除了是否为空的标记外,还需要有长度信息，需要占用两个字节。</p>
+<p>如果是 varchar 这样的变长字符串类型：再 + 2；</p>
+<p>数值类型：最终结果就是数值类型字段宽度本身；</p>
+<p>如果是允许为空的字段：再 + 1；</p>
+<table>
+<thead>
+<tr>
+<th><strong>列类型</strong></th>
+<th><strong>KEY_LEN</strong></th>
+<th><strong>备注</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>user   varchar(30) not null utf8</td>
+<td>key_len&#x3D;30*3+2</td>
+<td>utf8每个字符为3bytes,变长数据类型,加2bytes</td>
+</tr>
+<tr>
+<td>user   varchar(30) utf8</td>
+<td>key_len&#x3D;30*3+2+1</td>
+<td>utf8每个字符为3bytes,允许为NULL,加1byte,变长数据类型,加2bytes</td>
+</tr>
+<tr>
+<td>detail   text(10) utf8</td>
+<td>key_len&#x3D;30*3+2+1</td>
+<td>TEXT截取部分,被视为动态列类型。</td>
+</tr>
+</tbody></table>
+<h4 id="定长数据类型："><a href="#定长数据类型：" class="headerlink" title="定长数据类型："></a>定长数据类型：</h4><p>当索引字段为定长数据类型时,如char，int，datetime，需要有是否为空的标记,这个标记占用1个字节(对于not null的字段来说,则不需要这1字节)</p>
+<p>如果是允许为空的字段：再 + 1；</p>
+<table>
+<thead>
+<tr>
+<th><strong>列类型</strong></th>
+<th><strong>KEY_LEN</strong></th>
+<th><strong>备注</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id int</td>
+<td>key_len &#x3D;   4+1</td>
+<td>int为4bytes,允许为NULL,加1byte</td>
+</tr>
+<tr>
+<td>id bigint   not null</td>
+<td>key_len&#x3D;8</td>
+<td>bigint为8bytes</td>
+</tr>
+<tr>
+<td>double</td>
+<td>key_len&#x3D;8+1</td>
+<td>double为8bytes,允许为NULL,加1byte</td>
+</tr>
+<tr>
+<td>user   char(30) utf8</td>
+<td>key_len&#x3D;30*3+1</td>
+<td>utf8每个字符为3bytes,允许为NULL,加1byte</td>
+</tr>
+</tbody></table>
+<h3 id="一些问题"><a href="#一些问题" class="headerlink" title="一些问题"></a>一些问题</h3><ol>
+<li><p>对于Type&#x3D;All或者Index的，上面规律不起作用</p>
+<pre><code class="mysql">explain
+select emp_id
+from t_emp
+</code></pre>
+<img src="performanceAnalysis/034.png"  width="100%" />
+</li>
+<li><p>key_len只指示了where中用于条件过滤时被选中的索引列，是不包含order      by&#x2F;group by这一部分被选中的索引列的。例如,有个联合索引<code>idx(c1,c2,c3)</code>,3列均是int not null,那么下面的SQL执行计划中,key_len的值是8而不是12:</p>
+<pre><code class="mysql">select ... from tb where c1=? and c2=? order by c1;
+</code></pre>
+</li>
+</ol>
+<h2 id="ref-字段"><a href="#ref-字段" class="headerlink" title="ref 字段"></a>ref 字段</h2><p>这一列显示了在key列记录的索引中，表查找值所用到的列或常量，常见的有：const（常量），func，NULL，字段名</p>
+<pre><code class="mysql">explain
+select emp_id, emp_name, emp_salary
+from t_emp
+where emp_name = &#39;aaa&#39;;
+</code></pre>
+<img src="performanceAnalysis/035.png"  width="80%" />
+
+<pre><code class="mysql">explain
+select emp_salary
+from t_emp;
+</code></pre>
+<img src="performanceAnalysis/036.png"  width="80%" />
+
+<pre><code class="mysql">explain
+select emp_id, emp_name, emp_salary
+from t_emp e
+         left join t_dept td on e.dept_id = td.dept_id;
+</code></pre>
+<img src="performanceAnalysis/037.png"  width="80%" />
+
+<h2 id="filtered-字段"><a href="#filtered-字段" class="headerlink" title="filtered 字段"></a>filtered 字段</h2><p>通过存储引擎从硬盘加载数据到服务层时，受限于内存空间，有可能只能加载一部分数据。filtered 字段显示的值是：<strong>已加载数据 &#x2F; 全部数据</strong> 的百分比。只是不显示百分号。</p>
+<img src="performanceAnalysis/038.png"  width="70%" />
+
+<h2 id="extra-字段"><a href="#extra-字段" class="headerlink" title="extra 字段"></a>extra 字段</h2><p>Extra 列是用来说明一些额外信息的，包含不适合在其他列中显示但十分重要的额外信息。我们可以通过这些额外信息来更准确的理解MySQL到底将如何执行给定的查询语句。MySQL提供的额外信息有好几十个，以下是几个比较重要的</p>
+<table>
+<thead>
+<tr>
+<th><strong>取值</strong></th>
+<th><strong>含义</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>using where</strong></td>
+<td>不用读取表中所有信息，仅通过索引就可以获取所需数据。 <strong>言外之意是 select   查询的字段都带有索引</strong>。   不管   select 查询多少个字段，这些字段都在索引中。</td>
+</tr>
+<tr>
+<td><strong>Using temporary</strong></td>
+<td><strong>表示MySQL需要使用临时表来存储结果集</strong>，常见于排序和分组查询</td>
+</tr>
+<tr>
+<td><strong>Using filesort</strong></td>
+<td>当语句中包含 <strong>order by</strong> 操作，而且无法利用索引完成的排序操作称为“文件排序”。  这里的文件指的是保存在硬盘上的文件。   之所以会用到硬盘，是因为如果查询的数据量太大，内存空间不够，需要在硬盘上完成排序。   如果确实是很大数据量在硬盘执行排序操作，那么速度会非常慢。      简单的说：<strong>就是因为某个字段没有建索引，但是我的order by 操作又使用到了这个字段，如果要排序的数据量太大，内存空间不够，我就需要在操作硬盘来进行排序，这样速度会非常慢</strong>。</td>
+</tr>
+<tr>
+<td>Using   join buffer</td>
+<td>buffer 指缓冲区，<strong>该值强调了在获取连接条件时没有使用索引</strong>，并且需要连接缓冲区来存储中间结果。如果出现了这个值，那应该注意，<strong>根据查询的具体情况可能需要添加索引来改进能</strong>。   举例来说：where   t_name like “%xxx%”，这个条件中的 t_name 字段没有加索引</td>
+</tr>
+<tr>
+<td>Impossible   where</td>
+<td>where 子句中指定的条件查询不到数据的情况</td>
+</tr>
+<tr>
+<td>Select tables optimized away</td>
+<td>这个值表示目前的查询使用了索引，然后经过优化器优化之后，最终执行的是一个聚合函数，从而让最终的查询结果只返回一行</td>
+</tr>
+<tr>
+<td>No   tables used</td>
+<td>查询语句中使用   from dual 或不含任何 from 子句</td>
+</tr>
+</tbody></table>
+<h1 id="使用explain要注意的事情"><a href="#使用explain要注意的事情" class="headerlink" title="使用explain要注意的事情"></a>使用explain要注意的事情</h1><ul>
+<li><p>EXPLAIN      不会告诉你关于触发器、存储过程的信息或用户自定义函数对查询的影响情况</p>
+</li>
+<li><p>EXPLAIN 不考虑各种  Cache</p>
+</li>
+<li><p>EXPLAIN 不能显示      MySQL 在执行查询时所作的优化工作</p>
+</li>
+<li><p><strong>部分统计信息是估算的，并非精确值</strong></p>
+</li>
+<li><p>EXPALIN      只能解释 SELECT 操作，其他操作要重写为 SELECT 后查看执行计划</p>
+</li>
+</ul>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 1909773034@qq.com </span>
+    </div>
+</article>
+
+
+<p>
+    <a  class="dashang" onclick="dashangToggle()">赏</a>
+</p>
+
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">
+    ©2017 XieShaoLin
+</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+
+<div class="hide_box" onclick="dashangToggle()"></div>
+<div class="shang_box">
+    <a class="shang_close"  onclick="dashangToggle()">×</a>
+    <div class="shang_tit">
+        <p>喜欢就点赞,疼爱就打赏</p>
+    </div>
+    <div class="shang_payimg">
+        <div class="pay_img">
+            <img src="/img/alipay.jpg" class="alipay" title="扫码支持">
+            <img src="/img/weixin.jpg" class="weixin" title="扫码支持">
+        </div>
+    </div>
+    <div class="shang_payselect">
+        <span><label><input type="radio" name="pay" checked value="alipay">支付宝</label></span><span><label><input type="radio" name="pay" value="weixin">微信</label></span>
+    </div>
+</div>
+
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
+
+<script src="/js/script.js?v=1.1.0" ></script>
+<script>
+    var img_resize = 'default';
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $("#post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+        $("input[name=pay]").on("click", function () {
+            if($("input[name=pay]:checked").val()=="weixin"){
+                $(".shang_box .shang_payimg .pay_img").addClass("weixin_img");
+            } else {
+                $(".shang_box .shang_payimg .pay_img").removeClass("weixin_img");
+            }
+        })
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+    function dashangToggle() {
+        $(".shang_box").fadeToggle();
+        $(".hide_box").fadeToggle();
+    }
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>

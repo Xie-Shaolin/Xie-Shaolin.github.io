@@ -1,0 +1,1896 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>springboot整合redis | Notes</title>
+  <meta name="keywords" content=" redis , springboot , Jedis , RedisTemplate ">
+  <meta name="description" content="springboot整合redis | Notes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="卸载MySQL停止MySQL服务 systemctl stop mysqld  查询MySQL的安装文件 [root@centos01 ~]# rpm -qa | grep -i mysql mysql-community-client-5.7.28-1.el7.x86_64 mysql-community-server-5.7.28-1.el7.x86_64 mysql-community-co">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL的安装、卸载和启动">
+<meta property="og:url" content="http://example.com/2024/09/25/InstallMySQL8/index.html">
+<meta property="og:site_name" content="Notes">
+<meta property="og:description" content="卸载MySQL停止MySQL服务 systemctl stop mysqld  查询MySQL的安装文件 [root@centos01 ~]# rpm -qa | grep -i mysql mysql-community-client-5.7.28-1.el7.x86_64 mysql-community-server-5.7.28-1.el7.x86_64 mysql-community-co">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2024/09/25/InstallMySQL8/InstallMySQL8/001.png">
+<meta property="og:image" content="http://example.com/2024/09/25/InstallMySQL8/InstallMySQL8/002.png">
+<meta property="og:image" content="http://example.com/2024/09/25/InstallMySQL8/InstallMySQL8/003.png">
+<meta property="article:published_time" content="2024-09-24T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-09-25T10:36:23.945Z">
+<meta property="article:author" content="XieShaoLin">
+<meta property="article:tag" content="MySQL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2024/09/25/InstallMySQL8/InstallMySQL8/001.png">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.1.0" rel="stylesheet">
+
+<link href="/css/hl_theme/github.css?v=1.1.0" rel="stylesheet">
+
+<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
+
+<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="/js/titleTip.js?v=1.1.0" ></script>
+
+<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.1.0" ></script>
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="">
+  <input class="theme_blog_path" value="">
+  <input id="theme_shortcut" value="true" />
+  <input id="theme_highlight_on" value="true" />
+  <input id="theme_code_copy" value="true" />
+</div>
+
+
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/"
+   class="avatar_target">
+    <img class="avatar"
+         src="/img/avatar.jpg"/>
+</a>
+<div class="author">
+    <span>XieShaoLin</span>
+</div>
+
+<div class="icon">
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            <a title="email"
+               href="mailto:1909773034@qq.com"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-email"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="qq"
+               href="http://wpa.qq.com/msgrd?v=3&uin=1909773034&site=qq&menu=yes"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-qq"></use>
+                    </svg>
+                
+            </a>
+        
+    
+</div>
+
+
+
+
+
+<ul>
+    <li>
+        <div class="all active" data-rel="全部文章">全部文章
+            
+                <small>(55)</small>
+            
+        </div>
+    </li>
+    
+        
+            
+                
+    <li>
+        <div data-rel="工具">
+            
+            工具
+            <small>(1)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="前端">
+            
+            前端
+            <small>(1)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="后端">
+            
+            后端
+            <small>(45)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="运维">
+            
+            运维
+            <small>(3)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="财经">
+            
+            财经
+            <small>(1)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="英语">
+            
+            英语
+            <small>(2)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+        
+            
+            
+            
+    </div>
+    <div>
+        
+        
+    </div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="55">
+<input type="hidden" id="yelog_site_word_count" value="299.4k">
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        友情链接
+        <i class="iconfont icon-left"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="http://yelog.org/">叶落阁</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <div class="right-top">
+        <div id="default-panel">
+            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
+            <div class="right-title">全部文章</div>
+            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
+        </div>
+        <div id="search-panel">
+            <i class="iconfont icon-left" data-title="返回"></i>
+            <input id="local-search-input" autocomplete="off"/>
+            <label class="border-line" for="input"></label>
+            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
+            <i class="iconfont icon-tag" data-title="标签"></i>
+        </div>
+        <div id="outline-panel" style="display: none">
+            <div class="right-title">大纲</div>
+            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
+        </div>
+    </div>
+
+    <div class="tags-list">
+    <input id="tag-search" />
+    <div class="tag-wrapper">
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>阿里云</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>跨域</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>前锋教育</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>虚拟机</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>AOF</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>CentOS</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>docker</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>economy</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>element-ui</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>English</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>ES6</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>ESLint</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Feign</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>finalshell</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Getway</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>git</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>grammer</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>gulimall</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>hexo</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>idea</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>java</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>JavaScript</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Jedis</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Js</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>JSR303</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Linux</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>listening</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>maven</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>mq</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Mysql</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>MySql</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>MySQL</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Nacos</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>node.js</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>NoSql</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>npm</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>nvm</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>OAuth2</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>OSS</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Prettier</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>python</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>RDB</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>redis</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>RedisTemplate</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>renren-fast</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>spring</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>springboot</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>SpringCloud</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>springSecurity</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>vue</a>
+            </li>
+        
+    </div>
+
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/InstallMySQL8/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL的安装、卸载和启动">MySQL的安装、卸载和启动</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/MysqlIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL的索引原理和语法">MySQL的索引原理和语法</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/MySQLLock/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：锁">MySQL：锁</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/SQLTips/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：建议MySQL使用哪个索引">MySQL：建议MySQL使用哪个索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/SQLOptimization/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：SQL优化">MySQL：SQL优化</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/combinedIndexColumnIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL:联合索引和单列索引">MySQL:联合索引和单列索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/coveringIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="覆盖索引与锁表">覆盖索引与锁表</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/indexDesign/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：如何设计索引">MySQL：如何设计索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/invalidIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：索引失效">MySQL：索引失效</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/mysqlEngine/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL的存储引擎">MySQL的存储引擎</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/performanceAnalysis/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：慢查询日志、profile、explain">MySQL：慢查询日志、profile、explain</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/prefixIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：前缀索引">MySQL：前缀索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/22/redisPubSub/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="Redis订阅发布">Redis订阅发布</span>
+            <span class="post-date" title="2024-09-22 15:21:35">2024/09/22</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisProblem/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="Redis：缓存穿透、缓存击穿和缓存雪崩">Redis：缓存穿透、缓存击穿和缓存雪崩</span>
+            <span class="post-date" title="2024-09-17 16:33:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisPersistence/"
+           data-tag="redis,RDB,AOF"
+           data-author="" >
+            <span class="post-title" title="Redis持久化">Redis持久化</span>
+            <span class="post-date" title="2024-09-17 16:20:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisTransaction/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="redis的事务">redis的事务</span>
+            <span class="post-date" title="2024-09-17 16:12:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisType/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="redis常用数据类型">redis常用数据类型</span>
+            <span class="post-date" title="2024-09-17 16:04:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisBrief/"
+           data-tag="redis,NoSql"
+           data-author="" >
+            <span class="post-title" title="redis与NoSql的简单介绍">redis与NoSql的简单介绍</span>
+            <span class="post-date" title="2024-09-17 15:59:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisSentinel/"
+           data-tag="Linux,CentOS,虚拟机,redis"
+           data-author="" >
+            <span class="post-title" title="Redis：主从复制与哨兵模式">Redis：主从复制与哨兵模式</span>
+            <span class="post-date" title="2024-09-17 15:59:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redis7SpringBoot/"
+           data-tag="redis,springboot,Jedis,RedisTemplate"
+           data-author="" >
+            <span class="post-title" title="springboot整合redis">springboot整合redis</span>
+            <span class="post-date" title="2024-09-17 15:42:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 运维 "
+           href="/2024/09/17/redis7Install/"
+           data-tag="CentOS,redis,前锋教育"
+           data-author="" >
+            <span class="post-title" title="Redis的安装、卸载、启动和客户端">Redis的安装、卸载、启动和客户端</span>
+            <span class="post-date" title="2024-09-17 15:19:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 前端 "
+           href="/2024/09/17/BasicFrontend/"
+           data-tag="JavaScript,Js,ES6,vue,element-ui"
+           data-author="" >
+            <span class="post-title" title="前端：ES5和Vue的基本用法">前端：ES5和Vue的基本用法</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/OAuth2/"
+           data-tag="OAuth2,spring"
+           data-author="" >
+            <span class="post-title" title="OAuth2和spring">OAuth2和spring</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/SpringCloudBaseUse/"
+           data-tag="SpringCloud,Nacos,Feign,Getway"
+           data-author="" >
+            <span class="post-title" title="SpringCloud：基本使用">SpringCloud：基本使用</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/adminSystem/"
+           data-tag="element-ui,SpringCloud,Feign,gulimall,Prettier,ESLint,跨域,JSR303,OSS,阿里云"
+           data-author="" >
+            <span class="post-title" title="谷粒商城：后台管理系统要点">谷粒商城：后台管理系统要点</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/giliEnviroment/"
+           data-tag="docker,idea,maven,renren-fast,git,nvm,node.js,npm"
+           data-author="" >
+            <span class="post-title" title="谷粒商城：环境搭建">谷粒商城：环境搭建</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/springsecurity/"
+           data-tag="springSecurity"
+           data-author="" >
+            <span class="post-title" title="SpringSecurity">SpringSecurity</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/16/MysqlTransaction/"
+           data-tag="Mysql"
+           data-author="" >
+            <span class="post-title" title="Mysql的事物">Mysql的事物</span>
+            <span class="post-date" title="2024-09-16 14:31:10">2024/09/16</span>
+        </a>
+        
+        
+        <a  class="全部文章 运维 "
+           href="/2024/09/08/finalshell/"
+           data-tag="finalshell,Linux,CentOS,虚拟机"
+           data-author="" >
+            <span class="post-title" title="finalshell与Linux虚拟机的网络配置">finalshell与Linux虚拟机的网络配置</span>
+            <span class="post-date" title="2024-09-08 22:19:10">2024/09/08</span>
+        </a>
+        
+        
+        <a  class="全部文章 英语 "
+           href="/2024/03/25/rabbitGrammer/"
+           data-tag="English,grammer"
+           data-author="" >
+            <span class="post-title" title="英语兔英语语法">英语兔英语语法</span>
+            <span class="post-date" title="2024-03-25 23:12:24">2024/03/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 工具 "
+           href="/2024/03/25/hexoStartFast/"
+           data-tag="hexo"
+           data-author="" >
+            <span class="post-title" title="hexo搭建静态博客">hexo搭建静态博客</span>
+            <span class="post-date" title="2024-03-25 22:14:10">2024/03/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/03/25/PythonBase/"
+           data-tag="python"
+           data-author="" >
+            <span class="post-title" title="Python语法基数">Python语法基数</span>
+            <span class="post-date" title="2024-03-25 22:08:07">2024/03/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 英语 "
+           href="/2023/12/14/heqiongListening/"
+           data-tag="listening"
+           data-author="" >
+            <span class="post-title" title="何琼雅思听力">何琼雅思听力</span>
+            <span class="post-date" title="2023-12-14 00:00:00">2023/12/14</span>
+        </a>
+        
+        
+        <a  class="全部文章 财经 "
+           href="/2023/05/23/EconomicMachine/"
+           data-tag="economy"
+           data-author="" >
+            <span class="post-title" title="经济机器是怎样运行的——RayDalio">经济机器是怎样运行的——RayDalio</span>
+            <span class="post-date" title="2023-05-23 00:00:00">2023/05/23</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-02-grammar/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:基本语法">java:基本语法</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-03-array/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:数组">java:数组</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-05-exception/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:异常">java:异常</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-01-install/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:概述+安装">java:概述+安装</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-04-opp/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:面向对象">java:面向对象</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-06-thread/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:多线程">java:多线程</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-08-time/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:时间相关API">java:时间相关API</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-07-string/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:字符串">java:字符串</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-09-sort/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:比较器">java:比较器</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-11-annotation/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:注解">java:注解</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-10-enum/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:枚举">java:枚举</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-12-collection/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:集合">java:集合</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-13-generics/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:泛型">java:泛型</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-14-IO/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:IO流">java:IO流</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-15-net/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:网络编程">java:网络编程</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-16-reflect/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:反射">java:反射</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 运维 "
+           href="/2020/07/13/dockerBase/"
+           data-tag="docker"
+           data-author="" >
+            <span class="post-title" title="docker 基础">docker 基础</span>
+            <span class="post-date" title="2020-07-13 20:46:25">2020/07/13</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/01/01/MySQLCrashCourse/"
+           data-tag="MySql"
+           data-author="" >
+            <span class="post-title" title="MySQL:必知必会">MySQL:必知必会</span>
+            <span class="post-date" title="2020-01-01 00:00:00">2020/01/01</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/01/01/RocketMq/"
+           data-tag="mq"
+           data-author="" >
+            <span class="post-title" title="RocketMq:分布式消息队列">RocketMq:分布式消息队列</span>
+            <span class="post-date" title="2020-01-01 00:00:00">2020/01/01</span>
+        </a>
+        
+        
+        <a  class="全部文章 "
+           href="/2019/09/29/java-17-new8/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java8新特性：lambda表达式+Stream流">java8新特性：lambda表达式+Stream流</span>
+            <span class="post-date" title="2019-09-29 00:00:00">2019/09/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 "
+           href="/2019/09/29/java-18-above8/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java8以后的新特性">java8以后的新特性</span>
+            <span class="post-date" title="2019-09-29 00:00:00">2019/09/29</span>
+        </a>
+        
+        <div id="no-item-tips">
+
+        </div>
+    </nav>
+    <div id="outline-list">
+    </div>
+</div>
+
+    </div>
+    <div class="hide-list">
+        <div class="semicircle" data-title="切换全屏 快捷键 s">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div id="post">
+    <div class="pjax">
+        <article id="post-redis7SpringBoot" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">springboot整合redis</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            <i class="iconfont icon-category"></i>
+            
+            
+            <a  data-rel="后端">后端</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            <i class="iconfont icon-tag"></i>
+            
+            <a class="color1">redis</a>
+            
+            <a class="color1">springboot</a>
+            
+            <a class="color1">Jedis</a>
+            
+            <a class="color4">RedisTemplate</a>
+            
+        </span>
+        
+    </div>
+    <div class="article-meta">
+        
+            发布时间 : <time class="date" title='最后更新: 2024-09-17 15:45:54'>2024-09-17 15:42</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        <span>字数:4.8k</span>
+        
+        
+        <span id="busuanzi_container_page_pv">
+            阅读 :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#SpringBoot%E6%95%B4%E5%90%88Jedis"><span class="toc-text">SpringBoot整合Jedis</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Jedis%E7%9A%84%E4%BB%8B%E7%BB%8D"><span class="toc-text">Jedis的介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B4%E5%90%88Redis"><span class="toc-text">整合Redis</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#redis%E4%B8%8E%E9%AA%8C%E8%AF%81%E7%A0%81"><span class="toc-text">redis与验证码</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9C%80%E6%B1%82%E6%8F%8F%E8%BF%B0"><span class="toc-text">需求描述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E9%AA%8C%E8%AF%81%E7%A0%81"><span class="toc-text">获取验证码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A4%E6%96%AD%E9%AA%8C%E8%AF%81%E7%A0%81%E6%98%AF%E5%90%A6%E6%AD%A3%E7%A1%AE"><span class="toc-text">判断验证码是否正确</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%98%B2%E6%AD%A2%E6%94%BB%E5%87%BB"><span class="toc-text">防止攻击</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#SpringBoot%E6%95%B4%E5%90%88RedisTemplate"><span class="toc-text">SpringBoot整合RedisTemplate</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#RedisTemplate%E7%9A%84%E4%BB%8B%E7%BB%8D"><span class="toc-text">RedisTemplate的介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%9A%E2%BD%A4API"><span class="toc-text">通⽤API</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B4%E5%90%88"><span class="toc-text">整合</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%95%E5%85%A5%E4%BE%9D%E8%B5%96"><span class="toc-text">引入依赖</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#lettuce%E6%9B%BF%E4%BB%A3Jedis"><span class="toc-text">lettuce替代Jedis</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E9%85%8D%E7%BD%AE"><span class="toc-text">如何配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E6%89%BE%E5%88%B0%E9%85%8D%E7%BD%AE%E5%86%85%E5%AE%B9"><span class="toc-text">如何找到配置内容</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B7%E4%BD%93%E7%9A%84%E9%85%8D%E7%BD%AE"><span class="toc-text">具体的配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%EF%BC%9A%E6%8B%BF%E5%88%B0RedisTemplate"><span class="toc-text">使用：拿到RedisTemplate</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RedisTemplate%E5%BA%8F%E5%88%97%E5%8C%96%E9%97%AE%E9%A2%98"><span class="toc-text">RedisTemplate序列化问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E7%9A%84%E5%8E%9F%E5%9B%A0"><span class="toc-text">问题的原因</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E5%BC%8F%E4%B8%80%EF%BC%9A%E2%BE%83%E5%AE%9A%E4%B9%89RedisTemplate"><span class="toc-text">解决方式一：⾃定义RedisTemplate</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BC%9A%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D%E7%9A%84%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9A%84RedisTemplate"><span class="toc-text">为什么会自动装配的自定义的RedisTemplate</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Autowired%E7%9A%84%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D%E7%9A%84%E9%BB%98%E8%AE%A4%E6%83%85%E5%86%B5"><span class="toc-text">@Autowired的自动装配的默认情况</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#ConditionalOnMissingBean-name-%E2%80%9CredisTemplate%E2%80%9D"><span class="toc-text">@ConditionalOnMissingBean(name &#x3D; “redisTemplate”)</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%98%E5%82%A8%E5%AF%B9%E8%B1%A1%E4%BC%9A%E9%80%A0%E6%88%90%E6%95%B0%E6%8D%AE%E5%86%97%E4%BD%99"><span class="toc-text">存储对象会造成数据冗余</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E5%BC%8F%E4%BA%8C%EF%BC%9AStringRedisTemplate"><span class="toc-text">解决方式二：StringRedisTemplate</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E5%BC%8F%E4%B8%89%EF%BC%9A%E4%BC%81%E4%B8%9A%E4%B8%AD%E7%94%A8%E5%BE%97%E6%AF%94%E8%BE%83%E5%A4%9A%E7%9A%84%E2%BE%83%E5%AE%9A%E4%B9%89RedisTemplate%EF%BC%88%E6%9C%89%E9%97%AE%E9%A2%98%EF%BC%89"><span class="toc-text">解决方式三：企业中用得比较多的⾃定义RedisTemplate（有问题）</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text"></span></a></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="SpringBoot整合Jedis"><a href="#SpringBoot整合Jedis" class="headerlink" title="SpringBoot整合Jedis"></a>SpringBoot整合Jedis</h1><h2 id="Jedis的介绍"><a href="#Jedis的介绍" class="headerlink" title="Jedis的介绍"></a>Jedis的介绍</h2><ol>
+<li><strong>Jedis 是⼀个流⾏的 Java 客户端库，它⽤于连接和操作 Redis 数据库</strong></li>
+<li>连接：Jedis 提供简单的⽅法来连接 Redis。你可以指定主机名和端⼝来连接本地或远程的 Redis 服务器。也可以使⽤密码验证功能来连接需要认证的 Redis服务器。</li>
+<li>基本操作：Jedis ⽀持所有的 Redis 命令，例如 GET、SET、DEL 等键值对操作，以及 LPUSH、LRANGE 等列表操作，还有 SADD、SMEMBERS 等集合操作，等等。</li>
+<li>⾼级功能：Jedis ⽀持 Redis 的⼀些⾼级功能，如事务、管道和发布&#x2F;订阅。事务允许你执⾏⼀组命令，然后⼀次性提交到服务器。管道允许你⼀次性发送多个命令，然后⼀次性获取所有结果，这可以显著提⾼⽹络利⽤率和性能。发布&#x2F;订阅则是⼀个强⼤的消息发布和订阅系统。</li>
+<li>连接池：Jedis 提供了⼀个连接池，它可以在多线程环境中复⽤连接，避免频繁地创建和销毁连接，提⾼了应⽤程序的性能。</li>
+<li>⼆进制安全：Jedis 是⼆进制安全的，这意味着你可以在 Redis 中存储任何类型的数据，包括字符串、整数、浮点数，甚⾄是 JPEG 图⽚或者序列化的对象</li>
+<li>集群⽀持：从 2.9.0 版本开始，Jedis 提供了对 Redis 集群的原⽣⽀持，这包括分区、故障转移和复制等功能。</li>
+</ol>
+<h2 id="整合Redis"><a href="#整合Redis" class="headerlink" title="整合Redis"></a>整合Redis</h2><ol>
+<li><p>导⼊Jedis依赖（<strong>SpringBoot其实可以帮助管理版本</strong>）</p>
+<pre><code class="xml">&lt;dependency&gt;
+    &lt;groupId&gt;redis.clients&lt;/groupId&gt;
+    &lt;artifactId&gt;jedis&lt;/artifactId&gt;
+    &lt;version&gt;4.3.1&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+<p><strong>这里最好不要特别是定依赖，让<code>dependencyManagement</code> 自己管理，要不然容易造成问题</strong></p>
+<blockquote>
+<p><strong>【我的错误经历】</strong></p>
+<p>我Springboot的版本是<code>2.6.13</code>，但是我特别指定了jedis的版本是<code>4.3.1</code>，结果在启动运行的时候就报了如下错误：</p>
+<pre><code class="sh">Caused by: javax.management.InstanceAlreadyExistsException: MXBean already registered with name org.apache.commons.pool2:type=GenericObjectPool,name=pool 
+</code></pre>
+<p>最后我删除了指定的版本，统一让<code>dependencyManagement</code>管理，其默认的jedis版本是<code>3.7.1</code></p>
+</blockquote>
+</li>
+<li><p>编写配置application.yml</p>
+<pre><code class="yaml">spring:
+  redis:
+    database: 0 # Redis数据库0-15
+    host: 192.168.124.188 # ip地址
+    password: 753159 # redis密码
+    port: 6379 # redis端⼝号
+    jedis: # Jedis连接池配置
+      pool:
+        max-active: 8 # 最⼤连接数
+        max-idle: 8 # 最⼤空闲数
+        min-idle: 1 # 最⼩空闲数
+</code></pre>
+</li>
+<li><p>JedisConfig类型配置Jedis连接池</p>
+<pre><code class="java">/**
+ * Jedis连接池配置
+ * ⽬标：获取Jedis连接，控制Redis
+ */
+//Java配置代替XML 通过@Configuration 注解，Spring 会在 Application Context 中创建一个 Spring Bean。
+@Configuration
+// @ConfigurationProperties 最适合具有相同前缀的分层属性，这里添加了一个名为 spring.redis 的前缀。
+// Spring 框架使用标准的 Java Bean Setter，因此必须为每个属性声明 Setter 方法。
+// 这个注解会去配置文件里（properties/yaml）寻找对应的值
+@ConfigurationProperties(prefix = &quot;spring.redis&quot;)
+public class JedisConfig &#123;
+    //Redis相关链接参数
+    private int database;
+    private String host;
+    private String password;
+    private int port;
+
+    //Jedis连接池配置
+    @Value(&quot;$&#123;spring.redis.jedis.pool.max-active&#125;&quot;)
+    private int maxActive;
+    @Value(&quot;$&#123;spring.redis.jedis.pool.max-idle&#125;&quot;)
+    private int maxIdle;
+    @Value(&quot;$&#123;spring.redis.jedis.pool.min-idle&#125;&quot;)
+    private int minIdle;
+    //注⼊Jedis连接池
+    @Bean
+    public JedisPool jedisPool()&#123;
+        //连接池配置
+        JedisPoolConfig poolConfig = new JedisPoolConfig();
+        //读取配置
+        poolConfig.setMaxTotal(maxActive);
+        poolConfig.setMaxIdle(maxIdle);
+        poolConfig.setMinIdle(minIdle);
+        //需要找到有密码的重载构造⽅法，我们可以看源码找到对应⽅法
+        //需要配置的参数：GenericObjectPoolConfig&lt;Jedis&gt;
+        //                  poolConfig,String host, int port, int timeout(⼀般默认2000ms),
+        //                  String password, int database
+        JedisPool jedisPool = new JedisPool(poolConfig,host,port,2000,password,database);
+        return jedisPool;
+    &#125;
+
+    public int getDatabase() &#123;
+        return database;
+    &#125;
+
+    public void setDatabase(int database) &#123;
+        this.database = database;
+    &#125;
+
+    public String getHost() &#123;
+        return host;
+    &#125;
+
+    public void setHost(String host) &#123;
+        this.host = host;
+    &#125;
+
+    public String getPassword() &#123;
+        return password;
+    &#125;
+
+    public void setPassword(String password) &#123;
+        this.password = password;
+    &#125;
+
+    public int getPort() &#123;
+        return port;
+    &#125;
+
+    public void setPort(int port) &#123;
+        this.port = port;
+    &#125;
+&#125;
+</code></pre>
+</li>
+<li><p>Test测试类测试</p>
+<pre><code class="java">@SpringBootTest
+class DemoApplicationTests &#123;
+
+    @Autowired
+    private JedisPool jedisPool;
+    
+    @Test
+    void contextLoads() &#123;
+        Jedis jedis = jedisPool.getResource();
+        System.out.println(jedis.ping()); 
+        jedis.set(&quot;redis&quot;,&quot;spring整合redis&quot;);
+        String result = jedis.get(&quot;redis&quot;);
+        System.out.println(result);
+        jedis.close();//关闭连接
+    &#125;
+&#125;
+    // 输出结果:
+    // PONG
+    // spring整合redis
+</code></pre>
+</li>
+</ol>
+<h1 id="redis与验证码"><a href="#redis与验证码" class="headerlink" title="redis与验证码"></a>redis与验证码</h1><h2 id="需求描述"><a href="#需求描述" class="headerlink" title="需求描述"></a>需求描述</h2><p>⽤户在客户端输⼊⼿机号，点击发送后随机⽣成4位数字码。有效期60秒。输⼊验证码，点击验证，返回成功或者失败，且每个⼿机号5分钟内只能验证3次，超过就要等待12小时，并给相应信息提示。</p>
+<img src="redis7SpringBoot/029.png"  width="45%" />
+
+<h2 id="获取验证码"><a href="#获取验证码" class="headerlink" title="获取验证码"></a>获取验证码</h2><p>用户在登录前需要获取验证码</p>
+<ol>
+<li><p>后端代码：</p>
+<pre><code class="java">@RestController
+@Slf4j
+@CrossOrigin // 解决跨域问题
+public class PhoneCodeValidateController &#123;
+    // 注⼊Jedis连接池
+    @Autowired
+    private JedisPool jedisPool;
+    /**
+     * ⽣成随机4位验证码（调⽤⼿机号api短信接⼝）
+     */
+    public int phoneCode()&#123;
+        int num = (int)(Math.random()*10000);
+        return num;
+    &#125;
+    /**
+     * 根据⽤户的⼿机号⽣成redis中的key phone:code:⼿机号
+     * 判断key是否存在，如果key不存在对key进⾏赋值，设置过期时间为60m
+     * 如果key存在，提示⽤户：验证码以发送请注意查收短信
+     * @param phoneNum
+     * @return
+     */
+    @GetMapping(&quot;getValidateCode&quot;)
+    public String getValidateCode(@RequestParam(&quot;phoneNum&quot;) String phoneNum)&#123;
+        //获得jedis连接
+        Jedis jedis = jedisPool.getResource();
+        //保存⼿机验证码 Redis key
+        String key = &quot;phone:code:&quot;+phoneNum;
+        //判断key是否存在
+        if(!jedis.exists(key))&#123;
+            int phoneCode = this.phoneCode();
+            log.info(&quot;验证码已发送，验证码：&quot;+phoneCode);
+            jedis.set(key,phoneCode+&quot;&quot;);
+            jedis.expire(key,60);
+            return &quot;验证码发送成功！&quot;;
+        &#125;else&#123;
+            return &quot;验证码已发送，还需等待：&quot;+jedis.ttl(key)+&quot;秒&quot;;
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+</li>
+<li><p>前端代码：</p>
+<pre><code class="js">$.ajax(&#123;
+    type:&quot;get&quot;,
+    url:&quot;http://localhost:8080/getValidateCode&quot;,
+    data:&#123;&quot;phoneNum&quot;:phone&#125;,
+    success:function(msg)&#123;
+        alert(msg);
+    &#125;
+&#125;)
+</code></pre>
+</li>
+</ol>
+<h2 id="判断验证码是否正确"><a href="#判断验证码是否正确" class="headerlink" title="判断验证码是否正确"></a>判断验证码是否正确</h2><p>用户点击登录时，需要校验验证码是否正确</p>
+<ol>
+<li><p>后端代码：</p>
+<pre><code class="java">/**
+     * ⽤户点击确定登录按钮，会将前台输⼊的⼿机号、验证码发送到后端
+     * 后端接受以后会和 Redis中的key进⾏⽐较
+     * 如果相等 验证码⽐较成功，登陆成功
+     * 如果失败 验证码输⼊错误
+     * @param code
+     * @param phoneNum
+     * @return
+     */
+    @GetMapping(&quot;validateCode&quot;)
+    public String validateCode(@RequestParam(&quot;code&quot;) String code,
+                               @RequestParam(&quot;phoneNum&quot;) String phoneNum)&#123;
+        //得到redis连接
+        Jedis jedis = jedisPool.getResource();
+        //通过phoneNum⽣成验证的key
+        String key = &quot;phone:code:&quot;+phoneNum;
+        //判断当前的key是否存在于redis中
+        if(code.equals(jedis.get(key))) &#123;
+            log.info(&quot;验证成功，执⾏登录逻辑&quot;);
+            return &quot;登录成功！&quot;;
+        &#125;
+        return &quot;验证码不正确！&quot;;
+    &#125;
+</code></pre>
+</li>
+<li><p>前端代码</p>
+<pre><code class="js">//确定按钮⽅法
+function binding()&#123;
+    var phone = $.trim($(&#39;#phone1&#39;).val());
+    $.ajax(&#123;
+            type:&quot;get&quot;,
+            url:&quot;http://localhost:8080/validateCode&quot;,
+            data:&#123;
+            &quot;code&quot;:$(&quot;#code1&quot;).val(),
+            &quot;phoneNum&quot;:phone
+        &#125;,
+        success:function(msg)&#123;
+            alert(msg);
+        &#125;
+    &#125;)
+&#125;
+</code></pre>
+</li>
+</ol>
+<h2 id="防止攻击"><a href="#防止攻击" class="headerlink" title="防止攻击"></a>防止攻击</h2><ol>
+<li><p>此处我们需要获取⽤户的ip地址，才能完成后续的业务，获取的时机在于⽤户发送获取验证码请求时，并且将ip地址⽣成Redis中的<code>key：protectCode:具体ip</code></p>
+</li>
+<li><p>每次获取验证码时，判断如果key不存在（第⼀次获取验证码⽤户）进⾏ incr +1操作，并设置过期时间5分钟，如果存在（同⼀⽤户）对当前⽣成的key进⾏ incr +1操作</p>
+</li>
+<li><p>判断如果当前⽤户访问超过3次，⽣成Redis <code>key：lockip:具体ip</code>，锁定此⽤户12⼩时⽆法获取验证码</p>
+</li>
+<li><p>后端代码</p>
+<pre><code class="java">@Autowired
+private JedisPool jedisPool;
+/**
+     * ⽣成随机4位验证码（调⽤⼿机号api短信接⼝）
+     */
+public int phoneCode()&#123;
+    int num = (int)(Math.random()*10000);
+    return num;
+&#125;
+
+//获取用户ip方法
+private String getProtectIp(HttpServletRequest request)&#123;
+    return request.getRemoteAddr();
+&#125;
+/**
+     * 根据⽤户的⼿机号⽣成redis中的key phone:code:⼿机号
+     * 判断key是否存在，如果key不存在对key进⾏赋值，设置过期时间为60m
+     * 如果key存在，提示⽤户：验证码以发送请注意查收短信
+     * @param phoneNum
+     * @return
+     */
+@GetMapping(&quot;getValidateCode&quot;)
+public String getValidateCode(@RequestParam(&quot;phoneNum&quot;) String phoneNum,
+                              HttpServletRequest request)&#123;
+    /**
+         * 防⽌短信轰炸逻辑
+         * 1、根据⽤户IP⽣成Redis Key：protectCode:具体ip
+         * 2、每次获取验证码，判断Key是否存在
+         * 如果不存在：执⾏incr +1操作，并设置过期时间5分钟
+         * 如果存在：直接执⾏incr +1
+         * 3、判断如果当前⽤户访问超过3次，⽣成Redis key：lookIp:具体ip，
+         * 锁定此⽤户12⼩时⽆法获取验证码（设置过期时间为12⼩时）
+         */
+
+    //获得jedis连接
+    Jedis jedis = jedisPool.getResource();
+
+    //优化代码：⽤户访问进来以后，直接判断redis中是否有对应的lockip，如果有，直接返回
+    //IP锁定12⼩时
+    String lockIp=&quot;lockIp&quot;+this.getProtectIp(request);
+    if(jedis.exists(lockIp))&#123;
+        return &quot;限制访问12⼩时后解锁&quot;;
+    &#125;
+    //保护Key
+    String protectKey = &quot;protectCode:&quot;+this.getProtectIp(request);
+    //判断保护key是否存在
+    if(!jedis.exists(protectKey))&#123;
+        // 如果不存在
+        //incr命令可以直接创建key： key 的值会先被初始化为 0 ，然后再执⾏ INCR 操作
+        jedis.incr(protectKey);
+        // 这里设置5分钟的过期时间是：5分钟内，不能超过3次
+        jedis.expire(protectKey,300);
+    &#125;else&#123;
+        jedis.incr(protectKey);
+    &#125;
+
+    if(Integer.parseInt(jedis.get(protectKey))&gt;3)&#123;
+        jedis.set(lockIp,this.getProtectIp(request));
+        jedis.expire(protectKey,60*60*12);
+        return &quot;限制访问12⼩时后解锁&quot;;
+    &#125;
+    //保存⼿机验证码 Redis key
+    String key = &quot;phone:code:&quot;+phoneNum;
+    //判断key是否存在
+    if(!jedis.exists(key))&#123;
+        int phoneCode = this.phoneCode();
+        log.info(&quot;验证码已发送，验证码：&quot;+phoneCode);
+        jedis.set(key,phoneCode+&quot;&quot;);
+        jedis.expire(key,60);
+        return &quot;验证码发送成功！&quot;;
+    &#125;else&#123;
+        return &quot;验证码已发送，还需等待：&quot;+jedis.ttl(key)+&quot;秒&quot;;
+    &#125;
+&#125;
+</code></pre>
+</li>
+</ol>
+<h1 id="SpringBoot整合RedisTemplate"><a href="#SpringBoot整合RedisTemplate" class="headerlink" title="SpringBoot整合RedisTemplate"></a>SpringBoot整合RedisTemplate</h1><h2 id="RedisTemplate的介绍"><a href="#RedisTemplate的介绍" class="headerlink" title="RedisTemplate的介绍"></a>RedisTemplate的介绍</h2><ol>
+<li><strong>RedisTemplate</strong>是<strong>SpringDataRedis</strong>中对<strong>JedisApi</strong>的⾼度封装，提供了redis各种操作、异常处理及序列化，⽀持发布订阅</li>
+<li><strong>SpringData</strong>是Spring中数据操作的模块，包括对各种数据库的集成，⽐如我们之前学过的Spring Data JDBC、JPA等，其中有⼀个模块叫做<strong>SpringDataRedis</strong>，⽽RedisTemplate就是其中提供操作Redis的通⽤模板</li>
+<li>官⽅⽹址：<a target="_blank" rel="noopener" href="https://spring.io/projects/spring-data">https://spring.io/projects/spring-data</a></li>
+</ol>
+<h2 id="通⽤API"><a href="#通⽤API" class="headerlink" title="通⽤API"></a>通⽤API</h2><p>在我们使⽤Jedis的时候，如果我们想要完成⼀些Redis的操作，对应的命令其实就是对应的⽅法，⽐如Set在Jedis中也就是<code>set()</code>⽅法，虽然很好上⼿，但是这会<strong>导致我们的代码⽐较臃肿</strong>，⽽既然SpringData出⼿整合了，它必然会按照⼀定的规律做进⼀步的封装，具体如下：</p>
+<ul>
+<li><code>redisTemplate.ops...</code>⽅法囊括了⼏乎所有的Redis不同数据类型的命令操作</li>
+<li>操作String类型数据：<code>redisTemplate.opsForValue()</code></li>
+<li>操作List数据类型：<code>redisTemplate.opsForList()</code></li>
+<li>操作Hash数据类型：<code>redisTemplate.opsForHash()</code></li>
+<li>操作Set数据类型：<code>redisTemplate.opsForSet()</code></li>
+<li>操作ZSet数据类型：<code>redisTemplate.opsForZSet()</code></li>
+<li>以上这些⽅法返回的都是<code>xxxOperations</code>类型，⽐如<ul>
+<li>ValueOperations其中包括的就是String类型的所有操作：Set、Get等</li>
+</ul>
+</li>
+</ul>
+<h2 id="整合"><a href="#整合" class="headerlink" title="整合"></a>整合</h2><h3 id="引入依赖"><a href="#引入依赖" class="headerlink" title="引入依赖"></a>引入依赖</h3><ol>
+<li><p>在创建项目的时候勾选下图选项，就可以引入相关依赖</p>
+<img src="redis7SpringBoot/030.png"  width="50%" />
+
+<pre><code class="xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-data-redis&lt;/artifactId&gt;
+&lt;/dependency&gt;
+</code></pre>
+</li>
+<li><p>导入连接池，Jedis与RedisTemplate底层使⽤的连接池都是commons-pool2</p>
+<pre><code class="xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.apache.commons&lt;/groupId&gt;
+    &lt;artifactId&gt;commons-pool2&lt;/artifactId&gt;
+&lt;/dependency&gt;
+</code></pre>
+<p>我们在整合Jedis的时候没有引入这个依赖是因为jedis已经加了</p>
+<img src="redis7SpringBoot/031.png"  width="60%" /></li>
+</ol>
+<h2 id="lettuce替代Jedis"><a href="#lettuce替代Jedis" class="headerlink" title="lettuce替代Jedis"></a>lettuce替代Jedis</h2><p>在spring-boot-starter-data-redis的底层是没有引⼊Jedis的。</p>
+<pre><code class="xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.data&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-data-redis&lt;/artifactId&gt;
+    &lt;version&gt;2.6.9&lt;/version&gt;
+    &lt;scope&gt;compile&lt;/scope&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;io.lettuce&lt;/groupId&gt;
+    &lt;artifactId&gt;lettuce-core&lt;/artifactId&gt;
+    &lt;version&gt;6.1.10.RELEASE&lt;/version&gt;
+    &lt;scope&gt;compile&lt;/scope&gt;
+&lt;/dependency&gt;
+</code></pre>
+<p>这是因为：在SpringBoot2.x版本以后，从原来的Jedis替换成了lettuce，所以2.x以后开始默认使⽤Lettuce作为Redis客户端，，Lettuce客户端基于Netty的NIO框架实现，只需要维持单⼀的连接即可⾼效⽀持业务端并发请求。同时，Lettuce⽀持的特性更加全⾯，其性能表现并不逊于，甚⾄优于Jedis。</p>
+<ul>
+<li>Jedis：<strong>采⽤的直连，多个线程操作的话，是不安全的</strong>，如果想要避免线程安全问题，就需要使⽤JedisPool连接池，但是也会有⼀些线程过多等其他问题，类似于<strong>BIO</strong></li>
+<li>Lettuce：底层采⽤<strong>Netty</strong>，实例可以在<strong>多个线程中进⾏共享，不存在线程安全问题</strong>！类似<strong>NIO</strong></li>
+</ul>
+<h2 id="如何配置"><a href="#如何配置" class="headerlink" title="如何配置"></a>如何配置</h2><h3 id="如何找到配置内容"><a href="#如何找到配置内容" class="headerlink" title="如何找到配置内容"></a>如何找到配置内容</h3><p>如果我们不知道具体要配置什么内容，其实可以通过源码来进⾏查看，因为<strong>所有的SpringBoot配置类都有有⼀个⾃动装配类型</strong>，<strong>⾃动装配类型都会绑定⼀个properties配置⽂件</strong>。找到RedisAutoConfiguration ⾃动装配类型</p>
+<img src="redis7SpringBoot/032.png"  width="100%" />
+
+<p>然后找到绑定的RedisProperties</p>
+<img src="redis7SpringBoot/033.png"  width="60%" />
+
+<p>进⼊其中我们就能看到这⾥我们需要配置什么了，包括它有哪些默认的配置</p>
+<img src="redis7SpringBoot/034.png"  width="65%" />
+
+<p>当然这⾥其实我们可以再看⼀下RedisAutoConfiguration类型，在这其中我们就能看到此类型具体装配的内容</p>
+<pre><code class="java">@Configuration(proxyBeanMethods = false)
+@ConditionalOnClass(RedisOperations.class)
+@EnableConfigurationProperties(RedisProperties.class)
+@Import(&#123; LettuceConnectionConfiguration.class, JedisConnectionConfiguration.class &#125;)
+public class RedisAutoConfiguration &#123;
+    @Bean
+    /**此类型可以⾃定义*/
+    @ConditionalOnMissingBean(name = &quot;redisTemplate&quot;)
+    @ConditionalOnSingleCandidate(RedisConnectionFactory.class)
+    public RedisTemplate&lt;Object, Object&gt; redisTemplate(RedisConnectionFactory redisConnectionFactory) &#123;
+        // ⼀旦底层使⽤Netty我们所有的对象都需要序列化，所以这⾥也同样需要
+        // 泛型为Object，所以我们后续使⽤会经常需要强转
+        RedisTemplate&lt;Object, Object&gt; template = new RedisTemplate&lt;&gt;();
+        template.setConnectionFactory(redisConnectionFactory);
+        return template;
+    &#125;
+    
+    //有这个String的原因在于Redis⼤部分都是String类型的操作
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnSingleCandidate(RedisConnectionFactory.class)
+    public StringRedisTemplate stringRedisTemplate(RedisConnectionFactory redisConnectionFactory) &#123;
+        return new StringRedisTemplate(redisConnectionFactory);
+    &#125;
+&#125;
+</code></pre>
+<h3 id="具体的配置"><a href="#具体的配置" class="headerlink" title="具体的配置"></a>具体的配置</h3><pre><code class="yaml">spring:
+  redis:
+    database: 0 # Redis数据库0-15
+    host: 192.168.124.188 # ip地址
+    password: 753159 # redis密码
+    port: 6379 # redis端⼝号
+    lettuce: # SpringBoot2.x后默认采⽤lettuce
+      pool:
+        max-active: 8 # 最⼤连接
+        max-idle: 8 # 最⼤空闲数
+        min-idle: 0 # 最⼩空闲数
+</code></pre>
+<h2 id="使用：拿到RedisTemplate"><a href="#使用：拿到RedisTemplate" class="headerlink" title="使用：拿到RedisTemplate"></a>使用：拿到RedisTemplate</h2><pre><code class="java">@Autowired
+private RedisTemplate redisTemplate;
+@Test
+void contextLoads2() &#123;
+    redisTemplate.opsForValue().set(&quot;cs&quot;,&quot;测试&quot;);
+    System.out.println(redisTemplate.opsForValue().get(&quot;cs&quot;));
+    //常⻅操作
+    // redisTemplate.multi();
+    // redisTemplate.exec();
+    // redisTemplate.discard();
+&#125;
+</code></pre>
+<p>结果是存入了redis，不过是乱码的</p>
+<img src="redis7SpringBoot/036.png"  width="50%" />
+
+<p>但是并不影响程序运行，取出来，打印出来，是正常的</p>
+<img src="redis7SpringBoot/035.png"  width="50%" />
+
+<p>为什么会是这样那？其实这就涉及到了序列化的问题了</p>
+<h2 id="RedisTemplate序列化问题"><a href="#RedisTemplate序列化问题" class="headerlink" title="RedisTemplate序列化问题"></a>RedisTemplate序列化问题</h2><h3 id="问题的原因"><a href="#问题的原因" class="headerlink" title="问题的原因"></a>问题的原因</h3><p>想要解决以上的问题，我们就需要掌握RedisTemplate序列化的问题，⾸先我们现在直接进⼊RedisTemplate源码</p>
+<img src="redis7SpringBoot/037.jpg"  width="70%" />
+
+<p>再往下看有⼀个默认的序列化器</p>
+<img src="redis7SpringBoot/038.jpg"  width="70%" />
+
+<p>也就是说，RedisTemplate默认采⽤的是默认的<strong>JDK序列化器</strong>，这种序列化⽅式会有⼀定的问题</p>
+<ul>
+<li>可读性差</li>
+<li>内存占⽤⼤</li>
+</ul>
+<p>所以总结来说，我们就需要修改RedisSerializer的具体实现，这⾥我们可以先看⼀下RedisSerializer的实现类有哪些，其中以下图中的两个是我们最常⽤</p>
+<img src="redis7SpringBoot/039.jpg"  width="70%" />
+
+<p>因为⼀般情况下：</p>
+<ul>
+<li>key：String类型</li>
+<li>value：可能是对象，那么需要<strong>JSON的序列化⽅式</strong></li>
+</ul>
+<h3 id="解决方式一：⾃定义RedisTemplate"><a href="#解决方式一：⾃定义RedisTemplate" class="headerlink" title="解决方式一：⾃定义RedisTemplate"></a>解决方式一：⾃定义RedisTemplate</h3><p>我们新建⼀个RedisConfig类型，以下的这个是固定模板，可以直接使⽤</p>
+<pre><code class="java">@Configuration
+public class RedisConfig &#123;
+    @Bean
+    public RedisTemplate&lt;String, Object&gt; redisTemplate(RedisConnectionFactory factory) &#123;
+        // 为了研发⽅便 key直接为String类型
+        RedisTemplate&lt;String, Object&gt; template = new RedisTemplate&lt;&gt;();
+        // 设置连接⼯⼚
+        template.setConnectionFactory(factory);
+        //序列化配置，通过JSON解析任意对象
+        GenericJackson2JsonRedisSerializer jsonRedisSerializer = new GenericJackson2JsonRedisSerializer();
+        //设置key序列化
+        template.setKeySerializer(RedisSerializer.string());
+        template.setHashKeySerializer(RedisSerializer.string());
+        //设置value序列化
+        template.setValueSerializer(jsonRedisSerializer);
+        template.setHashKeySerializer(jsonRedisSerializer);
+        template.afterPropertiesSet();
+        return template;
+    &#125;
+&#125;
+</code></pre>
+<p>测试代码：</p>
+<pre><code class="java">import org.springframework.data.redis.core.RedisTemplate;
+@Autowired
+private RedisTemplate redisTemplate;
+@Test
+void contextLoads2() &#123;
+    redisTemplate.opsForValue().set(&quot;cs&quot;,&quot;测试&quot;);
+    System.out.println(redisTemplate.opsForValue().get(&quot;cs&quot;));
+    //常⻅操作
+    // redisTemplate.multi();
+    // redisTemplate.exec();
+    // redisTemplate.discard();
+&#125;
+</code></pre>
+<p>不再乱码：</p>
+<img src="redis7SpringBoot/040.png"  width="50%" />
+
+<h4 id="为什么会自动装配的自定义的RedisTemplate"><a href="#为什么会自动装配的自定义的RedisTemplate" class="headerlink" title="为什么会自动装配的自定义的RedisTemplate"></a>为什么会自动装配的自定义的RedisTemplate</h4><pre><code class="java">@Autowired
+private RedisTemplate redisTemplate;
+</code></pre>
+<p>上面的代码有一个问题，<strong>Spring是如何实现redisTemplate自动装配到<code>RedisTemplate&lt;String, Object&gt;</code>而不是<code>RedisTemplate&lt;Object, Object&gt;</code>的？</strong></p>
+<p>以下是Spring Boot的默认自动配置类<code>RedisAutoConfiguration</code></p>
+<pre><code class="java">@Configuration(proxyBeanMethods = false)
+@ConditionalOnClass(RedisOperations.class)
+@EnableConfigurationProperties(RedisProperties.class)
+@Import(&#123; LettuceConnectionConfiguration.class, JedisConnectionConfiguration.class &#125;)
+public class RedisAutoConfiguration &#123;
+    @Bean
+    /**此类型可以⾃定义*/
+    @ConditionalOnMissingBean(name = &quot;redisTemplate&quot;)
+    @ConditionalOnSingleCandidate(RedisConnectionFactory.class)
+    public RedisTemplate&lt;Object, Object&gt; redisTemplate(RedisConnectionFactory redisConnectionFactory) &#123;
+        // ⼀旦底层使⽤Netty我们所有的对象都需要序列化，所以这⾥也同样需要
+        // 泛型为Object，所以我们后续使⽤会经常需要强转
+        RedisTemplate&lt;Object, Object&gt; template = new RedisTemplate&lt;&gt;();
+        template.setConnectionFactory(redisConnectionFactory);
+        return template;
+    &#125;
+&#125;
+</code></pre>
+<h5 id="Autowired的自动装配的默认情况"><a href="#Autowired的自动装配的默认情况" class="headerlink" title="@Autowired的自动装配的默认情况"></a><code>@Autowired</code>的自动装配的默认情况</h5><ul>
+<li>默认情况下，@Autowired会按照类型（Type）在Spring容器中进行查找，即寻找与依赖项类型相匹配的Bean。如果容器中只有一个该类型的Bean，那么就直接将这个Bean注入到依赖项中。</li>
+<li>如果容器中存在多个相同类型的Bean，并且没有通过其他方式（如@Qualifier注解）来指定具体的Bean名称，那么Spring会抛出<code>NoUniqueBeanDefinitionException</code>异常，提示有多个Bean候选者而无法确定注入哪一个。</li>
+</ul>
+<h5 id="ConditionalOnMissingBean-name-“redisTemplate”"><a href="#ConditionalOnMissingBean-name-“redisTemplate”" class="headerlink" title="@ConditionalOnMissingBean(name &#x3D; “redisTemplate”)"></a>@ConditionalOnMissingBean(name &#x3D; “redisTemplate”)</h5><p>在<code>RedisAutoConfiguration</code>中，<code>@ConditionalOnMissingBean(name = &quot;redisTemplate&quot;)</code>是一个关键的条件注解。这意味着<strong>如果容器中已经存在一个名为<code>redisTemplate</code>的Bean（不考虑泛型参数），则不会创建<code>RedisAutoConfiguration</code>中定义的<code>RedisTemplate</code> Bean。</strong></p>
+<p>因此<strong>RedisConfig中定义的RedisTemplate&lt;String, Object&gt;会被自动装配</strong>到你的组件中。这是因为Spring在容器中找到了一个名为<code>redisTemplate</code>的Bean，满足了<code>RedisAutoConfiguration</code>中的条件注解的否定条件，从而阻止了<code>RedisAutoConfiguration</code>中相同名称Bean的创建。</p>
+<h4 id="存储对象会造成数据冗余"><a href="#存储对象会造成数据冗余" class="headerlink" title="存储对象会造成数据冗余"></a>存储对象会造成数据冗余</h4><pre><code class="java">@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class User &#123;
+    private String name;
+    private int age;
+&#125;
+</code></pre>
+<pre><code class="java">@Test
+void saveUser()&#123;
+    redisTemplate.opsForValue().set(&quot;user:1&quot;,new User(&quot;Mask&quot;,20));
+    System.out.println(redisTemplate.opsForValue().get(&quot;user:1&quot;));
+&#125;
+</code></pre>
+<p>控制台输出：<code>User(name=Mask, age=20)</code></p>
+<p>但是在redis里面的数据是这样的：</p>
+<img src="redis7SpringBoot/041.png"  width="50%" />
+
+<p><strong>JSON序列化</strong>的⽅式确实能够帮助我们⾃动的实现序列化和反序列化，主要是因为添加了@class，但是这个会导致额外的内存开销，如果在数据量特别⼤的时候就会有影响，但是如果没有@class就不会实现⾃动序列化和反序列化</p>
+<h3 id="解决方式二：StringRedisTemplate"><a href="#解决方式二：StringRedisTemplate" class="headerlink" title="解决方式二：StringRedisTemplate"></a>解决方式二：StringRedisTemplate</h3><p>其实实际开发中，如果为了节省空间，<strong>并不会完全使⽤JSON序列化来处理value</strong>，⽽是<strong>统⼀采⽤String序列化器</strong>，储存Java对象也是如此，这就意味着我们需要重新编写RedisTemplate，但是SpringBoot其实提供了⼀个StringRedisTemplate，通过它我们就可以完成以上的需求</p>
+<pre><code class="java">import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.data.redis.core.StringRedisTemplate;
+
+@Autowired
+private StringRedisTemplate stringRedisTemplate;
+
+//Json⼯具
+private ObjectMapper mapper = new ObjectMapper();
+
+@Test
+void StringTemplate() throws JsonProcessingException &#123;
+    User user = new User(&quot;Jerry&quot;,18);
+    //⼿动序列化: 把对象变成一个String
+    String json = mapper.writeValueAsString(user);
+    //写⼊数据: 这个是Value就是String
+    stringRedisTemplate.opsForValue().set(&quot;user:2&quot;,json);
+    //读取数据：获取的也是一个String
+    String val = stringRedisTemplate.opsForValue().get(&quot;user:2&quot;);
+    //反序列化: 把String变成一个对象
+    User u = mapper.readValue(val,User.class);
+    System.out.println(u);
+&#125;
+</code></pre>
+<p>控制台输出：<code>User(name=Jerry, age=18)</code></p>
+<p>redis呈现：</p>
+<img src="redis7SpringBoot/042.png"  width="35%" />
+
+<h3 id="解决方式三：企业中用得比较多的⾃定义RedisTemplate（有问题）"><a href="#解决方式三：企业中用得比较多的⾃定义RedisTemplate（有问题）" class="headerlink" title="解决方式三：企业中用得比较多的⾃定义RedisTemplate（有问题）"></a>解决方式三：企业中用得比较多的⾃定义RedisTemplate（有问题）</h3><p>修改配置类</p>
+<pre><code class="java">@Configuration
+public class RedisConfig &#123;
+    @Bean
+    public RedisTemplate&lt;String,Object&gt;
+    redisTemplate(RedisConnectionFactory factory)&#123;
+        // 为了研发⽅便 key直接为String类型
+        RedisTemplate&lt;String,Object&gt; template = new RedisTemplate&lt;&gt;();
+        // 设置连接⼯⼚
+        template.setConnectionFactory(factory);
+
+        //使⽤Jackson2JsonRedisSerializer来序列化和反序列化redis的value值
+        Jackson2JsonRedisSerializer jsonRedisSerializer =
+                new Jackson2JsonRedisSerializer(Object.class);
+        //Json⼯具
+        ObjectMapper mapper = new ObjectMapper();
+
+        mapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
+
+        mapper.activateDefaultTyping(LaissezFaireSubTypeValidator.instance,
+                ObjectMapper.DefaultTyping.NON_FINAL,
+                JsonTypeInfo.As.PROPERTY);
+
+        //设置key序列化
+        template.setKeySerializer(RedisSerializer.string());
+        template.setHashKeySerializer(RedisSerializer.string());
+
+        //设置value序列化
+        template.setValueSerializer(jsonRedisSerializer);
+        template.setHashKeySerializer(jsonRedisSerializer);
+        template.afterPropertiesSet();
+
+        return template;
+    &#125;
+&#125;
+</code></pre>
+<p>测试代码还是方式一的代码</p>
+<pre><code class="java">@Autowired
+private RedisTemplate redisTemplate;
+@Test
+void saveUser()&#123;
+    redisTemplate.opsForValue().set(&quot;user:3&quot;,new User(&quot;Mask3&quot;,20));
+    System.out.println(redisTemplate.opsForValue().get(&quot;user:3&quot;));
+    System.out.println(redisTemplate.opsForValue().get(&quot;user:3&quot;).getClass().toString());
+&#125;
+</code></pre>
+<p>redis里面确实没有@class的内容了：</p>
+<img src="redis7SpringBoot/044.png"  width="35%" />
+
+<p>但是，无法自动转成User对象，回来的是一个LinkedHashMap</p>
+<img src="redis7SpringBoot/043.png"  width="50%" />
+
+<h1 id=""><a href="#" class="headerlink" title=""></a></h1>
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 1909773034@qq.com </span>
+    </div>
+</article>
+
+
+<p>
+    <a  class="dashang" onclick="dashangToggle()">赏</a>
+</p>
+
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">
+    ©2017 XieShaoLin
+</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+
+<div class="hide_box" onclick="dashangToggle()"></div>
+<div class="shang_box">
+    <a class="shang_close"  onclick="dashangToggle()">×</a>
+    <div class="shang_tit">
+        <p>喜欢就点赞,疼爱就打赏</p>
+    </div>
+    <div class="shang_payimg">
+        <div class="pay_img">
+            <img src="/img/alipay.jpg" class="alipay" title="扫码支持">
+            <img src="/img/weixin.jpg" class="weixin" title="扫码支持">
+        </div>
+    </div>
+    <div class="shang_payselect">
+        <span><label><input type="radio" name="pay" checked value="alipay">支付宝</label></span><span><label><input type="radio" name="pay" value="weixin">微信</label></span>
+    </div>
+</div>
+
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
+
+<script src="/js/script.js?v=1.1.0" ></script>
+<script>
+    var img_resize = 'default';
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $("#post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+        $("input[name=pay]").on("click", function () {
+            if($("input[name=pay]:checked").val()=="weixin"){
+                $(".shang_box .shang_payimg .pay_img").addClass("weixin_img");
+            } else {
+                $(".shang_box .shang_payimg .pay_img").removeClass("weixin_img");
+            }
+        })
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+    function dashangToggle() {
+        $(".shang_box").fadeToggle();
+        $(".hide_box").fadeToggle();
+    }
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>

@@ -1,0 +1,2373 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>redis常用数据类型 | Notes</title>
+  <meta name="keywords" content=" redis ">
+  <meta name="description" content="redis常用数据类型 | Notes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="卸载MySQL停止MySQL服务 systemctl stop mysqld  查询MySQL的安装文件 [root@centos01 ~]# rpm -qa | grep -i mysql mysql-community-client-5.7.28-1.el7.x86_64 mysql-community-server-5.7.28-1.el7.x86_64 mysql-community-co">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL的安装、卸载和启动">
+<meta property="og:url" content="http://example.com/2024/09/25/InstallMySQL8/index.html">
+<meta property="og:site_name" content="Notes">
+<meta property="og:description" content="卸载MySQL停止MySQL服务 systemctl stop mysqld  查询MySQL的安装文件 [root@centos01 ~]# rpm -qa | grep -i mysql mysql-community-client-5.7.28-1.el7.x86_64 mysql-community-server-5.7.28-1.el7.x86_64 mysql-community-co">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2024/09/25/InstallMySQL8/InstallMySQL8/001.png">
+<meta property="og:image" content="http://example.com/2024/09/25/InstallMySQL8/InstallMySQL8/002.png">
+<meta property="og:image" content="http://example.com/2024/09/25/InstallMySQL8/InstallMySQL8/003.png">
+<meta property="article:published_time" content="2024-09-24T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-09-25T10:36:23.945Z">
+<meta property="article:author" content="XieShaoLin">
+<meta property="article:tag" content="MySQL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2024/09/25/InstallMySQL8/InstallMySQL8/001.png">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.1.0" rel="stylesheet">
+
+<link href="/css/hl_theme/github.css?v=1.1.0" rel="stylesheet">
+
+<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
+
+<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="/js/titleTip.js?v=1.1.0" ></script>
+
+<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.1.0" ></script>
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="">
+  <input class="theme_blog_path" value="">
+  <input id="theme_shortcut" value="true" />
+  <input id="theme_highlight_on" value="true" />
+  <input id="theme_code_copy" value="true" />
+</div>
+
+
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/"
+   class="avatar_target">
+    <img class="avatar"
+         src="/img/avatar.jpg"/>
+</a>
+<div class="author">
+    <span>XieShaoLin</span>
+</div>
+
+<div class="icon">
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            <a title="email"
+               href="mailto:1909773034@qq.com"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-email"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="qq"
+               href="http://wpa.qq.com/msgrd?v=3&uin=1909773034&site=qq&menu=yes"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-qq"></use>
+                    </svg>
+                
+            </a>
+        
+    
+</div>
+
+
+
+
+
+<ul>
+    <li>
+        <div class="all active" data-rel="全部文章">全部文章
+            
+                <small>(55)</small>
+            
+        </div>
+    </li>
+    
+        
+            
+                
+    <li>
+        <div data-rel="工具">
+            
+            工具
+            <small>(1)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="前端">
+            
+            前端
+            <small>(1)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="后端">
+            
+            后端
+            <small>(45)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="运维">
+            
+            运维
+            <small>(3)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="财经">
+            
+            财经
+            <small>(1)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="英语">
+            
+            英语
+            <small>(2)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+        
+            
+            
+            
+    </div>
+    <div>
+        
+        
+    </div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="55">
+<input type="hidden" id="yelog_site_word_count" value="299.4k">
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        友情链接
+        <i class="iconfont icon-left"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="http://yelog.org/">叶落阁</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <div class="right-top">
+        <div id="default-panel">
+            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
+            <div class="right-title">全部文章</div>
+            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
+        </div>
+        <div id="search-panel">
+            <i class="iconfont icon-left" data-title="返回"></i>
+            <input id="local-search-input" autocomplete="off"/>
+            <label class="border-line" for="input"></label>
+            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
+            <i class="iconfont icon-tag" data-title="标签"></i>
+        </div>
+        <div id="outline-panel" style="display: none">
+            <div class="right-title">大纲</div>
+            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
+        </div>
+    </div>
+
+    <div class="tags-list">
+    <input id="tag-search" />
+    <div class="tag-wrapper">
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>阿里云</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>跨域</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>前锋教育</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>虚拟机</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>AOF</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>CentOS</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>docker</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>economy</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>element-ui</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>English</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>ES6</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>ESLint</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Feign</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>finalshell</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Getway</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>git</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>grammer</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>gulimall</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>hexo</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>idea</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>java</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>JavaScript</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Jedis</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Js</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>JSR303</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Linux</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>listening</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>maven</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>mq</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Mysql</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>MySql</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>MySQL</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Nacos</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>node.js</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>NoSql</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>npm</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>nvm</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>OAuth2</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>OSS</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Prettier</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>python</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>RDB</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>redis</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>RedisTemplate</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>renren-fast</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>spring</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>springboot</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>SpringCloud</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>springSecurity</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>vue</a>
+            </li>
+        
+    </div>
+
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/InstallMySQL8/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL的安装、卸载和启动">MySQL的安装、卸载和启动</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/MysqlIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL的索引原理和语法">MySQL的索引原理和语法</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/MySQLLock/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：锁">MySQL：锁</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/SQLTips/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：建议MySQL使用哪个索引">MySQL：建议MySQL使用哪个索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/SQLOptimization/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：SQL优化">MySQL：SQL优化</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/combinedIndexColumnIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL:联合索引和单列索引">MySQL:联合索引和单列索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/coveringIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="覆盖索引与锁表">覆盖索引与锁表</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/indexDesign/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：如何设计索引">MySQL：如何设计索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/invalidIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：索引失效">MySQL：索引失效</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/mysqlEngine/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL的存储引擎">MySQL的存储引擎</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/performanceAnalysis/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：慢查询日志、profile、explain">MySQL：慢查询日志、profile、explain</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/prefixIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：前缀索引">MySQL：前缀索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/22/redisPubSub/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="Redis订阅发布">Redis订阅发布</span>
+            <span class="post-date" title="2024-09-22 15:21:35">2024/09/22</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisProblem/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="Redis：缓存穿透、缓存击穿和缓存雪崩">Redis：缓存穿透、缓存击穿和缓存雪崩</span>
+            <span class="post-date" title="2024-09-17 16:33:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisPersistence/"
+           data-tag="redis,RDB,AOF"
+           data-author="" >
+            <span class="post-title" title="Redis持久化">Redis持久化</span>
+            <span class="post-date" title="2024-09-17 16:20:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisTransaction/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="redis的事务">redis的事务</span>
+            <span class="post-date" title="2024-09-17 16:12:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisType/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="redis常用数据类型">redis常用数据类型</span>
+            <span class="post-date" title="2024-09-17 16:04:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisBrief/"
+           data-tag="redis,NoSql"
+           data-author="" >
+            <span class="post-title" title="redis与NoSql的简单介绍">redis与NoSql的简单介绍</span>
+            <span class="post-date" title="2024-09-17 15:59:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisSentinel/"
+           data-tag="Linux,CentOS,虚拟机,redis"
+           data-author="" >
+            <span class="post-title" title="Redis：主从复制与哨兵模式">Redis：主从复制与哨兵模式</span>
+            <span class="post-date" title="2024-09-17 15:59:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redis7SpringBoot/"
+           data-tag="redis,springboot,Jedis,RedisTemplate"
+           data-author="" >
+            <span class="post-title" title="springboot整合redis">springboot整合redis</span>
+            <span class="post-date" title="2024-09-17 15:42:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 运维 "
+           href="/2024/09/17/redis7Install/"
+           data-tag="CentOS,redis,前锋教育"
+           data-author="" >
+            <span class="post-title" title="Redis的安装、卸载、启动和客户端">Redis的安装、卸载、启动和客户端</span>
+            <span class="post-date" title="2024-09-17 15:19:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 前端 "
+           href="/2024/09/17/BasicFrontend/"
+           data-tag="JavaScript,Js,ES6,vue,element-ui"
+           data-author="" >
+            <span class="post-title" title="前端：ES5和Vue的基本用法">前端：ES5和Vue的基本用法</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/OAuth2/"
+           data-tag="OAuth2,spring"
+           data-author="" >
+            <span class="post-title" title="OAuth2和spring">OAuth2和spring</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/SpringCloudBaseUse/"
+           data-tag="SpringCloud,Nacos,Feign,Getway"
+           data-author="" >
+            <span class="post-title" title="SpringCloud：基本使用">SpringCloud：基本使用</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/adminSystem/"
+           data-tag="element-ui,SpringCloud,Feign,gulimall,Prettier,ESLint,跨域,JSR303,OSS,阿里云"
+           data-author="" >
+            <span class="post-title" title="谷粒商城：后台管理系统要点">谷粒商城：后台管理系统要点</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/giliEnviroment/"
+           data-tag="docker,idea,maven,renren-fast,git,nvm,node.js,npm"
+           data-author="" >
+            <span class="post-title" title="谷粒商城：环境搭建">谷粒商城：环境搭建</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/springsecurity/"
+           data-tag="springSecurity"
+           data-author="" >
+            <span class="post-title" title="SpringSecurity">SpringSecurity</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/16/MysqlTransaction/"
+           data-tag="Mysql"
+           data-author="" >
+            <span class="post-title" title="Mysql的事物">Mysql的事物</span>
+            <span class="post-date" title="2024-09-16 14:31:10">2024/09/16</span>
+        </a>
+        
+        
+        <a  class="全部文章 运维 "
+           href="/2024/09/08/finalshell/"
+           data-tag="finalshell,Linux,CentOS,虚拟机"
+           data-author="" >
+            <span class="post-title" title="finalshell与Linux虚拟机的网络配置">finalshell与Linux虚拟机的网络配置</span>
+            <span class="post-date" title="2024-09-08 22:19:10">2024/09/08</span>
+        </a>
+        
+        
+        <a  class="全部文章 英语 "
+           href="/2024/03/25/rabbitGrammer/"
+           data-tag="English,grammer"
+           data-author="" >
+            <span class="post-title" title="英语兔英语语法">英语兔英语语法</span>
+            <span class="post-date" title="2024-03-25 23:12:24">2024/03/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 工具 "
+           href="/2024/03/25/hexoStartFast/"
+           data-tag="hexo"
+           data-author="" >
+            <span class="post-title" title="hexo搭建静态博客">hexo搭建静态博客</span>
+            <span class="post-date" title="2024-03-25 22:14:10">2024/03/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/03/25/PythonBase/"
+           data-tag="python"
+           data-author="" >
+            <span class="post-title" title="Python语法基数">Python语法基数</span>
+            <span class="post-date" title="2024-03-25 22:08:07">2024/03/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 英语 "
+           href="/2023/12/14/heqiongListening/"
+           data-tag="listening"
+           data-author="" >
+            <span class="post-title" title="何琼雅思听力">何琼雅思听力</span>
+            <span class="post-date" title="2023-12-14 00:00:00">2023/12/14</span>
+        </a>
+        
+        
+        <a  class="全部文章 财经 "
+           href="/2023/05/23/EconomicMachine/"
+           data-tag="economy"
+           data-author="" >
+            <span class="post-title" title="经济机器是怎样运行的——RayDalio">经济机器是怎样运行的——RayDalio</span>
+            <span class="post-date" title="2023-05-23 00:00:00">2023/05/23</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-02-grammar/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:基本语法">java:基本语法</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-03-array/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:数组">java:数组</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-05-exception/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:异常">java:异常</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-01-install/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:概述+安装">java:概述+安装</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-04-opp/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:面向对象">java:面向对象</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-06-thread/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:多线程">java:多线程</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-08-time/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:时间相关API">java:时间相关API</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-07-string/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:字符串">java:字符串</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-09-sort/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:比较器">java:比较器</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-11-annotation/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:注解">java:注解</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-10-enum/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:枚举">java:枚举</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-12-collection/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:集合">java:集合</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-13-generics/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:泛型">java:泛型</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-14-IO/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:IO流">java:IO流</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-15-net/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:网络编程">java:网络编程</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-16-reflect/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:反射">java:反射</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 运维 "
+           href="/2020/07/13/dockerBase/"
+           data-tag="docker"
+           data-author="" >
+            <span class="post-title" title="docker 基础">docker 基础</span>
+            <span class="post-date" title="2020-07-13 20:46:25">2020/07/13</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/01/01/MySQLCrashCourse/"
+           data-tag="MySql"
+           data-author="" >
+            <span class="post-title" title="MySQL:必知必会">MySQL:必知必会</span>
+            <span class="post-date" title="2020-01-01 00:00:00">2020/01/01</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/01/01/RocketMq/"
+           data-tag="mq"
+           data-author="" >
+            <span class="post-title" title="RocketMq:分布式消息队列">RocketMq:分布式消息队列</span>
+            <span class="post-date" title="2020-01-01 00:00:00">2020/01/01</span>
+        </a>
+        
+        
+        <a  class="全部文章 "
+           href="/2019/09/29/java-17-new8/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java8新特性：lambda表达式+Stream流">java8新特性：lambda表达式+Stream流</span>
+            <span class="post-date" title="2019-09-29 00:00:00">2019/09/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 "
+           href="/2019/09/29/java-18-above8/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java8以后的新特性">java8以后的新特性</span>
+            <span class="post-date" title="2019-09-29 00:00:00">2019/09/29</span>
+        </a>
+        
+        <div id="no-item-tips">
+
+        </div>
+    </nav>
+    <div id="outline-list">
+    </div>
+</div>
+
+    </div>
+    <div class="hide-list">
+        <div class="semicircle" data-title="切换全屏 快捷键 s">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div id="post">
+    <div class="pjax">
+        <article id="post-redisType" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">redis常用数据类型</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            <i class="iconfont icon-category"></i>
+            
+            
+            <a  data-rel="后端">后端</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            <i class="iconfont icon-tag"></i>
+            
+            <a class="color1">redis</a>
+            
+        </span>
+        
+    </div>
+    <div class="article-meta">
+        
+            发布时间 : <time class="date" title='最后更新: 2024-09-17 16:07:57'>2024-09-17 16:04</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        <span>字数:9.2k</span>
+        
+        
+        <span id="busuanzi_container_page_pv">
+            阅读 :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Redis%E7%9A%84Key%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4"><span class="toc-text">Redis的Key的基本命令</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Redis%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B-String"><span class="toc-text">Redis数据类型-String</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Redis%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B-List"><span class="toc-text">Redis数据类型-List</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Redis%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B-Set"><span class="toc-text">Redis数据类型-Set</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Redis%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B-Hash"><span class="toc-text">Redis数据类型-Hash</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Redis%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B-Zset%EF%BC%88Sorted-Set%EF%BC%89"><span class="toc-text">Redis数据类型-Zset（Sorted Set）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Redis%E7%89%B9%E6%AE%8A%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B-Geospatial%E5%9C%B0%E7%90%86%E4%BD%8D%E7%BD%AE"><span class="toc-text">Redis特殊数据类型-Geospatial地理位置</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Redis%E7%89%B9%E6%AE%8A%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B-Hyperloglog%E5%9F%BA%E6%95%B0%E7%BB%9F%E8%AE%A1"><span class="toc-text">Redis特殊数据类型-Hyperloglog基数统计</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Redis%E7%89%B9%E6%AE%8A%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B-BitMaps"><span class="toc-text">Redis特殊数据类型-BitMaps</span></a></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Redis有十多种数据类型：<a target="_blank" rel="noopener" href="https://redis.io/docs/data-types/">https://redis.io/docs/data-types/</a></p>
+<p>常见的有5中：String、List、Set、Hash、SortedSet（Zset）</p>
+<h1 id="Redis的Key的基本命令"><a href="#Redis的Key的基本命令" class="headerlink" title="Redis的Key的基本命令"></a>Redis的Key的基本命令</h1><p><code>keys * </code>查看所有的key</p>
+<p><code>Exists key [key...] </code>判断当前key是否存在。</p>
+<p><code>EXPIRE key seconds</code> 设置key 的过期时间，超过时间后，将会⾃动删除该key ，单位是秒。(热点数据)</p>
+<p><code>TTL key</code> 返回key剩余的过期时间。 这种反射能⼒允许Redis客户端检查指定key在数据集⾥⾯剩余的有效期。</p>
+<ul>
+<li>如果key不存在或者已过期，返回 -2</li>
+<li>如果key存在并且没有设置过期时间（永久有效），返回 -1 。</li>
+</ul>
+<p><code>Move key db</code> 将当前数据库的 key 移动到给定的数据库 db 当中。如果当前数据库(源数据库)和给定数据库(⽬标数据库)有相同名字的给定 key ，或者 key 不存在于当前数据库，那么 MOVE 没有任何效果。</p>
+<p><code>TYPE key</code> 返回key 所存储的value 的数据结构类型。</p>
+<p><code>DEL key [key...]</code> 删除指定的⼀批keys，如果删除中的某些key不存在，则直接忽略</p>
+<p><code>flushall</code> 清除全部库数据</p>
+<p><code>flushdb</code> 清空当前库数据</p>
+<pre><code class="sh">127.0.0.1:6379[1]&gt; set name Mask
+OK
+127.0.0.1:6379[1]&gt; set age 18
+OK
+127.0.0.1:6379[1]&gt; exists age
+(integer) 1
+127.0.0.1:6379[1]&gt; exists aa
+(integer) 0
+127.0.0.1:6379[1]&gt; set hot aaa
+OK
+127.0.0.1:6379[1]&gt; expire hot 10
+(integer) 1
+127.0.0.1:6379[1]&gt; ttl hot
+(integer) 7
+127.0.0.1:6379[1]&gt; ttl hot
+(integer) 4
+127.0.0.1:6379[1]&gt; ttl hot
+(integer) 2
+127.0.0.1:6379[1]&gt; ttl hot
+(integer) -2
+127.0.0.1:6379[1]&gt; keys *
+1) &quot;name&quot;
+2) &quot;age&quot;
+127.0.0.1:6379[1]&gt; move age 0
+(integer) 1
+127.0.0.1:6379[1]&gt; select 0
+OK
+127.0.0.1:6379&gt; keys *
+1) &quot;age&quot;
+127.0.0.1:6379&gt; type age
+string
+127.0.0.1:6379&gt; del age
+(integer) 1
+127.0.0.1:6379&gt;
+</code></pre>
+<h1 id="Redis数据类型-String"><a href="#Redis数据类型-String" class="headerlink" title="Redis数据类型-String"></a>Redis数据类型-String</h1><ol>
+<li><p>String类型基本上可以包含任何数据，⽐如图⽚或者序列化的对象等。⼀个Redis中的字符串value最多可以是512M</p>
+</li>
+<li><p>String的使⽤场景：①计数器；②统计多单位数量；③粉丝数；④对象缓存储存</p>
+</li>
+<li><p><code>SET</code>：添加或者修改已经存在的⼀个String类型的键值对（<strong>如果key不存在则是新增，如果存在则是修改</strong>）</p>
+</li>
+<li><p><code>GET</code>：根据key获取String类型的value</p>
+<pre><code class="sh"># Set与Get
+127.0.0.1:6379[1]&gt; set name mask
+OK
+127.0.0.1:6379[1]&gt; get name
+&quot;mask&quot;
+127.0.0.1:6379[1]&gt; set name zhangsan # key存在，修改对应值
+OK
+127.0.0.1:6379[1]&gt; get name
+&quot;zhangsan&quot;
+127.0.0.1:6379[1]&gt;
+</code></pre>
+</li>
+<li><p><code>GETSET</code>：先获取再设置，如果get时值不存在返回空，然后在进⾏设置，如果get时值存在，返回对应的值，再进⾏修改··</p>
+<pre><code class="sh"># GETSET
+127.0.0.1:6379[1]&gt; getset age 18 # key不存在，返回nil 同时设置值
+(nil)
+127.0.0.1:6379[1]&gt; get age
+&quot;18&quot;
+127.0.0.1:6379[1]&gt; getset age 28 # key存在，返回具体值，同时修改值为28
+&quot;18&quot;
+127.0.0.1:6379[1]&gt; get age
+&quot;28&quot;
+127.0.0.1:6379[1]&gt;
+</code></pre>
+</li>
+<li><p><code>APPEND</code>：Append 命令⽤于为指定的 key 追加值，<strong>如果 key 已经存在并且是⼀个字符串， APPEND 命令将 value 追加到 key 原来的值的末尾</strong>。<strong>如果 key 不存在，APPEND 就简单地将给定 key 设为 value</strong> ，就像执⾏ SET key value ⼀样。</p>
+<pre><code class="sh"># APPEND
+127.0.0.1:6379[1]&gt; append name version1 # key存在：在原有字符串上进⾏追加
+(integer) 16
+127.0.0.1:6379[1]&gt; get name
+&quot;zhangsanversion1&quot;
+127.0.0.1:6379[1]&gt; append db redis # key不存在：相当于执⾏ SET key
+value ⼀样。
+(integer) 5
+127.0.0.1:6379[1]&gt; get db
+&quot;redis&quot;
+127.0.0.1:6379[1]&gt;
+</code></pre>
+</li>
+<li><p><code>MSET</code>：批量添加多个String类型的键值对</p>
+</li>
+<li><p><code>MGET</code>：根据多个key获取多个String类型的value</p>
+<pre><code class="sh"># MSET与MGET
+127.0.0.1:6379[1]&gt; mset k1 a1 k2 a2 k3 a3
+OK
+127.0.0.1:6379[1]&gt; mget k1 k2 k3
+1) &quot;a1&quot;
+2) &quot;a2&quot;
+3) &quot;a3&quot;
+127.0.0.1:6379[1]&gt;
+# MSET与MGET实战对象设计
+# 这⾥的key是Redis⽀持的⼀种巧妙的设计：user:&#123;id&#125;:&#123;filed&#125;
+127.0.0.1:6379[1]&gt; mset user:1:name lisi user:1:age 18
+OK
+127.0.0.1:6379[1]&gt; mget user:1:name user:1:age
+1) &quot;lisi&quot;
+2) &quot;18&quot;
+127.0.0.1:6379[1]&gt;
+</code></pre>
+</li>
+<li><p><code>MSETNX</code>： 命令⽤于所有给定 key 都不存在时，同时设置⼀个或多个 key-value对。（原⼦性操作）</p>
+<pre><code class="sh"># MSETNX
+127.0.0.1:6379[1]&gt; msetnx k4 a5 k5 a5
+(integer) 1
+127.0.0.1:6379[1]&gt; mget k4 k5
+1) &quot;a5&quot;
+2) &quot;a5&quot;
+127.0.0.1:6379[1]&gt; msetnx k4 a4 k6 a6 # 原⼦性操作，要么都成功，要么都
+失败
+(integer) 0
+127.0.0.1:6379[1]&gt; keys *
+1) &quot;db&quot;
+2) &quot;k2&quot;
+3) &quot;k4&quot;
+4) &quot;k3&quot;
+5) &quot;user:1:age&quot;
+6) &quot;k5&quot;
+7) &quot;name&quot;
+8) &quot;user:1:name&quot;
+9) &quot;k1&quot;
+10) &quot;age&quot;
+127.0.0.1:6379[1]&gt;
+</code></pre>
+</li>
+<li><p><code>INCR</code>：<strong>命令将 key 中储存的数字值增⼀</strong>。<strong>如果 key 不存在，那么 key 的值会先被初始化为 0 ，然后再执⾏ INCR 操作</strong>。如果值包含错误的类型，或字符串类型的值不能表示为数字，那么返回⼀个错误。本操作的值限制在 64 位(bit)有符号数字表示之内。</p>
+</li>
+<li><p><code>INCRBY</code>:让⼀个整型的值⾃增并指定步⻓（例如： num 5 让num值⾃增5，其余与上⽅⼀致）</p>
+</li>
+<li><p><code>DECR</code>：命令将 key 中储存的数字值减⼀（与INCR命令相反，其余⼀致）。</p>
+</li>
+<li><p><code>DECRBY</code>： 命令将 key 所储存的值减去指定的减量值（与INCRBY相反，其余⼀致）。</p>
+<pre><code class="sh"># INCR与INCRBY &amp; DECR与DECRBY
+127.0.0.1:6379[1]&gt; set num 1
+OK
+127.0.0.1:6379[1]&gt; incr num
+(integer) 2
+127.0.0.1:6379[1]&gt; incr num
+(integer) 3
+127.0.0.1:6379[1]&gt; decr num
+(integer) 2
+127.0.0.1:6379[1]&gt; decr num
+(integer) 1
+127.0.0.1:6379[1]&gt; incrby num 3
+(integer) 4
+127.0.0.1:6379[1]&gt; incrby num 3
+(integer) 7
+# DECR与DECRBY与其道理⼀致
+</code></pre>
+</li>
+<li><p><code>SETNX</code>：添加⼀个String类型的键值对，<strong>前提是这个key不存在，否则不执⾏（</strong>与MSETNX区别在于，此命令只能设置⼀组key:value）</p>
+<pre><code class="sh"># SETNX
+127.0.0.1:6379[1]&gt; keys *
+1) &quot;db&quot;
+2) &quot;k2&quot;
+3) &quot;k4&quot;
+4) &quot;k3&quot;
+5) &quot;user:1:age&quot;
+6) &quot;num&quot;
+7) &quot;k5&quot;
+8) &quot;name&quot;
+9) &quot;user:1:name&quot;
+10) &quot;k1&quot;
+11) &quot;age&quot;
+127.0.0.1:6379[1]&gt; setnx k6 qf
+(integer) 1
+127.0.0.1:6379[1]&gt; setnx name wangwu # key存在⽆法执⾏
+(integer) 0
+127.0.0.1:6379[1]&gt; get k6
+&quot;qf&quot;
+127.0.0.1:6379[1]&gt; get name
+&quot;zhangsanversion1&quot;
+</code></pre>
+<blockquote>
+<p><strong><code>set</code>与<code>setnx</code>区别：</strong></p>
+<blockquote>
+<p>在Redis中， <code>SET</code> 和<code>SETNX</code> 命令⽤于设置字符串类型的键值，但<strong>它们在处理键已经存在的情况下的⾏为是不同的</strong>。当然<code>MSET</code> 与<code>MSETNX</code> 与之同理，只是添加<code>MSET</code>与<code>MSETNX</code>可以批量添加数据</p>
+<ul>
+<li><code>SET</code> 命令：<strong>如果键已经存在， SET 会直接覆盖旧的值</strong>，⽆论键是否存在，都将设置新值。 例如： <code>SET mykey &quot;Hello&quot;</code></li>
+<li><code>SETNX</code> 命令： <code>SETNX</code> 表示”SET if Not eXists”，也就是<strong>只有在键不存在的情况下，才会设置新的值</strong>。如果<strong>键已经存在， SETNX 将不做任何操作</strong>。 例如： <code>SETNX mykey &quot;Hello&quot;</code></li>
+</ul>
+<p><code>SETNX</code> 命令常常被⽤于实现锁和其他需要保证原⼦性的操作。例如，你可以使⽤<code>SETNX</code> 来实现⼀个分布式锁，<strong>只有第⼀个请求的客户端可以获得锁（设置成功），后来的客户端因为键已经存在，所以设置失败，从⽽实现锁的功能。</strong></p>
+<p>总的来说， SET 和SETNX 的主要区别在于它们如何处理键已经存在的情况。</p>
+</blockquote>
+</blockquote>
+</li>
+<li><p><code>SETEX</code>：命令为指定的 key 设置值及其过期时间。如果 key 已经存在， SETEX 命令将会替换旧的值</p>
+<pre><code class="sh"># SETEX
+127.0.0.1:6379[1]&gt; set k6 a6
+OK
+127.0.0.1:6379[1]&gt; get k6
+&quot;a6&quot;
+127.0.0.1:6379[1]&gt; setex k6 20 redis #设置过期时间，并且替换旧值
+OK
+127.0.0.1:6379[1]&gt; ttl k6
+(integer) 17
+127.0.0.1:6379[1]&gt; ttl k6
+(integer) 15
+127.0.0.1:6379[1]&gt; get k6
+&quot;redis&quot;
+127.0.0.1:6379[1]&gt; get k6 # 超时，清除
+(nil)
+127.0.0.1:6379[1]&gt;
+</code></pre>
+</li>
+</ol>
+<h1 id="Redis数据类型-List"><a href="#Redis数据类型-List" class="headerlink" title="Redis数据类型-List"></a>Redis数据类型-List</h1><ol>
+<li><p>List类型是⼀种<strong>有序集合</strong>，也是Redis的基础数据结构之⼀。List类型内部实现为⼀个<strong>双向链表</strong>，即每个节点都有两个指针，⼀个指向前⼀个节点，⼀个指向后⼀个节点。也就是<strong>前、后、中间都可以插⼊数据</strong>。<strong>两边数据的插⼊和改动效率⾼，中间效率稍低</strong></p>
+</li>
+<li><p>List功能⾮常强⼤，我们既可以把它当成<strong>栈（先进后出）</strong>、<strong>队列（先进先出）</strong>，<strong>阻塞队列（超时时间）</strong>并且<strong>可以存放重复的值</strong>。</p>
+<ul>
+<li>栈（先进后出）：左边进左边出；右边进右边出</li>
+<li>队列（先进先出）：左边进右边出；右边进左边出</li>
+<li>阻塞队列（超时时间）：设置超时时间，取不到数据，就会等待对应时间</li>
+</ul>
+</li>
+<li><p>常⽤功能：<strong>消息队列、消息排队（lpush rpop） 栈（lpush lpop）</strong></p>
+</li>
+<li><p>List甚⾄可以使⽤<strong>负数下标</strong>，以 <strong>-1 表示列表的最后⼀个元素</strong>， -2 表示列表的倒数第⼆个元素，以此类推。</p>
+<ul>
+<li><p><strong>我的理解：从左边数，是正方向，下标从0开始；从右边数，为负方向，下标从-1开始</strong></p>
+<img src="redisType/022.png"  width="60%" /></li>
+</ul>
+</li>
+<li><p><code>LPUSH key value1 value2</code> 将⼀个或多个值插⼊到列表头部（左侧）</p>
+</li>
+<li><p><code>LRANGE key start stop</code> 获取列表指定范围内的元素，根据下标</p>
+</li>
+<li><p><code>RPUSH key value1 value2</code> 在列表中（右侧）添加⼀个或多个值</p>
+<pre><code class="sh"># LPUSH、LRANGE、RPUSH
+127.0.0.1:6379&gt; lpush list one
+(integer) 1
+127.0.0.1:6379&gt; lpush list two
+(integer) 2
+127.0.0.1:6379&gt; lpush list three # 添加三个元素(从左侧插⼊)
+(integer) 3
+127.0.0.1:6379&gt; lrange list 0 -1 # -1表示最后⼀个元素，最终显示结果所有数据
+1) &quot;three&quot;
+2) &quot;two&quot;
+3) &quot;one&quot;
+127.0.0.1:6379&gt; rpush list four # 从右侧插⼊⼀个数据（从尾部插⼊）
+(integer) 4
+127.0.0.1:6379&gt; lrange list 0 -1 # 注意four的位置
+1) &quot;three&quot;
+2) &quot;two&quot;
+3) &quot;one&quot;
+4) &quot;four&quot;
+127.0.0.1:6379&gt;
+</code></pre>
+</li>
+<li><p><code>LPOP key</code> 移除并获取列表的第⼀个元素</p>
+</li>
+<li><p><code>RPOP key</code> 移除并获取列表最后⼀个元素</p>
+<pre><code class="sh"># LPOP key RPOP key
+127.0.0.1:6379&gt; lpop list 1
+1) &quot;three&quot;
+127.0.0.1:6379&gt; lpop list 2
+1) &quot;two&quot;
+2) &quot;one&quot;
+127.0.0.1:6379&gt; rpop list 1
+1) &quot;four&quot;
+127.0.0.1:6379&gt;
+</code></pre>
+</li>
+<li><p><code>LINDEX key index</code> 通过索引获取列表中的元素</p>
+</li>
+<li><p><code>LLEN key</code> 获取列表⻓度</p>
+<pre><code class="sh"># LINDEX LLEN
+127.0.0.1:6379&gt; lpush list one
+(integer) 1
+127.0.0.1:6379&gt; lpush list two three # 添加多个元素
+(integer) 3
+127.0.0.1:6379&gt; lrange list 0 -1
+1) &quot;three&quot;
+2) &quot;two&quot;
+3) &quot;one&quot;
+127.0.0.1:6379&gt; lindex list 1
+&quot;two&quot;
+127.0.0.1:6379&gt; llen list
+(integer) 3
+127.0.0.1:6379&gt;
+</code></pre>
+</li>
+<li><p><code>LREM key count value</code> 移除列表元素（可以移除多个重复的值）</p>
+<pre><code class="sh"># LREM
+127.0.0.1:6379&gt; lpush list two
+(integer) 4
+127.0.0.1:6379&gt; lrange list 0 -1
+1) &quot;two&quot;
+2) &quot;three&quot;
+3) &quot;two&quot;
+4) &quot;one&quot;
+127.0.0.1:6379&gt; lrem list 2 two # 如果 lrem list 3 two 也只会移除2个
+(integer) 2
+127.0.0.1:6379&gt; lrange list 0 -1
+1) &quot;three&quot;
+2) &quot;one&quot;
+127.0.0.1:6379&gt;
+</code></pre>
+</li>
+<li><p><code>LTRIM key start stop</code> 对⼀个列表进⾏修剪(trim)，就是说，通过下标让列表只保留指定区间内的元素，不在指定区间之内的元素都将被删除。</p>
+<pre><code class="sh">#LTRIM
+127.0.0.1:6379&gt; Rpush list &quot;qf1&quot;
+(integer) 1
+127.0.0.1:6379&gt; Rpush list qf2
+(integer) 2
+127.0.0.1:6379&gt; Rpush list qf3
+(integer) 3
+127.0.0.1:6379&gt; lrange list 0 -1
+1) &quot;qf1&quot;
+2) &quot;qf2&quot;
+3) &quot;qf3&quot;
+127.0.0.1:6379&gt; ltrim list 1 2 # 根据下标截取指定⻓度数据
+OK
+127.0.0.1:6379&gt; lrange list 0 -1
+1) &quot;qf2&quot;
+2) &quot;qf3&quot;
+127.0.0.1:6379&gt;
+</code></pre>
+</li>
+<li><p><code>RPOPLPUSH source destination</code> 移除列表的最后⼀个（最右边第一个）元素，并将该元素添加到另⼀个列表并返回</p>
+<pre><code class="sh">#RPOPLPUSH
+127.0.0.1:6379&gt; rpush qlist one two three four # 添加数据
+(integer) 4
+127.0.0.1:6379&gt; lrange qlist 0 -1 # 查看全部数据
+1) &quot;one&quot;
+2) &quot;two&quot;
+3) &quot;three&quot;
+4) &quot;four&quot;
+127.0.0.1:6379&gt; rpoplpush qlist flist # 组合命令，将qlist最后⼀个元素移动⾄flist
+&quot;four&quot;
+127.0.0.1:6379&gt; lrange qlist 0 -1 # 查看两个数据的元素
+1) &quot;one&quot;
+2) &quot;two&quot;
+3) &quot;three&quot;
+127.0.0.1:6379&gt; lrange flist 0 -1
+1) &quot;four&quot;
+127.0.0.1:6379&gt;
+</code></pre>
+</li>
+<li><p><code>EXISTS</code> 也可以判断列表中是否有值（exists list）</p>
+<pre><code class="sh"># EXISTS
+127.0.0.1:6379&gt; exists qlist # 查看数据是否存在
+(integer) 1 # 表示有值
+127.0.0.1:6379&gt; exists flist
+(integer) 1
+127.0.0.1:6379&gt; flushdb
+OK
+127.0.0.1:6379&gt; exists qlist
+(integer) 0 # 表示无值
+</code></pre>
+</li>
+<li><p><code>LSET key index value</code> 通过索引设置列表元素的值（<strong>需要保证现有列表和下标存在，⼀般作为更新操作</strong>）</p>
+<pre><code class="sh"># LSET
+127.0.0.1:6379&gt; lset mylist 0 one # mylist不存在，报错
+(error) ERR no such key
+127.0.0.1:6379&gt; rpush mylist one two three
+(integer) 3
+127.0.0.1:6379&gt; lset mylist 3 hello # 3下标不存在，报错
+(error) ERR index out of range
+127.0.0.1:6379&gt; lset mylist 2 hello
+OK
+</code></pre>
+</li>
+<li><p><code>LINSERT key BEFORE|AFTER pivot value</code> 在列表的元素前或者后插⼊元素</p>
+<pre><code class="sh"># LINSERT
+127.0.0.1:6379&gt; lrange mylist 0 -1 # 全部数据
+1) &quot;one&quot;
+2) &quot;two&quot;
+3) &quot;hello&quot;
+127.0.0.1:6379&gt; linsert mylist after hello qf # 在hello后⾯添加qf数据
+(integer) 4
+127.0.0.1:6379&gt; lrange mylist 0 -1
+1) &quot;one&quot;
+2) &quot;two&quot;
+3) &quot;hello&quot;
+4) &quot;qf&quot;
+127.0.0.1:6379&gt; linsert mylist before hello qf # 在hello前⾯添加qf数据
+(integer) 5
+127.0.0.1:6379&gt; lrange mylist 0 -1
+1) &quot;one&quot;
+2) &quot;two&quot;
+3) &quot;qf&quot;
+4) &quot;hello&quot;
+5) &quot;qf&quot;
+</code></pre>
+</li>
+<li><p><code>BLPOP key1 key2 timeout</code> 移出并获取列表的第⼀个元素（左边第一个）， 如果列表没有元素会阻塞列表直到等待超时或发现可弹出元素为⽌。</p>
+</li>
+<li><p><code>BRPOP key1 key2 timeout</code> 移出并获取列表的最后⼀个元素（右边第一个）， 如果列表没有元素会阻塞列表直到等待超时或发现可弹出元素为⽌。</p>
+<pre><code class="sh"># BLPOP BRPOP
+127.0.0.1:6379&gt; BLPOP list 10
+ttl list
+(nil)
+(10.06s)
+127.0.0.1:6379&gt; BRPOP list 10
+(nil)
+(10.03s)
+127.0.0.1:6379&gt; lpop list 1
+(nil)
+127.0.0.1:6379&gt;
+</code></pre>
+</li>
+</ol>
+<h1 id="Redis数据类型-Set"><a href="#Redis数据类型-Set" class="headerlink" title="Redis数据类型-Set"></a>Redis数据类型-Set</h1><ol>
+<li><p>Redis的Set是string类型的<strong>⽆序集合</strong>。<strong>集合成员是唯⼀的</strong>，这就意味着集合中不能出现重复的数据（<strong>⽆序不重复</strong>）</p>
+</li>
+<li><p>由于Set类型的特性，它经常被⽤来实现标签系统，好友关系，粉丝关系等功能。</p>
+</li>
+<li><p><code>SADD key member1 [member2]</code> 向集合添加⼀个或多个成员</p>
+</li>
+<li><p><code>SMEMBERS key</code> 返回集合中的所有成员</p>
+</li>
+<li><p><code>SISMEMBER key member</code> 判断 member 元素是否是集合 key 的成员，1-为存在，0-为不存在</p>
+<pre><code class="sh"># SADD SMEMBERS SISMEMBER
+127.0.0.1:6379&gt; sadd myset aaa
+(integer) 1
+127.0.0.1:6379&gt; sadd myset bbb
+(integer) 1
+127.0.0.1:6379&gt; sadd myset ccc
+(integer) 1
+127.0.0.1:6379&gt; smembers myset
+1) &quot;bbb&quot;
+2) &quot;aaa&quot;
+3) &quot;ccc&quot;
+127.0.0.1:6379&gt; sismember myset aaa
+(integer) 1 
+</code></pre>
+</li>
+<li><p><code>SCARD key</code> 获取集合的成员数</p>
+<pre><code class="sh"># SCARD
+127.0.0.1:6379&gt; scard myset
+(integer) 3
+</code></pre>
+</li>
+<li><p><code>SREM key member1 [member2]</code> 移除集合中⼀个或多个成员</p>
+<pre><code class="sh"># SREM
+127.0.0.1:6379&gt; SMEMBERS myset
+1) &quot;bbb&quot;
+2) &quot;aaa&quot;
+3) &quot;ccc&quot;
+    127.0.0.1:6379&gt; SREM myset aaa
+(integer) 1
+127.0.0.1:6379&gt; SMEMBERS myset
+1) &quot;bbb&quot;
+2) &quot;ccc&quot;
+</code></pre>
+</li>
+<li><p><code>SRANDMEMBER key [count] </code>返回集合中⼀个或多个随机元素</p>
+<pre><code class="sh"># SRANDMEMBER
+127.0.0.1:6379&gt; sadd myset aaa
+(integer) 1
+127.0.0.1:6379&gt; sadd myset ccc
+(integer) 0
+127.0.0.1:6379&gt; sadd myset ddd
+(integer) 1
+127.0.0.1:6379&gt; SRANDMEMBER myset 2
+1) &quot;bbb&quot;
+2) &quot;ddd&quot;
+127.0.0.1:6379&gt; SRANDMEMBER myset 3
+1) &quot;bbb&quot;
+2) &quot;ccc&quot;
+3) &quot;ddd&quot;
+</code></pre>
+</li>
+<li><p><code>SPOP key</code> 移除并返回集合中的⼀个随机元素(<strong>原⼦操作，多个客户端并发访问时，每个返回的元素都是唯⼀的</strong>)</p>
+<pre><code class="sh"># SPOP
+127.0.0.1:6379&gt; SPOP myset 1
+1) &quot;ddd&quot;
+127.0.0.1:6379&gt; SMEMBERS myset
+1) &quot;aaa&quot;
+2) &quot;bbb&quot;
+3) &quot;ccc&quot;
+</code></pre>
+</li>
+<li><p><code>SMOVE source destination member</code> 将 member 元素从 source 集合移动到destination 集合</p>
+<pre><code class="sh"># SMOVE
+127.0.0.1:6379&gt; SMOVE myset s1 aaa # myset移动到s1 移动元素为aaa
+(integer) 1
+127.0.0.1:6379&gt; SMEMBERS s1
+1) &quot;aaa&quot;
+127.0.0.1:6379&gt; SMEMBERS myset
+1) &quot;bbb&quot;
+2) &quot;ccc&quot;
+</code></pre>
+</li>
+<li><p><code>SDIFF key1 key2</code> 返回给定所有集合的<strong>差集</strong>（ 两个set中不同的值，⽬前以key1为参照为：<strong>key1 - (key1和key2的交集)</strong> ）</p>
+</li>
+<li><p><code>SINTER key1 key2</code> 返回给定所有集合的<strong>交集</strong>（两个set中相同的值）</p>
+</li>
+<li><p><code>SUNION key1 key2</code> 返回所有给定集合的<strong>并集</strong> （**两个set中所有的值，重复的只有⼀个，(key1+key2)**）</p>
+<p><code>SDIFF</code>、<code>SINTER</code>、<code>SUNION</code> 这些命令就可以完成 <strong>共同好友、共同爱好等类似的功能</strong>，⽐如将⽤户的关注的⼈关注放⼊到set中，即可完成“共同关注”功能</p>
+<pre><code class="sh"># SDIFF SINTER SUNION （差集、交集、并集）
+127.0.0.1:6379&gt; SADD s1 aaa
+(integer) 1
+127.0.0.1:6379&gt; SADD s1 bbb
+(integer) 1
+127.0.0.1:6379&gt; SADD s1 ccc
+(integer) 1
+127.0.0.1:6379&gt; SADD s2 ccc
+(integer) 1
+127.0.0.1:6379&gt; SADD s2 ddd
+(integer) 1
+127.0.0.1:6379&gt; SADD s2 eee
+(integer) 1
+127.0.0.1:6379&gt; SDIFF s1 s2
+1) &quot;aaa&quot;
+2) &quot;bbb&quot;
+127.0.0.1:6379&gt; SINTER s1 s2
+1) &quot;ccc&quot;
+127.0.0.1:6379&gt; SUNION s1 s2
+1) &quot;ccc&quot;
+2) &quot;eee&quot;
+3) &quot;bbb&quot;
+4) &quot;aaa&quot;
+5) &quot;ddd&quot;
+</code></pre>
+</li>
+<li><p><code>SDIFFSTORE destination key1 key2</code> 返回给定所有集合的<strong>差集</strong>并存储在destination 中</p>
+</li>
+<li><p><code>SINTERSTORE destination key1 key2</code> 返回给定所有集合的<strong>交集</strong>并存储在destination 中</p>
+</li>
+<li><p><code>SUNIONSTORE destination key1 key2</code> 所有给定集合的<strong>并集</strong>存储在 destination 集合中</p>
+<pre><code class="sh"># SDIFFSTORE SINTERSTORE SUNIONSTORE
+127.0.0.1:6379&gt; SDIFFSTORE key1 s1 s2
+(integer) 2
+127.0.0.1:6379&gt; SMEMBERS key1
+1) &quot;aaa&quot;
+2) &quot;bbb&quot;
+127.0.0.1:6379&gt; SINTERSTORE key2 s1 s2
+(integer) 1
+127.0.0.1:6379&gt; SMEMBERS key2
+1) &quot;ccc&quot;
+127.0.0.1:6379&gt; SUNIONSTORE key3 s1 s2
+(integer) 5
+127.0.0.1:6379&gt; SMEMBERS key3
+1) &quot;ccc&quot;
+2) &quot;eee&quot;
+3) &quot;bbb&quot;
+4) &quot;aaa&quot;
+5) &quot;ddd&quot;
+</code></pre>
+</li>
+</ol>
+<h1 id="Redis数据类型-Hash"><a href="#Redis数据类型-Hash" class="headerlink" title="Redis数据类型-Hash"></a>Redis数据类型-Hash</h1><ol>
+<li><p>Redis hash 是一个键值对集合，value是一个string类型的field和value的映射表，<strong>hash特别适合用于存储对象，类似Java里面的Map&lt;String,Object&gt;</strong></p>
+</li>
+<li><p>为什么说hash适合存储对象：</p>
+<ul>
+<li><p>假设用户ID为查找的key，存储的value用户对象包含姓名，年龄，生日等信息，如果用普通的key&#x2F;value结构来存储，主要有以下2种存储方式：</p>
+<ul>
+<li><p>方式一：每次修改用户的某个属性需要，先反序列化改好后再序列化回去。开销较大。</p>
+<img src="redisType/024.jpg"  width="50%" />
+</li>
+<li><p>方式二：用户ID数据冗余</p>
+<img src="redisType/025.jpg"  width="50%" /></li>
+</ul>
+</li>
+<li><p>通过 <strong>key(用户ID) + field(属性标签)</strong> 就可以操作对应属性数据了，<strong>既不需要重复存储数据，也不会带来序列化和并发修改控制的问题</strong></p>
+<img src="redisType/023.jpg"  width="50%" /></li>
+</ul>
+</li>
+<li><p><code>HSET key field1 value1 field2 value2</code> 同时将多个 field-value (域-值)对设置到哈希表 key 中（没有就新增，有就修改）</p>
+<ul>
+<li>注意：Redis 4.0.0版本以后，HMSET被视为已弃⽤。请在新代码中使⽤HSET</li>
+</ul>
+</li>
+<li><p><code>HGET key field</code> 获取存储在哈希表中指定字段的值</p>
+</li>
+<li><p><code>HMGET key field1 field2</code> 获取所有给定字段的值</p>
+</li>
+<li><p><code>HGETALL key</code> 获取在哈希表中指定 key 的所有<strong>字段和值</strong></p>
+<pre><code class="sh"># HSET HGET HMGET HGETALL
+127.0.0.1:6379&gt; hset hash1 key1 jerry
+(integer) 1
+127.0.0.1:6379&gt; hget hash1 key1 # 获取存储在哈希表中指定字段的值
+&quot;jerry&quot;
+127.0.0.1:6379&gt; hset hash2 key1 tom key2 zhangsan
+(integer) 2
+127.0.0.1:6379&gt; hmget hash2 key1 key2 # 获取所有给定字段的值
+1) &quot;tom&quot;
+2) &quot;zhangsan&quot;
+127.0.0.1:6379&gt; HGETALL hash2 # 所有数据
+1) &quot;key1&quot; # 字段 field
+2) &quot;tom&quot; # 值 value
+3) &quot;key2&quot; # 值 value
+4) &quot;zhangsan&quot; # 值 value
+127.0.0.1:6379&gt; hset hash1 key1 aaa key2 bbb key3 ccc # 如果field⼀致，则覆盖原有的值
+(integer) 2
+127.0.0.1:6379&gt; hget hash1 key1
+&quot;aaa&quot;
+</code></pre>
+</li>
+<li><p><code>HDEL key field2 field2</code> 删除⼀个或多个哈希表字段</p>
+<pre><code class="sh"># HDEL
+127.0.0.1:6379&gt; hset hash1 key1 a1 key2 a2 key3 a3
+(integer) 3
+127.0.0.1:6379&gt; HGETALL hash1
+1) &quot;key1&quot;
+2) &quot;a1&quot;
+3) &quot;key2&quot;
+4) &quot;a2&quot;
+5) &quot;key3&quot;
+6) &quot;a3&quot;
+127.0.0.1:6379&gt; HDEL hash1 key1
+(integer) 1
+127.0.0.1:6379&gt; HGETALL hash1
+1) &quot;key2&quot;
+2) &quot;a2&quot;
+3) &quot;key3&quot;
+4) &quot;a3&quot;
+</code></pre>
+</li>
+<li><p><code>HLEN key</code> 获取哈希表中字段的数量</p>
+</li>
+<li><p><code>HKEYS key</code> 获取所有哈希表中的字段</p>
+</li>
+<li><p><code>HVALS key</code> 获取哈希表中所有值</p>
+<pre><code class="sh"># HLEN HKEYS HVALS
+127.0.0.1:6379&gt; HLEN hash1
+(integer) 2
+127.0.0.1:6379&gt; HKEYS hash1
+1) &quot;key2&quot;
+2) &quot;key3&quot;
+127.0.0.1:6379&gt; HVALS hash1
+1) &quot;a2&quot;
+2) &quot;a3&quot;
+127.0.0.1:6379&gt;
+</code></pre>
+</li>
+<li><p><code>HEXISTS key field</code> 查看哈希表 key 中，指定的字段是否存在。</p>
+<pre><code class="sh"># HEXISTS
+127.0.0.1:6379&gt; HEXISTS hash1 key2
+(integer) 1
+127.0.0.1:6379&gt;
+</code></pre>
+</li>
+<li><p><code>HINCRBY key field increment</code> 为哈希表 key 中的指定字段的整数值加上增量increment（如果是负数，就是减量），会返回计算的结果 。</p>
+<pre><code class="sh"># HINCRBY 增量 负数为减量
+127.0.0.1:6379&gt; HSET hash2 k1 1 k2 2
+(integer) 2 # 计算结果
+127.0.0.1:6379&gt; HGETALL hash2
+1) &quot;k1&quot;
+2) &quot;1&quot;
+3) &quot;k2&quot;
+4) &quot;2&quot;
+127.0.0.1:6379&gt; HINCRBY hash2 k1 1
+(integer) 2
+127.0.0.1:6379&gt; hget hash2 k1
+&quot;2&quot;
+127.0.0.1:6379&gt; HINCRBY hash2 k1 -1
+(integer) 1
+127.0.0.1:6379&gt; hget hash2 k1
+&quot;1&quot;
+</code></pre>
+</li>
+<li><p><code>HSETNX key field value</code> 只有在字段 field <strong>不存在</strong>时，设置哈希表字段的值（原⼦性操作）。</p>
+<pre><code class="sh"># HINCRBY key必须不存在否则不⽣效
+127.0.0.1:6379&gt; HSETNX hash2 k3 3
+(integer) 1
+127.0.0.1:6379&gt; HSETNX hash2 k2 3
+(integer) 0
+</code></pre>
+</li>
+<li><p>存储对象 更加适合频繁更改的信息</p>
+<pre><code class="sh">127.0.0.1:6379&gt; HSET user:1 name zhangsan age 18
+(integer) 2
+127.0.0.1:6379&gt; HMGET user:1 name age
+1) &quot;zhangsan&quot;
+2) &quot;18&quot;
+</code></pre>
+</li>
+</ol>
+<h1 id="Redis数据类型-Zset（Sorted-Set）"><a href="#Redis数据类型-Zset（Sorted-Set）" class="headerlink" title="Redis数据类型-Zset（Sorted Set）"></a>Redis数据类型-Zset（Sorted Set）</h1><ol>
+<li><p>在Redis中，ZSET（<strong>有序集合</strong>）是⼀种复合类型的数据结构，它将Set和Hash两种数据结构进⾏了结合，类似于Java的TreeMap（实际上是SkipList实现）。</p>
+</li>
+<li><p>在ZSET中，<strong>每个元素都是唯⼀的（就像Set），但每个元素关联了⼀个socre</strong>（就像Hash中的Value）。这个socre（分数）⽤于对元素进⾏从⼩到⼤的排序。</p>
+</li>
+<li><p>特点：<strong>可排序、元素不重复、查询速度快</strong>。由于这个特点所以Zset经常被⽤于<strong>排⾏榜</strong>类型的功能</p>
+</li>
+<li><p>所有的排序<strong>默认都是升序排序</strong>，如果需要降序需要在Z后⾯加上REV</p>
+</li>
+<li><p>其实<strong>zset对⽐set就是多了⼀个有序</strong>，所以它不仅仅可以⽤于排序，<strong>排⾏榜等功能</strong>，其实它也可以作为<strong>权重</strong>来进⾏使⽤，⽐如某⼀个数据的score为1，权重为最⾼，其他的score设置为2、3、4、5等等 以此类推，权重由1～n来进⾏排序</p>
+</li>
+<li><p><code>ZADD key score member [score member ...]</code> 向有序集合添加⼀个或多个成员，或者更新已存在成员的分数。</p>
+</li>
+<li><p><code>ZRANGE key start stop [WITHSCORES]</code> 通过索引区间返回有序集合指定区间内的成员。<strong>成员按分数值递增(从⼩到⼤)来排列</strong>。</p>
+</li>
+<li><p><code>ZREVRANGE key start stop [WITHSCORES]</code> 和<code>ZRANGE </code>类似，只不过是从大到小排列（倒序）</p>
+<pre><code class="sh"># ZADD ZRANGE
+127.0.0.1:6379&gt; ZADD myset 1 one 2 two
+(integer) 2
+127.0.0.1:6379&gt; ZRANGE myset 0 -1
+1) &quot;one&quot;
+2) &quot;two&quot;
+127.0.0.1:6379&gt; ZADD myset 3 three 4 four
+(integer) 2
+127.0.0.1:6379&gt; ZRANGE myset 0 -1
+1) &quot;one&quot;
+2) &quot;two&quot;
+3) &quot;three&quot;
+4) &quot;four&quot;
+# ZREVRANGE 增加withscores参数显示score
+127.0.0.1:6379&gt; ZREVRANGE myset 0 -1 withscores
+1) &quot;four&quot;
+2) &quot;4&quot;
+3) &quot;three&quot;
+4) &quot;3&quot;
+5) &quot;two&quot;
+6) &quot;2&quot;
+7) &quot;one&quot;
+8) &quot;1&quot;
+# ZREVRANGE 倒序
+127.0.0.1:6379&gt; ZREVRANGE myset 0 -1
+1) &quot;four&quot;
+2) &quot;three&quot;
+3) &quot;two&quot;
+4) &quot;one&quot;
+</code></pre>
+</li>
+<li><p><code>ZRANGEBYSCORE key min max [WITHSCORES] [LIMIT offset count]</code> 通过分数返回有序集合指定区间内的成员(<strong>分数可以采⽤正负⽆穷⼤ -inf +inf</strong>)。</p>
+</li>
+<li><p><code>ZREVRANGEBYSCORE key min max [WITHSCORES] [LIMIT offset count]</code> 和<code>ZRANGEBYSCORE </code> l类似，不过是<strong>倒序</strong></p>
+<pre><code class="sh"># ZRANGEBYSCORE
+127.0.0.1:6379&gt; ZRANGEBYSCORE myset -inf +inf
+1) &quot;one&quot;
+2) &quot;two&quot;
+3) &quot;three&quot;
+4) &quot;four&quot;
+# ZRANGEBYSCORE ⼀般⽤于统计某个范围内的值，⽐如成绩区间20～100的具体⼈员
+127.0.0.1:6379&gt; ZADD myscore 10 aaa 20 bbb 30 ccc 50 ddd 100 eee
+(integer) 5
+127.0.0.1:6379&gt; ZRANGEBYSCORE myscore 20 100
+1) &quot;bbb&quot;
+2) &quot;ccc&quot;
+3) &quot;ddd&quot;
+4) &quot;eee&quot;
+# ZRANGEBYSCORE 增加withscores参数显示score
+127.0.0.1:6379&gt; ZRANGEBYSCORE myset -inf +inf withscores
+1) &quot;one&quot;
+2) &quot;1&quot;
+3) &quot;two&quot;
+4) &quot;2&quot;
+5) &quot;three&quot;
+6) &quot;3&quot;
+7) &quot;four&quot;
+8) &quot;4&quot;
+# ZRANGEBYSCORE &quot;LIMIT&quot; ⼦句后的 &quot;offset&quot; 和 &quot;count&quot; 参数分别⽤于指定跳过的成员数量和返回的成员数量。这和 SQL 的 &quot;LIMIT&quot; 和 &quot;OFFSET&quot; 关键字类似。
+# 以下的内容所表示的就是 显示myset集合中所有排序数据（正序），通过limit跳过2条数据，从第3个数据开始，并返回接下来的3个成员。
+127.0.0.1:6379&gt; ZRANGEBYSCORE myscore -inf +inf 
+1) &quot;aaa&quot; # 0
+2) &quot;bbb&quot; # 1
+3) &quot;ccc&quot; # 2
+4) &quot;ddd&quot; # 3
+5) &quot;eee&quot; # 4
+6) &quot;fff&quot; # 5
+127.0.0.1:6379&gt; ZRANGEBYSCORE myscore -inf +inf limit 2 3
+1) &quot;ccc&quot;
+2) &quot;ddd&quot;
+3) &quot;eee&quot;
+127.0.0.1:6379&gt; 
+[root@centos01 ~]# 
+# ZREVRANGEBYSCORE 倒序
+</code></pre>
+</li>
+<li><p><code>ZREM key member</code> 从有序集合中删除⼀个成员。</p>
+<pre><code class="sh"># ZREM
+#127.0.0.1:6379&gt; ZRANGE myset 0 -1
+1) &quot;one&quot;
+2) &quot;two&quot;
+3) &quot;three&quot;
+4) &quot;four&quot;
+127.0.0.1:6379&gt; ZREM myset four
+(integer) 1
+</code></pre>
+</li>
+<li><p><code>ZCARD key</code> 返回有序集合的成员数量</p>
+<pre><code class="sh"># ZCARD(成员数量)
+127.0.0.1:6379&gt; ZCARD myset
+(integer) 3
+</code></pre>
+</li>
+<li><p><code>ZCOUNT key min max</code> 返回有序集合中分数在给定范围内的成员数量。</p>
+<pre><code class="sh"># ZCOUNT(返回的是范围内的数量) 20～100成绩范围的⼈员数量
+127.0.0.1:6379&gt; ZADD myscore 10 aaa 20 bbb 30 ccc 50 ddd 100 eee
+(integer) 5
+127.0.0.1:6379&gt; ZCOUNT myscore 20 100
+(integer) 4
+</code></pre>
+</li>
+<li><p><code>ZSCORE key member</code> 返回有序集合中指定成员的分数</p>
+<pre><code class="sh"># ZSCORE
+127.0.0.1:6379&gt; ZSCORE myscore ccc
+&quot;30&quot;
+</code></pre>
+</li>
+</ol>
+<h1 id="Redis特殊数据类型-Geospatial地理位置"><a href="#Redis特殊数据类型-Geospatial地理位置" class="headerlink" title="Redis特殊数据类型-Geospatial地理位置"></a>Redis特殊数据类型-Geospatial地理位置</h1><ol>
+<li><p>Redis的地理空间（Geospatial）数据结构是从3.2版本开始加⼊的，主要⽤于<strong>需要地理位置的应⽤场景</strong>。</p>
+</li>
+<li><p>这种数据结构允许⽤户将指定的地理空间位置（经度、纬度、名称）添加到指定的key中，<strong>这些数据将会存储到sorted set中</strong>，这样设计的⽬的是为了⽅便使⽤GEORADIUS或者GEORADIUSBYMEMBER命令对数据进⾏半径查询等操作。</p>
+</li>
+<li><p>此命令能实现类似<strong>地理位置推算、两地之间的距离、附近的⼈</strong>等功能</p>
+</li>
+<li><p>注意：<strong>因为GEO的底层就是Zset，所以完全可以使⽤Zset的命令来操作GEO</strong></p>
+</li>
+<li><p>结构是这样的：</p>
+<img src="redisType/026.png"  width="70%" />
+</li>
+<li><p><code>GEOADD</code> 添加⼀个或多个地理位置元素到key中。语法：<code>geoAdd key lng lat member lng1 lat1 member1</code></p>
+<ul>
+<li>要求：满⾜经度在 -180 和 180 之间，纬度在 -85.05112878 和 85.05112878 之间。</li>
+</ul>
+<pre><code class="sh"># GEOADD添加城市经纬度
+127.0.0.1:6379&gt; GEOADD city 116.405285 39.904989
+(error) ERR wrong number of arguments for &#39;geoadd&#39; command
+127.0.0.1:6379&gt; GEOADD city 116.405285 39.904989 beijing
+(integer) 1
+127.0.0.1:6379&gt; GEOADD city 117.190182 39.125596 tianjin
+(integer) 1
+127.0.0.1:6379&gt; GEOADD city 121.472644 31.231706 shanghai
+106.504962 29.533155 chongqing
+(integer) 2
+</code></pre>
+</li>
+<li><p><code>GEODIST</code> 返回⼀个key中指定两个位置之间的距离。语法：<code>GeoDist key member1 member2</code></p>
+<ul>
+<li>m表示单位为⽶ （默认）</li>
+<li>km表示单位为千⽶</li>
+<li>mi表示单位为英⾥</li>
+<li>ft表示单位为英尺</li>
+</ul>
+<pre><code class="sh"># GEODIST 可以实现的功能：返回两个⼈之间的距离
+127.0.0.1:6379&gt; GEODIST city beijing tianjin
+&quot;109775.3239&quot;
+127.0.0.1:6379&gt; GEODIST city beijing tianjin km #带单位km
+&quot;109.7753&quot;
+</code></pre>
+</li>
+<li><p><code>GEOPOS</code> 返回⼀个或多个位置的经纬度信息 语法：<code>Geopos key member1 member2</code></p>
+<pre><code class="sh"># GEOPOS获取指定城市经纬度
+127.0.0.1:6379&gt; GEOPOS city beijing tianjin chongqing shanghai
+1) 1) &quot;116.40528291463851929&quot;
+   2) &quot;39.90498842291249559&quot;
+2) 1) &quot;117.19018310308456421&quot;
+   2) &quot;39.12559715251200032&quot;
+3) 1) &quot;106.50495976209640503&quot;
+   2) &quot;29.53315530684997015&quot;
+4) 1) &quot;121.47264629602432251&quot;
+   2) &quot;31.23170490709807012&quot;
+</code></pre>
+</li>
+<li><p><code>GEOSEARCH</code> 命令允许你从⼀个给定的地理位置开始，查询在⼀个给定半径内的元素。此外，你可以指定搜索区域的形状为圆形（<code>BYRADIUS</code>）或矩形（<code>BYBOX</code>）。</p>
+<ul>
+<li><p>语法：</p>
+<pre><code class="sh">GEOSEARCH key [FROMMEMBER member] [FROMLONLAT longitude latitude] [BYRADIUS radius m|km|ft|mi] [BYBOX width heightm|km|ft|mi] [WITHCOORD] [WITHDIST] [WITHHASH] [COUNT count [ANY]] [ASC|DESC] [STORE key] [STOREDIST key]
+</code></pre>
+</li>
+<li><p><code>FROMMEMBER member</code> ：从键中的⼀个元素开始搜索。member 是键中的⼀个元素。</p>
+</li>
+<li><p><code>FROMLONLAT longitude latitude</code> ：从指定的经度和纬度开始搜索。</p>
+</li>
+<li><p><code>BYRADIUS radius m|km|ft|mi</code> ：按半径搜索。radius 是半径，单位可以是⽶（m）、公⾥（km）、英尺（ft）或英⾥（mi）。</p>
+</li>
+<li><p><code>BYBOX width height m|km|ft|mi</code> ：按矩形搜索。width 和 height分别是矩形的宽度和⾼度，单位可以是⽶（m）、公⾥（km）、英尺（ft）或英⾥（mi）。</p>
+</li>
+<li><p><code>WITHCOORD</code> ：返回元素的经度和纬度。</p>
+</li>
+<li><p><code>WITHDIST</code> ：返回元素到中⼼的距离。</p>
+</li>
+<li><p><code>WITHHASH</code> ：返回元素的 geohash。</p>
+</li>
+<li><p><code>COUNT count [ANY]</code> ：返回的元素数量。如果指定了 ANY ，那么只要找到了 count 个元素就⽴即返回。</p>
+</li>
+<li><p><code>ASC|DESC</code> ：按距离排序。ASC 是升序， DESC 是降序。</p>
+</li>
+<li><p><code>STORE key </code>：将返回的元素存储到⼀个键中。</p>
+</li>
+<li><p><code>STOREDIST key</code> ：将返回的元素的距离存储到⼀个键中。</p>
+</li>
+<li><p>注意： <strong><code>FROMMEMBER</code> 和 <code>FROMLONLAT</code> 必须指定其中之⼀，<code>BYRADIUS</code> 和<code>BYBOX</code> 也必须指定其中之⼀</strong></p>
+</li>
+</ul>
+<pre><code class="sh"># GEOSEARCH 以给定位置为中⼼，搜索给定的半径范围的定位 此命令可以做附近的⼈等功能
+# 返回给定key中 beijing 元素 半径为500km 内搜索的内容
+127.0.0.1:6379&gt; GEOSEARCH city FROMMEMBER beijing BYRADIUS 500 km
+1) &quot;beijing&quot;
+2) &quot;tianjin&quot;
+# asc默认正序（从近到远）withcoord输出⽬标经纬度
+127.0.0.1:6379&gt; GEOSEARCH city FROMMEMBER beijing BYRADIUS 500 km
+asc withcoord
+1) 1) &quot;beijing&quot;
+   2) 1) &quot;116.40528291463851929&quot;
+      2) &quot;39.90498842291249559&quot;
+2) 1) &quot;tianjin&quot;
+   2) 1) &quot;117.19018310308456421&quot;
+      2) &quot;39.12559715251200032&quot;
+# desc倒序（从远到近）
+127.0.0.1:6379&gt; GEOSEARCH city FROMMEMBER beijing BYRADIUS 500 km
+desc
+1) &quot;tianjin&quot;
+2) &quot;beijing&quot;
+# withdist 显示制定半径单位的距离
+127.0.0.1:6379&gt; GEOSEARCH city FROMMEMBER beijing BYRADIUS 500 km
+asc withdist
+1) 1) &quot;beijing&quot;
+   2) &quot;0.0000&quot;
+2) 1) &quot;tianjin&quot;
+   2) &quot;109.7753&quot;
+</code></pre>
+</li>
+<li><p><code>GEOSEARCHSTORE</code> 命令是 <code>GEOSEARCH</code>命令的⼀个扩展。<strong>该命令将 <code>GEOSEARCH</code>命令的返回值存储在⼀个键中</strong>。这可以提⾼效率，因为你可以在不必重新计算相同的 <code>GEOSEARCH</code> 结果的情况下，重复使⽤这些结果。</p>
+</li>
+</ol>
+<ul>
+<li><p>语法：</p>
+<pre><code class="sh">GEOSEARCHSTORE destkey srckey [FROMMEMBER member][FROMLONLAT longitude latitude] [BYRADIUS radius m|km|ft|mi][BYBOX width height m|km|ft|mi] [WITHCOORD] [WITHDIST][WITHHASH] [COUNT count [ANY]] [ASC|DESC]
+</code></pre>
+</li>
+<li><p>说明：所有的选项都和 <code>GEOSEARCH</code> 命令⼀样，只是前⾯多了两个参数</p>
+<ul>
+<li><code>destkey</code> ：将结果存储到这个键中。</li>
+<li><code>srckey</code> ：源键，要从这个键中搜索元素。</li>
+</ul>
+</li>
+<li><p>使⽤ <code>GEOSEARCHSTORE</code> 命令时需要注意，<strong>如果 <code>destkey</code> 已经存在，那么这个命令会覆盖它</strong>。所以，如果你要保留 destkey 的原有值，需要提前做好备份。</p>
+</li>
+<li><p>查询城市的经纬度：<a target="_blank" rel="noopener" href="http://jingweidu.757dy.com/">http://jingweidu.757dy.com/</a></p>
+</li>
+</ul>
+<pre><code class="sh">   # GEOSEARCHSTORE
+   GEOSEARCHSTORE destkey city FROMMEMBER beijing BYRADIUS 500 km
+   (integer) 2
+   # 因为本质上Geospatial类型的底层就是Zset，我们可以已通过ZRANGE来查看数据
+   # 当然⽐如说我们要清楚地理位置，完全可以使⽤Zset中的ZREM命令来完成
+   127.0.0.1:6379&gt; ZRANGE destkey 0 -1
+   1) &quot;tianjin&quot;
+   2) &quot;beijing&quot;
+</code></pre>
+<h1 id="Redis特殊数据类型-Hyperloglog基数统计"><a href="#Redis特殊数据类型-Hyperloglog基数统计" class="headerlink" title="Redis特殊数据类型-Hyperloglog基数统计"></a>Redis特殊数据类型-Hyperloglog基数统计</h1><ol>
+<li><p>什么是基数？</p>
+<blockquote>
+<p>基数：⽤于统计<strong>⼀个集合中不重复的元素个数</strong>，其本身就是对集合去重后，统计剩余元素的个数</p>
+<p>A:{1,2,4,6,3,2,1}</p>
+<p>去掉重复的元素</p>
+<p>B:{1,2,4,6,3} &#x3D; 5(基数)</p>
+</blockquote>
+</li>
+<li><p>HyperLogLog 是⼀种概率数据结构，⽤于估计集合的基数。</p>
+</li>
+<li><p>HLL（简称）其实<strong>代替了通过Set保存⽤户ID</strong>，统计set中元素数量来计算⽤户访问量的传统⽅式，因为我们的⽬的是为了统计独⽴⽤户访问量，⽽并⾮记录⽤户id或者⽤户表示等数据</p>
+</li>
+<li><p>每个HyperLogLog只会根据输⼊元素来计算基数，⽽<strong>本身不会储存元素</strong>，所以HLL不能像其他集合那样返回各个元素本身。</p>
+</li>
+<li><p>HLL官⽅说明中提出了，会有标准0.81%的误差，但是在⼤数据统计的时候可以忽略不计</p>
+</li>
+<li><p>结构应该是这样的：</p>
+<img src="redisType/027.png"  width="70%" />
+</li>
+<li><p>常⻅使⽤场景：统计⽹站的访问uv（<strong>⽹站独⽴⽤户访问量</strong>）</p>
+<ul>
+<li>当前⻚⾯独⽴访问次数统计</li>
+<li>⼀⾸歌曲的独⽴⽤户播放⼈数</li>
+<li>⼀个视频的独⽴⽤户观看⼈数</li>
+</ul>
+</li>
+<li><p><code>PFADD key element [element...]</code> 添加指定元素到HyperLogLog中</p>
+<pre><code class="sh"># PFADD 添加第⼀个HLL
+127.0.0.1:6379&gt; PFADD hll1 1 3 4 5 6 7
+(integer) 1
+# PFADD 添加第⼆个HLL
+127.0.0.1:6379&gt; PFADD hll2 2 2 1 8 9 3 7
+(integer) 1
+</code></pre>
+</li>
+<li><p><code>PFCOUNT</code> 返回给定HyperLogLog的基数估算值</p>
+<pre><code class="sh"># PFCOUNT 计算hll2的基数
+127.0.0.1:6379&gt; PFCOUNT hll2
+(integer) 6
+</code></pre>
+</li>
+<li><p><code>PFMERGE</code> 将多个HyperLogLog合并为⼀个HLL</p>
+<pre><code class="sh"># PFMERGE 将两个HLL组合在⼀起
+127.0.0.1:6379&gt; PFMERGE hll3 hll1 hll2
+OK
+# PFCOUNT 两个组合成⼀个的HLL最终计算的基数为9
+127.0.0.1:6379&gt; PFCOUNT hll3
+(integer) 9
+</code></pre>
+</li>
+</ol>
+<h1 id="Redis特殊数据类型-BitMaps"><a href="#Redis特殊数据类型-BitMaps" class="headerlink" title="Redis特殊数据类型-BitMaps"></a>Redis特殊数据类型-BitMaps</h1><ol>
+<li><p>Redis的Bitmaps是⼀种紧凑的数据结构，⽤于<strong>存储⼆进制逻辑和状态</strong>。然⽽，需要注意的是，<strong>Bitmaps并不是实际的数据类型，⽽是定义在String类型上的⼀组位操作</strong>。</p>
+<pre><code class="sh">127.0.0.1:6379&gt; SETBIT week 0 1
+(integer) 0
+127.0.0.1:6379&gt; SETBIT week 1 1
+(integer) 0
+127.0.0.1:6379&gt; SETBIT week 2 1
+(integer) 0
+127.0.0.1:6379&gt; type week
+string
+127.0.0.1:6379&gt; get week
+&quot;\xe0&quot; # 也可以得到相关week的String值
+</code></pre>
+<img src="redisType/028.png"  width="70%" />
+</li>
+<li><p>简单理解Bitmaps其实就是通过 位来保存⼆进制数据，通过0 1的⽅式来表示两种状态。</p>
+</li>
+<li><p>适合的场景：</p>
+<ul>
+<li>钉钉打卡 0表示未打卡 1表示打卡</li>
+<li>登录状态</li>
+</ul>
+</li>
+<li><p><code>SETBIT key offset val</code> 命令在提供的偏移处（offset）将位设置为0或1</p>
+<pre><code class="sh"># SETBIT 记录⽤户⼀周的打卡
+127.0.0.1:6379&gt; SETBIT week 0 1
+(integer) 0
+127.0.0.1:6379&gt; SETBIT week 1 1
+(integer) 0
+127.0.0.1:6379&gt; SETBIT week 2 0
+(integer) 0
+127.0.0.1:6379&gt; SETBIT week 3 1
+(integer) 0
+127.0.0.1:6379&gt; SETBIT week 4 0
+(integer) 0
+127.0.0.1:6379&gt; SETBIT week 5 0
+(integer) 0
+127.0.0.1:6379&gt; SETBIT week 6 1
+(integer) 0
+</code></pre>
+</li>
+<li><p><code>GETBIT key offset</code> 此命令返回给定偏移处的位的值</p>
+<pre><code class="sh"># GETBIT 具体获取某⼀天是否打卡
+127.0.0.1:6379&gt; GETBIT week 0
+(integer) 1
+127.0.0.1:6379&gt; GETBIT week 1
+(integer) 1
+127.0.0.1:6379&gt; GETBIT week 2
+(integer) 0
+127.0.0.1:6379&gt; GETBIT week 3
+(integer) 1
+</code></pre>
+</li>
+<li><p><code>BITOP operation destkey key [key ...]</code> 命令可以在⼀个或多个字符串上执⾏位运算，包括<code>AND</code>、<code>OR</code>、<code>XOR</code>和<code>NOT</code>操作</p>
+<ul>
+<li><code>AND</code> : 这是按位与操作。在每⼀位上，如果两个数字都为1，结果就是1，否则是0。例如， <code>0101 AND 0011</code> 结果为<code>0001</code> 。</li>
+<li><code>OR</code> : 这是按位或操作。在每⼀位上，如果任何⼀个数字为1，结果就是1，否则是0。例如， <code>0101 OR 0011</code> 结果为<code>0111 </code>。</li>
+<li><code>XOR</code> : 这是按位异或操作。在每⼀位上，如果两个数字不相同，结果就是1，否则是0。例如， <code>0101 XOR 0011</code> 结果为<code>0110</code> 。</li>
+<li><code>NOT</code> : 这是按位⾮操作。这个操作将输⼊键的每个位反转（0变为1，1变为0）。例如， <code>NOT 0101</code> 结果为<code>1010</code> 。</li>
+</ul>
+<pre><code class="sh"># BITOP 可以⽤于联合统计 ⽐如查询出连续两天登录的⽤户有⼏个
+# 1号⽤户
+127.0.0.1:6379&gt; SETBIT user:1 0 1
+(integer) 0
+127.0.0.1:6379&gt; SETBIT user:1 1 1
+(integer) 0
+127.0.0.1:6379&gt; SETBIT user:1 2 1
+(integer) 0
+127.0.0.1:6379&gt; SETBIT user:1 3 0
+(integer) 0
+# 2号⽤户
+127.0.0.1:6379&gt; SETBIT user:2 0 0
+(integer) 0
+127.0.0.1:6379&gt; SETBIT user:2 1 0
+(integer) 0
+127.0.0.1:6379&gt; SETBIT user:2 2 1
+(integer) 0
+127.0.0.1:6379&gt; SETBIT user:2 3 0
+(integer) 0
+# 通过位运算and 把连续登录两天的⽤户数量保存到key中
+127.0.0.1:6379&gt; BITOP and key user:1 user:2
+(integer) 1
+# 最后结果为1的数量只有1个⽤户
+127.0.0.1:6379&gt; BITCOUNT key
+(integer) 1
+# user:1 &#123;1 1 1 0&#125;
+# and
+# user:2 &#123;0 0 1 0&#125;
+# 结果：&#123;0 0 1 0&#125;
+</code></pre>
+</li>
+<li><p><code>BITCOUNT key start end</code> 这个命令⽤于报告设置为1的位的数量</p>
+<ul>
+<li>注意： start 和end 参数定义了要检查的<strong>字节范围</strong>（不是位的范围）</li>
+<li>这两个参数都是基于字节的，⽽不是基于位的。</li>
+<li>也就是说，如果你有⼀个包含8位的字符串， start&#x3D;0 和end&#x3D;0 将只检查第⼀个字节（即前8位）</li>
+</ul>
+<pre><code class="sh"># BITCOUNT 统计这⼀周打卡次数 start end可以限定范围
+127.0.0.1:6379&gt; BITCOUNT week
+(integer) 4
+127.0.0.1:6379&gt; BITCOUNT week 0 0 # ⽬前只有⼀个字节，所以start end都
+是0
+(integer) 4
+</code></pre>
+</li>
+<li><p><code>STRLEN key</code> ⽤于统计占⽤的<strong>字节数</strong></p>
+<pre><code class="sh"># STRLEN 查看占⽤字节
+127.0.0.1:6379&gt; STRLEN week
+(integer) 1
+</code></pre>
+</li>
+<li><p>⼀个byte（字节）为8位</p>
+</li>
+</ol>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 1909773034@qq.com </span>
+    </div>
+</article>
+
+
+<p>
+    <a  class="dashang" onclick="dashangToggle()">赏</a>
+</p>
+
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">
+    ©2017 XieShaoLin
+</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+
+<div class="hide_box" onclick="dashangToggle()"></div>
+<div class="shang_box">
+    <a class="shang_close"  onclick="dashangToggle()">×</a>
+    <div class="shang_tit">
+        <p>喜欢就点赞,疼爱就打赏</p>
+    </div>
+    <div class="shang_payimg">
+        <div class="pay_img">
+            <img src="/img/alipay.jpg" class="alipay" title="扫码支持">
+            <img src="/img/weixin.jpg" class="weixin" title="扫码支持">
+        </div>
+    </div>
+    <div class="shang_payselect">
+        <span><label><input type="radio" name="pay" checked value="alipay">支付宝</label></span><span><label><input type="radio" name="pay" value="weixin">微信</label></span>
+    </div>
+</div>
+
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
+
+<script src="/js/script.js?v=1.1.0" ></script>
+<script>
+    var img_resize = 'default';
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $("#post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+        $("input[name=pay]").on("click", function () {
+            if($("input[name=pay]:checked").val()=="weixin"){
+                $(".shang_box .shang_payimg .pay_img").addClass("weixin_img");
+            } else {
+                $(".shang_box .shang_payimg .pay_img").removeClass("weixin_img");
+            }
+        })
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+    function dashangToggle() {
+        $(".shang_box").fadeToggle();
+        $(".hide_box").fadeToggle();
+    }
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>

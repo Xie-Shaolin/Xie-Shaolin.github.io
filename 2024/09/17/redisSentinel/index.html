@@ -1,0 +1,1758 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Redis：主从复制与哨兵模式 | Notes</title>
+  <meta name="keywords" content=" Linux , CentOS , 虚拟机 , redis ">
+  <meta name="description" content="Redis：主从复制与哨兵模式 | Notes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="卸载MySQL停止MySQL服务 systemctl stop mysqld  查询MySQL的安装文件 [root@centos01 ~]# rpm -qa | grep -i mysql mysql-community-client-5.7.28-1.el7.x86_64 mysql-community-server-5.7.28-1.el7.x86_64 mysql-community-co">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL的安装、卸载和启动">
+<meta property="og:url" content="http://example.com/2024/09/25/InstallMySQL8/index.html">
+<meta property="og:site_name" content="Notes">
+<meta property="og:description" content="卸载MySQL停止MySQL服务 systemctl stop mysqld  查询MySQL的安装文件 [root@centos01 ~]# rpm -qa | grep -i mysql mysql-community-client-5.7.28-1.el7.x86_64 mysql-community-server-5.7.28-1.el7.x86_64 mysql-community-co">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2024/09/25/InstallMySQL8/InstallMySQL8/001.png">
+<meta property="og:image" content="http://example.com/2024/09/25/InstallMySQL8/InstallMySQL8/002.png">
+<meta property="og:image" content="http://example.com/2024/09/25/InstallMySQL8/InstallMySQL8/003.png">
+<meta property="article:published_time" content="2024-09-24T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-09-25T10:36:23.945Z">
+<meta property="article:author" content="XieShaoLin">
+<meta property="article:tag" content="MySQL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2024/09/25/InstallMySQL8/InstallMySQL8/001.png">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.1.0" rel="stylesheet">
+
+<link href="/css/hl_theme/github.css?v=1.1.0" rel="stylesheet">
+
+<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
+
+<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="/js/titleTip.js?v=1.1.0" ></script>
+
+<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.1.0" ></script>
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="">
+  <input class="theme_blog_path" value="">
+  <input id="theme_shortcut" value="true" />
+  <input id="theme_highlight_on" value="true" />
+  <input id="theme_code_copy" value="true" />
+</div>
+
+
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/"
+   class="avatar_target">
+    <img class="avatar"
+         src="/img/avatar.jpg"/>
+</a>
+<div class="author">
+    <span>XieShaoLin</span>
+</div>
+
+<div class="icon">
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            <a title="email"
+               href="mailto:1909773034@qq.com"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-email"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="qq"
+               href="http://wpa.qq.com/msgrd?v=3&uin=1909773034&site=qq&menu=yes"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-qq"></use>
+                    </svg>
+                
+            </a>
+        
+    
+</div>
+
+
+
+
+
+<ul>
+    <li>
+        <div class="all active" data-rel="全部文章">全部文章
+            
+                <small>(55)</small>
+            
+        </div>
+    </li>
+    
+        
+            
+                
+    <li>
+        <div data-rel="工具">
+            
+            工具
+            <small>(1)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="前端">
+            
+            前端
+            <small>(1)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="后端">
+            
+            后端
+            <small>(45)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="运维">
+            
+            运维
+            <small>(3)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="财经">
+            
+            财经
+            <small>(1)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="英语">
+            
+            英语
+            <small>(2)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+        
+            
+            
+            
+    </div>
+    <div>
+        
+        
+    </div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="55">
+<input type="hidden" id="yelog_site_word_count" value="299.4k">
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        友情链接
+        <i class="iconfont icon-left"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="http://yelog.org/">叶落阁</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <div class="right-top">
+        <div id="default-panel">
+            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
+            <div class="right-title">全部文章</div>
+            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
+        </div>
+        <div id="search-panel">
+            <i class="iconfont icon-left" data-title="返回"></i>
+            <input id="local-search-input" autocomplete="off"/>
+            <label class="border-line" for="input"></label>
+            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
+            <i class="iconfont icon-tag" data-title="标签"></i>
+        </div>
+        <div id="outline-panel" style="display: none">
+            <div class="right-title">大纲</div>
+            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
+        </div>
+    </div>
+
+    <div class="tags-list">
+    <input id="tag-search" />
+    <div class="tag-wrapper">
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>阿里云</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>跨域</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>前锋教育</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>虚拟机</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>AOF</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>CentOS</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>docker</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>economy</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>element-ui</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>English</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>ES6</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>ESLint</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Feign</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>finalshell</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Getway</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>git</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>grammer</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>gulimall</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>hexo</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>idea</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>java</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>JavaScript</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Jedis</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Js</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>JSR303</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Linux</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>listening</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>maven</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>mq</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Mysql</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>MySql</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>MySQL</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Nacos</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>node.js</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>NoSql</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>npm</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>nvm</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>OAuth2</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>OSS</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Prettier</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>python</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>RDB</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>redis</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>RedisTemplate</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>renren-fast</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>spring</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>springboot</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>SpringCloud</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>springSecurity</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>vue</a>
+            </li>
+        
+    </div>
+
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/InstallMySQL8/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL的安装、卸载和启动">MySQL的安装、卸载和启动</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/MysqlIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL的索引原理和语法">MySQL的索引原理和语法</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/MySQLLock/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：锁">MySQL：锁</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/SQLTips/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：建议MySQL使用哪个索引">MySQL：建议MySQL使用哪个索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/SQLOptimization/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：SQL优化">MySQL：SQL优化</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/combinedIndexColumnIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL:联合索引和单列索引">MySQL:联合索引和单列索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/coveringIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="覆盖索引与锁表">覆盖索引与锁表</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/indexDesign/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：如何设计索引">MySQL：如何设计索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/invalidIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：索引失效">MySQL：索引失效</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/mysqlEngine/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL的存储引擎">MySQL的存储引擎</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/performanceAnalysis/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：慢查询日志、profile、explain">MySQL：慢查询日志、profile、explain</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/prefixIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：前缀索引">MySQL：前缀索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/22/redisPubSub/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="Redis订阅发布">Redis订阅发布</span>
+            <span class="post-date" title="2024-09-22 15:21:35">2024/09/22</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisProblem/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="Redis：缓存穿透、缓存击穿和缓存雪崩">Redis：缓存穿透、缓存击穿和缓存雪崩</span>
+            <span class="post-date" title="2024-09-17 16:33:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisPersistence/"
+           data-tag="redis,RDB,AOF"
+           data-author="" >
+            <span class="post-title" title="Redis持久化">Redis持久化</span>
+            <span class="post-date" title="2024-09-17 16:20:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisTransaction/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="redis的事务">redis的事务</span>
+            <span class="post-date" title="2024-09-17 16:12:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisType/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="redis常用数据类型">redis常用数据类型</span>
+            <span class="post-date" title="2024-09-17 16:04:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisBrief/"
+           data-tag="redis,NoSql"
+           data-author="" >
+            <span class="post-title" title="redis与NoSql的简单介绍">redis与NoSql的简单介绍</span>
+            <span class="post-date" title="2024-09-17 15:59:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisSentinel/"
+           data-tag="Linux,CentOS,虚拟机,redis"
+           data-author="" >
+            <span class="post-title" title="Redis：主从复制与哨兵模式">Redis：主从复制与哨兵模式</span>
+            <span class="post-date" title="2024-09-17 15:59:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redis7SpringBoot/"
+           data-tag="redis,springboot,Jedis,RedisTemplate"
+           data-author="" >
+            <span class="post-title" title="springboot整合redis">springboot整合redis</span>
+            <span class="post-date" title="2024-09-17 15:42:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 运维 "
+           href="/2024/09/17/redis7Install/"
+           data-tag="CentOS,redis,前锋教育"
+           data-author="" >
+            <span class="post-title" title="Redis的安装、卸载、启动和客户端">Redis的安装、卸载、启动和客户端</span>
+            <span class="post-date" title="2024-09-17 15:19:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 前端 "
+           href="/2024/09/17/BasicFrontend/"
+           data-tag="JavaScript,Js,ES6,vue,element-ui"
+           data-author="" >
+            <span class="post-title" title="前端：ES5和Vue的基本用法">前端：ES5和Vue的基本用法</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/OAuth2/"
+           data-tag="OAuth2,spring"
+           data-author="" >
+            <span class="post-title" title="OAuth2和spring">OAuth2和spring</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/SpringCloudBaseUse/"
+           data-tag="SpringCloud,Nacos,Feign,Getway"
+           data-author="" >
+            <span class="post-title" title="SpringCloud：基本使用">SpringCloud：基本使用</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/adminSystem/"
+           data-tag="element-ui,SpringCloud,Feign,gulimall,Prettier,ESLint,跨域,JSR303,OSS,阿里云"
+           data-author="" >
+            <span class="post-title" title="谷粒商城：后台管理系统要点">谷粒商城：后台管理系统要点</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/giliEnviroment/"
+           data-tag="docker,idea,maven,renren-fast,git,nvm,node.js,npm"
+           data-author="" >
+            <span class="post-title" title="谷粒商城：环境搭建">谷粒商城：环境搭建</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/springsecurity/"
+           data-tag="springSecurity"
+           data-author="" >
+            <span class="post-title" title="SpringSecurity">SpringSecurity</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/16/MysqlTransaction/"
+           data-tag="Mysql"
+           data-author="" >
+            <span class="post-title" title="Mysql的事物">Mysql的事物</span>
+            <span class="post-date" title="2024-09-16 14:31:10">2024/09/16</span>
+        </a>
+        
+        
+        <a  class="全部文章 运维 "
+           href="/2024/09/08/finalshell/"
+           data-tag="finalshell,Linux,CentOS,虚拟机"
+           data-author="" >
+            <span class="post-title" title="finalshell与Linux虚拟机的网络配置">finalshell与Linux虚拟机的网络配置</span>
+            <span class="post-date" title="2024-09-08 22:19:10">2024/09/08</span>
+        </a>
+        
+        
+        <a  class="全部文章 英语 "
+           href="/2024/03/25/rabbitGrammer/"
+           data-tag="English,grammer"
+           data-author="" >
+            <span class="post-title" title="英语兔英语语法">英语兔英语语法</span>
+            <span class="post-date" title="2024-03-25 23:12:24">2024/03/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 工具 "
+           href="/2024/03/25/hexoStartFast/"
+           data-tag="hexo"
+           data-author="" >
+            <span class="post-title" title="hexo搭建静态博客">hexo搭建静态博客</span>
+            <span class="post-date" title="2024-03-25 22:14:10">2024/03/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/03/25/PythonBase/"
+           data-tag="python"
+           data-author="" >
+            <span class="post-title" title="Python语法基数">Python语法基数</span>
+            <span class="post-date" title="2024-03-25 22:08:07">2024/03/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 英语 "
+           href="/2023/12/14/heqiongListening/"
+           data-tag="listening"
+           data-author="" >
+            <span class="post-title" title="何琼雅思听力">何琼雅思听力</span>
+            <span class="post-date" title="2023-12-14 00:00:00">2023/12/14</span>
+        </a>
+        
+        
+        <a  class="全部文章 财经 "
+           href="/2023/05/23/EconomicMachine/"
+           data-tag="economy"
+           data-author="" >
+            <span class="post-title" title="经济机器是怎样运行的——RayDalio">经济机器是怎样运行的——RayDalio</span>
+            <span class="post-date" title="2023-05-23 00:00:00">2023/05/23</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-02-grammar/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:基本语法">java:基本语法</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-03-array/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:数组">java:数组</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-05-exception/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:异常">java:异常</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-01-install/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:概述+安装">java:概述+安装</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-04-opp/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:面向对象">java:面向对象</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-06-thread/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:多线程">java:多线程</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-08-time/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:时间相关API">java:时间相关API</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-07-string/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:字符串">java:字符串</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-09-sort/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:比较器">java:比较器</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-11-annotation/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:注解">java:注解</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-10-enum/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:枚举">java:枚举</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-12-collection/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:集合">java:集合</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-13-generics/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:泛型">java:泛型</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-14-IO/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:IO流">java:IO流</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-15-net/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:网络编程">java:网络编程</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-16-reflect/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:反射">java:反射</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 运维 "
+           href="/2020/07/13/dockerBase/"
+           data-tag="docker"
+           data-author="" >
+            <span class="post-title" title="docker 基础">docker 基础</span>
+            <span class="post-date" title="2020-07-13 20:46:25">2020/07/13</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/01/01/MySQLCrashCourse/"
+           data-tag="MySql"
+           data-author="" >
+            <span class="post-title" title="MySQL:必知必会">MySQL:必知必会</span>
+            <span class="post-date" title="2020-01-01 00:00:00">2020/01/01</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/01/01/RocketMq/"
+           data-tag="mq"
+           data-author="" >
+            <span class="post-title" title="RocketMq:分布式消息队列">RocketMq:分布式消息队列</span>
+            <span class="post-date" title="2020-01-01 00:00:00">2020/01/01</span>
+        </a>
+        
+        
+        <a  class="全部文章 "
+           href="/2019/09/29/java-17-new8/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java8新特性：lambda表达式+Stream流">java8新特性：lambda表达式+Stream流</span>
+            <span class="post-date" title="2019-09-29 00:00:00">2019/09/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 "
+           href="/2019/09/29/java-18-above8/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java8以后的新特性">java8以后的新特性</span>
+            <span class="post-date" title="2019-09-29 00:00:00">2019/09/29</span>
+        </a>
+        
+        <div id="no-item-tips">
+
+        </div>
+    </nav>
+    <div id="outline-list">
+    </div>
+</div>
+
+    </div>
+    <div class="hide-list">
+        <div class="semicircle" data-title="切换全屏 快捷键 s">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div id="post">
+    <div class="pjax">
+        <article id="post-redisSentinel" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">Redis：主从复制与哨兵模式</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            <i class="iconfont icon-category"></i>
+            
+            
+            <a  data-rel="后端">后端</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            <i class="iconfont icon-tag"></i>
+            
+            <a class="color1">Linux</a>
+            
+            <a class="color2">CentOS</a>
+            
+            <a class="color4">虚拟机</a>
+            
+            <a class="color1">redis</a>
+            
+        </span>
+        
+    </div>
+    <div class="article-meta">
+        
+            发布时间 : <time class="date" title='最后更新: 2024-09-17 16:31:31'>2024-09-17 15:59</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        <span>字数:3.6k</span>
+        
+        
+        <span id="busuanzi_container_page_pv">
+            阅读 :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Redis%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6"><span class="toc-text">Redis主从复制</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E6%90%AD%E5%BB%BA"><span class="toc-text">主从复制搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%EF%BC%9A%E4%BF%AE%E6%94%B9%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-text">环境搭建：修改配置文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B7%E4%BD%93%E6%90%AD%E5%BB%BA%EF%BC%9A%E5%93%AA%E4%B8%AA%E6%98%AF%E4%B8%BB"><span class="toc-text">具体搭建：哪个是主</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8E%9F%E7%90%86%EF%BC%9A"><span class="toc-text">主从复制原理：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E4%B8%BB%E4%BB%8E%E6%A8%A1%E5%9E%8B"><span class="toc-text">常见的主从模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E4%B8%BB%E4%BA%8C%E4%BB%8E"><span class="toc-text">一主二从</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%BE%E8%B7%AF%E6%A8%A1%E5%BC%8F"><span class="toc-text">链路模式</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%93%A8%E5%85%B5%E6%A8%A1%E5%BC%8F"><span class="toc-text">哨兵模式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5"><span class="toc-text">相关概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E6%BC%94%E7%A4%BA"><span class="toc-text">简单演示</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sentinel-conf%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-text">sentinel.conf配置文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B7%E4%BD%93%E6%90%AD%E5%BB%BA"><span class="toc-text">具体搭建</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text"></span></a></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Redis主从复制"><a href="#Redis主从复制" class="headerlink" title="Redis主从复制"></a>Redis主从复制</h1><h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><ol>
+<li>主节点可读写，从节点只能读</li>
+<li>通过主从复制，可以有多个从服务器（Slave）复制⼀个主服务器（Master）的数据。在这个系统中，数据的复制是单向的，<strong>只能由主服务器（Master）到从服务器（Slave）。</strong></li>
+<li>为什么要有主从复制<ul>
+<li>结构上，单个Redis服务器可能会出现单点故障，并且⼀台服务器处理所有请求，负载压⼒较⼤</li>
+<li>容量上，单个Redis服务器内存容量有限，就算服务器内存很⼤也不可能全部⽤于Redis，⼀<strong>般来说单台Redis服务器内存最⼤不超过20G</strong></li>
+</ul>
+</li>
+<li>主要作⽤<ul>
+<li>数据冗余：主从复制实现了<strong>数据的热备份</strong>，是持久化的⼀种数据冗余⽅式</li>
+<li><strong>故障恢复</strong>：主节点⼀旦出现问题，可以由从节点提供服务，避免出现程序不可⽤的情况，实现快速故障恢复。</li>
+<li><strong>负载均衡</strong>：在主从复制的基础之上，配合读写分离，<strong>主节点提供写服务，由从节点提供读服务</strong>，分担服务器负载，尤其是在读多写少场景下，可以⼤⼤提⾼Redis并发量</li>
+<li><strong>⾼可⽤（集群）基⽯</strong>：主从复制是集群和哨兵模式的基础。</li>
+</ul>
+</li>
+</ol>
+<h2 id="主从复制搭建"><a href="#主从复制搭建" class="headerlink" title="主从复制搭建"></a>主从复制搭建</h2><h3 id="环境搭建：修改配置文件"><a href="#环境搭建：修改配置文件" class="headerlink" title="环境搭建：修改配置文件"></a>环境搭建：修改配置文件</h3><p>主从复制<strong>最基本</strong>的也需要1主2从</p>
+<p>只需要配置从库，因为<strong>默认情况下，每台Redis服务器都是主节点</strong></p>
+<p>查看redis数据库的相关信息：<code>info replication</code></p>
+<pre><code class="powershell">127.0.0.1:6379&gt; info replication # 查看当前库信息
+# Replication
+role:master # ⻆⾊
+connected_slaves:0 # 从机数为0
+master_failover_state:no-failover
+master_replid:130b95225e959f7086748c1b36507e74ba332d21
+master_replid2:0000000000000000000000000000000000000000
+master_repl_offset:0
+second_repl_offset:-1
+repl_backlog_active:0
+repl_backlog_size:1048576
+repl_backlog_first_byte_offset:0
+repl_backlog_histlen:0
+</code></pre>
+<p>⾸先我们需要⾄少<strong>3台服务器</strong>，我们⼿⾥⼀般只有⼀台Redis，所以我们需要通过修改配置⽂件的⽅式来<strong>模拟3台机器</strong></p>
+<p>修改配置⽂件，<strong>将端⼝信息改变</strong>，同时配置⽂件也需要三份：</p>
+<ul>
+<li><p>先把配置文件恢复到之前的样子</p>
+<pre><code class="sh"># save &quot;&quot; 注释掉
+appendonly no #关闭AOF模式
+</code></pre>
+</li>
+<li><p>复制配置文件</p>
+<pre><code class="sh">cp redis.conf redis.config79 # 对应端口号：6379
+cp redis.conf redis.config80 # 对应端口号：6380
+cp redis.conf redis.config81 # 对应端口号：6381
+</code></pre>
+</li>
+<li><p>修改配置：与端口号相关的</p>
+<pre><code class="sh">port 6380/81 # 修改两台从机端⼝号
+pidfile /var/run/redis_6380/81.pid # 进程号修改
+logfile &quot;redis79/80/81.log&quot; # ⽇志名称改⼀下
+dbfilename dump6379/80/81.rdb # RBD⽂件名
+#===========两台从机注意，必须设置主机登录密码===========
+masterauth 753159
+</code></pre>
+<blockquote>
+<p><strong>pidfile：</strong></p>
+<p><code>pidfile</code>是一个重要的配置项，它用于指定Redis服务器进程的PID（进程ID）文件路径。PID是操作系统为每个进程分配的唯一标识符，通过PID可以追踪和管理进程。具体来说，<code>pidfile</code>的作用包括：</p>
+<blockquote>
+<ul>
+<li><strong>存储进程ID</strong>：当Redis服务器启动时，它会创建一个子进程来处理客户端请求，并将该子进程的PID写入到<code>pidfile</code>指定的文件中。这个文件通常是一个文本文件，包含Redis进程的PID号码。</li>
+<li><strong>方便管理和监控</strong>：通过读取<code>pidfile</code>文件，可以方便地获取Redis服务器的进程ID，进而使用操作系统的命令或管理工具来监控Redis服务器的运行状态，如内存使用情况、连接数等。同时，也可以使用进程ID来关闭、重启或查看Redis服务器的进程状态。</li>
+<li><strong>防止重复启动</strong>：在启动Redis服务器之前，系统会先检查<code>pidfile</code>是否存在。如果存在且对应的进程正在运行，则会报错并拒绝启动新的Redis服务器实例，从而避免在同一台主机上重复启动多个Redis进程，防止资源浪费和冲突。</li>
+</ul>
+</blockquote>
+<pre><code class="sh">pidfile /var/run/redis/redis-server.pid
+</code></pre>
+<p>这表示Redis服务器会将子进程的PID写入到<code>/var/run/redis/redis-server.pid</code>文件中。用户可以根据自己的需求修改这个配置项来指定不同的文件名和路径。</p>
+</blockquote>
+</li>
+<li><p>关闭原有的redis</p>
+<pre><code class="sh">systemctl stop redis # 通过系统服务关闭原始Redis
+</code></pre>
+</li>
+<li><p>通过<strong>配置⽂件</strong>来⼿动启动3个Redis：<code>redis-server /usr/local/redis-7.0.12/redis.config79</code></p>
+<pre><code class="powershell">[root@centos01 redis-7.0.12]# ps -ef|grep redis
+root     110619 114112  0 00:34 pts/0    00:00:00 grep --color=auto redis
+[root@centos01 redis-7.0.12]# redis-server /usr/local/redis-7.0.12/redis.config79 
+[root@centos01 redis-7.0.12]# redis-server /usr/local/redis-7.0.12/redis.config80
+[root@centos01 redis-7.0.12]# redis-server /usr/local/redis-7.0.12/redis.config81
+[root@centos01 redis-7.0.12]# ps -ef|grep redis
+root     115646      1  0 00:37 ?        00:00:00 redis-server 0.0.0.0:6379
+root     115864      1  0 00:37 ?        00:00:00 redis-server 0.0.0.0:6380
+root     116048      1  0 00:37 ?        00:00:00 redis-server 0.0.0.0:6381
+root     116251 114112  0 00:37 pts/0    00:00:00 grep --color=auto redis
+</code></pre>
+</li>
+</ul>
+<h3 id="具体搭建：哪个是主"><a href="#具体搭建：哪个是主" class="headerlink" title="具体搭建：哪个是主"></a>具体搭建：哪个是主</h3><ul>
+<li><p>客户端redis-cli连接redis</p>
+<pre><code class="powershell">redis-cli -p 6379 -a 753159
+redis-cli -p 6380 -a 753159
+redis-cli -p 6381 -a 753159
+</code></pre>
+</li>
+<li><p>在从机那里配置哪个是主机</p>
+<pre><code class="powershell">127.0.0.1:6380&gt; SLAVEOF 127.0.0.1 6379
+127.0.0.1:6381&gt; SLAVEOF 127.0.0.1 6379
+</code></pre>
+</li>
+<li><p>查看主机状态</p>
+<pre><code class="powershell">127.0.0.1:6379&gt; info replication
+# Replication
+role:master # 主机
+connected_slaves:2  # 从机数量2 
+slave0:ip=127.0.0.1,port=6380,state=online,offset=126,lag=0 #从机信息
+slave1:ip=127.0.0.1,port=6381,state=online,offset=126,lag=0 #从机信息
+master_failover_state:no-failover
+master_replid:992eba4bc7708f85758befb88b2ee02a18b7ca8e
+master_replid2:0000000000000000000000000000000000000000
+master_repl_offset:126
+second_repl_offset:-1
+repl_backlog_active:1
+repl_backlog_size:1048576
+repl_backlog_first_byte_offset:1
+repl_backlog_histlen:126
+</code></pre>
+</li>
+<li><p>查看从机状态</p>
+<pre><code class="powershell">127.0.0.1:6380&gt; info replication
+# Replication
+role:slave # 从机
+master_host:127.0.0.1
+master_port:6379 # 主机
+master_link_status:up
+master_last_io_seconds_ago:5
+master_sync_in_progress:0
+slave_read_repl_offset:560
+slave_repl_offset:560
+slave_priority:100
+slave_read_only:1
+replica_announced:1
+connected_slaves:0
+master_failover_state:no-failover
+master_replid:992eba4bc7708f85758befb88b2ee02a18b7ca8e
+master_replid2:0000000000000000000000000000000000000000
+master_repl_offset:560
+second_repl_offset:-1
+repl_backlog_active:1
+repl_backlog_size:1048576
+repl_backlog_first_byte_offset:1
+repl_backlog_histlen:560
+</code></pre>
+</li>
+</ul>
+<p>⽬前我们是通过命令来配置的，是暂时的，⼀旦服务停机，就会失效，如果我们想要永久有效，需要来改配置！(<strong>不推荐</strong>)</p>
+<img src="redisSentinel/050.jpg"  width="60%" />
+
+<h2 id="主从复制原理："><a href="#主从复制原理：" class="headerlink" title="主从复制原理："></a>主从复制原理：</h2><ol>
+<li>Slave启动成功连接到Master后会发送⼀个sync（同步）命令</li>
+<li>Master收到命令以后，会启动后台存盘进程，同时收集所有修改命令</li>
+<li>后台存盘线程执⾏完毕之后，会将Master整体数据全量复制到slave中，完成第⼀次同步<ul>
+<li>全量复制：将Master中所有数据进⾏保存传输到Slave中</li>
+<li>增量复制：Master后续新增的修改命令会以此传给Slave，完成同步</li>
+</ul>
+</li>
+<li>注意：如果有Slave断开，⼀旦重新连接就会触发全量复制</li>
+</ol>
+<h2 id="常见的主从模型"><a href="#常见的主从模型" class="headerlink" title="常见的主从模型"></a>常见的主从模型</h2><h3 id="一主二从"><a href="#一主二从" class="headerlink" title="一主二从"></a>一主二从</h3><img src="redisSentinel/051.jpg"  width="60%" />
+
+<h3 id="链路模式"><a href="#链路模式" class="headerlink" title="链路模式"></a>链路模式</h3><img src="redisSentinel/052.jpg"  width="70%" />
+
+<p>之前，6381的主机是6379，现在把6381的主机改成6380就可以了</p>
+<pre><code class="powershell">127.0.0.1:6381&gt; SLAVEOF 127.0.0.1 6380
+</code></pre>
+<p>主机的信息如下：</p>
+<pre><code class="powershell">127.0.0.1:6379&gt; info replication
+# Replication
+role:master
+connected_slaves:1 #从机数量变为⼀台
+slave0:ip=127.0.0.1,port=6380,state=online,offset=1982,lag=0
+master_failover_state:no-failover
+master_replid:992eba4bc7708f85758befb88b2ee02a18b7ca8e
+master_replid2:0000000000000000000000000000000000000000
+master_repl_offset:1982
+second_repl_offset:-1
+repl_backlog_active:1
+repl_backlog_size:1048576
+repl_backlog_first_byte_offset:1
+repl_backlog_histlen:1982
+</code></pre>
+<p>两天从机的信息：</p>
+<pre><code class="powershell">############################################  6380 ##########################################################
+127.0.0.1:6380&gt; info replication
+# Replication
+role:slave  # 依旧是从机
+master_host:127.0.0.1
+master_port:6379
+master_link_status:up
+master_last_io_seconds_ago:10
+master_sync_in_progress:0
+slave_read_repl_offset:1954
+slave_repl_offset:1954
+slave_priority:100
+slave_read_only:1
+replica_announced:1
+connected_slaves:1
+slave0:ip=127.0.0.1,port=6381,state=online,offset=1954,lag=0
+master_failover_state:no-failover
+master_replid:992eba4bc7708f85758befb88b2ee02a18b7ca8e
+master_replid2:0000000000000000000000000000000000000000
+master_repl_offset:1954
+second_repl_offset:-1
+repl_backlog_active:1
+repl_backlog_size:1048576
+
+################################################ 6381 ######################################################
+
+127.0.0.1:6381&gt;  info replication
+# Replication
+role:slave
+master_host:127.0.0.1
+master_port:6380  #主机变为了6380
+master_link_status:up
+master_last_io_seconds_ago:3
+master_sync_in_progress:0
+slave_read_repl_offset:1954
+slave_repl_offset:1954
+slave_priority:100
+slave_read_only:1
+replica_announced:1
+connected_slaves:0
+master_failover_state:no-failover
+master_replid:992eba4bc7708f85758befb88b2ee02a18b7ca8e
+master_replid2:0000000000000000000000000000000000000000
+master_repl_offset:1954
+second_repl_offset:-1
+repl_backlog_active:1
+repl_backlog_size:1048576
+repl_backlog_first_byte_offset:113
+repl_backlog_histlen:1842
+</code></pre>
+<h1 id="哨兵模式"><a href="#哨兵模式" class="headerlink" title="哨兵模式"></a>哨兵模式</h1><h2 id="相关概念"><a href="#相关概念" class="headerlink" title="相关概念"></a>相关概念</h2><p><strong>哨兵模式（Sentinel mode）主要有三个⽬标：</strong></p>
+<ul>
+<li><strong>监控</strong>：哨兵模式会不断地检查主服务器和从服务器是否按预期⼯作。</li>
+<li><strong>通知</strong>：如果某些Redis实例有故障，哨兵模式可以通过API向管理员或者其他应⽤程序发送通知。</li>
+<li><strong>⾃动故障转移</strong>：如果主服务器⽆法正常⼯作，哨兵模式可以开始⼀个故障转移过程，由⼀个从服务器升级为新的主服务器，并让其他从服务器改变他们的主服务器为新的主服务器。</li>
+</ul>
+<p><strong>Redis的哨兵模式有以下⼏个主要特点：</strong></p>
+<ul>
+<li>哨兵模式⾃动转移失败的主服务器到⼀个从服务器。</li>
+<li>哨兵模式持续监控所有Redis服务器，以便在需要时报告错误。</li>
+<li>通过提供⼀个基于哨兵的API，客户端可以⾃动发现新的主服务器地址。</li>
+</ul>
+<p><strong>主观下线与客观下线：</strong></p>
+<ul>
+<li>Sentinel（哨兵）时基于⼼跳机制检测服务状态的，每隔1秒向每隔实例发送⼀个ping命令，如果某个sentinel发现某Redis实例未在规定时间内响应，则认为该实例<strong>主观下线</strong>，</li>
+<li>若超过<strong>指定数量</strong>（<strong>quorum</strong>）的sentinel都认为该实例主观下线，则该实例<strong>客观下线</strong>。quorum的值最好超过Sentinel实例数的⼀半</li>
+</ul>
+<p><strong>故障转移的过程：</strong></p>
+<img src="redisSentinel/053.jpg"  width="90%" />
+
+<ul>
+<li>如果此时主服务器宕机，哨兵1检测到了，系统并不会⽴即进⾏failover（故障转移）过程</li>
+<li>此时仅仅是哨兵1主管的认为主服务不可⽤，此现象为主观下线</li>
+<li>当后续的哨兵也检测到主服务器不可⽤时，并且数量达指定数量时</li>
+<li>哨兵之间就会进⾏⼀次投票，投票结果由1个哨兵发起，进⾏failover操作</li>
+<li>切换成功之后，就会通过发布订阅模式，让各个哨兵把⾃⼰监控的从服务器切换主机，这个过程为客观下线</li>
+</ul>
+<p><strong>选举过程</strong>：</p>
+<p>⼀旦发现master故障，sentinel需要在salve中选择⼀个作为新的master，选择依据是这样的:</p>
+<ul>
+<li>⾸先会判断slave节点与master节点<strong>断开时间⻓短</strong>，如果超过指定值 (<strong>down-aftermilliseconds</strong>*10)则会排除该slave节点</li>
+<li>然后判断slave节点的<strong>slave-priority</strong>值，越⼩优先级越⾼，如果是0则永不参与选举</li>
+<li>如果slave-prority⼀样，则判断slave节点的<strong>offset</strong>值，越⼤说明数据越新，优先级越⾼</li>
+<li>最后是判断slave节点的运⾏id⼤⼩，越⼩优先级越⾼</li>
+</ul>
+<p><strong>故障转移</strong>：</p>
+<ul>
+<li>Sentinel给备选的节点发送<code>slaveof on one</code>命令，让该节点成为Maskter</li>
+<li>Sentinel给其他slave发送 <code>slaveof ip 端⼝</code>命令，开始从Master上同步数据</li>
+<li>最后Sentinel将故障节点标记为slave（执⾏<code>slaveof ip 端⼝</code>命令），故障节点恢复以后也会成为新Master的slave</li>
+</ul>
+<h2 id="简单演示"><a href="#简单演示" class="headerlink" title="简单演示"></a>简单演示</h2><h3 id="sentinel-conf配置文件"><a href="#sentinel-conf配置文件" class="headerlink" title="sentinel.conf配置文件"></a>sentinel.conf配置文件</h3><p>文件的位置：<code>/usr/local/redis-7.0.12/sentinel.conf</code></p>
+<pre><code class="powershell"># sentinel monitor &lt;master-name&gt; &lt;ip&gt; &lt;redis-port&gt; &lt;quorum&gt;
+sentinel monitor mymaster 127.0.0.1 6379 1
+# master-name⾃定义
+# ip 主Redis ip
+# quorum 表示最少有⼏个哨兵认可进⾏故障迁移
+
+# 主服务器进⼊密码: 也需要连接主服务器
+# sentinel auth-pass &lt;master-name&gt; &lt;password&gt;
+sentinel auth-pass mymaster 753159
+
+# =====================其他命令==========================
+
+ #指定多少毫秒之后，主节点没有应答哨兵，此时哨兵主观上认为主节点下线
+sentinel down-after-milliseconds &lt;master-name&gt; &lt;milliseconds&gt;
+
+#表示允许并⾏同步的slave个数，当Master挂了后，哨兵会选出新的Master，此时，剩余的slave会向新的master发起同步数据
+sentinel parallel-syncs &lt;master-name&gt; &lt;nums&gt; 
+
+#故障转移的超时时间，进⾏故障转移时，如果超过设置的毫秒，表示故障转移失败
+sentinel failover-timeout &lt;master-name&gt; &lt;milliseconds&gt; 
+
+#配置当某⼀事件发⽣时所需要执⾏的脚本
+sentinel notification-script &lt;master-name&gt; &lt;script-path&gt; 
+
+#客户端重新配置主节点参数脚本
+sentinel client-reconfig-script &lt;master-name&gt; &lt;script-path&gt; 
+</code></pre>
+<h3 id="具体搭建"><a href="#具体搭建" class="headerlink" title="具体搭建"></a>具体搭建</h3><ol>
+<li><p>redis79.conf也需要加上 <code>masterauth 753159</code></p>
+</li>
+<li><p>建⽴⼀个mysentinel⽬录，然后直接编写三个⽂件</p>
+<ul>
+<li><p>三个文件对应3个ip端口</p>
+<pre><code class="text">vi sentinel26379/80/81.conf
+
+sentinel26379.conf：26379
+sentinel26380.conf：26380
+sentinel26381.conf：26381
+</code></pre>
+</li>
+<li><p>配置内容如下：</p>
+<pre><code class="powershell"># 具体配置
+port 26379
+daemonize yes
+sentinel monitor mymaster 127.0.0.1 6379 2
+sentinel auth-pass mymaster 753159
+sentinel down-after-milliseconds mymaster 3000
+logfile &quot;sentinel26379.log&quot;
+dir &quot;/usr/local/redis-sentinel/mylog&quot;
+pidfile &quot;/var/run/redis-sentinel-26379.pid&quot;
+</code></pre>
+</li>
+<li><p>通过sentinel配置来启动</p>
+<pre><code class="powershell">[root@centos01 redis-7.0.12]# redis-sentinel mysentinel/sentinel26379.conf
+[root@centos01 redis-7.0.12]# redis-sentinel mysentinel/sentinel26380.conf
+[root@centos01 redis-7.0.12]# redis-sentinel mysentinel/sentinel26381.conf
+</code></pre>
+<ul>
+<li><p>要创建这个目录<code>/usr/local/redis-sentinel/mylog</code>，要不然会报错</p>
+<pre><code class="powershell">[root@centos01 redis-7.0.12]# redis-sentinel mysentinel/sentinel26379.conf
+
+*** FATAL CONFIG FILE ERROR (Redis 7.0.12) ***
+Reading the configuration file, at line 7
+&gt;&gt;&gt; &#39;dir &quot;/usr/local/redis-sentinel/mylog&quot;&#39;
+No such file or directory
+</code></pre>
+</li>
+<li><p>这个命令必须在指定目录（<code>/usr/local/redis-7.0.12</code>）下运行，要不然也会报错</p>
+<pre><code class="powershell">[root@centos01 redis-sentinel]# redis-sentinel mysentinel/sentinel26379.conf
+29558:X 16 Sep 2024 12:36:24.801 # Fatal error, can&#39;t open config file &#39;/usr/local/redis-sentinel/mysentinel/sentinel26379.conf&#39;: No such file or directory
+</code></pre>
+</li>
+<li><p>查看sentinel是否启动成功：</p>
+<pre><code class="powershell">[root@centos01 redis-7.0.12]# ps -ef|grep sentinel
+root      30365      1  0 12:37 ?        00:00:00 redis-sentinel *:26379 [sentinel]
+root      30534      1  0 12:37 ?        00:00:00 redis-sentinel *:26380 [sentinel]
+root      30634      1  0 12:37 ?        00:00:00 redis-sentinel *:26381 [sentinel]
+root      30854  56997  0 12:37 pts/0    00:00:00 grep --color=auto sentinel
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>查看主节点6379下线前后的状态</p>
+<ul>
+<li><p>下线前：</p>
+<pre><code class="powershell">### 主机6379
+127.0.0.1:6379&gt; info replication
+# Replication
+role:master
+connected_slaves:2
+slave0:ip=127.0.0.1,port=6380,state=online,offset=177330,lag=1
+slave1:ip=127.0.0.1,port=6381,state=online,offset=177330,lag=0
+master_failover_state:no-failover
+master_replid:992eba4bc7708f85758befb88b2ee02a18b7ca8e
+master_replid2:0000000000000000000000000000000000000000
+master_repl_offset:177330
+second_repl_offset:-1
+repl_backlog_active:1
+repl_backlog_size:1048576
+repl_backlog_first_byte_offset:1
+repl_backlog_histlen:177330
+
+### 从机6380
+127.0.0.1:6380&gt; info replication
+# Replication
+role:slave
+master_host:127.0.0.1
+master_port:6379
+master_link_status:up
+master_last_io_seconds_ago:1
+master_sync_in_progress:0
+slave_read_repl_offset:187242
+slave_repl_offset:187242
+slave_priority:100
+slave_read_only:1
+replica_announced:1
+connected_slaves:0
+master_failover_state:no-failover
+master_replid:992eba4bc7708f85758befb88b2ee02a18b7ca8e
+master_replid2:0000000000000000000000000000000000000000
+master_repl_offset:187242
+second_repl_offset:-1
+repl_backlog_active:1
+repl_backlog_size:1048576
+repl_backlog_first_byte_offset:1
+repl_backlog_histlen:187242
+
+### 从机6381
+127.0.0.1:6381&gt; info replication
+# Replication
+role:slave
+master_host:127.0.0.1
+master_port:6379
+master_link_status:up
+master_last_io_seconds_ago:1
+master_sync_in_progress:0
+slave_read_repl_offset:190847
+slave_repl_offset:190847
+slave_priority:100
+slave_read_only:1
+replica_announced:1
+connected_slaves:0
+master_failover_state:no-failover
+master_replid:992eba4bc7708f85758befb88b2ee02a18b7ca8e
+master_replid2:0000000000000000000000000000000000000000
+master_repl_offset:190847
+second_repl_offset:-1
+repl_backlog_active:1
+repl_backlog_size:1048576
+repl_backlog_first_byte_offset:113
+repl_backlog_histlen:190735
+</code></pre>
+</li>
+<li><p>主机6379下线后，6381成为主机</p>
+<pre><code class="powershell">127.0.0.1:6381&gt; info replication
+# Replication
+role:master
+connected_slaves:1
+slave0:ip=127.0.0.1,port=6380,state=online,offset=212341,lag=0
+master_failover_state:no-failover
+master_replid:dbc4eb429517b23a25bbb1948de076ac54410ba9
+master_replid2:992eba4bc7708f85758befb88b2ee02a18b7ca8e
+master_repl_offset:212341
+second_repl_offset:202673
+repl_backlog_active:1
+repl_backlog_size:1048576
+repl_backlog_first_byte_offset:113
+repl_backlog_histlen:212229
+
+#################################################
+
+127.0.0.1:6380&gt; info replication
+# Replication
+role:slave
+master_host:127.0.0.1
+master_port:6381
+master_link_status:up
+master_last_io_seconds_ago:0
+master_sync_in_progress:0
+slave_read_repl_offset:208722
+slave_repl_offset:208722
+slave_priority:100
+slave_read_only:1
+replica_announced:1
+connected_slaves:0
+master_failover_state:no-failover
+master_replid:dbc4eb429517b23a25bbb1948de076ac54410ba9
+master_replid2:992eba4bc7708f85758befb88b2ee02a18b7ca8e
+master_repl_offset:208722
+second_repl_offset:202673
+repl_backlog_active:1
+repl_backlog_size:1048576
+repl_backlog_first_byte_offset:1
+repl_backlog_histlen:208722
+</code></pre>
+</li>
+<li><p>再次启动6379</p>
+<pre><code class="powershell">127.0.0.1:6379&gt; info replication
+# Replication
+role:slave
+master_host:127.0.0.1
+master_port:6381
+master_link_status:up
+master_last_io_seconds_ago:0
+master_sync_in_progress:0
+slave_read_repl_offset:250003
+slave_repl_offset:250003
+slave_priority:100
+slave_read_only:1
+replica_announced:1
+connected_slaves:0
+master_failover_state:no-failover
+master_replid:dbc4eb429517b23a25bbb1948de076ac54410ba9
+master_replid2:0000000000000000000000000000000000000000
+master_repl_offset:250003
+second_repl_offset:-1
+repl_backlog_active:1
+repl_backlog_size:1048576
+repl_backlog_first_byte_offset:245151
+repl_backlog_histlen:4853
+</code></pre>
+</li>
+</ul>
+</li>
+</ol>
+<h1 id=""><a href="#" class="headerlink" title=""></a></h1>
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 1909773034@qq.com </span>
+    </div>
+</article>
+
+
+<p>
+    <a  class="dashang" onclick="dashangToggle()">赏</a>
+</p>
+
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">
+    ©2017 XieShaoLin
+</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+
+<div class="hide_box" onclick="dashangToggle()"></div>
+<div class="shang_box">
+    <a class="shang_close"  onclick="dashangToggle()">×</a>
+    <div class="shang_tit">
+        <p>喜欢就点赞,疼爱就打赏</p>
+    </div>
+    <div class="shang_payimg">
+        <div class="pay_img">
+            <img src="/img/alipay.jpg" class="alipay" title="扫码支持">
+            <img src="/img/weixin.jpg" class="weixin" title="扫码支持">
+        </div>
+    </div>
+    <div class="shang_payselect">
+        <span><label><input type="radio" name="pay" checked value="alipay">支付宝</label></span><span><label><input type="radio" name="pay" value="weixin">微信</label></span>
+    </div>
+</div>
+
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
+
+<script src="/js/script.js?v=1.1.0" ></script>
+<script>
+    var img_resize = 'default';
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $("#post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+        $("input[name=pay]").on("click", function () {
+            if($("input[name=pay]:checked").val()=="weixin"){
+                $(".shang_box .shang_payimg .pay_img").addClass("weixin_img");
+            } else {
+                $(".shang_box .shang_payimg .pay_img").removeClass("weixin_img");
+            }
+        })
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+    function dashangToggle() {
+        $(".shang_box").fadeToggle();
+        $(".hide_box").fadeToggle();
+    }
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>

@@ -1,0 +1,1923 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>java8以后的新特性 | Notes</title>
+  <meta name="keywords" content=" java ">
+  <meta name="description" content="java8以后的新特性 | Notes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="卸载MySQL停止MySQL服务 systemctl stop mysqld  查询MySQL的安装文件 [root@centos01 ~]# rpm -qa | grep -i mysql mysql-community-client-5.7.28-1.el7.x86_64 mysql-community-server-5.7.28-1.el7.x86_64 mysql-community-co">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL的安装、卸载和启动">
+<meta property="og:url" content="http://example.com/2024/09/25/InstallMySQL8/index.html">
+<meta property="og:site_name" content="Notes">
+<meta property="og:description" content="卸载MySQL停止MySQL服务 systemctl stop mysqld  查询MySQL的安装文件 [root@centos01 ~]# rpm -qa | grep -i mysql mysql-community-client-5.7.28-1.el7.x86_64 mysql-community-server-5.7.28-1.el7.x86_64 mysql-community-co">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2024/09/25/InstallMySQL8/InstallMySQL8/001.png">
+<meta property="og:image" content="http://example.com/2024/09/25/InstallMySQL8/InstallMySQL8/002.png">
+<meta property="og:image" content="http://example.com/2024/09/25/InstallMySQL8/InstallMySQL8/003.png">
+<meta property="article:published_time" content="2024-09-24T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-09-25T10:36:23.945Z">
+<meta property="article:author" content="XieShaoLin">
+<meta property="article:tag" content="MySQL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2024/09/25/InstallMySQL8/InstallMySQL8/001.png">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.1.0" rel="stylesheet">
+
+<link href="/css/hl_theme/github.css?v=1.1.0" rel="stylesheet">
+
+<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
+
+<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="/js/titleTip.js?v=1.1.0" ></script>
+
+<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.1.0" ></script>
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="">
+  <input class="theme_blog_path" value="">
+  <input id="theme_shortcut" value="true" />
+  <input id="theme_highlight_on" value="true" />
+  <input id="theme_code_copy" value="true" />
+</div>
+
+
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/"
+   class="avatar_target">
+    <img class="avatar"
+         src="/img/avatar.jpg"/>
+</a>
+<div class="author">
+    <span>XieShaoLin</span>
+</div>
+
+<div class="icon">
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            <a title="email"
+               href="mailto:1909773034@qq.com"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-email"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="qq"
+               href="http://wpa.qq.com/msgrd?v=3&uin=1909773034&site=qq&menu=yes"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-qq"></use>
+                    </svg>
+                
+            </a>
+        
+    
+</div>
+
+
+
+
+
+<ul>
+    <li>
+        <div class="all active" data-rel="全部文章">全部文章
+            
+                <small>(55)</small>
+            
+        </div>
+    </li>
+    
+        
+            
+                
+    <li>
+        <div data-rel="工具">
+            
+            工具
+            <small>(1)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="前端">
+            
+            前端
+            <small>(1)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="后端">
+            
+            后端
+            <small>(45)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="运维">
+            
+            运维
+            <small>(3)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="财经">
+            
+            财经
+            <small>(1)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="英语">
+            
+            英语
+            <small>(2)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+        
+            
+            
+            
+    </div>
+    <div>
+        
+        
+    </div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="55">
+<input type="hidden" id="yelog_site_word_count" value="299.4k">
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        友情链接
+        <i class="iconfont icon-left"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="http://yelog.org/">叶落阁</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <div class="right-top">
+        <div id="default-panel">
+            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
+            <div class="right-title">全部文章</div>
+            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
+        </div>
+        <div id="search-panel">
+            <i class="iconfont icon-left" data-title="返回"></i>
+            <input id="local-search-input" autocomplete="off"/>
+            <label class="border-line" for="input"></label>
+            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
+            <i class="iconfont icon-tag" data-title="标签"></i>
+        </div>
+        <div id="outline-panel" style="display: none">
+            <div class="right-title">大纲</div>
+            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
+        </div>
+    </div>
+
+    <div class="tags-list">
+    <input id="tag-search" />
+    <div class="tag-wrapper">
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>阿里云</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>跨域</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>前锋教育</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>虚拟机</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>AOF</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>CentOS</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>docker</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>economy</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>element-ui</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>English</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>ES6</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>ESLint</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Feign</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>finalshell</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Getway</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>git</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>grammer</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>gulimall</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>hexo</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>idea</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>java</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>JavaScript</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Jedis</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Js</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>JSR303</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Linux</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>listening</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>maven</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>mq</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Mysql</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>MySql</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>MySQL</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Nacos</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>node.js</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>NoSql</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>npm</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>nvm</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>OAuth2</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>OSS</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Prettier</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>python</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>RDB</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>redis</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>RedisTemplate</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>renren-fast</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>spring</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>springboot</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>SpringCloud</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>springSecurity</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>vue</a>
+            </li>
+        
+    </div>
+
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/InstallMySQL8/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL的安装、卸载和启动">MySQL的安装、卸载和启动</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/MysqlIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL的索引原理和语法">MySQL的索引原理和语法</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/MySQLLock/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：锁">MySQL：锁</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/SQLTips/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：建议MySQL使用哪个索引">MySQL：建议MySQL使用哪个索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/SQLOptimization/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：SQL优化">MySQL：SQL优化</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/combinedIndexColumnIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL:联合索引和单列索引">MySQL:联合索引和单列索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/coveringIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="覆盖索引与锁表">覆盖索引与锁表</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/indexDesign/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：如何设计索引">MySQL：如何设计索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/invalidIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：索引失效">MySQL：索引失效</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/mysqlEngine/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL的存储引擎">MySQL的存储引擎</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/performanceAnalysis/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：慢查询日志、profile、explain">MySQL：慢查询日志、profile、explain</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/prefixIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：前缀索引">MySQL：前缀索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/22/redisPubSub/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="Redis订阅发布">Redis订阅发布</span>
+            <span class="post-date" title="2024-09-22 15:21:35">2024/09/22</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisProblem/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="Redis：缓存穿透、缓存击穿和缓存雪崩">Redis：缓存穿透、缓存击穿和缓存雪崩</span>
+            <span class="post-date" title="2024-09-17 16:33:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisPersistence/"
+           data-tag="redis,RDB,AOF"
+           data-author="" >
+            <span class="post-title" title="Redis持久化">Redis持久化</span>
+            <span class="post-date" title="2024-09-17 16:20:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisTransaction/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="redis的事务">redis的事务</span>
+            <span class="post-date" title="2024-09-17 16:12:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisType/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="redis常用数据类型">redis常用数据类型</span>
+            <span class="post-date" title="2024-09-17 16:04:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisBrief/"
+           data-tag="redis,NoSql"
+           data-author="" >
+            <span class="post-title" title="redis与NoSql的简单介绍">redis与NoSql的简单介绍</span>
+            <span class="post-date" title="2024-09-17 15:59:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisSentinel/"
+           data-tag="Linux,CentOS,虚拟机,redis"
+           data-author="" >
+            <span class="post-title" title="Redis：主从复制与哨兵模式">Redis：主从复制与哨兵模式</span>
+            <span class="post-date" title="2024-09-17 15:59:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redis7SpringBoot/"
+           data-tag="redis,springboot,Jedis,RedisTemplate"
+           data-author="" >
+            <span class="post-title" title="springboot整合redis">springboot整合redis</span>
+            <span class="post-date" title="2024-09-17 15:42:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 运维 "
+           href="/2024/09/17/redis7Install/"
+           data-tag="CentOS,redis,前锋教育"
+           data-author="" >
+            <span class="post-title" title="Redis的安装、卸载、启动和客户端">Redis的安装、卸载、启动和客户端</span>
+            <span class="post-date" title="2024-09-17 15:19:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 前端 "
+           href="/2024/09/17/BasicFrontend/"
+           data-tag="JavaScript,Js,ES6,vue,element-ui"
+           data-author="" >
+            <span class="post-title" title="前端：ES5和Vue的基本用法">前端：ES5和Vue的基本用法</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/OAuth2/"
+           data-tag="OAuth2,spring"
+           data-author="" >
+            <span class="post-title" title="OAuth2和spring">OAuth2和spring</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/SpringCloudBaseUse/"
+           data-tag="SpringCloud,Nacos,Feign,Getway"
+           data-author="" >
+            <span class="post-title" title="SpringCloud：基本使用">SpringCloud：基本使用</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/adminSystem/"
+           data-tag="element-ui,SpringCloud,Feign,gulimall,Prettier,ESLint,跨域,JSR303,OSS,阿里云"
+           data-author="" >
+            <span class="post-title" title="谷粒商城：后台管理系统要点">谷粒商城：后台管理系统要点</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/giliEnviroment/"
+           data-tag="docker,idea,maven,renren-fast,git,nvm,node.js,npm"
+           data-author="" >
+            <span class="post-title" title="谷粒商城：环境搭建">谷粒商城：环境搭建</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/springsecurity/"
+           data-tag="springSecurity"
+           data-author="" >
+            <span class="post-title" title="SpringSecurity">SpringSecurity</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/16/MysqlTransaction/"
+           data-tag="Mysql"
+           data-author="" >
+            <span class="post-title" title="Mysql的事物">Mysql的事物</span>
+            <span class="post-date" title="2024-09-16 14:31:10">2024/09/16</span>
+        </a>
+        
+        
+        <a  class="全部文章 运维 "
+           href="/2024/09/08/finalshell/"
+           data-tag="finalshell,Linux,CentOS,虚拟机"
+           data-author="" >
+            <span class="post-title" title="finalshell与Linux虚拟机的网络配置">finalshell与Linux虚拟机的网络配置</span>
+            <span class="post-date" title="2024-09-08 22:19:10">2024/09/08</span>
+        </a>
+        
+        
+        <a  class="全部文章 英语 "
+           href="/2024/03/25/rabbitGrammer/"
+           data-tag="English,grammer"
+           data-author="" >
+            <span class="post-title" title="英语兔英语语法">英语兔英语语法</span>
+            <span class="post-date" title="2024-03-25 23:12:24">2024/03/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 工具 "
+           href="/2024/03/25/hexoStartFast/"
+           data-tag="hexo"
+           data-author="" >
+            <span class="post-title" title="hexo搭建静态博客">hexo搭建静态博客</span>
+            <span class="post-date" title="2024-03-25 22:14:10">2024/03/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/03/25/PythonBase/"
+           data-tag="python"
+           data-author="" >
+            <span class="post-title" title="Python语法基数">Python语法基数</span>
+            <span class="post-date" title="2024-03-25 22:08:07">2024/03/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 英语 "
+           href="/2023/12/14/heqiongListening/"
+           data-tag="listening"
+           data-author="" >
+            <span class="post-title" title="何琼雅思听力">何琼雅思听力</span>
+            <span class="post-date" title="2023-12-14 00:00:00">2023/12/14</span>
+        </a>
+        
+        
+        <a  class="全部文章 财经 "
+           href="/2023/05/23/EconomicMachine/"
+           data-tag="economy"
+           data-author="" >
+            <span class="post-title" title="经济机器是怎样运行的——RayDalio">经济机器是怎样运行的——RayDalio</span>
+            <span class="post-date" title="2023-05-23 00:00:00">2023/05/23</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-02-grammar/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:基本语法">java:基本语法</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-03-array/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:数组">java:数组</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-05-exception/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:异常">java:异常</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-01-install/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:概述+安装">java:概述+安装</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-04-opp/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:面向对象">java:面向对象</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-06-thread/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:多线程">java:多线程</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-08-time/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:时间相关API">java:时间相关API</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-07-string/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:字符串">java:字符串</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-09-sort/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:比较器">java:比较器</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-11-annotation/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:注解">java:注解</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-10-enum/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:枚举">java:枚举</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-12-collection/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:集合">java:集合</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-13-generics/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:泛型">java:泛型</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-14-IO/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:IO流">java:IO流</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-15-net/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:网络编程">java:网络编程</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-16-reflect/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:反射">java:反射</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 运维 "
+           href="/2020/07/13/dockerBase/"
+           data-tag="docker"
+           data-author="" >
+            <span class="post-title" title="docker 基础">docker 基础</span>
+            <span class="post-date" title="2020-07-13 20:46:25">2020/07/13</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/01/01/MySQLCrashCourse/"
+           data-tag="MySql"
+           data-author="" >
+            <span class="post-title" title="MySQL:必知必会">MySQL:必知必会</span>
+            <span class="post-date" title="2020-01-01 00:00:00">2020/01/01</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/01/01/RocketMq/"
+           data-tag="mq"
+           data-author="" >
+            <span class="post-title" title="RocketMq:分布式消息队列">RocketMq:分布式消息队列</span>
+            <span class="post-date" title="2020-01-01 00:00:00">2020/01/01</span>
+        </a>
+        
+        
+        <a  class="全部文章 "
+           href="/2019/09/29/java-17-new8/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java8新特性：lambda表达式+Stream流">java8新特性：lambda表达式+Stream流</span>
+            <span class="post-date" title="2019-09-29 00:00:00">2019/09/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 "
+           href="/2019/09/29/java-18-above8/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java8以后的新特性">java8以后的新特性</span>
+            <span class="post-date" title="2019-09-29 00:00:00">2019/09/29</span>
+        </a>
+        
+        <div id="no-item-tips">
+
+        </div>
+    </nav>
+    <div id="outline-list">
+    </div>
+</div>
+
+    </div>
+    <div class="hide-list">
+        <div class="semicircle" data-title="切换全屏 快捷键 s">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div id="post">
+    <div class="pjax">
+        <article id="post-java-18-above8" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">java8以后的新特性</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        
+        <span class="tag">
+            <i class="iconfont icon-tag"></i>
+            
+            <a class="color5">java</a>
+            
+        </span>
+        
+    </div>
+    <div class="article-meta">
+        
+            发布时间 : <time class="date" title='最后更新: 2024-03-31 17:30:00'>2019-09-29 00:00</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        <span>字数:4.1k</span>
+        
+        
+        <span id="busuanzi_container_page_pv">
+            阅读 :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Java-9-jShell%E5%91%BD%E4%BB%A4"><span class="toc-text">Java 9: jShell命令</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E4%B9%8Btry-catch%E8%B5%84%E6%BA%90%E5%85%B3%E9%97%AD"><span class="toc-text">异常处理之try-catch资源关闭</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#JDK-7%E4%B9%8B%E5%89%8D"><span class="toc-text">JDK 7之前</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JDK-7"><span class="toc-text">JDK 7</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JDK-9"><span class="toc-text">JDK 9</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F%E7%B1%BB%E5%9E%8B%E6%8E%A8%E6%96%AD%EF%BC%9Avar"><span class="toc-text">局部变量类型推断：var</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#instance-of-%E7%9A%84%E6%A8%A1%E5%BC%8F%E5%8C%B9%E9%85%8D"><span class="toc-text">instance of 的模式匹配</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#switch%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-text">switch表达式</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%96%87%E6%9C%AC%E5%9D%97"><span class="toc-text">文本块</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Record"><span class="toc-text">Record</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AF%86%E5%B0%81%E7%B1%BB%EF%BC%9Asealed"><span class="toc-text">密封类：sealed</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Optional%E7%B1%BB"><span class="toc-text">Optional类</span></a></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Java-9-jShell命令"><a href="#Java-9-jShell命令" class="headerlink" title="Java 9: jShell命令"></a>Java 9: jShell命令</h1><p>Java 终于拥有了像Python 和 Scala 之类语言的REPL工具（交互式编程环境，read - evaluate - print - loop）：<code>jShell</code>。以交互式的方式对语句和表达式进行求值。<code>即写即得</code>、<code>快速运行</code>。</p>
+<p><strong>调出jShell</strong></p>
+<pre><code class="bash">xieshaolin@xieshaolindeMacBook-Pro ~ % jshell
+|  欢迎使用 JShell -- 版本 21.0.2
+|  要大致了解该版本, 请键入: /help intro
+</code></pre>
+<p><strong>获取帮助</strong></p>
+<pre><code class="bash">jshell&gt; /help intro
+|  
+|                                   intro
+|                                   =====
+|  
+|  使用 jshell 工具可以执行 Java 代码，从而立即获取结果。
+|  您可以输入 Java 定义（变量、方法、类等等），例如：int x = 8
+|  或 Java 表达式，例如：x + x
+|  或 Java 语句或导入。
+|  这些小块的 Java 代码称为“片段”。
+|  
+|  这些 jshell 工具命令还可以让您了解和
+|  控制您正在执行的操作，例如：/list
+|  
+|  有关命令的列表，请执行：/help
+</code></pre>
+<p><strong>直接执行方法</strong></p>
+<pre><code class="bash">jshell&gt; System.out.println(&quot;你好&quot;);
+你好
+</code></pre>
+<p><strong>变量的声明和使用</strong></p>
+<pre><code class="bash">jshell&gt; int a = 10;
+a ==&gt; 10
+
+jshell&gt; int b =23
+b ==&gt; 23
+
+jshell&gt; int c =a * b
+c ==&gt; 230
+</code></pre>
+<p><strong>导入包</strong></p>
+<pre><code class="bash">jshell&gt; import java.nio.*
+</code></pre>
+<p><strong>查看导入的包</strong></p>
+<pre><code class="bash">jshell&gt; /imports
+|    import java.io.*
+|    import java.math.*
+|    import java.net.*
+|    import java.nio.file.*
+|    import java.util.*
+|    import java.util.concurrent.*
+|    import java.util.function.*
+|    import java.util.prefs.*
+|    import java.util.regex.*
+|    import java.util.stream.*
+|    import java.nio.*
+</code></pre>
+<p><strong>只需按下 Tab 键，就能自动补全代码</strong></p>
+<pre><code class="bash">jshell&gt; Sy
+SyncFailedException   SynchronousQueue      System     
+jshell&gt; System.out.p
+print(     printf(    println(   
+jshell&gt; System.out.println(&quot;ni&quot;)
+ni
+</code></pre>
+<p><strong>列出当前 session 里所有有效的代码片段</strong></p>
+<p>一个终端可以理解为一个session</p>
+<img src = "above8/01.png" width =650>
+
+<p><strong>创建并使用方法</strong></p>
+<pre><code class="bash">jshell&gt; public int add(int a,int b)&#123;return a+b;&#125;
+|  已创建 方法 add(int,int)
+
+jshell&gt; add(3,4)
+$9 ==&gt; 7
+</code></pre>
+<p><strong>查看所有方法</strong></p>
+<pre><code class="bash">jshell&gt; /methods
+|    int add(int,int)
+</code></pre>
+<p><strong>使用外部代码编辑器来编写 Java 代码</strong></p>
+<pre><code class="bash">jshell&gt; /edit add
+2024-03-30 19:35:42.414 jshell[55817:7387020] TSM AdjustCapsLockLEDForKeyTransitionHandling - _ISSetPhysicalKeyboardCapsLockLED Inhibit
+|  已修改 方法 add(int,int)
+</code></pre>
+<p>会出现如下弹窗：</p>
+<img src = "above8/02.png" width =400>
+
+<p>修改完代码之后就可以使用了：</p>
+<pre><code class="bash">jshell&gt; add(3,4)
+$11 ==&gt; 8
+</code></pre>
+<p><strong>从外部文件加载源代码</strong></p>
+<p>在hello.java文件里写入一下代码：</p>
+<pre><code class="java">public void printHello() &#123;
+    System.out.println(&quot;hello&quot;);
+&#125;
+printHello();
+</code></pre>
+<p>使用<code>/open</code>命令调用</p>
+<pre><code class="bash">jshell&gt; /open /Users/xieshaolin/hello.java
+hello
+</code></pre>
+<p><strong>退出jShell</strong></p>
+<pre><code class="bash">jshell&gt; /exit
+|  再见
+</code></pre>
+<h1 id="异常处理之try-catch资源关闭"><a href="#异常处理之try-catch资源关闭" class="headerlink" title="异常处理之try-catch资源关闭"></a>异常处理之try-catch资源关闭</h1><h2 id="JDK-7之前"><a href="#JDK-7之前" class="headerlink" title="JDK 7之前"></a>JDK 7之前</h2><pre><code class="java">/*
+ * 举例：从test.txt(utf-8)文件中，读取内容，写出到abc.txt(gbk)文件中
+ * JDK7之前的写法
+ * */
+@Test
+public void test03() &#123;
+    BufferedReader br = null;
+    BufferedWriter bw = null;
+    try &#123;
+        FileInputStream fis = new FileInputStream(&quot;test.txt&quot;);
+        InputStreamReader isr = new InputStreamReader(fis, &quot;utf-8&quot;);
+        br = new BufferedReader(isr);
+
+        FileOutputStream fos = new FileOutputStream(&quot;abc.txt&quot;);
+        OutputStreamWriter osw = new OutputStreamWriter(fos, &quot;gbk&quot;);
+        bw = new BufferedWriter(osw);
+
+        String str;
+        while ((str = br.readLine()) != null) &#123;
+            bw.write(str);
+            bw.newLine();
+            bw.flush();
+        &#125;
+    &#125; catch (IOException e) &#123;
+        e.printStackTrace();
+    &#125; finally &#123;
+        try &#123;
+            if (bw != null)
+                bw.close();
+        &#125; catch (IOException e) &#123;
+            e.printStackTrace();
+        &#125;
+        try &#123;
+            if (br != null)
+                br.close();
+        &#125; catch (IOException e) &#123;
+            e.printStackTrace();
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<h2 id="JDK-7"><a href="#JDK-7" class="headerlink" title="JDK 7"></a>JDK 7</h2><pre><code class="txt">try(资源对象的声明和初始化)&#123;
+    业务逻辑代码,可能会产生异常
+&#125;catch(异常类型1 e)&#123;
+    处理异常代码
+&#125;catch(异常类型2 e)&#123;
+    处理异常代码
+&#125;
+</code></pre>
+<pre><code class="java">/*
+ * 举例：从test.txt(utf-8)文件中，读取内容，写出到abc.txt(gbk)文件中
+ * JDK7中的写法
+ * */
+@Test
+public void test04() &#123;
+    try (
+            FileInputStream fis = new FileInputStream(&quot;test.txt&quot;);
+            InputStreamReader isr = new InputStreamReader(fis, &quot;utf-8&quot;);
+            BufferedReader br = new BufferedReader(isr);
+
+            FileOutputStream fos = new FileOutputStream(&quot;abc.txt&quot;);
+            OutputStreamWriter osw = new OutputStreamWriter(fos, &quot;gbk&quot;);
+            BufferedWriter bw = new BufferedWriter(osw);
+    ) &#123;
+        String str;
+        while ((str = br.readLine()) != null) &#123;
+            bw.write(str);
+            bw.newLine();
+            bw.flush();
+        &#125;
+    &#125; catch (IOException e) &#123;
+        e.printStackTrace();
+    &#125;
+
+&#125;
+</code></pre>
+<h2 id="JDK-9"><a href="#JDK-9" class="headerlink" title="JDK 9"></a>JDK 9</h2><pre><code class="txt">A a = new A();
+B b = new B();
+try(a;b)&#123;
+    可能产生的异常代码
+&#125;catch(异常类名 变量名)&#123;
+    异常处理的逻辑
+&#125;
+</code></pre>
+<p>因为 创建对象是在 <code>try-catch</code>之外，所以需要先将异常抛出拉。但JDK7的写法就不需要。</p>
+<pre><code class="java">@Test
+public void test06() throws FileNotFoundException, UnsupportedEncodingException &#123;
+    FileInputStream fis = new FileInputStream(&quot;test.txt&quot;);
+    InputStreamReader isr = new InputStreamReader(fis, &quot;utf-8&quot;);
+    BufferedReader br = new BufferedReader(isr);
+
+    FileOutputStream fos = new FileOutputStream(&quot;abc.txt&quot;);
+    OutputStreamWriter osw = new OutputStreamWriter(fos, &quot;gbk&quot;);
+    BufferedWriter bw = new BufferedWriter(osw);
+
+    try(fis;isr;br;fos;osw;bw)&#123;
+        // 是final的，不可再被赋值
+        // fis = new InputStreamReader(System.in);
+        String str;
+        while ((str = br.readLine()) != null) &#123;
+            bw.write(str);
+            bw.newLine();
+            bw.flush();
+        &#125;
+    &#125;catch (IOException e)&#123;
+        e.printStackTrace();
+    &#125;
+&#125;
+</code></pre>
+<h1 id="局部变量类型推断：var"><a href="#局部变量类型推断：var" class="headerlink" title="局部变量类型推断：var"></a>局部变量类型推断：var</h1><p>Java中var是<strong>Java10</strong>版本新出的特性，用它来定义局部变量。</p>
+<p>使用var 定义变量的语法： <strong>var 变量名 &#x3D; 初始值；</strong></p>
+<p>var不是关键字，它相当于是一种<strong>动态类型</strong>；</p>
+<p>var动态类型是编译器根据变量所赋的值来<strong>推断类型</strong>；</p>
+<p><strong>var 没有改变Java的本质，var只是一种简便的写法</strong>，</p>
+<pre><code class="java">//可以使用的场景
+@Test
+public void test1()&#123;
+    //1.局部变量的实例化
+    // ArrayList&lt;String&gt; list = new ArrayList&lt;&gt;();
+    var list = new ArrayList&lt;String&gt;();
+
+    var set = new LinkedHashSet&lt;Integer&gt;();
+
+    //2.增强for循环中的索引
+    // for(String s :list)
+    for (var v : list) &#123;
+        System.out.println(v);
+    &#125;
+
+    //3.传统for循环中
+    for (var i = 0; i &lt; 100; i++) &#123;
+        System.out.println(i);
+    &#125;
+
+    //4. 返回值类型含复杂泛型结构
+    var iterator = set.iterator();
+
+    HashMap&lt;String,Integer&gt; map = new HashMap&lt;&gt;();
+    var entrySet = map.entrySet();
+
+&#125;
+</code></pre>
+<p><strong>使用var定义变量的优缺点：</strong></p>
+<ul>
+<li><p>优点：使代码简洁和整齐。</p>
+</li>
+<li><p>缺点：降低了程序的可读性。</p>
+</li>
+</ul>
+<h1 id="instance-of-的模式匹配"><a href="#instance-of-的模式匹配" class="headerlink" title="instance of 的模式匹配"></a>instance of 的模式匹配</h1><pre><code class="java">/*
+* 举例1：
+* JDK14之前
+* */
+@Test
+public void test1()&#123;
+    Object obj = new String(&quot;hello,Java14&quot;);
+    if(obj instanceof String)&#123;
+        String str = (String) obj;
+        System.out.println(str.contains(&quot;Java&quot;));
+    &#125;else&#123;
+        System.out.println(&quot;非String类型&quot;);
+    &#125;
+&#125;
+
+/*
+ * 举例1：
+ * JDK14中
+ * */
+@Test
+public void test2()&#123;
+    Object obj = new String(&quot;hello,Java14&quot;);
+
+    if(obj instanceof String str)&#123;
+        System.out.println(str.contains(&quot;Java&quot;));
+    &#125;else&#123;
+        System.out.println(&quot;非String类型&quot;);
+    &#125;
+&#125;
+</code></pre>
+<h1 id="switch表达式"><a href="#switch表达式" class="headerlink" title="switch表达式"></a>switch表达式</h1><pre><code class="java">/*
+ * 举例1：
+ * JDK12之前的写法
+ * */
+@Test
+public void test1() &#123;
+    Week day = Week.FRIDAY;
+    switch (day) &#123;
+        case MONDAY:
+            System.out.println(1);
+            break;
+        case TUESDAY:
+        case WEDNESDAY:
+        case THURSDAY:
+            System.out.println(2);
+            break;
+        case FRIDAY:
+            System.out.println(3);
+            break;
+        case SATURDAY:
+        case SUNDAY:
+            System.out.println(4);
+            break;
+        default:
+            throw new RuntimeException(&quot;What day is today?&quot; + day);
+    &#125;
+&#125;
+</code></pre>
+<p>传统switch声明语句的弊端：</p>
+<ul>
+<li>匹配是自上而下的，如果忘记写break，后面的case语句不论匹配与否都会执行； —&gt;case穿透</li>
+<li>所有的case语句共用一个块范围，在不同的<strong>case语句定义的变量名不能重复</strong>；</li>
+<li>不能在一个case里写多个执行结果一致的条件；</li>
+<li>整个switch不能作为表达式返回值；</li>
+</ul>
+<p>JDK12中的写法：switch表达式，<strong>省去了break语句</strong>，避免了因少写break而出现case穿透</p>
+<p>同时将多个 case 合并到一行，显得简洁、清晰，也更加优雅的表达逻辑分支。</p>
+<pre><code class="java">@Test
+public void test2() &#123;
+    Week day = Week.FRIDAY;
+    switch (day) &#123;
+        case MONDAY -&gt; System.out.println(1);
+        case TUESDAY, WEDNESDAY, THURSDAY -&gt; System.out.println(2);
+        case FRIDAY -&gt; System.out.println(3);
+        case SATURDAY, SUNDAY -&gt; System.out.println(4);
+        default -&gt; throw new RuntimeException(&quot;What day is today?&quot; + day);
+    &#125;
+&#125;
+</code></pre>
+<p><strong>JDK12中的写法：还可以使用变量接收switch表达式的结果。</strong></p>
+<pre><code class="java">@Test
+public void test3() &#123;
+  Week day = Week.FRIDAY;
+  int result = switch (day) &#123;
+      case MONDAY -&gt; 1;
+      case TUESDAY, WEDNESDAY, THURSDAY -&gt; 2;
+      case FRIDAY -&gt; 3;
+      case SATURDAY, SUNDAY -&gt; 4;
+      default -&gt; throw new RuntimeException(&quot;What day is today?&quot; + day);
+  &#125;;
+  System.out.println(result);// 3
+&#125;
+</code></pre>
+<p>JDK13中的写法：引入了<strong>yield关键字</strong>，用于返回指定的数据，结束switch结构。</p>
+<p>这意味着，switch表达式(返回值)应该使用yield，switch语句(不返回值)应该使用break。</p>
+<pre><code class="java">@Test
+public void test4() &#123;
+    Week day = Week.FRIDAY;
+    int result = switch (day) &#123;
+        case MONDAY -&gt; &#123;
+            yield 1;
+        &#125;
+        case TUESDAY, WEDNESDAY, THURSDAY -&gt; &#123;
+            System.out.println(&quot;运行其他代码&quot;);
+            yield 2;
+        &#125;
+        case FRIDAY -&gt; &#123;
+            System.out.println(&quot;运行其他代码&quot;);
+            yield 3;
+        &#125;
+        case SATURDAY, SUNDAY -&gt; &#123;
+            System.out.println(&quot;运行其他代码&quot;);
+            yield 4;
+        &#125;
+        default -&gt; &#123;
+            System.out.println(&quot;值未找到&quot;);
+            yield 5;
+        &#125;
+    &#125;;
+    System.out.println(result);
+&#125;
+</code></pre>
+<p>为了保持兼容性，case 条件语句中依然可以使用字符<code> :</code> ，但是同一个 switch 结构里不能混用<code> -&gt;</code> 和<code> :</code> ，否则编译错误。</p>
+<pre><code class="java">@Test
+public void test5() &#123;
+    Week day = Week.FRIDAY;
+    int result = switch (day) &#123;
+        case MONDAY:
+            yield 1;
+        case TUESDAY, WEDNESDAY, THURSDAY:
+            yield 2;
+        case FRIDAY:
+            yield 3;
+        case SATURDAY, SUNDAY:
+            yield 4;
+        default:
+            yield 5;
+    &#125;;
+        System.out.println(result);
+&#125;
+</code></pre>
+<p><strong>JDK17的预览特性：switch的模式匹配</strong></p>
+<p>在使用预览特性的时候，需要把对应的JDK调成（preview）模式</p>
+<img src = "above8/03.png" width =700>
+
+<p><strong>相当于：switch + instanceof</strong></p>
+<pre><code class="java">public class SwitchPatternTest &#123;
+    public static void main(String[] args) &#123;
+
+        System.out.println(formatter(12)); // int 12
+        System.out.println(formatterSwitchPattern(12)); // int 12
+
+
+    &#125;
+    /*
+    * JDK17之前
+    * */
+    static String formatter(Object o) &#123;
+        String formatted = &quot;unknown&quot;;
+        if (o instanceof Integer i) &#123;
+            formatted = &quot;int &quot; + i;
+        &#125; else if (o instanceof Long l) &#123;
+            formatted = &quot;long &quot; + l;
+        &#125; else if (o instanceof Double d) &#123;
+            formatted = &quot;double &quot; + d;
+        &#125; else if (o instanceof String s) &#123;
+            formatted = &quot;String &quot; + s;
+        &#125;
+        return formatted;
+    &#125;
+
+    /*
+    * JDK17中switch的模式匹配
+    * */
+    static String formatterSwitchPattern(Object o) &#123;
+
+        String formatted = switch(o)&#123;
+            case Integer i:
+                yield &quot;int &quot; + i;
+            case Long l:
+                yield &quot;long &quot; + l;
+            case Double d:
+                yield &quot;double &quot; + d;
+            case String s:
+                yield &quot;String &quot; + s;
+            default:
+                yield o.toString();
+
+        &#125;;
+
+        return formatted;
+    &#125;
+&#125;
+</code></pre>
+<h1 id="文本块"><a href="#文本块" class="headerlink" title="文本块"></a>文本块</h1><pre><code class="java">//对比1：
+@Test
+public void test1() &#123;
+    String info = &quot;&lt;html&gt;\n&quot; +
+            &quot;  &lt;body&gt;\n&quot; +
+            &quot;      &lt;p&gt;Hello, 尚硅谷&lt;/p&gt;\n&quot; +
+            &quot;  &lt;/body&gt;\n&quot; +
+            &quot;&lt;/html&gt;&quot;;
+    System.out.println(info);
+
+&#125;
+
+@Test
+public void test2() &#123;
+    String info = &quot;&quot;&quot;
+            &lt;html&gt;
+              &lt;body&gt;
+                  &lt;p&gt;Hello, 尚硅谷&lt;/p&gt;
+              &lt;/body&gt;
+            &lt;/html&gt;
+            &quot;&quot;&quot;;
+    System.out.println(info);
+&#125;
+</code></pre>
+<p><strong>JDK13的新特性：</strong>使用<code>&quot;&quot;&quot;</code>作为文本块的开始符和结束符，在其中就可以放置多行的字符串，不需要进行任何转义。因此，文本块将提高Java程序的可读性和可写性。在JDK15中功能转正</p>
+<p>JDK14的版本主要增加了两个escape sequences，分别是</p>
+<ul>
+<li><code> \ &lt;line-terminator&gt;</code>：<code>\</code>取消换行操作</li>
+<li><code>\s  escape sequence</code>：<code>\s</code>表示一个空格</li>
+</ul>
+<pre><code class="java">/*
+* JDK14新特性：
+*  \:取消换行操作
+*  \s:表示一个空格
+* */
+@Test
+public void test7()&#123;
+    String newQuery1 = &quot;&quot;&quot;
+            SELECT id,name,email \
+            FROM customers\s\
+            WHERE id &gt; 4 \
+            ORDER BY email DESC
+            &quot;&quot;&quot;;
+    System.out.println(newQuery1);
+
+&#125;
+</code></pre>
+<h1 id="Record"><a href="#Record" class="headerlink" title="Record"></a>Record</h1><p><code>record</code> 是一种全新的类型，它本质上是一个 <code>final</code> 类，同时所有的属性都是 <code>final</code> 修饰，它会自动编译出 <code>public get</code> 、<code>hashcode</code> 、<code>equals</code>、<code>toString</code>、构造器等结构，减少了代码编写量。</p>
+<p>具体来说：当你用<code>record</code> 声明一个类时，该类将自动拥有以下功能：</p>
+<ul>
+<li>获取成员变量的简单方法，比如例题中的 name() 和 partner() 。注意区别于我们平常getter()的写法。</li>
+<li>一个 equals 方法的实现，执行比较时会比较该类的所有成员属性。</li>
+<li>重写 hashCode() 方法。</li>
+<li>一个可以打印该类所有成员属性的 toString() 方法。</li>
+<li><strong>只有一个构造方法。</strong></li>
+<li>还可以在record声明的类中定义静态字段、静态方法、构造器或实例方法。</li>
+<li>不能在record声明的类中定义<strong>实例字段</strong>；类不能声明为<strong>abstract</strong>；不能声明显式的<strong>父类</strong>等。</li>
+</ul>
+<p><strong>以前的方法：</strong></p>
+<pre><code class="java">public class Order &#123;
+    //属性：private final修饰
+    private final int orderId;
+    private final String orderName;
+
+    //构造器中初始化属性
+    public Order(int orderId, String orderName) &#123;
+        this.orderId = orderId;
+        this.orderName = orderName;
+    &#125;
+
+    //提供属性的getter方法
+    public int orderId() &#123;
+        return orderId;
+    &#125;
+
+    public String orderName() &#123;
+        return orderName;
+    &#125;
+
+    //equals()和hashCode()
+    @Override
+    public boolean equals(Object o) &#123;
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Order order = (Order) o;
+        return orderId == order.orderId &amp;&amp; Objects.equals(orderName, order.orderName);
+    &#125;
+
+    @Override
+    public int hashCode() &#123;
+        return Objects.hash(orderId, orderName);
+    &#125;
+
+    //toString()
+    @Override
+    public String toString() &#123;
+        return &quot;Order&#123;&quot; +
+                &quot;orderId=&quot; + orderId +
+                &quot;, orderName=&#39;&quot; + orderName + &#39;\&#39;&#39; +
+                &#39;&#125;&#39;;
+    &#125;
+&#125;
+</code></pre>
+<p><strong>现在使用record关键字</strong></p>
+<pre><code class="java">public record Order1(int orderId,String orderName) &#123;
+&#125;
+</code></pre>
+<p><strong>测试老方法</strong></p>
+<pre><code class="java">@Test
+public void test1()&#123;
+    Order order1 = new Order(1001,&quot;orderAA&quot;);
+    //测试toString()
+    System.out.println(order1);//Order&#123;orderId=1001, orderName=&#39;orderAA&#39;&#125;
+
+    //测试getter()
+    System.out.println(order1.orderId());//1001
+    System.out.println(order1.orderName());//orderAA
+
+    Order order2 = new Order(1001,&quot;orderAA&quot;);
+    //测试equals()
+    System.out.println(order1.equals(order2));//true
+
+    //测试hashCode()和equals()
+    HashSet&lt;Order&gt; set = new HashSet&lt;&gt;();
+    set.add(order1);
+    set.add(order2);
+    System.out.println(set);//[Order&#123;orderId=1001, orderName=&#39;orderAA&#39;&#125;]
+&#125;
+</code></pre>
+<p><strong>测试record</strong></p>
+<pre><code class="java">//测试Record
+@Test
+public void test2()&#123;
+    Order1 order1 = new Order1(1001,&quot;orderAA&quot;);
+    //测试toString()
+    System.out.println(order1);//Order1[orderId=1001, orderName=orderAA]
+
+    //测试getter()
+    System.out.println(order1.orderId());//1001
+    System.out.println(order1.orderName());//orderAA
+
+    Order1 order2 = new Order1(1001,&quot;orderAA&quot;);
+    //测试equals()
+    System.out.println(order1.equals(order2));//true
+
+    //测试hashCode()和equals()
+    HashSet&lt;Order1&gt; set = new HashSet&lt;&gt;();
+    set.add(order1);
+    set.add(order2);
+    System.out.println(set);//[Order1[orderId=1001, orderName=orderAA]]
+&#125;
+</code></pre>
+<p><strong>在record里面还可以声明其他方法和构造器</strong></p>
+<pre><code class="java">public record Person(int id,String name) &#123;
+  //- 还可以在record声明的类中定义静态字段、静态方法、构造器或实例方法。
+  static String info = &quot;我是一个人&quot;;
+  public static void show()&#123;
+      System.out.println(&quot;我是一个人！&quot;);
+  &#125;
+  public Person()&#123;
+      this(0,null);
+  &#125;
+  public void eat()&#123;
+      System.out.println(&quot;人吃饭&quot;);
+  &#125;
+
+  //- 不能在record声明的类中定义实例字段；类不能声明为abstract；不能声明显式的父类等。
+  //    final int age;
+&#125;
+</code></pre>
+<p>record的设计目标是提供一种将数据建模为数据的好方法。<strong>它也不是 JavaBeans 的直接替代品，因为record的方法不符合 JavaBeans 的 get 标准。</strong>另外 JavaBeans 通常是可变的，而记录是不可变的。尽管它们的用途有点像，但记录并不会以某种方式取代 JavaBean。</p>
+<h1 id="密封类：sealed"><a href="#密封类：sealed" class="headerlink" title="密封类：sealed"></a>密封类：sealed</h1><p>在 Java 中如果想让一个类不能被继承和修改，这时我们应该使用 <code>final</code> 关键字对类进行修饰。不过这种要么可以继承，要么不能继承的机制不够灵活，有<strong>些时候我们可能想让某个类可以被某些类型继承，但是又不能随意继承，</strong>是做不到的。Java 15 尝试解决这个问题，引入了 <code>sealed</code> 类，被 <code>sealed</code> 修饰的类可以指定子类。这样这个类就只能被指定的类继承。</p>
+<pre><code class="java">//Person是一个密封类，可以被指定的子类所继承。非指定的类不能继承Person类
+public sealed class Person permits Student,Teacher,Worker&#123;
+&#125;
+
+//要求指定的子类必须是final、sealed、non-sealed三者之一
+final class Student extends Person&#123;&#125; //Student类不能被继承了。
+
+sealed class Teacher extends Person permits SeniorTeacher&#123;&#125; //Teacher类只能被指定的子类继承
+// non-sealed 表示不密封，没有任何限制，可以陪继承
+non-sealed class SeniorTeacher extends Teacher&#123;
+&#125;
+
+non-sealed class Worker extends Person&#123;&#125;  //Worker类在继承时，没有任何限制
+
+class WatchWorker extends Worker&#123;&#125;
+//&#39;Farmer&#39; is not allowed in the sealed hierarchy
+//class Farmer extends Person&#123;&#125;
+</code></pre>
+<h1 id="Optional类"><a href="#Optional类" class="headerlink" title="Optional类"></a>Optional类</h1><p><strong>JDK8的新特性</strong></p>
+<p><code>Optional&lt;T&gt;</code> 类(java.util.Optional) 是一个容器类，它可以保存类型T的值，代表这个值存在。或者仅仅保存null，表示这个值不存在。如果值存在，则isPresent()方法会返回true，调用get()方法会返回该对象。</p>
+<p><strong>创建Optional类对象的方法：</strong></p>
+<ul>
+<li><code>static &lt;T&gt; Optional&lt;T&gt; empty() </code>：用来创建一个空的Optional实例</li>
+<li><code>static &lt;T&gt; Optional&lt;T&gt; of(T value) </code>：用来创建一个Optional实例，value必须非空</li>
+<li><code>static &lt;T&gt; Optional&lt;T&gt; ofNullable(T value)</code> ：用来创建一个Optional实例，value可能是空，也可能非空</li>
+</ul>
+<p><strong>判断Optional容器中是否包含对象：</strong></p>
+<ul>
+<li><code>boolean isPresent() </code>: 判断Optional容器中的值是否存在</li>
+<li><code>void ifPresent(Consumer&lt;? super T&gt; consumer) </code>：判断Optional容器中的值是否存在，如果存在，就对它进行Consumer指定的操作，如果不存在就不做</li>
+</ul>
+<p><strong>获取Optional容器的对象：</strong></p>
+<ul>
+<li><code>T get()</code>: 如果调用对象包含值，返回该值。<strong>否则抛异常</strong>。<code>T get()</code>与<code>of(T value)</code>配合使用</li>
+<li><code>T orElse(T other) </code>：<code>orElse(T other) </code>与<code>ofNullable(T value)</code>配合使用，如果Optional容器中非空，就返回所包装值，如果为空，就用<code>orElse(T other)</code>中other指定的默认值（备胎）代替</li>
+<li><code>T orElseGet(Supplier&lt;? extends T&gt; other) </code>：如果Optional容器中非空，就返回所包装值，如果为空，就用Supplier接口的Lambda表达式提供的值代替</li>
+<li><code>T orElseThrow(Supplier&lt;? extends X&gt; exceptionSupplier) </code>：如果Optional容器中非空，就返回所包装值，如果为空，就抛出你指定的异常类型代替原来的NoSuchElementException</li>
+</ul>
+<pre><code class="java">@Test
+public void test()&#123;
+    String star = &quot;迪丽热巴&quot;;
+    star = null;
+    //使用Optional避免空指针的问题
+    //1. 实例化：
+    //ofNullable(T value)`：用来创建一个Optional实例，value可能是空，也可能非空
+    Optional&lt;String&gt; optional = Optional.ofNullable(star);
+    //orElse(T other):如果Optional实例内部的value属性不为null，则返回value。如果value为null，
+    //则返回other。
+    String otherStar = &quot;杨幂&quot;;
+    String finalStar = optional.orElse(otherStar);
+    System.out.println(finalStar.toString());//杨幂
+&#125;
+
+@Test
+public void test2()&#123;
+    String star = &quot;迪丽热巴&quot;;
+    Optional&lt;String&gt; optional = Optional.ofNullable(star);
+    //get():取出内部的value值。
+    System.out.println(optional.get());//迪丽热巴
+&#125;
+</code></pre>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 1909773034@qq.com </span>
+    </div>
+</article>
+
+
+<p>
+    <a  class="dashang" onclick="dashangToggle()">赏</a>
+</p>
+
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">
+    ©2017 XieShaoLin
+</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+
+<div class="hide_box" onclick="dashangToggle()"></div>
+<div class="shang_box">
+    <a class="shang_close"  onclick="dashangToggle()">×</a>
+    <div class="shang_tit">
+        <p>喜欢就点赞,疼爱就打赏</p>
+    </div>
+    <div class="shang_payimg">
+        <div class="pay_img">
+            <img src="/img/alipay.jpg" class="alipay" title="扫码支持">
+            <img src="/img/weixin.jpg" class="weixin" title="扫码支持">
+        </div>
+    </div>
+    <div class="shang_payselect">
+        <span><label><input type="radio" name="pay" checked value="alipay">支付宝</label></span><span><label><input type="radio" name="pay" value="weixin">微信</label></span>
+    </div>
+</div>
+
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
+
+<script src="/js/script.js?v=1.1.0" ></script>
+<script>
+    var img_resize = 'default';
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $("#post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+        $("input[name=pay]").on("click", function () {
+            if($("input[name=pay]:checked").val()=="weixin"){
+                $(".shang_box .shang_payimg .pay_img").addClass("weixin_img");
+            } else {
+                $(".shang_box .shang_payimg .pay_img").removeClass("weixin_img");
+            }
+        })
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+    function dashangToggle() {
+        $(".shang_box").fadeToggle();
+        $(".hide_box").fadeToggle();
+    }
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>

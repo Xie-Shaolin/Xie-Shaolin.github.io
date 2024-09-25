@@ -1,0 +1,2663 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>SpringSecurity | Notes</title>
+  <meta name="keywords" content=" springSecurity ">
+  <meta name="description" content="SpringSecurity | Notes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="卸载MySQL停止MySQL服务 systemctl stop mysqld  查询MySQL的安装文件 [root@centos01 ~]# rpm -qa | grep -i mysql mysql-community-client-5.7.28-1.el7.x86_64 mysql-community-server-5.7.28-1.el7.x86_64 mysql-community-co">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL的安装、卸载和启动">
+<meta property="og:url" content="http://example.com/2024/09/25/InstallMySQL8/index.html">
+<meta property="og:site_name" content="Notes">
+<meta property="og:description" content="卸载MySQL停止MySQL服务 systemctl stop mysqld  查询MySQL的安装文件 [root@centos01 ~]# rpm -qa | grep -i mysql mysql-community-client-5.7.28-1.el7.x86_64 mysql-community-server-5.7.28-1.el7.x86_64 mysql-community-co">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2024/09/25/InstallMySQL8/InstallMySQL8/001.png">
+<meta property="og:image" content="http://example.com/2024/09/25/InstallMySQL8/InstallMySQL8/002.png">
+<meta property="og:image" content="http://example.com/2024/09/25/InstallMySQL8/InstallMySQL8/003.png">
+<meta property="article:published_time" content="2024-09-24T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-09-25T10:36:23.945Z">
+<meta property="article:author" content="XieShaoLin">
+<meta property="article:tag" content="MySQL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2024/09/25/InstallMySQL8/InstallMySQL8/001.png">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.1.0" rel="stylesheet">
+
+<link href="/css/hl_theme/github.css?v=1.1.0" rel="stylesheet">
+
+<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
+
+<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="/js/titleTip.js?v=1.1.0" ></script>
+
+<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.1.0" ></script>
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="">
+  <input class="theme_blog_path" value="">
+  <input id="theme_shortcut" value="true" />
+  <input id="theme_highlight_on" value="true" />
+  <input id="theme_code_copy" value="true" />
+</div>
+
+
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/"
+   class="avatar_target">
+    <img class="avatar"
+         src="/img/avatar.jpg"/>
+</a>
+<div class="author">
+    <span>XieShaoLin</span>
+</div>
+
+<div class="icon">
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            <a title="email"
+               href="mailto:1909773034@qq.com"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-email"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="qq"
+               href="http://wpa.qq.com/msgrd?v=3&uin=1909773034&site=qq&menu=yes"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-qq"></use>
+                    </svg>
+                
+            </a>
+        
+    
+</div>
+
+
+
+
+
+<ul>
+    <li>
+        <div class="all active" data-rel="全部文章">全部文章
+            
+                <small>(55)</small>
+            
+        </div>
+    </li>
+    
+        
+            
+                
+    <li>
+        <div data-rel="工具">
+            
+            工具
+            <small>(1)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="前端">
+            
+            前端
+            <small>(1)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="后端">
+            
+            后端
+            <small>(45)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="运维">
+            
+            运维
+            <small>(3)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="财经">
+            
+            财经
+            <small>(1)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="英语">
+            
+            英语
+            <small>(2)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+        
+            
+            
+            
+    </div>
+    <div>
+        
+        
+    </div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="55">
+<input type="hidden" id="yelog_site_word_count" value="299.4k">
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        友情链接
+        <i class="iconfont icon-left"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="http://yelog.org/">叶落阁</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <div class="right-top">
+        <div id="default-panel">
+            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
+            <div class="right-title">全部文章</div>
+            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
+        </div>
+        <div id="search-panel">
+            <i class="iconfont icon-left" data-title="返回"></i>
+            <input id="local-search-input" autocomplete="off"/>
+            <label class="border-line" for="input"></label>
+            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
+            <i class="iconfont icon-tag" data-title="标签"></i>
+        </div>
+        <div id="outline-panel" style="display: none">
+            <div class="right-title">大纲</div>
+            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
+        </div>
+    </div>
+
+    <div class="tags-list">
+    <input id="tag-search" />
+    <div class="tag-wrapper">
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>阿里云</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>跨域</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>前锋教育</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>虚拟机</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>AOF</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>CentOS</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>docker</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>economy</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>element-ui</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>English</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>ES6</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>ESLint</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Feign</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>finalshell</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Getway</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>git</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>grammer</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>gulimall</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>hexo</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>idea</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>java</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>JavaScript</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Jedis</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Js</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>JSR303</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Linux</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>listening</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>maven</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>mq</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Mysql</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>MySql</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>MySQL</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Nacos</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>node.js</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>NoSql</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>npm</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>nvm</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>OAuth2</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>OSS</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Prettier</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>python</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>RDB</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>redis</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>RedisTemplate</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>renren-fast</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>spring</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>springboot</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>SpringCloud</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>springSecurity</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>vue</a>
+            </li>
+        
+    </div>
+
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/InstallMySQL8/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL的安装、卸载和启动">MySQL的安装、卸载和启动</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/MysqlIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL的索引原理和语法">MySQL的索引原理和语法</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/MySQLLock/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：锁">MySQL：锁</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/SQLTips/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：建议MySQL使用哪个索引">MySQL：建议MySQL使用哪个索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/SQLOptimization/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：SQL优化">MySQL：SQL优化</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/combinedIndexColumnIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL:联合索引和单列索引">MySQL:联合索引和单列索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/coveringIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="覆盖索引与锁表">覆盖索引与锁表</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/indexDesign/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：如何设计索引">MySQL：如何设计索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/invalidIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：索引失效">MySQL：索引失效</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/mysqlEngine/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL的存储引擎">MySQL的存储引擎</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/performanceAnalysis/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：慢查询日志、profile、explain">MySQL：慢查询日志、profile、explain</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/prefixIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：前缀索引">MySQL：前缀索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/22/redisPubSub/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="Redis订阅发布">Redis订阅发布</span>
+            <span class="post-date" title="2024-09-22 15:21:35">2024/09/22</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisProblem/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="Redis：缓存穿透、缓存击穿和缓存雪崩">Redis：缓存穿透、缓存击穿和缓存雪崩</span>
+            <span class="post-date" title="2024-09-17 16:33:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisPersistence/"
+           data-tag="redis,RDB,AOF"
+           data-author="" >
+            <span class="post-title" title="Redis持久化">Redis持久化</span>
+            <span class="post-date" title="2024-09-17 16:20:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisTransaction/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="redis的事务">redis的事务</span>
+            <span class="post-date" title="2024-09-17 16:12:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisType/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="redis常用数据类型">redis常用数据类型</span>
+            <span class="post-date" title="2024-09-17 16:04:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisBrief/"
+           data-tag="redis,NoSql"
+           data-author="" >
+            <span class="post-title" title="redis与NoSql的简单介绍">redis与NoSql的简单介绍</span>
+            <span class="post-date" title="2024-09-17 15:59:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisSentinel/"
+           data-tag="Linux,CentOS,虚拟机,redis"
+           data-author="" >
+            <span class="post-title" title="Redis：主从复制与哨兵模式">Redis：主从复制与哨兵模式</span>
+            <span class="post-date" title="2024-09-17 15:59:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redis7SpringBoot/"
+           data-tag="redis,springboot,Jedis,RedisTemplate"
+           data-author="" >
+            <span class="post-title" title="springboot整合redis">springboot整合redis</span>
+            <span class="post-date" title="2024-09-17 15:42:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 运维 "
+           href="/2024/09/17/redis7Install/"
+           data-tag="CentOS,redis,前锋教育"
+           data-author="" >
+            <span class="post-title" title="Redis的安装、卸载、启动和客户端">Redis的安装、卸载、启动和客户端</span>
+            <span class="post-date" title="2024-09-17 15:19:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 前端 "
+           href="/2024/09/17/BasicFrontend/"
+           data-tag="JavaScript,Js,ES6,vue,element-ui"
+           data-author="" >
+            <span class="post-title" title="前端：ES5和Vue的基本用法">前端：ES5和Vue的基本用法</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/OAuth2/"
+           data-tag="OAuth2,spring"
+           data-author="" >
+            <span class="post-title" title="OAuth2和spring">OAuth2和spring</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/SpringCloudBaseUse/"
+           data-tag="SpringCloud,Nacos,Feign,Getway"
+           data-author="" >
+            <span class="post-title" title="SpringCloud：基本使用">SpringCloud：基本使用</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/adminSystem/"
+           data-tag="element-ui,SpringCloud,Feign,gulimall,Prettier,ESLint,跨域,JSR303,OSS,阿里云"
+           data-author="" >
+            <span class="post-title" title="谷粒商城：后台管理系统要点">谷粒商城：后台管理系统要点</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/giliEnviroment/"
+           data-tag="docker,idea,maven,renren-fast,git,nvm,node.js,npm"
+           data-author="" >
+            <span class="post-title" title="谷粒商城：环境搭建">谷粒商城：环境搭建</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/springsecurity/"
+           data-tag="springSecurity"
+           data-author="" >
+            <span class="post-title" title="SpringSecurity">SpringSecurity</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/16/MysqlTransaction/"
+           data-tag="Mysql"
+           data-author="" >
+            <span class="post-title" title="Mysql的事物">Mysql的事物</span>
+            <span class="post-date" title="2024-09-16 14:31:10">2024/09/16</span>
+        </a>
+        
+        
+        <a  class="全部文章 运维 "
+           href="/2024/09/08/finalshell/"
+           data-tag="finalshell,Linux,CentOS,虚拟机"
+           data-author="" >
+            <span class="post-title" title="finalshell与Linux虚拟机的网络配置">finalshell与Linux虚拟机的网络配置</span>
+            <span class="post-date" title="2024-09-08 22:19:10">2024/09/08</span>
+        </a>
+        
+        
+        <a  class="全部文章 英语 "
+           href="/2024/03/25/rabbitGrammer/"
+           data-tag="English,grammer"
+           data-author="" >
+            <span class="post-title" title="英语兔英语语法">英语兔英语语法</span>
+            <span class="post-date" title="2024-03-25 23:12:24">2024/03/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 工具 "
+           href="/2024/03/25/hexoStartFast/"
+           data-tag="hexo"
+           data-author="" >
+            <span class="post-title" title="hexo搭建静态博客">hexo搭建静态博客</span>
+            <span class="post-date" title="2024-03-25 22:14:10">2024/03/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/03/25/PythonBase/"
+           data-tag="python"
+           data-author="" >
+            <span class="post-title" title="Python语法基数">Python语法基数</span>
+            <span class="post-date" title="2024-03-25 22:08:07">2024/03/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 英语 "
+           href="/2023/12/14/heqiongListening/"
+           data-tag="listening"
+           data-author="" >
+            <span class="post-title" title="何琼雅思听力">何琼雅思听力</span>
+            <span class="post-date" title="2023-12-14 00:00:00">2023/12/14</span>
+        </a>
+        
+        
+        <a  class="全部文章 财经 "
+           href="/2023/05/23/EconomicMachine/"
+           data-tag="economy"
+           data-author="" >
+            <span class="post-title" title="经济机器是怎样运行的——RayDalio">经济机器是怎样运行的——RayDalio</span>
+            <span class="post-date" title="2023-05-23 00:00:00">2023/05/23</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-02-grammar/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:基本语法">java:基本语法</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-03-array/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:数组">java:数组</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-05-exception/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:异常">java:异常</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-01-install/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:概述+安装">java:概述+安装</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-04-opp/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:面向对象">java:面向对象</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-06-thread/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:多线程">java:多线程</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-08-time/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:时间相关API">java:时间相关API</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-07-string/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:字符串">java:字符串</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-09-sort/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:比较器">java:比较器</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-11-annotation/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:注解">java:注解</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-10-enum/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:枚举">java:枚举</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-12-collection/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:集合">java:集合</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-13-generics/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:泛型">java:泛型</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-14-IO/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:IO流">java:IO流</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-15-net/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:网络编程">java:网络编程</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-16-reflect/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:反射">java:反射</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 运维 "
+           href="/2020/07/13/dockerBase/"
+           data-tag="docker"
+           data-author="" >
+            <span class="post-title" title="docker 基础">docker 基础</span>
+            <span class="post-date" title="2020-07-13 20:46:25">2020/07/13</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/01/01/MySQLCrashCourse/"
+           data-tag="MySql"
+           data-author="" >
+            <span class="post-title" title="MySQL:必知必会">MySQL:必知必会</span>
+            <span class="post-date" title="2020-01-01 00:00:00">2020/01/01</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/01/01/RocketMq/"
+           data-tag="mq"
+           data-author="" >
+            <span class="post-title" title="RocketMq:分布式消息队列">RocketMq:分布式消息队列</span>
+            <span class="post-date" title="2020-01-01 00:00:00">2020/01/01</span>
+        </a>
+        
+        
+        <a  class="全部文章 "
+           href="/2019/09/29/java-17-new8/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java8新特性：lambda表达式+Stream流">java8新特性：lambda表达式+Stream流</span>
+            <span class="post-date" title="2019-09-29 00:00:00">2019/09/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 "
+           href="/2019/09/29/java-18-above8/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java8以后的新特性">java8以后的新特性</span>
+            <span class="post-date" title="2019-09-29 00:00:00">2019/09/29</span>
+        </a>
+        
+        <div id="no-item-tips">
+
+        </div>
+    </nav>
+    <div id="outline-list">
+    </div>
+</div>
+
+    </div>
+    <div class="hide-list">
+        <div class="semicircle" data-title="切换全屏 快捷键 s">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div id="post">
+    <div class="pjax">
+        <article id="post-springsecurity" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">SpringSecurity</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            <i class="iconfont icon-category"></i>
+            
+            
+            <a  data-rel="后端">后端</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            <i class="iconfont icon-tag"></i>
+            
+            <a class="color5">springSecurity</a>
+            
+        </span>
+        
+    </div>
+    <div class="article-meta">
+        
+            发布时间 : <time class="date" title='最后更新: 2024-09-17 17:14:39'>2024-09-17 00:00</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        <span>字数:9.9k</span>
+        
+        
+        <span id="busuanzi_container_page_pv">
+            阅读 :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Spring-Security%E4%B8%BB%E8%A6%81%E5%8A%9F%E8%83%BD"><span class="toc-text">Spring Security主要功能</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BF%AB%E9%80%9F%E5%BC%80%E5%A7%8B%EF%BC%9A%E8%BA%AB%E4%BB%BD%E8%AE%A4%E8%AF%81"><span class="toc-text">快速开始：身份认证</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BAspring-boot-%E9%A1%B9%E7%9B%AE%EF%BC%9A"><span class="toc-text">创建spring boot 项目：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BAIndexController%EF%BC%9A"><span class="toc-text">创建IndexController：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BAindex-html"><span class="toc-text">创建index.html</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E9%A1%B9%E7%9B%AE%E6%B5%8B%E8%AF%95Controller"><span class="toc-text">启动项目测试Controller</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#logout-%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-text">@{&#x2F;logout}的作用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B5%E9%9D%A2%E6%A0%B7%E5%BC%8F%E6%97%A0%E6%B3%95%E5%8A%A0%E8%BD%BD%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-text">页面样式无法加载的问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Spring-Security%E9%BB%98%E8%AE%A4%E5%81%9A%E4%BA%86%E4%BB%80%E4%B9%88"><span class="toc-text">Spring Security默认做了什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Spring-Security-%E7%9A%84%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86"><span class="toc-text">Spring Security 的底层原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A8%8B%E5%BA%8F%E7%9A%84%E5%90%AF%E5%8A%A8%E5%92%8C%E8%BF%90%E8%A1%8C"><span class="toc-text">程序的启动和运行</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Spring-Security%E8%87%AA%E5%AE%9A%E4%B9%89%E9%85%8D%E7%BD%AE"><span class="toc-text">Spring Security自定义配置</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E5%86%85%E5%AD%98%E7%9A%84%E7%94%A8%E6%88%B7%E8%AE%A4%E8%AF%81"><span class="toc-text">基于内存的用户认证</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E8%87%AA%E5%AE%9A%E4%B9%89%E9%85%8D%E7%BD%AE"><span class="toc-text">创建自定义配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E5%86%85%E5%AD%98%E7%9A%84%E7%94%A8%E6%88%B7%E8%AE%A4%E8%AF%81%E6%B5%81%E7%A8%8B"><span class="toc-text">基于内存的用户认证流程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E7%94%A8%E6%88%B7%E8%AE%A4%E8%AF%81"><span class="toc-text">基于数据库的用户认证</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AEmysql%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-text">配置mysql数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E7%94%A8%E6%88%B7%E8%AE%A4%E8%AF%81%E6%B5%81%E7%A8%8B"><span class="toc-text">基于数据库的用户认证流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89DBUserDetailsManager"><span class="toc-text">定义DBUserDetailsManager</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96UserDetailsService"><span class="toc-text">初始化UserDetailsService</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SpringSecurity%E7%9A%84%E9%BB%98%E8%AE%A4%E9%85%8D%E7%BD%AE"><span class="toc-text">SpringSecurity的默认配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E7%94%A8%E6%88%B7%E5%8A%9F%E8%83%BD"><span class="toc-text">添加用户功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E9%97%ADcsrf%E6%94%BB%E5%87%BB%E9%98%B2%E5%BE%A1"><span class="toc-text">关闭csrf攻击防御</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%86%E7%A0%81%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95"><span class="toc-text">密码加密算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AF%86%E7%A0%81%E5%8A%A0%E5%AF%86%E6%96%B9%E5%BC%8F"><span class="toc-text">密码加密方式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#PasswordEncoder"><span class="toc-text">PasswordEncoder</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#DelegatingPasswordEncoder"><span class="toc-text">DelegatingPasswordEncoder</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%99%BB%E5%BD%95%E9%A1%B5%E9%9D%A2"><span class="toc-text">自定义登录页面</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#logout%E6%B3%A8%E9%94%80%E5%A4%B1%E8%B4%A5%E7%9A%84%E5%8E%9F%E5%9B%A0"><span class="toc-text">logout注销失败的原因</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E5%90%8E%E7%AB%AF%E5%88%86%E7%A6%BB"><span class="toc-text">前后端分离</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E8%AE%A4%E8%AF%81%E6%B5%81%E7%A8%8B"><span class="toc-text">用户认证流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A4%E8%AF%81%E6%88%90%E5%8A%9F%E7%9A%84%E5%93%8D%E5%BA%94"><span class="toc-text">认证成功的响应</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A4%E8%AF%81%E5%A4%B1%E8%B4%A5%E5%93%8D%E5%BA%94"><span class="toc-text">认证失败响应</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%A8%E9%94%80%E5%93%8D%E5%BA%94"><span class="toc-text">注销响应</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%B7%E6%B1%82%E6%9C%AA%E8%AE%A4%E8%AF%81%E7%9A%84%E6%8E%A5%E5%8F%A3"><span class="toc-text">请求未认证的接口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B7%A8%E5%9F%9F"><span class="toc-text">跨域</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BA%AB%E4%BB%BD%E8%AE%A4%E8%AF%81"><span class="toc-text">身份认证</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E8%AE%A4%E8%AF%81%E4%BF%A1%E6%81%AF"><span class="toc-text">用户认证信息</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-text">基本概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8Controller%E4%B8%AD%E8%8E%B7%E5%8F%96%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF"><span class="toc-text">在Controller中获取用户信息</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%9A%E8%AF%9D%E5%B9%B6%E5%8F%91%E6%8E%A7%E5%88%B6"><span class="toc-text">会话并发控制</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8E%88%E6%9D%83"><span class="toc-text">授权</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8Erequest%E7%9A%84%E6%8E%88%E6%9D%83"><span class="toc-text">基于request的授权</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%88%B7-%E6%9D%83%E9%99%90-%E8%B5%84%E6%BA%90"><span class="toc-text">用户-权限-资源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%88%B7-%E8%A7%92%E8%89%B2-%E8%B5%84%E6%BA%90"><span class="toc-text">用户-角色-资源</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E6%96%B9%E6%B3%95%E7%9A%84%E6%8E%88%E6%9D%83"><span class="toc-text">基于方法的授权</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%88%B7-%E8%A7%92%E8%89%B2-%E8%B5%84%E6%BA%90-1"><span class="toc-text">用户-角色-资源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E5%85%B6%E4%BB%96%E7%9A%84%E6%9D%A1%E4%BB%B6"><span class="toc-text">添加其他的条件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%88%B7-%E6%9D%83%E9%99%90-%E8%B5%84%E6%BA%90-1"><span class="toc-text">用户-权限-资源</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%A8%E6%88%B7-%E8%A7%92%E8%89%B2-%E6%9D%83%E9%99%90-%E8%B5%84%E6%BA%90"><span class="toc-text">用户-角色-权限-资源</span></a></li></ol></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Spring-Security主要功能"><a href="#Spring-Security主要功能" class="headerlink" title="Spring Security主要功能"></a>Spring Security主要功能</h1><p>具体信息可以参考<a target="_blank" rel="noopener" href="https://docs.spring.io/spring-security/reference/index.html">官方文档</a></p>
+<ul>
+<li>身份认证（authentication）：身份认证是验证<code>谁正在访问系统资源</code>，判断用户是否为合法用户。认证用户的常见方式是要求用户输入用户名和密码。</li>
+<li>授权（authorization）：用户进行身份认证后，系统会控制<code>谁能访问哪些资源</code>，这个过程叫做授权。用户无法访问没有权限的资源。</li>
+<li>防御常见攻击（protection against common attacks）<ul>
+<li>CSRF</li>
+<li>HTTP Headers</li>
+<li>HTTP Requests</li>
+</ul>
+</li>
+</ul>
+<h1 id="快速开始：身份认证"><a href="#快速开始：身份认证" class="headerlink" title="快速开始：身份认证"></a>快速开始：身份认证</h1><h2 id="创建spring-boot-项目："><a href="#创建spring-boot-项目：" class="headerlink" title="创建spring boot 项目："></a>创建spring boot 项目：</h2><p>JDK：17</p>
+<p>SpringBoot：3.2.0（依赖了Spring Security 6.2.0）</p>
+<blockquote>
+<p>在Idea中没有3.2.0这个版本</p>
+<img src="springsecurity/015.png"  width="300px" />
+
+<p>可以直接在pom文件里面修改</p>
+<pre><code class="xml">    &lt;parent&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+        &lt;version&gt;3.2.0&lt;/version&gt;
+        &lt;relativePath/&gt; &lt;!-- lookup parent from repository --&gt;
+    &lt;/parent&gt;
+</code></pre>
+</blockquote>
+<p>Dependencies：Spring Web、Spring Security、Thymeleaf</p>
+<blockquote>
+<p>【<strong>Notice</strong>】</p>
+<p>如果使用Spring 的国内脚手架(<code>https://start.aliyun.com/</code>)，能够使用的最高版本是<code>spring boot 3.0.2</code></p>
+<p>为此需要使用Spring的官方脚手架（<code>https://start.spring.io/</code>）</p>
+<p>【<span style="color: red;font-weight: bold;">error</span>】</p>
+<p><code>Unresolved plugin: &#39;org.springframework.boot:spring-boot-maven-plugin:3.2.4&#39; </code></p>
+<p>加入对应的版本即可：</p>
+<pre><code class="xml">    &lt;build&gt;
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+                &lt;version&gt;3.2.4&lt;/version&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+</code></pre>
+</blockquote>
+<h2 id="创建IndexController："><a href="#创建IndexController：" class="headerlink" title="创建IndexController："></a>创建IndexController：</h2><pre><code class="java">@Controller
+public class IndexController &#123;
+
+    @GetMapping(&quot;/&quot;)
+    public String index() &#123;
+        return &quot;index&quot;;
+    &#125;
+&#125;
+</code></pre>
+<h2 id="创建index-html"><a href="#创建index-html" class="headerlink" title="创建index.html"></a>创建index.html</h2><pre><code class="html">&lt;html xmlns:th=&quot;https://www.thymeleaf.org&quot;&gt;
+&lt;head&gt;
+    &lt;title&gt;Hello Security!&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Hello Security&lt;/h1&gt;
+&lt;!--通过使用@&#123;/logout&#125;，Thymeleaf将自动处理生成正确的URL，以适应当前的上下文路径。
+这样，无论应用程序部署在哪个上下文路径下，生成的URL都能正确地指向注销功能。--&gt;
+&lt;a th:href=&quot;@&#123;/logout&#125;&quot;&gt;Log Out1&lt;/a&gt;
+&lt;a href=&quot;/logout&quot;&gt;Log Out2&lt;/a&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<h2 id="启动项目测试Controller"><a href="#启动项目测试Controller" class="headerlink" title="启动项目测试Controller"></a>启动项目测试Controller</h2><p>浏览器中访问<code>http://localhost:8080/</code>,浏览器自动跳转到登录页面<code>http://localhost:8080/login</code></p>
+<p>输入用户名：user</p>
+<p>输入密码：在控制台的启动日志中查找初始的默认密码</p>
+<img src="springsecurity/001.png"  width="500px" />
+
+<h2 id="logout-的作用"><a href="#logout-的作用" class="headerlink" title="@{&#x2F;logout}的作用"></a>@{&#x2F;logout}的作用</h2><p>通过使用@{&#x2F;logout}，Thymeleaf将自动处理生成正确的URL，以适应当前的上下文路径。这样，无论应用程序部署在哪个上下文路径下，生成的URL都能正确地指向注销功能。</p>
+<p>例如：如果我们在配置文件中添加如下内容</p>
+<pre><code class="properties">server.servlet.context-path=/demo
+</code></pre>
+<p>那么Log Out1的路径为：<code>http://localhost:8080/demo/logout</code></p>
+<p>那么Log Out2的路径为：<code>http://localhost:8080/logout</code></p>
+<h2 id="页面样式无法加载的问题"><a href="#页面样式无法加载的问题" class="headerlink" title="页面样式无法加载的问题"></a>页面样式无法加载的问题</h2><p>页面样式bootstrap.min.css是一个CDN地址，需要通过科学上网的方式访问。否则你的登录页会加载很久。</p>
+<img src="springsecurity/002.png"  width="600px" />
+
+<p>并且看到的页面是这样的（登录按钮没有样式文件渲染，但是不影响登录功能的执行）</p>
+<img src="springsecurity/003.png"  width="400px" />
+
+<h2 id="Spring-Security默认做了什么"><a href="#Spring-Security默认做了什么" class="headerlink" title="Spring Security默认做了什么"></a>Spring Security默认做了什么</h2><ul>
+<li>保护应用程序URL，要求对应用程序的任何交互进行<strong>身份验证</strong>。</li>
+<li><strong>程序启动时生成一个默认用户“user”。</strong></li>
+<li><strong>生成一个默认的随机密码，并将此密码记录在控制台上</strong>。</li>
+<li>生成默认的<strong>登录表单和注销页面</strong>。</li>
+<li>提供基于<strong>表单的登录和注销流程</strong>。</li>
+<li>对于Web请求，重定向到登录页面；</li>
+<li>对于服务请求，返回401未经授权。</li>
+<li>处理跨站请求伪造（CSRF）攻击。</li>
+<li>处理会话劫持攻击。</li>
+<li>写入Strict-Transport-Security以确保HTTPS。</li>
+<li>写入X-Content-Type-Options以处理嗅探攻击。</li>
+<li>写入Cache Control头来保护经过身份验证的资源。</li>
+<li>写入X-Frame-Options以处理点击劫持攻击。</li>
+</ul>
+<h2 id="Spring-Security-的底层原理"><a href="#Spring-Security-的底层原理" class="headerlink" title="Spring Security 的底层原理"></a>Spring Security 的底层原理</h2><p><strong>官方文档：</strong><a target="_blank" rel="noopener" href="https://docs.spring.io/spring-springsecurity/reference/servlet/architecture.html">Spring Security的底层原理</a></p>
+<p>Spring Security之所以默认帮助我们做了那么多事情，它的底层原理是传统的<code>Servlet过滤器</code></p>
+<img src="springsecurity/004.png"  width="600px" />
+
+<h2 id="程序的启动和运行"><a href="#程序的启动和运行" class="headerlink" title="程序的启动和运行"></a>程序的启动和运行</h2><p><strong>DefaultSecurityFilterChain</strong></p>
+<p>SecurityFilterChain接口的实现（DefaultSecurityFilterChain），加载了默认的16个Filter</p>
+<pre><code class="java">    public DefaultSecurityFilterChain(RequestMatcher requestMatcher, List&lt;Filter&gt; filters) &#123;
+        if (filters.isEmpty()) &#123;
+            logger.info(LogMessage.format(&quot;Will not secure %s&quot;, requestMatcher));
+        &#125; else &#123;
+            logger.info(LogMessage.format(&quot;Will secure %s with %s&quot;, requestMatcher, filters));
+        &#125;
+
+        this.requestMatcher = requestMatcher;
+        this.filters = new ArrayList(filters);// 这一步
+    &#125;
+</code></pre>
+<img src="springsecurity/005.png"  width="400px" />
+
+<p><strong>SecurityProperties</strong></p>
+<p>默认情况下Spring Security将初始的用户名和密码存在了SecurityProperties类中。这个类中有一个静态内部类User，配置了默认的用户名（name &#x3D; “user”）和密码（password &#x3D; uuid）</p>
+<img src="springsecurity/006.png"  width="500px" />
+
+<p>我们也可以将用户名、密码配置在SpringBoot的配置文件中：在application.properties中配置自定义用户名和密码</p>
+<pre><code class="properties">spring.security.user.name=user
+spring.security.user.password=123
+</code></pre>
+<h1 id="Spring-Security自定义配置"><a href="#Spring-Security自定义配置" class="headerlink" title="Spring Security自定义配置"></a>Spring Security自定义配置</h1><h2 id="基于内存的用户认证"><a href="#基于内存的用户认证" class="headerlink" title="基于内存的用户认证"></a>基于内存的用户认证</h2><p><strong>官方文档：</strong><a target="_blank" rel="noopener" href="https://docs.spring.io/spring-security/reference/servlet/configuration/java.html">Java自定义配置</a></p>
+<h3 id="创建自定义配置"><a href="#创建自定义配置" class="headerlink" title="创建自定义配置"></a>创建自定义配置</h3><pre><code class="java">package com.linkit.sprsec.config;
+
+@Configuration // 配置类
+// Spring项目总需要添加此注解，SpringBoot项目中不需要
+@EnableWebSecurity//目的：开启spring security 的自定义配置
+public class WebSecurityConfig &#123;
+
+    @Bean
+    public UserDetailsService userDetailsService() &#123;
+        // 创建一个内存中的用户管理器，并添加一个用户
+        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
+        // 使用manager对象来管理user对象
+        manager.createUser( //此行设置断点可以查看创建的user对象
+            // 创建UserDetails对象，用于管理用户名，密码，角色，权限等信息
+            User
+            .withDefaultPasswordEncoder()
+            .username(&quot;123&quot;) //自定义用户名
+            .password(&quot;123&quot;) //自定义密码
+            .roles(&quot;USER&quot;) //自定义角色
+            .build()
+        );
+        return manager;
+    &#125;
+&#125;
+</code></pre>
+<p><code>@EnableWebSecurity</code>注解在Spring boot项目中是已经配置了的。因为引入了<code>spring-boot-starter-security</code>依赖</p>
+<pre><code class="java">package org.springframework.boot.autoconfigure.security.servlet;
+
+class SpringBootWebSecurityConfiguration &#123;
+    SpringBootWebSecurityConfiguration() &#123;
+    &#125;
+
+    @ConditionalOnClass(&#123;EnableWebSecurity.class&#125;)// 表示只要EnableWebSecurity.class加载进进来，就会开启下面注解
+    @EnableWebSecurity // 这里已经开启了Spring security
+    static class WebSecurityEnablerConfiguration &#123;
+        WebSecurityEnablerConfiguration() &#123;
+        &#125;
+    &#125;
+</code></pre>
+<p>另外，在<code>application.properties</code>配置的<code>name</code>和<code>password</code>就会失效</p>
+<h3 id="基于内存的用户认证流程"><a href="#基于内存的用户认证流程" class="headerlink" title="基于内存的用户认证流程"></a>基于内存的用户认证流程</h3><ul>
+<li><p>程序启动时：</p>
+<ul>
+<li><p>创建<span style="background: #B7E8BD"><strong>InMemoryUserDetailsManager</strong></span>对象（在<code>WebSecurityConfig</code>里面）</p>
+<pre><code class="java">public class InMemoryUserDetailsManager implements UserDetailsManager, UserDetailsPasswordService 
+</code></pre>
+<img src="springsecurity/007.png"  width="500px" />
+</li>
+<li><p>创建<code>User</code>对象，封装用户名密码</p>
+</li>
+<li><p>使用InMemoryUserDetailsManager<code>将User存入内存</code></p>
+<img src="springsecurity/008.png"  width="500px" />
+
+<p>users是一个map对象<code>private final Map&lt;String, MutableUserDetails&gt; users = new HashMap();</code></p>
+</li>
+</ul>
+</li>
+<li><p>校验用户时：</p>
+<ul>
+<li><p><code>UsernamePasswordAuthenticationFilter</code>用于接收请求参数（用户和密码）</p>
+<img src="springsecurity/009.png"  width="600px" />
+</li>
+<li><p><code>AbstractUserDetailsAuthenticationProvider</code>用于进一步校验</p>
+<img src="springsecurity/010.png"  width="600px" />
+</li>
+<li><p>进入到<code>DaoAuthenticationProvider</code>里面，</p>
+<img src="springsecurity/011.png"  width="600px" />
+</li>
+<li><p>SpringSecurity自动使用<span style="background: #B7E8BD"><strong>InMemoryUserDetailsManager</strong>的<strong>loadUserByUsername</strong>方法</span>从<code>内存中</code>获取User对象</p>
+<img src="springsecurity/012.png"  width="600px" />
+
+<p>如果可以从内存中获取对应用户名的用户，说明这个用户存在，接下来就只要校验密码了。所有 <code>return new User</code></p>
+</li>
+<li><p>回到<code>AbstractUserDetailsAuthenticationProvider</code>，调用<code>additionalAuthenticationChecks</code>方法</p>
+<img src="springsecurity/014.png"  width="700px" />
+
+<ul>
+<li><p>在<code>additionalAuthenticationChecks</code>方法里面校验密码</p>
+<img src="springsecurity/013.png"  width="800px" /></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="基于数据库的用户认证"><a href="#基于数据库的用户认证" class="headerlink" title="基于数据库的用户认证"></a>基于数据库的用户认证</h2><h3 id="配置mysql数据库"><a href="#配置mysql数据库" class="headerlink" title="配置mysql数据库"></a>配置mysql数据库</h3><ul>
+<li><p>Sql：创建表并插入测试数据</p>
+</li>
+<li><p>引入依赖：</p>
+<ul>
+<li>mysql-connector-java；mybatis-plus-boot-starter；org.mybatis；lombok</li>
+</ul>
+</li>
+<li><p>配置数据源</p>
+</li>
+<li><p>实体类-Mapper-Service-Controller-Mapper.xml</p>
+</li>
+</ul>
+<h3 id="基于数据库的用户认证流程"><a href="#基于数据库的用户认证流程" class="headerlink" title="基于数据库的用户认证流程"></a>基于数据库的用户认证流程</h3><ul>
+<li>程序启动时：<ul>
+<li>创建<code>DBUserDetailsManager</code>类，实现接口 UserDetailsManager, UserDetailsPasswordService</li>
+<li>在应用程序中初始化这个类的对象</li>
+</ul>
+</li>
+<li>校验用户时：<ul>
+<li>SpringSecurity自动使用<code>DBUserDetailsManager</code>的<code>loadUserByUsername</code>方法从<code>数据库中</code>获取User对象</li>
+<li>在<code>UsernamePasswordAuthenticationFilter</code>过滤器中的<code>attemptAuthentication</code>方法中将用户输入的用户名密码和从数据库中获取到的用户信息进行比较，进行用户认证</li>
+</ul>
+</li>
+</ul>
+<h3 id="定义DBUserDetailsManager"><a href="#定义DBUserDetailsManager" class="headerlink" title="定义DBUserDetailsManager"></a>定义DBUserDetailsManager</h3><pre><code class="java">public class DBUserDetailsManager implements UserDetailsManager, UserDetailsPasswordService &#123;
+
+    @Resource
+    private UserMapper userMapper;
+
+    /**
+     *
+     * @param username 前端传过来的username
+     * @return
+     * @throws UsernameNotFoundException
+     */
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException &#123;
+
+        QueryWrapper&lt;User&gt; queryWrapper = new QueryWrapper&lt;&gt;();
+        queryWrapper.eq(&quot;username&quot;, username);
+        User user = userMapper.selectOne(queryWrapper);
+        if (user == null) &#123;
+            //用户不存在
+            throw new UsernameNotFoundException(username);
+        &#125; else &#123;
+          // 这里返回一个 UserDetails，然后框架会自动调用方法去校验密码
+            Collection&lt;GrantedAuthority&gt; authorities = new ArrayList&lt;&gt;();
+            return new org.springframework.security.core.userdetails.User(
+                    user.getUsername(),
+                    user.getPassword(),
+                    user.getEnabled(),
+                    true, //用户账号是否过期
+                    true, //用户凭证是否过期
+                    true, //用户是否未被锁定
+                    authorities); //权限列表
+        &#125;
+    &#125;
+  &#125;
+</code></pre>
+<h3 id="初始化UserDetailsService"><a href="#初始化UserDetailsService" class="headerlink" title="初始化UserDetailsService"></a>初始化UserDetailsService</h3><p>修改<strong>WebSecurityConfig</strong>中的userDetailsService方法如下</p>
+<pre><code class="java">@Bean
+public UserDetailsService userDetailsService() &#123;
+    DBUserDetailsManager manager = new DBUserDetailsManager();
+    return manager;
+&#125;
+</code></pre>
+<p>或者直接在<strong>DBUserDetailsManager</strong>类上添加@Component注解</p>
+<pre><code class="java">@Component
+public class DBUserDetailsManager implements UserDetailsManager, UserDetailsPasswordService 
+</code></pre>
+<blockquote>
+<p>【<strong>Notice</strong>】</p>
+<p>要注释掉之前在WebSecurityConfig中写的userDetailsService方法</p>
+<pre><code class="java">@Configuration // 配置类
+// Spring项目总需要添加此注解，SpringBoot项目中不需要
+//@EnableWebSecurity//目的：开启spring security 的自定义配置
+public class WebSecurityConfig &#123;
+
+//    @Bean
+//    public UserDetailsService userDetailsService() &#123;
+//        // 创建一个内存中的用户管理器，并添加一个用户
+//        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
+//        // 使用manager对象来管理user对象
+//        manager.createUser( //此行设置断点可以查看创建的user对象
+//            // 创建UserDetails对象，用于管理用户名，密码，角色，权限等信息
+//            User
+//            .withDefaultPasswordEncoder()
+//            .username(&quot;123&quot;) //自定义用户名
+//            .password(&quot;123&quot;) //自定义密码
+//            .roles(&quot;USER&quot;) //自定义角色
+//            .build()
+//        );
+//        return manager;
+//    &#125;
+&#125;
+</code></pre>
+</blockquote>
+<h3 id="SpringSecurity的默认配置"><a href="#SpringSecurity的默认配置" class="headerlink" title="SpringSecurity的默认配置"></a>SpringSecurity的默认配置</h3><p>在SpringSecurity中，默认会有如下过滤链。</p>
+<pre><code class="java">@Bean
+public SecurityFilterChain filterChain(HttpSecurity http) throws Exception &#123;
+    //authorizeRequests()：开启授权保护
+    //anyRequest()：对所有请求开启授权保护
+    //authenticated()：已认证请求会自动被授权
+  // 上面配置会有如下效果：如果未认证的请求过来，会被跳转的登录页（anyRequest），
+  // 被认证之后才能访问相关的网页（authenticated）
+    http
+        .authorizeRequests(authorize -&gt; authorize.anyRequest().authenticated())
+        .formLogin(withDefaults())//formLogin 表单授权方式--withDefaults()生成默认的登录或者登出页面
+        .httpBasic(withDefaults());//基本授权方式（有formLogin存在，这句就不起作用，所有也可以注释掉）
+
+    return http.build();
+&#125;
+</code></pre>
+<p>所谓基本授权方式就是，使用浏览器的登录弹窗</p>
+<img src="springsecurity/016.png"  width="300px" />
+
+<h3 id="添加用户功能"><a href="#添加用户功能" class="headerlink" title="添加用户功能"></a>添加用户功能</h3><p><strong>Controller</strong></p>
+<pre><code class="java">@PostMapping(&quot;/add&quot;)
+public void add(@RequestBody User user)&#123;
+    userService.saveUserDetails(user);
+&#125;
+</code></pre>
+<p><strong>Service</strong></p>
+<pre><code class="java">@Service
+public class UserServiceImpl extends ServiceImpl&lt;UserMapper, User&gt; implements UserService &#123;
+    @Resource
+    private DBUserDetailsManager dbUserDetailsManager;
+
+    @Override
+    public void saveUserDetails(User user) &#123;
+
+        UserDetails userDetails = org.springframework.security.core.userdetails.User
+                .withDefaultPasswordEncoder() // 表示使用默认的密码加密方案
+                .username(user.getUsername()) //自定义用户名
+                .password(user.getPassword()) //自定义密码
+                .build();
+        dbUserDetailsManager.createUser(userDetails);
+    &#125;
+&#125;
+</code></pre>
+<p><strong>DBUserDetailsManager</strong></p>
+<pre><code class="java">@Override
+public void createUser(UserDetails userDetails) &#123;
+
+    User user = new User();
+    user.setUsername(userDetails.getUsername());
+    user.setPassword(userDetails.getPassword());// 这里存进去的就是加密后的密码
+    user.setEnabled(true);
+    userMapper.insert(user);
+&#125;
+</code></pre>
+<p><strong>使用Swagger测试</strong></p>
+<p>pom中添加配置用于测试</p>
+<pre><code class="xml">&lt;!--swagger测试--&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;com.github.xiaoymin&lt;/groupId&gt;
+    &lt;artifactId&gt;knife4j-openapi3-jakarta-spring-boot-starter&lt;/artifactId&gt;
+    &lt;version&gt;4.1.0&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+<p>Swagger测试地址：<a target="_blank" rel="noopener" href="http://localhost:8080/demo/doc.html">http://localhost:8080/demo/doc.html</a></p>
+<p><strong>注意：</strong>访问Swagger测试地址地址前需要先登录</p>
+<h3 id="关闭csrf攻击防御"><a href="#关闭csrf攻击防御" class="headerlink" title="关闭csrf攻击防御"></a>关闭csrf攻击防御</h3><p><strong><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_43378996/article/details/123910614">什么是CSRF</a></strong></p>
+<p>CSRF (Cross-site request forgery，跨站请求伪造)也被称为One Click Attack或者Session Riding，通常缩写为CSRF或者XSRF，是一种对网站的恶意利用。简单的说，是<strong>攻击者通过一些技术手段欺骗用户的浏览器去访问一个<u>自己以前认证过的站点</u>并运行一些操作</strong>（如发邮件，发消息，甚至财产操作（如转账和购买商品））。因为浏览器之前认证过，所以被访问的站点会觉得这是真正的用户操作而去运行。</p>
+<p><strong>CSRF攻击原理及过程</strong></p>
+<img src="springsecurity/017.png"  width="800px" />
+
+<p><strong>SpringSecurity如何防御csrf攻击</strong></p>
+<p>默认情况下SpringSecurity开启了csrf攻击防御的功能，这要求任何请求的请求参数中都必须携带一个**_csrf<strong>字段。后端回去校验这个</strong>_csrf<strong>字段。比如登录页面，后端生成的登录页面就随机生成了</strong>_csrf**字段的值</p>
+<img src="springsecurity/018.png"  width="800px" />
+
+<p><strong>如何关闭csrf攻击防御</strong></p>
+<pre><code class="java">@Configuration // 配置类
+
+public class WebSecurityConfig &#123;
+  @Bean
+  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception &#123;
+      //authorizeRequests()：开启授权保护
+      //anyRequest()：对所有请求开启授权保护
+      //authenticated()：已认证请求会自动被授权
+      // 上面配置会有如下效果：如果未认证的请求过来，会被跳转的登录页（anyRequest），
+      // 被认证之后才能访问相关的网页（authenticated）
+      http.authorizeRequests(authorize -&gt; authorize.anyRequest().authenticated())
+              .formLogin(withDefaults())//表单授权方式
+              .httpBasic(withDefaults());//基本授权方式
+
+      // 关闭csrf跨域请求
+      // csrf：跨站请求伪造，默认是开启的，如果关闭了，那么所有的请求都不需要csrf的验证了
+      http.csrf(csrf -&gt; csrf.disable()); 
+      return http.build();
+  &#125;
+&#125;
+</code></pre>
+<h3 id="密码加密算法"><a href="#密码加密算法" class="headerlink" title="密码加密算法"></a>密码加密算法</h3><h4 id="密码加密方式"><a href="#密码加密方式" class="headerlink" title="密码加密方式"></a><strong>密码加密方式</strong></h4><p><strong>明文密码：</strong></p>
+<p>最初，密码以明文形式存储在数据库中。但是恶意用户可能会通过SQL注入等手段获取到明文密码，或者程序员将数据库数据泄露的情况也可能发生。</p>
+<p><strong>Hash算法：</strong></p>
+<p>Spring Security的<code>PasswordEncoder</code>接口用于对密码进行<code>单向转换</code>，从而将密码安全地存储。对密码单向转换需要用到<code>哈希算法</code>，例如MD5、SHA-256、SHA-512等，哈希算法是单向的，<code>只能加密，不能解密</code>。</p>
+<p>因此，<code>数据库中存储的是单向转换后的密码</code>，Spring Security在进行用户身份验证时需要将用户输入的密码进行单向转换，然后与数据库的密码进行比较。</p>
+<p>因此，如果发生数据泄露，只有密码的单向哈希会被暴露。由于哈希是单向的，并且在给定哈希的情况下只能通过<code>暴力破解的方式猜测密码</code>。</p>
+<p><strong>彩虹表：</strong></p>
+<p>恶意用户创建称为<code>彩虹表</code>的查找表。</p>
+<p>彩虹表就是一个庞大的、针对各种可能的字母组合预先生成的哈希值集合，有了它可以快速破解各类密码。越是复杂的密码，需要的彩虹表就越大，主流的彩虹表都是100G以上，目前主要的算法有LM, NTLM, MD5, SHA1, MYSQLSHA1, HALFLMCHALL, NTLMCHALL, ORACLE-SYSTEM, MD5-HALF。</p>
+<p><strong>加盐密码：</strong></p>
+<p>为了减轻彩虹表的效果，开发人员开始使用加盐密码。不再只使用密码作为哈希函数的输入，而是为每个用户的密码生成随机字节（称为盐）。盐和用户的密码将一起经过哈希函数运算，生成一个唯一的哈希。<strong>盐将以明文形式与用户的密码一起存储</strong>。然后，当用户尝试进行身份验证时，盐和用户输入的密码一起经过哈希函数运算，再与存储的密码进行比较。唯一的盐意味着彩虹表不再有效，因为对于每个盐和密码的组合，哈希都是不同的。</p>
+<pre><code class="java">@Test
+public void testPs()&#123;
+    String password= &quot;123&quot;;
+    // 产生盐值(32位)  这里要注意去掉 UUID 生成 -
+    String salt = UUID.randomUUID().toString().replaceAll(&quot;-&quot;, &quot;&quot;);
+    System.out.println(salt); // e0d50055abbd42fc899cc85db897e59a
+    // 生成加盐之后的密码((盐值 + 密码)整体 md5 加密)
+    String saltPassword = DigestUtils.md5DigestAsHex((salt + password).getBytes());
+    System.out.println(saltPassword); //829c2637fdb13503b6becec0ddbd0b63
+    // 生成最终密码(保存到数据库中的密码)[自己约定的格式：32位盐值 +&amp;+ 32位加盐后的密码]
+    // 这样约定格式是为了解密的时候方便得到盐值
+    String finalPassword = salt + &quot;$&quot; + saltPassword;
+    //e0d50055abbd42fc899cc85db897e59a$829c2637fdb13503b6becec0ddbd0b63
+    System.out.println(finalPassword);
+&#125;
+</code></pre>
+<p><strong>自适应单向函数：</strong></p>
+<p>随着硬件的不断发展，加盐哈希也不再安全。原因是，<strong>计算机可以每秒执行数十亿次哈希计算</strong>。这意味着我们可以轻松地破解每个密码。</p>
+<p>现在，开发人员开始<strong>使用自适应单向函数来存储密码</strong>。使用自适应单向函数验证密码时，<code>故意占用资源（故意使用大量的CPU、内存或其他资源）</code>。自适应单向函数允许配置一个<u>“工作因子”</u>，随着硬件的改进而增加。我们建议将“工作因子”调整到系统中验证密码需要约一秒钟的时间。这种权衡是为了让<u>攻击者难以破解密码</u>。</p>
+<blockquote>
+<p>为什么故意占用资源可以使攻击者难以破解密码？</p>
+<p>这是因为攻击者通常会使用自动化工具尝试大量的密码组合来破解密码。如果每次验证密码都需要消耗显著的计算资源（如CPU时间和内存），那么攻击者尝试每个密码组合所需的时间就会增加。这样，即使攻击者拥有强大的计算资源，他们也**<u>需要更长的时间来完成破解尝试</u><strong>，从而显著</strong><u>提高了破解成本</u>**。</p>
+</blockquote>
+<p>自适应单向函数包括<code>bcrypt、PBKDF2、scrypt和argon2</code>。</p>
+<h4 id="PasswordEncoder"><a href="#PasswordEncoder" class="headerlink" title="PasswordEncoder"></a><strong>PasswordEncoder</strong></h4><p><strong>BCryptPasswordEncoder</strong></p>
+<p>使用广泛支持的bcrypt算法来对密码进行哈希。为了增加对密码破解的抵抗力，bcrypt故意设计得较慢。和其他自适应单向函数一样，应该调整其参数，使其在您的系统上验证一个密码大约需要1秒的时间。BCryptPasswordEncoder的默认实现使用强度10。建议您在自己的系统上调整和测试强度参数，以便验证密码时大约需要1秒的时间。</p>
+<pre><code class="java">@Test
+void testPassword() &#123;
+    // 工作因子，默认值是10，最小值是4，最大值是31，值越大运算速度越慢
+   /* public BCryptPasswordEncoder(int strength) &#123;
+       this(strength, (SecureRandom)null);
+    &#125;*/
+    PasswordEncoder encoder = new BCryptPasswordEncoder(4);
+    //明文：&quot;password&quot;
+    //密文：result，即使明文密码相同，每次生成的密文也不一致
+    long strat1 = System.currentTimeMillis();
+    // $2a$04$KrqI8F2GnG8yRtsdCE3lWu/rmAzE0EZqYNgEDdQlb8LUGdoAx1rWe
+    String result = encoder.encode(&quot;password&quot;);
+    System.out.println(result);
+
+    //密码校验：工作因子越大，matches的时间就越长，因为matches也是生成一个秘密的过程
+    Assert.isTrue(encoder.matches(&quot;password&quot;, result), &quot;密码不一致&quot;);
+    long end1 = System.currentTimeMillis();
+    System.out.println(&quot;耗时1：&quot; + (end1 - strat1));// 耗时1：8
+
+    PasswordEncoder encoder2 = new BCryptPasswordEncoder(14);
+    long strat2 = System.currentTimeMillis();
+    String result2 = encoder2.encode(&quot;password2&quot;);
+    // $2a$14$aDxJ8eH5U1uUAkIVZ92CWuVtTJ2GFVQmBPA7QVLJQCJFCGMnDvW42
+    System.out.println(result2);
+
+    //密码校验
+    Assert.isTrue(encoder2.matches(&quot;password2&quot;, result2), &quot;密码不一致&quot;);
+    long end2 = System.currentTimeMillis();
+    System.out.println(&quot;耗时2：&quot; + (end2 - strat2));// 耗时2：2004
+&#125;
+</code></pre>
+<p><code>encoder.encode(&quot;password&quot;)</code>这段代码的细节：<code>BCryptPasswordEncoder</code></p>
+<pre><code class="java">public String encode(CharSequence rawPassword) &#123;
+    if (rawPassword == null) &#123;
+        throw new IllegalArgumentException(&quot;rawPassword cannot be null&quot;);
+    &#125; else &#123;
+        String salt = this.getSalt(); // 先获取盐
+        return BCrypt.hashpw(rawPassword.toString(), salt);// 盐 + 原始密码 = 新的密码
+    &#125;
+&#125;
+// version 版本号信息；strength 工作因子；random 随机数
+private final SecureRandom random;
+private String getSalt() &#123;
+    return this.random != null 
+      ? BCrypt.gensalt(this.version.getVersion(), this.strength, this.random) 
+      : BCrypt.gensalt(this.version.getVersion(), this.strength);
+&#125;
+</code></pre>
+<p><strong>Argon2PasswordEncoder</strong></p>
+<p>使用Argon2算法对密码进行哈希处理。Argon2是密码哈希比赛的获胜者。为了防止在自定义硬件上进行密码破解，Argon2是一种故意缓慢的算法，需要大量内存。与其他自适应单向函数一样，它应该在您的系统上调整为大约1秒来验证一个密码。当前的Argon2PasswordEncoder实现需要使用BouncyCastle库。</p>
+<p><strong>Pbkdf2PasswordEncoder</strong></p>
+<p>使用PBKDF2算法对密码进行哈希处理。为了防止密码破解，PBKDF2是一种故意缓慢的算法。与其他自适应单向函数一样，它应该在您的系统上调整为大约1秒来验证一个密码。当需要FIPS认证时，这种算法是一个很好的选择。</p>
+<p><strong>SCryptPasswordEncoder</strong> </p>
+<p>使用scrypt算法对密码进行哈希处理。为了防止在自定义硬件上进行密码破解，scrypt是一种故意缓慢的算法，需要大量内存。与其他自适应单向函数一样，它应该在您的系统上调整为大约1秒来验证一个密码。</p>
+<h4 id="DelegatingPasswordEncoder"><a href="#DelegatingPasswordEncoder" class="headerlink" title="DelegatingPasswordEncoder"></a><strong>DelegatingPasswordEncoder</strong></h4><ul>
+<li>表中存储的密码形式：<code>&#123;bcrypt&#125;</code>$2a$10$GRLdNijSQMUvl&#x2F;au9ofL.eDwmoohzzS7.rmNSJZ.0FxO&#x2F;BTk76klW</li>
+<li>通过如下源码可以知道：可以通过<code>&#123;bcrypt&#125;</code>前缀动态获取和密码的形式类型一致的PasswordEncoder对象</li>
+<li>目的：方便随时做密码策略的升级，兼容数据库中的老版本密码策略生成的密码</li>
+</ul>
+<p>在前面的Service当中，我们使用了默认的加密放方案</p>
+<pre><code class="java">  @Override
+    public void saveUserDetails(User user) &#123;
+        UserDetails userDetails = org.springframework.security.core.userdetails.User
+                .withDefaultPasswordEncoder() // 表示使用默认的密码加密方案
+                .username(user.getUsername()) //自定义用户名
+                .password(user.getPassword()) //自定义密码
+                .build();
+        dbUserDetailsManager.createUser(userDetails);
+    &#125;
+</code></pre>
+<p>在<code>withDefaultPasswordEncoder()</code>方法总创建了<code>PasswordEncoder</code>对象</p>
+<pre><code class="java">@Deprecated
+public static UserBuilder withDefaultPasswordEncoder() &#123;
+    logger.warn(&quot;User.withDefaultPasswordEncoder() is considered unsafe for production and is only intended for sample applications.&quot;);
+    PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    UserBuilder var10000 = builder();
+    Objects.requireNonNull(encoder);
+    return var10000.passwordEncoder(encoder::encode);
+&#125;
+</code></pre>
+<p><code>createDelegatingPasswordEncoder()</code>方法对所有的加密算法做了一个处理，将所有加密算法作为一个key存入到encoders里面（一个map对象）</p>
+<pre><code class="java">public static PasswordEncoder createDelegatingPasswordEncoder() &#123;
+    String encodingId = &quot;bcrypt&quot;;// 默认的加密算法
+    Map&lt;String, PasswordEncoder&gt; encoders = new HashMap();
+    encoders.put(encodingId, new BCryptPasswordEncoder());
+    encoders.put(&quot;ldap&quot;, new LdapShaPasswordEncoder());
+    encoders.put(&quot;MD4&quot;, new Md4PasswordEncoder());
+    encoders.put(&quot;MD5&quot;, new MessageDigestPasswordEncoder(&quot;MD5&quot;));
+    encoders.put(&quot;noop&quot;, NoOpPasswordEncoder.getInstance());
+    encoders.put(&quot;pbkdf2&quot;, Pbkdf2PasswordEncoder.defaultsForSpringSecurity_v5_5());
+    encoders.put(&quot;pbkdf2@SpringSecurity_v5_8&quot;, Pbkdf2PasswordEncoder.defaultsForSpringSecurity_v5_8());
+    encoders.put(&quot;scrypt&quot;, SCryptPasswordEncoder.defaultsForSpringSecurity_v4_1());
+    encoders.put(&quot;scrypt@SpringSecurity_v5_8&quot;, SCryptPasswordEncoder.defaultsForSpringSecurity_v5_8());
+    encoders.put(&quot;SHA-1&quot;, new MessageDigestPasswordEncoder(&quot;SHA-1&quot;));
+    encoders.put(&quot;SHA-256&quot;, new MessageDigestPasswordEncoder(&quot;SHA-256&quot;));
+    encoders.put(&quot;sha256&quot;, new StandardPasswordEncoder());
+    encoders.put(&quot;argon2&quot;, Argon2PasswordEncoder.defaultsForSpringSecurity_v5_2());
+    encoders.put(&quot;argon2@SpringSecurity_v5_8&quot;, Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8());
+    return new DelegatingPasswordEncoder(encodingId, encoders);
+&#125;
+</code></pre>
+<p>在<code>DelegatingPasswordEncoder</code>中，有一个<code>matches</code>方法，用于校验密码，他会根据不容的加密方式去校验密码</p>
+<img src="springsecurity/019.png"  width="800px" />
+
+<h2 id="自定义登录页面"><a href="#自定义登录页面" class="headerlink" title="自定义登录页面"></a>自定义登录页面</h2><p>创建登录页面：resources&#x2F;templates&#x2F;login.html</p>
+<pre><code class="html">&lt;!DOCTYPE html&gt;
+&lt;html xmlns:th=&quot;https://www.thymeleaf.org&quot;&gt;
+&lt;head&gt;
+    &lt;title&gt;登录&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;登录&lt;/h1&gt;
+&lt;!--如何 error 参数存在的话，就会显示这个--&gt;
+&lt;div th:if=&quot;$&#123;param.error&#125;&quot;&gt;
+    错误的用户名和密码.&lt;/div&gt;
+
+&lt;!--method必须为&quot;post&quot;--&gt;
+&lt;!--th:action=&quot;@&#123;/login&#125;&quot; ，
+使用动态参数，表单中会自动生成_csrf隐藏字段，用于防止csrf攻击
+login: 和登录页面保持一致即可，SpringSecurity自动进行登录认证--&gt;
+&lt;form th:action=&quot;@&#123;/login&#125;&quot; method=&quot;post&quot;&gt;
+    &lt;div&gt;
+        &lt;!--如果没有设置usernameParameter，name必须为&quot;username&quot;--&gt;
+        &lt;input type=&quot;text&quot; name=&quot;myusername&quot; placeholder=&quot;用户名&quot;/&gt;
+    &lt;/div&gt;
+    &lt;div&gt;
+        &lt;!--如果没有设置passwordParameter，name必须为&quot;password&quot;--&gt;
+        &lt;input type=&quot;password&quot; name=&quot;mypassword&quot; placeholder=&quot;密码&quot;/&gt;
+    &lt;/div&gt;
+    &lt;input type=&quot;submit&quot; value=&quot;登录&quot; /&gt;
+&lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p>配置SecurityFilterChain：</p>
+<pre><code class="java">@Configuration // 配置类
+// Spring项目总需要添加此注解，SpringBoot项目中不需要
+//@EnableWebSecurity//目的：开启spring security 的自定义配置
+public class WebSecurityConfig &#123;
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception &#123;
+
+        http.authorizeRequests(authorize -&gt; authorize.anyRequest().authenticated())
+                .formLogin(form-&gt;&#123;
+                    form.loginPage(&quot;/login&quot;) // 表示要定制的登录页面
+                        .permitAll() //登录页面无需授权即可访问。如果没有这个配置，页面会提示重定向次数过多
+                            // 因为当我们访问login页面的时候，会被要求去授权（authorize.anyRequest()）
+                            // 于是又会重定向到 http://localhost:8080/demo/login，陷入死循环
+                        // &lt;input type=&quot;text&quot; name=&quot;myusername&quot; placeholder=&quot;用户名&quot;/&gt; 相对应
+                        .usernameParameter(&quot;myusername&quot;) //自定义表单用户名参数，默认是username
+                        // &lt;input type=&quot;password&quot; name=&quot;myusername&quot; placeholder=&quot;密码&quot;/&gt; 相对应
+                        .passwordParameter(&quot;mypassword&quot;) //自定义表单密码参数，默认是password
+                        .failureUrl(&quot;/login?error&quot;) //登录失败的返回地址，默认值是error
+                    ;
+                &#125;); //表单授权方式
+        // 关闭csrf跨域请求
+        // &lt;form th:action=&quot;@&#123;/login&#125;&quot; method=&quot;post&quot;&gt;
+        // http.csrf(csrf -&gt; csrf.disable());
+        return http.build();
+    &#125;
+&#125;
+</code></pre>
+<p>要注意的点：</p>
+<ul>
+<li>loginPage登录页</li>
+<li>permitAll</li>
+<li>usernameParameter 和 passwordParameter</li>
+<li>failureUrl</li>
+<li><code>th:action=&quot;@&#123;/login&#125;&quot;</code>的作用</li>
+</ul>
+<h3 id="logout注销失败的原因"><a href="#logout注销失败的原因" class="headerlink" title="logout注销失败的原因"></a>logout注销失败的原因</h3><img src="springsecurity/021.png"  width="600px" />
+
+<p>是由于受到csrf攻击防御策略的影响，关闭csrf跨域请求就可以解决</p>
+<h1 id="前后端分离"><a href="#前后端分离" class="headerlink" title="前后端分离"></a>前后端分离</h1><h2 id="用户认证流程"><a href="#用户认证流程" class="headerlink" title="用户认证流程"></a>用户认证流程</h2><img src="springsecurity/020.png"  width="600px" />
+
+<ul>
+<li>登录成功后调用：<strong>AuthenticationSuccessHandler</strong></li>
+<li>登录失败后调用：<strong>AuthenticationFailureHandler</strong></li>
+</ul>
+<h2 id="认证成功的响应"><a href="#认证成功的响应" class="headerlink" title="认证成功的响应"></a>认证成功的响应</h2><p><strong>MyAuthenticationSuccessHandler: 成功结果处理</strong></p>
+<p>在前后端分离前，后端可以控制跳转的页面，前后端分离后，后端只能返回数据给前端</p>
+<pre><code class="java">public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHandler &#123;
+    @Override
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException &#123;
+
+        //获取用户身份信息
+        Object principal = authentication.getPrincipal();
+        //获取用户凭证信息(比如密码，token等)
+        // Object credentials = authentication.getCredentials();
+        // 获取用户权限信息
+        // Collection&lt;? extends GrantedAuthority&gt; authorities = authentication.getAuthorities();
+
+        //创建结果对象
+        HashMap result = new HashMap();
+        result.put(&quot;code&quot;, 0);
+        result.put(&quot;message&quot;, &quot;登录成功&quot;);
+        result.put(&quot;data&quot;, principal);
+
+        //转换成json字符串
+        String json = JSON.toJSONString(result);
+
+        //返回响应（响应头）：设置相应为Json格式，编码为UTF-8
+        response.setContentType(&quot;application/json;charset=UTF-8&quot;);
+        // 返回响应体: 
+        response.getWriter().println(json);
+    &#125;
+&#125;
+</code></pre>
+<p><strong>SecurityFilterChain配置</strong></p>
+<pre><code class="java">public class WebSecurityConfig &#123;
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception &#123;
+
+        http.authorizeRequests(authorize -&gt; authorize.anyRequest().authenticated())
+                .formLogin(form-&gt;&#123;
+                    form.loginPage(&quot;/login&quot;) 
+                        .permitAll() 
+                        .usernameParameter(&quot;myusername&quot;) 
+                        .passwordParameter(&quot;mypassword&quot;) 
+                        .failureUrl(&quot;/login?error&quot;) 
+                        .successHandler(new MyAuthenticationSuccessHandler()) // 登录成功后的处理器
+                    ;
+                &#125;); //表单授权方式
+        return http.build();
+    &#125;
+&#125;
+</code></pre>
+<h2 id="认证失败响应"><a href="#认证失败响应" class="headerlink" title="认证失败响应"></a>认证失败响应</h2><p><strong>失败结果处理</strong></p>
+<pre><code class="java">public class MyAuthenticationFailureHandler implements AuthenticationFailureHandler &#123;
+
+    @Override
+    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException &#123;
+
+        //获取错误信息
+        String localizedMessage = exception.getLocalizedMessage();
+
+        //创建结果对象
+        HashMap result = new HashMap();
+        result.put(&quot;code&quot;, -1);
+        result.put(&quot;message&quot;, localizedMessage);
+
+        //转换成json字符串
+        String json = JSON.toJSONString(result);
+
+        //返回响应
+        response.setContentType(&quot;application/json;charset=UTF-8&quot;);
+        response.getWriter().println(json);
+    &#125;
+&#125;
+</code></pre>
+<p><strong>SecurityFilterChain配置</strong></p>
+<pre><code class="java">@Configuration // 配置类
+public class WebSecurityConfig &#123;
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception &#123;
+
+        http.authorizeRequests(authorize -&gt; authorize.anyRequest().authenticated())
+                .formLogin(form-&gt;&#123;
+                    form.loginPage(&quot;/login&quot;) 
+                        .permitAll() 
+                        .usernameParameter(&quot;myusername&quot;) 
+                        .passwordParameter(&quot;mypassword&quot;) 
+                        .failureUrl(&quot;/login?error&quot;) 
+                        .successHandler(new MyAuthenticationSuccessHandler()) 
+                        .failureHandler(new MyAuthenticationFailureHandler()) //认证失败时的处理
+                    ;
+                &#125;); //表单授权方式
+        return http.build();
+    &#125;
+&#125;
+</code></pre>
+<h2 id="注销响应"><a href="#注销响应" class="headerlink" title="注销响应"></a>注销响应</h2><p><strong>注销结果处理</strong></p>
+<pre><code class="java">public class MyLogoutSuccessHandler implements LogoutSuccessHandler &#123;
+
+    @Override
+    public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException &#123;
+
+        //创建结果对象
+        HashMap result = new HashMap();
+        result.put(&quot;code&quot;, 0);
+        result.put(&quot;message&quot;, &quot;注销成功&quot;);
+
+        //转换成json字符串
+        String json = JSON.toJSONString(result);
+
+        //返回响应
+        response.setContentType(&quot;application/json;charset=UTF-8&quot;);
+        response.getWriter().println(json);
+    &#125;
+&#125;
+</code></pre>
+<p><strong>SecurityFilterChain配置</strong></p>
+<pre><code class="java">@Configuration // 配置类
+public class WebSecurityConfig &#123;
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception &#123;
+        //认证操作
+        http.authorizeRequests(authorize -&gt; authorize
+                .anyRequest().authenticated());
+
+        // 登陆操作
+        http.formLogin(form-&gt;&#123;
+                form.loginPage(&quot;/login&quot;) 
+                    .permitAll() 
+                    .usernameParameter(&quot;myusername&quot;) 
+                    .passwordParameter(&quot;mypassword&quot;) 
+                    .failureUrl(&quot;/login?error&quot;) 
+                    .successHandler(new MyAuthenticationSuccessHandler()) 
+                    .failureHandler(new MyAuthenticationFailureHandler())
+                ;
+                &#125;); //表单授权方式
+          // 注销操作
+        http.logout(logout -&gt; &#123;
+            logout.logoutSuccessHandler(new MyLogoutSuccessHandler());
+        &#125;);
+
+        // 关闭csrf跨域请求
+        http.csrf(csrf -&gt; csrf.disable()); // 暂时关闭，保证注销操作正常
+        return http.build();
+    &#125;
+&#125;
+</code></pre>
+<h2 id="请求未认证的接口"><a href="#请求未认证的接口" class="headerlink" title="请求未认证的接口"></a>请求未认证的接口</h2><p><strong>什么叫请求未认证的接口？</strong></p>
+<p>就是当我们希望访问某个街口，比如：<code>http://localhost:8080/demo/</code>。如果用户还没登陆过，返回一个Json数据（或者其他数据），通知前端，用户还没登陆，让用户去登陆。</p>
+<p><strong>实现AuthenticationEntryPoint接口</strong></p>
+<pre><code class="java">public class MyAuthenticationEntryPoint implements AuthenticationEntryPoint &#123;
+    @Override
+    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException &#123;
+
+        //获取错误信息
+        //String localizedMessage = authException.getLocalizedMessage();
+
+        //创建结果对象
+        HashMap result = new HashMap();
+        result.put(&quot;code&quot;, -1);
+        result.put(&quot;message&quot;, &quot;需要登录&quot;);
+
+        //转换成json字符串
+        String json = JSON.toJSONString(result);
+
+        //返回响应
+        response.setContentType(&quot;application/json;charset=UTF-8&quot;);
+        response.getWriter().println(json);
+    &#125;
+&#125;
+</code></pre>
+<p><strong>SecurityFilterChain配置</strong></p>
+<pre><code class="java">@Configuration // 配置类
+public class WebSecurityConfig &#123;
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception &#123;
+        //认证操作
+        http.authorizeRequests(authorize -&gt; authorize
+                .anyRequest().authenticated());
+
+        http.formLogin(form-&gt;&#123;
+                form.loginPage(&quot;/login&quot;) 
+                    .permitAll() 
+                    .usernameParameter(&quot;myusername&quot;) 
+                    .passwordParameter(&quot;mypassword&quot;) 
+                    .failureUrl(&quot;/login?error&quot;) 
+                    .successHandler(new MyAuthenticationSuccessHandler()) 
+                    .failureHandler(new MyAuthenticationFailureHandler())
+                ;
+                &#125;); //表单授权方式
+        http.logout(logout -&gt; &#123;
+            logout.logoutSuccessHandler(new MyLogoutSuccessHandler());
+        &#125;);
+        //错误处理
+        http.exceptionHandling(exception  -&gt; &#123;
+            exception.authenticationEntryPoint(new MyAuthenticationEntryPoint());//请求未认证的接口
+        &#125;);
+        // 关闭csrf跨域请求
+        http.csrf(csrf -&gt; csrf.disable()); // 暂时关闭，保证注销操作正常
+        return http.build();
+    &#125;
+&#125;
+</code></pre>
+<h2 id="跨域"><a href="#跨域" class="headerlink" title="跨域"></a>跨域</h2><p>跨域全称是跨域资源共享(Cross-Origin Resources Sharing,CORS)，它是浏览器的保护机制，只允许网页请求统一域名下的服务，同一域名指&#x3D;&gt;协议、域名、端口号都要保持一致，如果有一项不同，那么就是跨域请求。在前后端分离的项目中，需要解决跨域的问题。</p>
+<p>在SpringSecurity中解决跨域很简单，在配置文件中添加如下配置即可</p>
+<pre><code class="java">//跨域
+http.cors(withDefaults());
+</code></pre>
+<h1 id="身份认证"><a href="#身份认证" class="headerlink" title="身份认证"></a>身份认证</h1><h2 id="用户认证信息"><a href="#用户认证信息" class="headerlink" title="用户认证信息"></a>用户认证信息</h2><h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><img src="springsecurity/022.png"  width="500px" />
+
+<p>在Spring Security框架中，SecurityContextHolder、SecurityContext、Authentication、Principal和Credential是一些与身份验证和授权相关的重要概念。它们之间的关系如下：</p>
+<ol>
+<li>SecurityContextHolder：SecurityContextHolder 是 Spring Security <strong>存储已认证用户详细信息</strong>的地方。</li>
+<li>SecurityContext：SecurityContext 是从 SecurityContextHolder 获取的内容，<strong>包含当前已认证用户的 Authentication 信息</strong>。</li>
+<li>Authentication：Authentication 表示用户的身份认证信息。它包含了用户的Principal、Credential和Authority信息。</li>
+<li>Principal：表示用户的<strong>身份标识</strong>。它通常是一个<strong>表示用户的实体对象</strong>，例如用户名。Principal可以通过Authentication对象的getPrincipal()方法获取。</li>
+<li>Credentials：表示用户的<strong>凭证信息</strong>，例如<strong>密码、证书或其他认证凭据</strong>。Credential可以通过Authentication对象的getCredentials()方法获取。</li>
+<li>GrantedAuthority：表示用户<strong>被授予的权限</strong></li>
+</ol>
+<p>总结起来，SecurityContextHolder用于管理当前线程的安全上下文，存储已认证用户的详细信息，其中包含了SecurityContext对象，该对象包含了Authentication对象，后者表示用户的身份验证信息，包括Principal（用户的身份标识）和Credential（用户的凭证信息）。</p>
+<h3 id="在Controller中获取用户信息"><a href="#在Controller中获取用户信息" class="headerlink" title="在Controller中获取用户信息"></a>在Controller中获取用户信息</h3><p>IndexController：</p>
+<pre><code class="java">@RestController
+public class IndexController &#123;
+
+    @GetMapping(&quot;/&quot;)
+    public Map index()&#123;
+
+        System.out.println(&quot;index controller&quot;);
+            
+        SecurityContext context = SecurityContextHolder.getContext();//存储认证对象的上下文
+        Authentication authentication = context.getAuthentication();//认证对象
+        String username = authentication.getName();//用户名
+        Object principal =authentication.getPrincipal();//身份
+        Object credentials = authentication.getCredentials();//凭证(脱敏)
+        Collection&lt;? extends GrantedAuthority&gt; authorities = authentication.getAuthorities();//权限
+
+        System.out.println(username);
+        System.out.println(principal);
+        System.out.println(credentials);
+        System.out.println(authorities);
+
+        //创建结果对象
+        HashMap result = new HashMap();
+        result.put(&quot;code&quot;, 0);
+        result.put(&quot;data&quot;, username);
+
+        return result;
+    &#125;
+&#125;
+</code></pre>
+<h2 id="会话并发控制"><a href="#会话并发控制" class="headerlink" title="会话并发控制"></a>会话并发控制</h2><p>有时候出于安全的目的，我们可能会有这样的需求，<strong>就是规定在同一个系统中，只允许一个用户在一个终端上登录，这其实就是对会话的并发控制。</strong></p>
+<p><strong>实现处理器接口</strong></p>
+<pre><code class="java">public class MySessionInformationExpiredStrategy implements SessionInformationExpiredStrategy &#123;
+    @Override
+    public void onExpiredSessionDetected(SessionInformationExpiredEvent event) throws IOException, ServletException &#123;
+
+        //创建结果对象
+        HashMap result = new HashMap();
+        result.put(&quot;code&quot;, -1);
+        result.put(&quot;message&quot;, &quot;该账号已从其他设备登录&quot;);
+
+        //转换成json字符串
+        String json = JSON.toJSONString(result);
+
+        HttpServletResponse response = event.getResponse();
+        //返回响应
+        response.setContentType(&quot;application/json;charset=UTF-8&quot;);
+        response.getWriter().println(json);
+    &#125;
+&#125;
+</code></pre>
+<p><strong>SecurityFilterChain配置</strong></p>
+<pre><code class="java">//会话管理
+http.sessionManagement(session -&gt; &#123;
+    session.maximumSessions(1) // 设置最大会话数，默认值为-1，表示不限制。后登录的账号会使先登录的账号失效
+            .expiredSessionStrategy(new MySessionInformationExpiredStrategy());
+&#125;);
+</code></pre>
+<h1 id="授权"><a href="#授权" class="headerlink" title="授权"></a>授权</h1><p>授权管理的实现在SpringSecurity中非常灵活，可以帮助应用程序实现以下两种常见的授权需求：</p>
+<ul>
+<li><p>用户-权限-资源：例如张三的权限是添加用户、查看用户列表，李四的权限是查看用户列表</p>
+<ul>
+<li>用户–张三；权限–添加用户、查看用户列表；资源–对应的url路径</li>
+</ul>
+</li>
+<li><p>用户-角色-权限-资源：例如 张三是角色是管理员、李四的角色是普通用户，管理员能做所有操作，普通用户只能查看信息</p>
+</li>
+</ul>
+<h2 id="基于request的授权"><a href="#基于request的授权" class="headerlink" title="基于request的授权"></a>基于request的授权</h2><h3 id="用户-权限-资源"><a href="#用户-权限-资源" class="headerlink" title="用户-权限-资源"></a>用户-权限-资源</h3><p><strong>需求：</strong></p>
+<ul>
+<li>具有USER_LIST权限的用户可以访问&#x2F;user&#x2F;list接口</li>
+<li>具有USER_ADD权限的用户可以访问&#x2F;user&#x2F;add接口</li>
+</ul>
+<p>**配置权限: **SecurityFilterChain</p>
+<pre><code class="java">//错误处理
+http.exceptionHandling(exception  -&gt; &#123;
+    exception.authenticationEntryPoint(new MyAuthenticationEntryPoint());//请求未认证的接口
+    // public ExceptionHandlingConfigurer&lt;H&gt; accessDeniedHandler(AccessDeniedHandler accessDeniedHandler)
+    // public interface AccessDeniedHandler &#123;
+    //    void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException;
+    //&#125;
+    exception.accessDeniedHandler((request, response, e)-&gt;&#123; //请求未授权的接口
+
+        //创建结果对象
+        HashMap result = new HashMap();
+        result.put(&quot;code&quot;, -1);
+        result.put(&quot;message&quot;, &quot;没有权限&quot;);
+
+        //转换成json字符串
+        String json = JSON.toJSONString(result);
+
+        //返回响应
+        response.setContentType(&quot;application/json;charset=UTF-8&quot;);
+        response.getWriter().println(json);
+    &#125;);
+&#125;);
+</code></pre>
+<p><strong>授予权限</strong></p>
+<p>DBUserDetailsManager中的loadUserByUsername方法：</p>
+<pre><code class="java">@Override
+public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException &#123;
+
+    QueryWrapper&lt;User&gt; queryWrapper = new QueryWrapper&lt;&gt;();
+    queryWrapper.eq(&quot;username&quot;, username);
+    User user = userMapper.selectOne(queryWrapper);
+    if (user == null) &#123;
+        //用户不存在
+        throw new UsernameNotFoundException(username);
+    &#125; else &#123;
+          // 授予权限
+        Collection&lt;GrantedAuthority&gt; authorities = new ArrayList&lt;&gt;();
+        // 使用Lambda表达式：USER_LIST从数据库中获取，这里先写死
+        authorities.add(()-&gt;&quot;USER_LIST&quot;);
+        // 使用匿名类：USER_ADD从数据库中获取，这里先写死
+        authorities.add(new GrantedAuthority() &#123;
+            @Override
+            public String getAuthority() &#123;
+                return &quot;USER_ADD&quot;;
+            &#125;
+        &#125;);
+        return new org.springframework.security.core.userdetails.User(
+                user.getUsername(),
+                user.getPassword(),
+                user.getEnabled(),
+                true, //用户账号是否过期
+                true, //用户凭证是否过期
+                true, //用户是否未被锁定
+                authorities); //权限列表
+    &#125;
+&#125;
+</code></pre>
+<h3 id="用户-角色-资源"><a href="#用户-角色-资源" class="headerlink" title="用户-角色-资源"></a>用户-角色-资源</h3><p><strong>需求：</strong>角色为ADMIN的用户才可以访问&#x2F;user&#x2F;**路径下的资源</p>
+<p><strong>配置角色：</strong>SecurityFilterChain</p>
+<pre><code class="java">//开启授权保护
+http.authorizeRequests(
+      authorize -&gt; authorize
+              //具有USER_LIST权限的用户可以访问/user/list
+              //.requestMatchers(&quot;/user/list&quot;).hasAuthority(&quot;USER_LIST&quot;)
+              //具有USER_ADD权限的用户可以访问/user/add
+              //.requestMatchers(&quot;/user/add&quot;).hasAuthority(&quot;USER_ADD&quot;)
+              //具有管理员角色的用户可以访问/user/**
+              .requestMatchers(&quot;/user/**&quot;).hasRole(&quot;ADMIN&quot;)
+              //对所有请求开启授权保护
+              .anyRequest()
+              //已认证的请求会被自动授权
+              .authenticated()
+);
+</code></pre>
+<p><strong>授予角色：</strong>DBUserDetailsManager中的loadUserByUsername方法：</p>
+<pre><code class="java">/**
+ *
+ * @param username 前端传过来的username
+ * @return
+ * @throws UsernameNotFoundException
+ */
+@Override
+public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException &#123;
+
+    QueryWrapper&lt;User&gt; queryWrapper = new QueryWrapper&lt;&gt;();
+    queryWrapper.eq(&quot;username&quot;, username);
+    User user = userMapper.selectOne(queryWrapper);
+    if (user == null) &#123;
+        //用户不存在
+        throw new UsernameNotFoundException(username);
+    &#125; else &#123;
+
+        /**
+         Collection&lt;GrantedAuthority&gt; authorities = new ArrayList&lt;&gt;();
+        // 使用Lambda表达式
+        authorities.add(()-&gt;&quot;USER_LIST&quot;);
+        // 使用匿名类
+        authorities.add(new GrantedAuthority() &#123;
+            @Override
+            public String getAuthority() &#123;
+                return &quot;USER_ADD&quot;;
+            &#125;
+        &#125;);
+        return new org.springframework.security.core.userdetails.User(
+                user.getUsername(),
+                user.getPassword(),
+                user.getEnabled(),
+                true, //用户账号是否过期
+                true, //用户凭证是否过期
+                true, //用户是否未被锁定
+                authorities); //权限列表*/
+        // 用到了userdetails.User类的这个：public static final class UserBuilder
+        return org.springframework.security.core.userdetails.User
+                .withUsername(user.getUsername())
+                .password(user.getPassword())
+                .disabled(!user.getEnabled())// 是否禁用 ture-禁用
+                .credentialsExpired(false) // 用户密码是否过期
+                .accountExpired(false) // 账号是否过期
+                .accountLocked(false) // 账号是否锁定
+                .roles(&quot;ADMIN&quot;) // 用户角色列表：从数据库里面获取
+                //.authorities(()-&gt;&quot;USER_LIST&quot;) // 用户权限列表
+                .build();
+    &#125;
+&#125;
+</code></pre>
+<h2 id="基于方法的授权"><a href="#基于方法的授权" class="headerlink" title="基于方法的授权"></a>基于方法的授权</h2><p>在<code>WebSecurityConfig</code>的配置类上加上<code>@EnableMethodSecurity</code></p>
+<pre><code class="java">@Configuration // 配置类
+@EnableMethodSecurity // 开启基于方法的授权
+public class WebSecurityConfig &#123;
+&#125;
+</code></pre>
+<h3 id="用户-角色-资源-1"><a href="#用户-角色-资源-1" class="headerlink" title="用户-角色-资源"></a>用户-角色-资源</h3><p>给用户授予角色和权限：DBUserDetailsManager中的loadUserByUsername方法：</p>
+<pre><code class="java">/**
+ * @param username 前端传过来的username
+ * @return
+ * @throws UsernameNotFoundException
+ */
+@Override
+public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException &#123;
+
+    QueryWrapper&lt;User&gt; queryWrapper = new QueryWrapper&lt;&gt;();
+    queryWrapper.eq(&quot;username&quot;, username);
+    User user = userMapper.selectOne(queryWrapper);
+    if (user == null) &#123;
+        //用户不存在
+        throw new UsernameNotFoundException(username);
+    &#125; else &#123;
+        // 用到了userdetails.User类的这个：public static final class UserBuilder
+        return org.springframework.security.core.userdetails.User
+                .withUsername(user.getUsername())
+                .password(user.getPassword())
+                .disabled(!user.getEnabled())// 是否禁用 ture-禁用
+                .credentialsExpired(false) // 用户密码是否过期
+                .accountExpired(false) // 账号是否过期
+                .accountLocked(false) // 账号是否锁定
+                .roles(&quot;ADMIN&quot;) // 用户角色列表：从数据库里面获取
+                .build();
+    &#125;
+&#125;
+</code></pre>
+<p>使用授权注解：</p>
+<pre><code class="java">@RestController
+@RequestMapping(&quot;/user&quot;)
+public class UserController &#123;
+
+    @Resource
+    public UserService userService;
+
+    //用户必须有 ADMIN 角色 才能访问此方法
+    @PreAuthorize(&quot;hasRole(&#39;ADMIN&#39;) &quot;)
+    @GetMapping(&quot;/list&quot;)
+    public List&lt;User&gt; getList()&#123;
+        return userService.list();
+    &#125;
+
+    //用户必须有 USER 权限 才能访问此方法
+    @PreAuthorize(&quot;hasRole(&#39;USER&#39;) &quot;)
+    @PostMapping(&quot;/add&quot;)
+    public void add(@RequestBody User user)&#123;
+        userService.saveUserDetails(user);
+    &#125;
+&#125;
+</code></pre>
+<p>用户的信息：可以访问<code>getList()</code></p>
+<pre><code class="json">&#123;
+    &quot;code&quot;: 0,
+    &quot;data&quot;: &#123;
+        &quot;accountNonExpired&quot;: true,
+        &quot;accountNonLocked&quot;: true,
+        &quot;authorities&quot;: [
+            &#123;
+                &quot;authority&quot;: &quot;ROLE_ADMIN&quot;
+            &#125;
+        ],
+        &quot;credentialsNonExpired&quot;: true,
+        &quot;enabled&quot;: true,
+        &quot;username&quot;: &quot;admin&quot;
+    &#125;,
+    &quot;message&quot;: &quot;登录成功&quot;
+&#125;
+</code></pre>
+<h3 id="添加其他的条件"><a href="#添加其他的条件" class="headerlink" title="添加其他的条件"></a>添加其他的条件</h3><pre><code class="java">@RestController
+@RequestMapping(&quot;/user&quot;)
+public class UserController &#123;
+
+    @Resource
+    public UserService userService;
+
+    //用户必须有 ADMIN 角色 并且 用户名是 admin 才能访问此方法
+    @PreAuthorize(&quot;hasRole(&#39;ADMIN&#39;) and principal.username == &#39;admin&#39;&quot;)
+    @GetMapping(&quot;/list&quot;)
+    public List&lt;User&gt; getList()&#123;
+        return userService.list();
+    &#125;
+
+    //用户必须有 USER 角色 或者 用户名是 123 才能访问此方法
+    @PreAuthorize(&quot;hasRole(&#39;USER&#39;) or principal.username == &#39;123&#39;&quot;)
+    @PostMapping(&quot;/add&quot;)
+    public void add(@RequestBody User user)&#123;
+        userService.saveUserDetails(user);
+    &#125;
+&#125;
+</code></pre>
+<p>用户的信息：可以访问 <code>add(@RequestBody User user)</code></p>
+<pre><code class="json">&#123;
+    &quot;code&quot;: 0,
+    &quot;data&quot;: &#123;
+        &quot;accountNonExpired&quot;: true,
+        &quot;accountNonLocked&quot;: true,
+        &quot;authorities&quot;: [
+            &#123;
+                &quot;authority&quot;: &quot;ROLE_ADMIN&quot;
+            &#125;
+        ],
+        &quot;credentialsNonExpired&quot;: true,
+        &quot;enabled&quot;: true,
+        &quot;username&quot;: &quot;123&quot;
+    &#125;,
+    &quot;message&quot;: &quot;登录成功&quot;
+&#125;
+</code></pre>
+<h3 id="用户-权限-资源-1"><a href="#用户-权限-资源-1" class="headerlink" title="用户-权限-资源"></a>用户-权限-资源</h3><p>给用户授予权限：DBUserDetailsManager中的loadUserByUsername方法：</p>
+<pre><code class="java">/**
+ * @param username 前端传过来的username
+ * @return
+ * @throws UsernameNotFoundException
+ */
+@Override
+public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException &#123;
+
+    QueryWrapper&lt;User&gt; queryWrapper = new QueryWrapper&lt;&gt;();
+    queryWrapper.eq(&quot;username&quot;, username);
+    User user = userMapper.selectOne(queryWrapper);
+    if (user == null) &#123;
+        //用户不存在
+        throw new UsernameNotFoundException(username);
+    &#125; else &#123;
+        // 用到了userdetails.User类的这个：public static final class UserBuilder
+        return org.springframework.security.core.userdetails.User
+                .withUsername(user.getUsername())
+                .password(user.getPassword())
+                .disabled(!user.getEnabled())// 是否禁用 ture-禁用
+                .credentialsExpired(false) // 用户密码是否过期
+                .accountExpired(false) // 账号是否过期
+                .accountLocked(false) // 账号是否锁定
+                .roles(&quot;ADMIN&quot;) // 用户角色列表：从数据库里面获取
+                      .authorities(&quot;USER_ADD&quot;, &quot;USER_UPDATE&quot;) // 用户权限列表：从数据库里面获取
+                .build();
+    &#125;
+&#125;
+</code></pre>
+<p>使用授权注解：</p>
+<pre><code class="java">@RestController
+@RequestMapping(&quot;/user&quot;)
+public class UserController &#123;
+
+    @Resource
+    public UserService userService;
+
+ 
+    @PreAuthorize(&quot;hasRole(&#39;ADMIN&#39;) &quot;)
+    @GetMapping(&quot;/list&quot;)
+    public List&lt;User&gt; getList()&#123;
+        return userService.list();
+    &#125;
+    @PreAuthorize(&quot;hasRole(&#39;ADMIN&#39;)&quot;)
+    @PostMapping(&quot;/add&quot;)
+    public void add(@RequestBody User user)&#123;
+        userService.saveUserDetails(user);
+    &#125;
+    //用户必须有 USER_UPDATE 权限 才能访问此方法
+    @PreAuthorize(&quot;hasAuthority(&#39;USER_UPDATE&#39;)&quot;)
+    @GetMapping(&quot;/update&quot;)
+    public String update()&#123;
+        return &quot;update success&quot;;
+    &#125;
+
+    //用户必须有 USER_DELETE 权限 才能访问此方法
+    @PreAuthorize(&quot;hasAuthority(&#39;USER_DELETE&#39;)&quot;)
+    @GetMapping(&quot;/delete&quot;)
+    public String delete()&#123;
+        return &quot;delete success&quot;;
+    &#125;
+&#125;
+</code></pre>
+<p>用户信息：</p>
+<pre><code class="json">&#123;
+    &quot;code&quot;: 0,
+    &quot;data&quot;: &#123;
+        &quot;accountNonExpired&quot;: true,
+        &quot;accountNonLocked&quot;: true,
+        &quot;authorities&quot;: [
+            &#123;
+                &quot;authority&quot;: &quot;USER_ADD&quot;
+            &#125;,
+            &#123;
+                &quot;authority&quot;: &quot;USER_UPDATE&quot;
+            &#125;
+        ],
+        &quot;credentialsNonExpired&quot;: true,
+        &quot;enabled&quot;: true,
+        &quot;username&quot;: &quot;123&quot;
+    &#125;,
+    &quot;message&quot;: &quot;登录成功&quot;
+&#125;
+</code></pre>
+<p>发现：<code>.authorities(&quot;USER_ADD&quot;, &quot;USER_UPDATE&quot;) </code> 覆盖了<code>.roles(&quot;ADMIN&quot;)</code>。并且只能访问<code> @GetMapping(&quot;/update&quot;)</code>的资源。</p>
+<h2 id="用户-角色-权限-资源"><a href="#用户-角色-权限-资源" class="headerlink" title="用户-角色-权限-资源"></a>用户-角色-权限-资源</h2><p>RBAC（Role-Based Access Control，基于角色的访问控制）是一种<strong>常用的数据库设计方案</strong>，它将用户的权限分配和管理与角色相关联。以下是一个基本的RBAC数据库设计方案的示例：</p>
+<ol>
+<li>用户表（User table）：包含用户的基本信息，例如用户名、密码和其他身份验证信息。</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>列名</th>
+<th>数据类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>user_id</td>
+<td>int</td>
+<td>用户ID</td>
+</tr>
+<tr>
+<td>username</td>
+<td>varchar</td>
+<td>用户名</td>
+</tr>
+<tr>
+<td>password</td>
+<td>varchar</td>
+<td>密码</td>
+</tr>
+<tr>
+<td>email</td>
+<td>varchar</td>
+<td>电子邮件地址</td>
+</tr>
+<tr>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+</tr>
+</tbody></table>
+<ol start="2">
+<li>角色表（Role table）：存储所有可能的角色及其描述。</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>列名</th>
+<th>数据类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>role_id</td>
+<td>int</td>
+<td>角色ID</td>
+</tr>
+<tr>
+<td>role_name</td>
+<td>varchar</td>
+<td>角色名称</td>
+</tr>
+<tr>
+<td>description</td>
+<td>varchar</td>
+<td>角色描述</td>
+</tr>
+<tr>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+</tr>
+</tbody></table>
+<ol start="3">
+<li>权限表（Permission table）：定义系统中所有可能的权限。</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>列名</th>
+<th>数据类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>permission_id</td>
+<td>int</td>
+<td>权限ID</td>
+</tr>
+<tr>
+<td>permission_name</td>
+<td>varchar</td>
+<td>权限名称</td>
+</tr>
+<tr>
+<td>description</td>
+<td>varchar</td>
+<td>权限描述</td>
+</tr>
+<tr>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+</tr>
+</tbody></table>
+<ol start="4">
+<li>用户角色关联表（User-Role table）：将用户与角色关联起来。</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>列名</th>
+<th>数据类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>user_role_id</td>
+<td>int</td>
+<td>用户角色关联ID</td>
+</tr>
+<tr>
+<td>user_id</td>
+<td>int</td>
+<td>用户ID</td>
+</tr>
+<tr>
+<td>role_id</td>
+<td>int</td>
+<td>角色ID</td>
+</tr>
+<tr>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+</tr>
+</tbody></table>
+<ol start="5">
+<li>角色权限关联表（Role-Permission table）：将角色与权限关联起来。</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>列名</th>
+<th>数据类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>role_permission_id</td>
+<td>int</td>
+<td>角色权限关联ID</td>
+</tr>
+<tr>
+<td>role_id</td>
+<td>int</td>
+<td>角色ID</td>
+</tr>
+<tr>
+<td>permission_id</td>
+<td>int</td>
+<td>权限ID</td>
+</tr>
+<tr>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+</tr>
+</tbody></table>
+<p>在这个设计方案中，<strong>用户可以被分配一个或多个角色，而每个角色又可以具有一个或多个权限</strong>。通过对用户角色关联和角色权限关联表进行操作，可以实现灵活的权限管理和访问控制。</p>
+<p>当用户尝试访问系统资源时，系统可以根据用户的角色和权限决定是否允许访问。这样的设计方案使得权限管理更加简单和可维护，因为只需调整角色和权限的分配即可，而不需要针对每个用户进行单独的设置。</p>
+<p><strong>可以这么设计：</strong>通过用户名，查询用户的所有角色，然后遍历用户的所有角色查询出所有权限，然后把权限配置到代码里面（<code>.authorities(&quot;USER_ADD&quot;, &quot;USER_UPDATE&quot;) </code>）</p>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 1909773034@qq.com </span>
+    </div>
+</article>
+
+
+<p>
+    <a  class="dashang" onclick="dashangToggle()">赏</a>
+</p>
+
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">
+    ©2017 XieShaoLin
+</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+
+<div class="hide_box" onclick="dashangToggle()"></div>
+<div class="shang_box">
+    <a class="shang_close"  onclick="dashangToggle()">×</a>
+    <div class="shang_tit">
+        <p>喜欢就点赞,疼爱就打赏</p>
+    </div>
+    <div class="shang_payimg">
+        <div class="pay_img">
+            <img src="/img/alipay.jpg" class="alipay" title="扫码支持">
+            <img src="/img/weixin.jpg" class="weixin" title="扫码支持">
+        </div>
+    </div>
+    <div class="shang_payselect">
+        <span><label><input type="radio" name="pay" checked value="alipay">支付宝</label></span><span><label><input type="radio" name="pay" value="weixin">微信</label></span>
+    </div>
+</div>
+
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
+
+<script src="/js/script.js?v=1.1.0" ></script>
+<script>
+    var img_resize = 'default';
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $("#post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+        $("input[name=pay]").on("click", function () {
+            if($("input[name=pay]:checked").val()=="weixin"){
+                $(".shang_box .shang_payimg .pay_img").addClass("weixin_img");
+            } else {
+                $(".shang_box .shang_payimg .pay_img").removeClass("weixin_img");
+            }
+        })
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+    function dashangToggle() {
+        $(".shang_box").fadeToggle();
+        $(".hide_box").fadeToggle();
+    }
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>

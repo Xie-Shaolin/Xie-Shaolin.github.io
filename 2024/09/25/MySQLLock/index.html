@@ -1,0 +1,2084 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>MySQL：锁 | Notes</title>
+  <meta name="keywords" content=" MySQL ">
+  <meta name="description" content="MySQL：锁 | Notes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="卸载MySQL停止MySQL服务 systemctl stop mysqld  查询MySQL的安装文件 [root@centos01 ~]# rpm -qa | grep -i mysql mysql-community-client-5.7.28-1.el7.x86_64 mysql-community-server-5.7.28-1.el7.x86_64 mysql-community-co">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL的安装、卸载和启动">
+<meta property="og:url" content="http://example.com/2024/09/25/InstallMySQL8/index.html">
+<meta property="og:site_name" content="Notes">
+<meta property="og:description" content="卸载MySQL停止MySQL服务 systemctl stop mysqld  查询MySQL的安装文件 [root@centos01 ~]# rpm -qa | grep -i mysql mysql-community-client-5.7.28-1.el7.x86_64 mysql-community-server-5.7.28-1.el7.x86_64 mysql-community-co">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2024/09/25/InstallMySQL8/InstallMySQL8/001.png">
+<meta property="og:image" content="http://example.com/2024/09/25/InstallMySQL8/InstallMySQL8/002.png">
+<meta property="og:image" content="http://example.com/2024/09/25/InstallMySQL8/InstallMySQL8/003.png">
+<meta property="article:published_time" content="2024-09-24T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-09-25T10:36:23.945Z">
+<meta property="article:author" content="XieShaoLin">
+<meta property="article:tag" content="MySQL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2024/09/25/InstallMySQL8/InstallMySQL8/001.png">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.1.0" rel="stylesheet">
+
+<link href="/css/hl_theme/github.css?v=1.1.0" rel="stylesheet">
+
+<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
+
+<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="/js/titleTip.js?v=1.1.0" ></script>
+
+<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.1.0" ></script>
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="">
+  <input class="theme_blog_path" value="">
+  <input id="theme_shortcut" value="true" />
+  <input id="theme_highlight_on" value="true" />
+  <input id="theme_code_copy" value="true" />
+</div>
+
+
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/"
+   class="avatar_target">
+    <img class="avatar"
+         src="/img/avatar.jpg"/>
+</a>
+<div class="author">
+    <span>XieShaoLin</span>
+</div>
+
+<div class="icon">
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            <a title="email"
+               href="mailto:1909773034@qq.com"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-email"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="qq"
+               href="http://wpa.qq.com/msgrd?v=3&uin=1909773034&site=qq&menu=yes"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-qq"></use>
+                    </svg>
+                
+            </a>
+        
+    
+</div>
+
+
+
+
+
+<ul>
+    <li>
+        <div class="all active" data-rel="全部文章">全部文章
+            
+                <small>(55)</small>
+            
+        </div>
+    </li>
+    
+        
+            
+                
+    <li>
+        <div data-rel="工具">
+            
+            工具
+            <small>(1)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="前端">
+            
+            前端
+            <small>(1)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="后端">
+            
+            后端
+            <small>(45)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="运维">
+            
+            运维
+            <small>(3)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="财经">
+            
+            财经
+            <small>(1)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="英语">
+            
+            英语
+            <small>(2)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+        
+            
+            
+            
+    </div>
+    <div>
+        
+        
+    </div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="55">
+<input type="hidden" id="yelog_site_word_count" value="299.4k">
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        友情链接
+        <i class="iconfont icon-left"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="http://yelog.org/">叶落阁</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <div class="right-top">
+        <div id="default-panel">
+            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
+            <div class="right-title">全部文章</div>
+            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
+        </div>
+        <div id="search-panel">
+            <i class="iconfont icon-left" data-title="返回"></i>
+            <input id="local-search-input" autocomplete="off"/>
+            <label class="border-line" for="input"></label>
+            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
+            <i class="iconfont icon-tag" data-title="标签"></i>
+        </div>
+        <div id="outline-panel" style="display: none">
+            <div class="right-title">大纲</div>
+            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
+        </div>
+    </div>
+
+    <div class="tags-list">
+    <input id="tag-search" />
+    <div class="tag-wrapper">
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>阿里云</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>跨域</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>前锋教育</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>虚拟机</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>AOF</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>CentOS</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>docker</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>economy</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>element-ui</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>English</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>ES6</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>ESLint</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Feign</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>finalshell</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Getway</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>git</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>grammer</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>gulimall</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>hexo</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>idea</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>java</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>JavaScript</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Jedis</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Js</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>JSR303</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Linux</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>listening</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>maven</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>mq</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Mysql</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>MySql</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>MySQL</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Nacos</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>node.js</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>NoSql</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>npm</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>nvm</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>OAuth2</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>OSS</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Prettier</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>python</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>RDB</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>redis</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>RedisTemplate</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>renren-fast</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>spring</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>springboot</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>SpringCloud</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>springSecurity</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>vue</a>
+            </li>
+        
+    </div>
+
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/InstallMySQL8/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL的安装、卸载和启动">MySQL的安装、卸载和启动</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/MysqlIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL的索引原理和语法">MySQL的索引原理和语法</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/MySQLLock/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：锁">MySQL：锁</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/SQLTips/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：建议MySQL使用哪个索引">MySQL：建议MySQL使用哪个索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/SQLOptimization/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：SQL优化">MySQL：SQL优化</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/combinedIndexColumnIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL:联合索引和单列索引">MySQL:联合索引和单列索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/coveringIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="覆盖索引与锁表">覆盖索引与锁表</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/indexDesign/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：如何设计索引">MySQL：如何设计索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/invalidIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：索引失效">MySQL：索引失效</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/mysqlEngine/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL的存储引擎">MySQL的存储引擎</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/performanceAnalysis/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：慢查询日志、profile、explain">MySQL：慢查询日志、profile、explain</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/prefixIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：前缀索引">MySQL：前缀索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/22/redisPubSub/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="Redis订阅发布">Redis订阅发布</span>
+            <span class="post-date" title="2024-09-22 15:21:35">2024/09/22</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisProblem/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="Redis：缓存穿透、缓存击穿和缓存雪崩">Redis：缓存穿透、缓存击穿和缓存雪崩</span>
+            <span class="post-date" title="2024-09-17 16:33:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisPersistence/"
+           data-tag="redis,RDB,AOF"
+           data-author="" >
+            <span class="post-title" title="Redis持久化">Redis持久化</span>
+            <span class="post-date" title="2024-09-17 16:20:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisTransaction/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="redis的事务">redis的事务</span>
+            <span class="post-date" title="2024-09-17 16:12:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisType/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="redis常用数据类型">redis常用数据类型</span>
+            <span class="post-date" title="2024-09-17 16:04:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisBrief/"
+           data-tag="redis,NoSql"
+           data-author="" >
+            <span class="post-title" title="redis与NoSql的简单介绍">redis与NoSql的简单介绍</span>
+            <span class="post-date" title="2024-09-17 15:59:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisSentinel/"
+           data-tag="Linux,CentOS,虚拟机,redis"
+           data-author="" >
+            <span class="post-title" title="Redis：主从复制与哨兵模式">Redis：主从复制与哨兵模式</span>
+            <span class="post-date" title="2024-09-17 15:59:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redis7SpringBoot/"
+           data-tag="redis,springboot,Jedis,RedisTemplate"
+           data-author="" >
+            <span class="post-title" title="springboot整合redis">springboot整合redis</span>
+            <span class="post-date" title="2024-09-17 15:42:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 运维 "
+           href="/2024/09/17/redis7Install/"
+           data-tag="CentOS,redis,前锋教育"
+           data-author="" >
+            <span class="post-title" title="Redis的安装、卸载、启动和客户端">Redis的安装、卸载、启动和客户端</span>
+            <span class="post-date" title="2024-09-17 15:19:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 前端 "
+           href="/2024/09/17/BasicFrontend/"
+           data-tag="JavaScript,Js,ES6,vue,element-ui"
+           data-author="" >
+            <span class="post-title" title="前端：ES5和Vue的基本用法">前端：ES5和Vue的基本用法</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/OAuth2/"
+           data-tag="OAuth2,spring"
+           data-author="" >
+            <span class="post-title" title="OAuth2和spring">OAuth2和spring</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/SpringCloudBaseUse/"
+           data-tag="SpringCloud,Nacos,Feign,Getway"
+           data-author="" >
+            <span class="post-title" title="SpringCloud：基本使用">SpringCloud：基本使用</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/adminSystem/"
+           data-tag="element-ui,SpringCloud,Feign,gulimall,Prettier,ESLint,跨域,JSR303,OSS,阿里云"
+           data-author="" >
+            <span class="post-title" title="谷粒商城：后台管理系统要点">谷粒商城：后台管理系统要点</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/giliEnviroment/"
+           data-tag="docker,idea,maven,renren-fast,git,nvm,node.js,npm"
+           data-author="" >
+            <span class="post-title" title="谷粒商城：环境搭建">谷粒商城：环境搭建</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/springsecurity/"
+           data-tag="springSecurity"
+           data-author="" >
+            <span class="post-title" title="SpringSecurity">SpringSecurity</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/16/MysqlTransaction/"
+           data-tag="Mysql"
+           data-author="" >
+            <span class="post-title" title="Mysql的事物">Mysql的事物</span>
+            <span class="post-date" title="2024-09-16 14:31:10">2024/09/16</span>
+        </a>
+        
+        
+        <a  class="全部文章 运维 "
+           href="/2024/09/08/finalshell/"
+           data-tag="finalshell,Linux,CentOS,虚拟机"
+           data-author="" >
+            <span class="post-title" title="finalshell与Linux虚拟机的网络配置">finalshell与Linux虚拟机的网络配置</span>
+            <span class="post-date" title="2024-09-08 22:19:10">2024/09/08</span>
+        </a>
+        
+        
+        <a  class="全部文章 英语 "
+           href="/2024/03/25/rabbitGrammer/"
+           data-tag="English,grammer"
+           data-author="" >
+            <span class="post-title" title="英语兔英语语法">英语兔英语语法</span>
+            <span class="post-date" title="2024-03-25 23:12:24">2024/03/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 工具 "
+           href="/2024/03/25/hexoStartFast/"
+           data-tag="hexo"
+           data-author="" >
+            <span class="post-title" title="hexo搭建静态博客">hexo搭建静态博客</span>
+            <span class="post-date" title="2024-03-25 22:14:10">2024/03/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/03/25/PythonBase/"
+           data-tag="python"
+           data-author="" >
+            <span class="post-title" title="Python语法基数">Python语法基数</span>
+            <span class="post-date" title="2024-03-25 22:08:07">2024/03/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 英语 "
+           href="/2023/12/14/heqiongListening/"
+           data-tag="listening"
+           data-author="" >
+            <span class="post-title" title="何琼雅思听力">何琼雅思听力</span>
+            <span class="post-date" title="2023-12-14 00:00:00">2023/12/14</span>
+        </a>
+        
+        
+        <a  class="全部文章 财经 "
+           href="/2023/05/23/EconomicMachine/"
+           data-tag="economy"
+           data-author="" >
+            <span class="post-title" title="经济机器是怎样运行的——RayDalio">经济机器是怎样运行的——RayDalio</span>
+            <span class="post-date" title="2023-05-23 00:00:00">2023/05/23</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-02-grammar/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:基本语法">java:基本语法</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-03-array/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:数组">java:数组</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-05-exception/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:异常">java:异常</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-01-install/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:概述+安装">java:概述+安装</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-04-opp/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:面向对象">java:面向对象</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-06-thread/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:多线程">java:多线程</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-08-time/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:时间相关API">java:时间相关API</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-07-string/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:字符串">java:字符串</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-09-sort/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:比较器">java:比较器</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-11-annotation/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:注解">java:注解</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-10-enum/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:枚举">java:枚举</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-12-collection/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:集合">java:集合</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-13-generics/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:泛型">java:泛型</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-14-IO/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:IO流">java:IO流</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-15-net/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:网络编程">java:网络编程</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-16-reflect/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:反射">java:反射</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 运维 "
+           href="/2020/07/13/dockerBase/"
+           data-tag="docker"
+           data-author="" >
+            <span class="post-title" title="docker 基础">docker 基础</span>
+            <span class="post-date" title="2020-07-13 20:46:25">2020/07/13</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/01/01/MySQLCrashCourse/"
+           data-tag="MySql"
+           data-author="" >
+            <span class="post-title" title="MySQL:必知必会">MySQL:必知必会</span>
+            <span class="post-date" title="2020-01-01 00:00:00">2020/01/01</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/01/01/RocketMq/"
+           data-tag="mq"
+           data-author="" >
+            <span class="post-title" title="RocketMq:分布式消息队列">RocketMq:分布式消息队列</span>
+            <span class="post-date" title="2020-01-01 00:00:00">2020/01/01</span>
+        </a>
+        
+        
+        <a  class="全部文章 "
+           href="/2019/09/29/java-17-new8/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java8新特性：lambda表达式+Stream流">java8新特性：lambda表达式+Stream流</span>
+            <span class="post-date" title="2019-09-29 00:00:00">2019/09/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 "
+           href="/2019/09/29/java-18-above8/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java8以后的新特性">java8以后的新特性</span>
+            <span class="post-date" title="2019-09-29 00:00:00">2019/09/29</span>
+        </a>
+        
+        <div id="no-item-tips">
+
+        </div>
+    </nav>
+    <div id="outline-list">
+    </div>
+</div>
+
+    </div>
+    <div class="hide-list">
+        <div class="semicircle" data-title="切换全屏 快捷键 s">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div id="post">
+    <div class="pjax">
+        <article id="post-MySQLLock" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">MySQL：锁</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            <i class="iconfont icon-category"></i>
+            
+            
+            <a  data-rel="后端">后端</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            <i class="iconfont icon-tag"></i>
+            
+            <a class="color1">MySQL</a>
+            
+        </span>
+        
+    </div>
+    <div class="article-meta">
+        
+            发布时间 : <time class="date" title='最后更新: 2024-09-25 18:56:24'>2024-09-25 00:00</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        <span>字数:6.2k</span>
+        
+        
+        <span id="busuanzi_container_page_pv">
+            阅读 :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A1%8C%E7%BA%A7%E9%94%81"><span class="toc-text">行级锁</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A1%8C%E9%94%81%EF%BC%88Record-Lock%EF%BC%89"><span class="toc-text">行锁（Record Lock）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B1%E4%BA%AB%E9%94%81%EF%BC%88S%EF%BC%89%E4%B8%8E%E6%8E%92%E4%BB%96%E9%94%81%EF%BC%88X%EF%BC%89"><span class="toc-text">共享锁（S）与排他锁（X）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%94%E7%A4%BA"><span class="toc-text">演示</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%97%B4%E9%9A%99%E9%94%81%EF%BC%88Gap-Lock%EF%BC%89%E5%92%8C%E4%B8%B4%E9%94%AE%E9%94%81%EF%BC%88Next-Key-Lock%EF%BC%89"><span class="toc-text">间隙锁（Gap Lock）和临键锁（Next-Key Lock）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D-1"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%94%E7%A4%BA-1"><span class="toc-text">演示</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A1%A8%E7%BA%A7%E9%94%81"><span class="toc-text">表级锁</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A1%A8%E9%94%81"><span class="toc-text">表锁</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%A8%E5%85%B1%E4%BA%AB%E8%AF%BB%E9%94%81%EF%BC%88read-lock%EF%BC%89"><span class="toc-text">表共享读锁（read lock）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%A8%E7%8B%AC%E5%8D%A0%E5%86%99%E9%94%81%EF%BC%88write-lock%EF%BC%89"><span class="toc-text">表独占写锁（write lock）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%83%E6%95%B0%E6%8D%AE%E9%94%81"><span class="toc-text">元数据锁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%84%8F%E5%90%91%E9%94%81"><span class="toc-text">意向锁</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D-2"><span class="toc-text">介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E6%84%8F%E5%90%91%E9%94%81"><span class="toc-text">为什么需要意向锁</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E7%B1%BB"><span class="toc-text">分类</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E6%84%8F%E5%90%91%E9%94%81%E5%8F%8A%E8%A1%8C%E9%94%81%E7%9A%84%E5%8A%A0%E9%94%81%E6%83%85%E5%86%B5"><span class="toc-text">查看意向锁及行锁的加锁情况</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%94%E7%A4%BA-2"><span class="toc-text">演示</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%A8%E5%B1%80%E9%94%81"><span class="toc-text">全局锁</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%A8%E5%BA%93%E9%80%BB%E8%BE%91%E5%A4%87%E4%BB%BD%E5%8A%A0%E5%85%A8%E5%B1%80%E9%94%81%E7%9A%84%E5%8E%9F%E5%9B%A0"><span class="toc-text">全库逻辑备份加全局锁的原因</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%AD%E6%B3%95"><span class="toc-text">语法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%A4%87%E4%BB%BD%E6%BC%94%E7%A4%BA"><span class="toc-text">数据备份演示</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%A8%E5%B1%80%E9%94%81%E7%89%B9%E7%82%B9"><span class="toc-text">全局锁特点</span></a></li></ol></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="行级锁"><a href="#行级锁" class="headerlink" title="行级锁"></a>行级锁</h1><p>InnoDB的数据是基于索引组织的，<strong>行锁是通过对索引上的索引项加锁来实现的，而不是对记录加的锁</strong>。对于行级锁，主要分为以下三类：行锁（Record Lock）、间隙锁（Gap Lock）和临键锁（Next-Key Lock）</p>
+<h2 id="行锁（Record-Lock）"><a href="#行锁（Record-Lock）" class="headerlink" title="行锁（Record Lock）"></a>行锁（Record Lock）</h2><h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>行锁（Record Lock）：锁定单个行记录的锁，防止其他事务对此行进行update和delete。在 RC、RR隔离级别下都支持。比如我们对id为34的一行数据进行加锁，那么其他事物就不可以对34进行update和delete。</p>
+<img src="MySQLLock/001.jpg"  width="80%" />
+
+<h3 id="共享锁（S）与排他锁（X）"><a href="#共享锁（S）与排他锁（X）" class="headerlink" title="共享锁（S）与排他锁（X）"></a>共享锁（S）与排他锁（X）</h3><p>InnoDB实现了以下两种类型的行锁：</p>
+<ul>
+<li>共享锁（S）：允许一个事务去读一行，阻止其他事务获得相同数据集的排它锁。</li>
+<li>排他锁（X）：允许获取排他锁的事务更新数据，阻止其他事务获得相同数据集的共享锁和排他锁。</li>
+</ul>
+<p>两种行锁的兼容情况如下：</p>
+<img src="MySQLLock/004.jpg"  width="80%" />
+
+<p>常见的SQL语句，在执行时，所加的行锁如下：</p>
+<table>
+<thead>
+<tr>
+<th>SQL</th>
+<th>行锁类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>INSERT …</td>
+<td>排它锁</td>
+<td>自动加锁</td>
+</tr>
+<tr>
+<td>UPDATE …</td>
+<td>排它锁</td>
+<td>自动加锁</td>
+</tr>
+<tr>
+<td>DELETE …</td>
+<td>排它锁</td>
+<td>自动加锁</td>
+</tr>
+<tr>
+<td>SELECT（正常）</td>
+<td>不加任何锁</td>
+<td></td>
+</tr>
+<tr>
+<td>SELECT … LOCK IN SHARE MODE</td>
+<td>共享锁</td>
+<td>需要手动在SELECT之后加LOCK IN SHARE MODE</td>
+</tr>
+<tr>
+<td>SELECT … FOR UPDATE</td>
+<td>排它锁</td>
+<td>需要手动在SELECT之后加FOR UPDATE</td>
+</tr>
+</tbody></table>
+<p>查看及行锁的加锁情况：</p>
+<pre><code class="mysql">select object_schema,object_name,index_name,lock_type,lock_mode,lock_data from performance_schema.data_locks;
+</code></pre>
+<h3 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h3><p><strong>普通的select语句，执行时，不会加锁：</strong></p>
+<pre><code class="mysql">-- 窗口A
+mysql&gt; select * from stu where id=1;
++----+------+-----+
+| id | name | age |
++----+------+-----+
+|  1 | tom  |   1 |
++----+------+-----+
+1 row in set (0.00 sec)
+
+-- 窗口B
+mysql&gt; select object_schema,object_name,index_name,lock_type,lock_mode,lock_data from performance_schema.data_locks;
+Empty set (0.02 sec)
+</code></pre>
+<p><code>select...lock in share mode</code>，加共享锁，<strong>共享锁与共享锁之间兼容</strong>。</p>
+<pre><code class="mysql">-- 窗口A
+mysql&gt; begin; # 发起事务
+Query OK, 0 rows affected (0.00 sec)
+
+mysql&gt; select * from stu where id=1 lock in share mode; # 加共享锁
++----+------+-----+
+| id | name | age |
++----+------+-----+
+|  1 | tom  |   1 |
++----+------+-----+
+1 row in set (0.00 sec)
+-- ######################################################################
+-- 窗口C ： 
+-- lock_type=TABLE 表示 表级锁
+-- lock_type=RECORD 表示 行级锁
+--    lock_mode=S 表示 共享锁
+--    lock_mode=REC_NOT_GAP 表示 没有间隙
+mysql&gt; select object_schema,object_name,index_name,lock_type,lock_mode,lock_data from performance_schema.data_locks;
++---------------+-------------+------------+-----------+---------------+-----------+
+| object_schema | object_name | index_name | lock_type | lock_mode     | lock_data |
++---------------+-------------+------------+-----------+---------------+-----------+
+| temp          | stu         | NULL       | TABLE     | IS            | NULL      |
+| temp          | stu         | PRIMARY    | RECORD    | S,REC_NOT_GAP | 1         |
++---------------+-------------+------------+-----------+---------------+-----------+
+2 rows in set (0.00 sec)
+-- ######################################################################
+-- 窗口B：
+-- 对于不加锁的select和加共享锁的select都可以执行，操作id=1的数据
+mysql&gt; begin;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql&gt; select * from stu where id=1;
++----+------+-----+
+| id | name | age |
++----+------+-----+
+|  1 | tom  |   1 |
++----+------+-----+
+1 row in set (0.00 sec)
+
+mysql&gt; select * from stu where id=1 lock in share mode;
++----+------+-----+
+| id | name | age |
++----+------+-----+
+|  1 | tom  |   1 |
++----+------+-----+
+1 row in set (0.00 sec)
+</code></pre>
+<p><strong>共享锁与排他锁之间互斥</strong></p>
+<pre><code class="mysql">-- 窗口1：对id=1的数据加共享锁
+mysql&gt; begin;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql&gt; select * from stu where id=1 lock in share mode;
++----+------+-----+
+| id | name | age |
++----+------+-----+
+|  1 | tom  |   1 |
++----+------+-----+
+1 row in set (0.00 sec)
+
+###############################################################
+
+-- 窗口2：修改id=1的数据（带着排它锁）
+mysql&gt; begin;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql&gt; update stu set name = &#39;jerry&#39; where id=1;
+ERROR 1205 (HY000): Lock wait timeout exceeded; try restarting transaction
+
+############################################################################
+
+-- 要等到窗口1的数据commit之后，窗口2才能修改
+mysql&gt; commit; -- 窗口1 commit之后解锁
+Query OK, 0 rows affected (0.00 sec)
+
+-- 窗口2 的数据才能修改，否则超时
+mysql&gt; update stu set name = &#39;jerry&#39; where id=1;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql&gt; commit;
+Query OK, 0 rows affected (0.00 sec)
+</code></pre>
+<p><strong>排它锁与排他锁之间互斥</strong></p>
+<pre><code class="mysql">-- 窗口1 修改id=1 的数据
+mysql&gt; begin;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql&gt; update stu set name = &#39;jerry2&#39; where id=1;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+-- 窗口3 查看锁的情况
+-- lock_type=RECORD， lock_mode=X 表示使用了排它锁，锁主的数据 lock_data=1
+mysql&gt; select object_schema,object_name,index_name,lock_type,lock_mode,lock_data from performance_schema.data_locks;
++---------------+-------------+------------+-----------+---------------+-----------+
+| object_schema | object_name | index_name | lock_type | lock_mode     | lock_data |
++---------------+-------------+------------+-----------+---------------+-----------+
+| temp          | stu         | NULL       | TABLE     | IX            | NULL      |
+| temp          | stu         | PRIMARY    | RECORD    | X,REC_NOT_GAP | 1         |
++---------------+-------------+------------+-----------+---------------+-----------+
+
+-- 窗口2 修改id=1的数据
+mysql&gt; update stu set name = &#39;marry&#39; where id=1;
+# 光标一直闪烁，表示sql被阻塞
+
+-- 窗口1 提交事务，释放锁
+mysql&gt; commit;
+Query OK, 0 rows affected (0.00 sec)
+
+-- 窗口2 修改才能成功
+mysql&gt; update stu set name = &#39;marry&#39; where id=1;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql&gt; commit;
+Query OK, 0 rows affected (0.01 sec)
+</code></pre>
+<p><strong>无索引行锁   升级为表锁</strong></p>
+<pre><code class="mysql">-- 窗口1：对name=marry的数据进行修改，也就是id=1的数据
+mysql&gt; select * from stu;
++----+-------+-----+
+| id | name  | age |
++----+-------+-----+
+|  1 | marry |   1 |
+|  3 | cat   |   3 |
+|  8 | rose  |   8 |
+| 11 | jetty |  11 |
+| 19 | lily  |  19 |
+| 25 | luci  |  25 |
++----+-------+-----+
+6 rows in set (0.00 sec)
+
+mysql&gt; begin;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql&gt; update stu set name=&#39;bob&#39; where name=&#39;marry&#39;;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+###################################################################
+
+-- 窗口2 ：修改id=2的数据
+mysql&gt; update stu set name = &#39;xiexie&#39; where id=2;
+# 光标一直闪烁，表示sql被阻塞
+
+#################################################################
+
+-- 窗口3：查询数据库锁的情况———— 发现整张表都被锁了 lock_type=RECORD，lock_mode=X
+mysql&gt; select object_schema,object_name,index_name,lock_type,lock_mode,lock_data from performance_schema.data_locks;
++---------------+-------------+------------+-----------+-----------+------------------------+
+| object_schema | object_name | index_name | lock_type | lock_mode | lock_data              |
++---------------+-------------+------------+-----------+-----------+------------------------+
+| temp          | stu         | NULL       | TABLE     | IX        | NULL                   |
+| temp          | stu         | PRIMARY    | RECORD    | X         | supremum pseudo-record |
+| temp          | stu         | PRIMARY    | RECORD    | X         | 3                      |
+| temp          | stu         | PRIMARY    | RECORD    | X         | 8                      |
+| temp          | stu         | PRIMARY    | RECORD    | X         | 11                     |
+| temp          | stu         | PRIMARY    | RECORD    | X         | 19                     |
+| temp          | stu         | PRIMARY    | RECORD    | X         | 25                     |
+| temp          | stu         | PRIMARY    | RECORD    | X         | 1                      |
++---------------+-------------+------------+-----------+-----------+------------------------+
+8 rows in set (0.01 sec)
+
+##################################################################################################
+
+-- 窗口1 提交事务
+mysql&gt; commit;
+Query OK, 0 rows affected (0.00 sec)
+
+###################################################################################################
+
+-- 窗口2 : 修改成功
+mysql&gt; update stu set name = &#39;xiexie&#39; where id=2;
+Query OK, 1 row affected (9.17 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+##################################################################################################
+
+-- 窗口3 查看锁的情况，在窗口1提交事务之后，都解锁了
+mysql&gt; select object_schema,object_name,index_name,lock_type,lock_mode,lock_data from performance_schema.data_locks;
+Empty set (0.00 sec)
+</code></pre>
+<p>之所以这样是因为，<strong>InnoDB的行锁是针对于索引加的锁，不通过索引条件检索数据，那么InnoDB将对表中的所有记录加锁，此时 就会升级为表锁</strong>。如果想优化，可以对上面的name字段添加索引</p>
+<h2 id="间隙锁（Gap-Lock）和临键锁（Next-Key-Lock）"><a href="#间隙锁（Gap-Lock）和临键锁（Next-Key-Lock）" class="headerlink" title="间隙锁（Gap Lock）和临键锁（Next-Key Lock）"></a>间隙锁（Gap Lock）和临键锁（Next-Key Lock）</h2><h3 id="介绍-1"><a href="#介绍-1" class="headerlink" title="介绍"></a>介绍</h3><p>间隙锁（Gap Lock）：锁定索引记录<strong>间隙（不含该记录）</strong>，<strong>确保索引记录间隙不变，防止其他事务在这个间隙进行insert</strong>，产生幻读。在RR隔离级别下都支持。</p>
+<p>所谓间隙就是两个数之间的范围，比如（18, 29) 又比如(29,34)，不包含两边的值。<strong>这样就无法再把数据insert进入这个间隙了</strong>。</p>
+<img src="MySQLLock/002.jpg"  width="80%" />
+
+<p>临键锁（Next-Key Lock）：行锁和间隙锁组合，同时锁住数据，并锁住数据前面的间隙Gap。在RR隔离级别下支持。</p>
+<p>比如，给id&#x3D;34的锁加临键锁，那么id&#x3D;34的会加锁，它之后的间隙（如(29,34)）都会加锁</p>
+<img src="MySQLLock/003.jpg"  width="80%" />
+
+<p>默认情况下，InnoDB在 REPEATABLE READ事务隔离级别运行，<strong>InnoDB使用 next-key 锁进行搜索和索引扫描，以防止幻读</strong>。</p>
+<ul>
+<li>索引上的等值查询(唯一索引)，给不存在的记录加锁时, 优化为间隙锁 。</li>
+<li>索引上的等值查询(非唯一普通索引)，向右遍历时最后一个值不满足查询需求时，next-keylock 退化为间隙锁。</li>
+<li>索引上的范围查询(唯一索引)–会访问到不满足条件的第一个值为止。</li>
+</ul>
+<h3 id="演示-1"><a href="#演示-1" class="headerlink" title="演示"></a>演示</h3><p><strong>索引上的等值查询(唯一索引)，给不存在的记录加锁时, 优化为间隙锁 。</strong></p>
+<pre><code class="mysql">-- 窗口1 查询数据
+mysql&gt; select * from stu;
++----+--------+-----+
+| id | name   | age |
++----+--------+-----+
+|  1 | xiexie |   1 |
+|  3 | cat    |   3 |
+|  8 | rose   |   8 |
+| 11 | jetty  |  11 |
+| 19 | lily   |  19 |
+| 25 | luci   |  25 |
++----+--------+-----+
+6 rows in set (0.00 sec)
+
+############################################################
+
+-- 窗口1 开启事务，更新id=10的数据
+mysql&gt; begin;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql&gt; update stu set age =10 where id = 10;
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+
+
+#############################################################################
+
+-- 窗口3：查看数据库锁的情况
+-- lock_mode=GAP 表示开启了间隙锁
+-- lock_data = 11 表示11之后的间隙&#123;(8,11)&#125;的无法插入新的值
+mysql&gt; select object_schema,object_name,index_name,lock_type,lock_mode,lock_data from performance_schema.data_locks;
++---------------+-------------+------------+-----------+-----------+-----------+
+| object_schema | object_name | index_name | lock_type | lock_mode | lock_data |
++---------------+-------------+------------+-----------+-----------+-----------+
+| temp          | stu         | NULL       | TABLE     | IX        | NULL      |
+| temp          | stu         | PRIMARY    | RECORD    | X,GAP     | 11        |
++---------------+-------------+------------+-----------+-----------+-----------+
+2 rows in set (0.00 sec)
+
+##########################################################################################
+
+-- 窗口2 尝试插入间隙(8,11)失败
+mysql&gt; insert into stu value(9,&#39;ming&#39;,11);
+^C^C -- query aborted
+ERROR 1317 (70100): Query execution was interrupted
+
+-- 窗口2 但是插入间隙(3,8)成功
+mysql&gt; insert into stu value(5,&#39;ming&#39;,11);
+Query OK, 1 row affected (0.00 sec)
+
+mysql&gt; select * from stu;
++----+--------+-----+
+| id | name   | age |
++----+--------+-----+
+|  1 | xiexie |   1 |
+|  3 | cat    |   3 |
+|  5 | ming   |  11 |
+|  8 | rose   |   8 |
+| 11 | jetty  |  11 |
+| 19 | lily   |  19 |
+| 25 | luci   |  25 |
++----+--------+-----+
+7 rows in set (0.00 sec)
+</code></pre>
+<p><strong>索引上的等值查询(非唯一普通索引)，向右遍历（向数值越大的方向）时最后一个值不满足查询需求时，会对该值加临键锁，对被搜索的值也加临键锁</strong></p>
+<blockquote>
+<p>分析一下：</p>
+<blockquote>
+<p>我们知道InnoDB的B+树索引，叶子节点是有序的双向链表。 假如，我们要根据这个二级索引查询值为18的数据，并加上共享锁，我们是只锁定18这一行就可以了吗？ 并不是，<strong>因为是非唯一索引，这个结构中可能有多个18的存在，所以，在加锁时会继续往后找，找到一个不满足条件的值（当前案例中也就是29）。此时会对18加临键锁，并对29之前的间隙加锁。</strong></p>
+<ul>
+<li>此时会对18加临键锁：18这行数据会加锁，(16,18)的区间会有间隙锁</li>
+</ul>
+<p><img src="MySQLLock/005.jpg"  width="80%" />·</p>
+</blockquote>
+</blockquote>
+<pre><code class="mysql">-- 窗口3 ：查询stu表的信息
+mysql&gt; select * from stu order by age;
++----+--------+-----+
+| id | name   | age |
++----+--------+-----+
+|  1 | xiexie |   1 |
+|  3 | cat    |   3 |
+|  8 | rose   |   8 |
+|  5 | ming   |  11 |
+| 11 | jetty  |  11 |
+| 19 | lily   |  19 |
+| 25 | luci   |  25 |
++----+--------+-----+
+7 rows in set (0.00 sec)
+
+-- 窗口3 给age创建索引
+mysql&gt; create index idx_stu_age on stu(age);
+Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+######################################################################
+
+-- 窗口1：开启事务，用共享锁查询age=11的数据
+mysql&gt; begin;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql&gt; select * from stu where age=11 lock in share mode;
++----+-------+-----+
+| id | name  | age |
++----+-------+-----+
+|  5 | ming  |  11 |
+| 11 | jetty |  11 |
++----+-------+-----+
+2 rows in set (0.01 sec)
+
+###############################################################################
+-- 窗口3：查看锁的情况
+mysql&gt; select object_schema,object_name,index_name,lock_type,lock_mode,lock_data from performance_schema.data_locks;
++---------------+-------------+-------------+-----------+---------------+-----------+
+| object_schema | object_name | index_name  | lock_type | lock_mode     | lock_data |
++---------------+-------------+-------------+-----------+---------------+-----------+
+| temp          | stu         | NULL        | TABLE     | IS            | NULL      |
+| temp          | stu         | idx_stu_age | RECORD    | S             | 11, 5     |
+| temp          | stu         | idx_stu_age | RECORD    | S             | 11, 11    |
+| temp          | stu         | PRIMARY     | RECORD    | S,REC_NOT_GAP | 11        |
+| temp          | stu         | PRIMARY     | RECORD    | S,REC_NOT_GAP | 5         |
+| temp          | stu         | idx_stu_age | RECORD    | S,GAP         | 19, 19    |
++---------------+-------------+-------------+-----------+---------------+-----------+
+6 rows in set (0.00 sec)
+-- index_name=idx_stu_age的情况：变成了临建锁
+-- -- | RECORD    | S             | 11, 11    | 用共享锁锁住了 age =11 id=11的数据
+-- --  RECORD    | S             | 11, 5     |用共享锁锁住了 age =11 id=5的数据
+-- -- | RECORD    | S,GAP         | 19, 19    | 表示锁住了age=19，id=19 之前的间隙（GAP 间隙）
+
+#####################################################################################################
+
+-- 窗口2 
+-- 向 age为（11,19）的区间插入一条数据：无法插入
+mysql&gt; insert into stu value(2,&#39;hong&#39;,18);
+^C^C -- query aborted
+ERROR 1317 (70100): Query execution was interrupted
+-- 向age为（8,11）的区间插入一条数据：无法插入
+mysql&gt; insert into stu value(30,&#39;bai&#39;,9);
+^C^C -- query aborted
+ERROR 1317 (70100): Query execution was interrupted
+-- 向age为（3,8）的区间插入一条数据：成功插入
+mysql&gt; insert into stu value(30,&#39;bai&#39;,7);
+Query OK, 1 row affected (0.00 sec)
+-- 修改age=11的数据，无法修改
+mysql&gt; update stu set age = 12 where age=11;
+^C^C -- query aborted
+ERROR 1317 (70100): Query execution was interrupted
+-- 修改id=11的数据，无法修改
+mysql&gt; update stu set age = 12 where id=11;
+^C^C -- query aborted
+ERROR 1317 (70100): Query execution was interrupted
+-- 修改id=19的数据，无法修改
+mysql&gt; update stu set age = 12 where id=19;
+^C^C -- query aborted
+ERROR 1317 (70100): Query execution was interrupted
+</code></pre>
+<p><strong>索引上的范围查询(唯一索引)会访问到不满足条件的第一个值为止。</strong></p>
+<pre><code class="mysql">-- 窗口1 查询id&gt;=19的数据，并加共享锁
+mysql&gt; begin;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql&gt; select * from stu where id&gt;=19 lock in share mode;
++----+------+-----+
+| id | name | age |
++----+------+-----+
+| 19 | lily |  19 |
+| 25 | luci |  25 |
+| 30 | bai  |   7 |
++----+------+-----+
+3 rows in set (0.00 sec)
+
+#######################################################################################################
+
+-- 窗口3 查询锁的情况
+mysql&gt; select object_schema,object_name,index_name,lock_type,lock_mode,lock_data from performance_schema.data_locks;
++---------------+-------------+------------+-----------+---------------+------------------------+
+| object_schema | object_name | index_name | lock_type | lock_mode     | lock_data              |
++---------------+-------------+------------+-----------+---------------+------------------------+
+| temp          | stu         | NULL       | TABLE     | IS            | NULL                   |
+| temp          | stu         | PRIMARY    | RECORD    | S,REC_NOT_GAP | 19                     |
+| temp          | stu         | PRIMARY    | RECORD    | S             | supremum pseudo-record |
+| temp          | stu         | PRIMARY    | RECORD    | S             | 25                     |
+| temp          | stu         | PRIMARY    | RECORD    | S             | 30                     |
++---------------+-------------+------------+-----------+---------------+------------------------+
+5 rows in set (0.00 sec)
+</code></pre>
+<p>查询的条件为id&gt;&#x3D;19，并添加共享锁。 此时我们可以根据数据库表中现有的数据，将数据分为三个部分：</p>
+<p>[19]，(19,25]，(25,30]，(30, supremum pseudo-record]–&gt;(30,+∞]</p>
+<p>所以数据库数据在加锁是，就是将19加了行锁，25的临键锁，30的临键锁和正无穷的键锁</p>
+<pre><code class="mysql">-- 窗口2 测试各个区间的锁的情况
+ERROR 1317 (70100): Query execution was interrupted
+mysql&gt; insert into stu value(22,&#39;hei&#39;,22);
+^C^C -- query aborted
+ERROR 1317 (70100): Query execution was interrupted
+mysql&gt; update stu set age = 12 where id=19;
+^C^C -- query aborted
+ERROR 1317 (70100): Query execution was interrupted
+mysql&gt; insert into stu value(100,&#39;hei&#39;,22);
+^C^C -- query aborted
+ERROR 1317 (70100): Query execution was interrupted
+mysql&gt; update stu set age = 12 where id=25;
+^C^C -- query aborted
+ERROR 1317 (70100): Query execution was interrupted
+mysql&gt; insert into stu value(18,&#39;hei&#39;,22);
+Query OK, 1 row affected (0.00 sec)
+</code></pre>
+<h1 id="表级锁"><a href="#表级锁" class="headerlink" title="表级锁"></a>表级锁</h1><p>对于表级锁，主要分为以下三类：表锁、元数据锁（meta data lock，MDL）、意向锁</p>
+<h2 id="表锁"><a href="#表锁" class="headerlink" title="表锁"></a>表锁</h2><p>对于表锁，分为两类：表共享读锁（read lock）、表独占写锁（write lock）</p>
+<p>语法：</p>
+<ul>
+<li>加锁：<code>lock tables 表名... read/write</code></li>
+<li>释放锁：<code>unlock tables</code> &#x2F; 客户端断开连接</li>
+</ul>
+<h3 id="表共享读锁（read-lock）"><a href="#表共享读锁（read-lock）" class="headerlink" title="表共享读锁（read lock）"></a>表共享读锁（read lock）</h3><p>读锁的特点：</p>
+<img src="MySQLLock/006.jpg"  width="80%" />
+
+<p><strong>左侧为客户端一，对指定表加了读锁，不会影响右侧客户端二的读，但是会阻塞右侧客户端的写。</strong></p>
+<pre><code class="mysql">-- 客户端一：加读锁
+mysql&gt; lock tables stu read;
+Query OK, 0 rows affected (0.00 sec)
+
+############################################################
+
+-- 客户端二 ： 可以读取数据
+mysql&gt; select * from stu;
++----+--------+-----+
+| id | name   | age |
++----+--------+-----+
+|  1 | xiexie |   1 |
+|  3 | cat    |   3 |
+|  5 | ming   |  11 |
+|  6 | hong   |   1 |
+|  7 | hong   |  20 |
+|  8 | rose   |   8 |
+| 11 | jetty  |  11 |
+| 18 | hei    |  22 |
+| 19 | lily   |  19 |
+| 25 | luci   |  25 |
+| 30 | bai    |   7 |
++----+--------+-----+
+11 rows in set (0.00 sec)
+
+-- 客户端二：不可以新增修改和删除数据
+mysql&gt; delete from stu where id =25;
+^C^C -- query aborted
+ERROR 1317 (70100): Query execution was interrupted
+</code></pre>
+<h3 id="表独占写锁（write-lock）"><a href="#表独占写锁（write-lock）" class="headerlink" title="表独占写锁（write lock）"></a>表独占写锁（write lock）</h3><img src="MySQLLock/007.jpg"  width="80%" />
+
+<p>左侧为客户端一，对指定表加了写锁，<strong>会阻塞右侧客户端的读和写</strong>。</p>
+<pre><code class="mysql">-- 客户端一：加读锁
+mysql&gt; lock tables stu write;
+Query OK, 0 rows affected (0.00 sec)
+
+
+-- 客户端二：读操作和写操作都会阻塞
+mysql&gt; select * from stu;
+^C^C -- query aborted
+ERROR 1317 (70100): Query execution was interrupted
+mysql&gt; delete from stu where id =25;
+^C^C -- query aborted
+ERROR 1317 (70100): Query execution was interrupted
+</code></pre>
+<h2 id="元数据锁"><a href="#元数据锁" class="headerlink" title="元数据锁"></a>元数据锁</h2><p>meta data lock , 元数据锁，简写<strong>MDL</strong>。</p>
+<p>MDL加锁过程是<strong>系统自动控制</strong>，<strong>无需显式使用</strong>，在访问一张表的时候会自动加上。MDL锁主要作用是维护表元数据的数据一致性，在表上有活动事务的时候，不可以对元数据进行写入操作。为了避免DML与DDL冲突，保证读写的正确性。</p>
+<p>这里的<strong>元数据</strong>，大家可以简单理解为就是<strong>一张表的表结构</strong>。 也就是说，<strong>某一张表涉及到未提交的事务时，是不能够修改这张表的表结构的</strong>。</p>
+<p>在MySQL5.5中引入了MDL，<strong>当对一张表进行增删改查的时候，加MDL共享锁（读锁）；当对表结构进行变更操作的时候，加MDL排它锁（写锁）。</strong></p>
+<ul>
+<li>共享锁（读锁）：这里的读锁是相对<strong>表的结构</strong>来说的，增删改查相当于<strong>读取表结构</strong></li>
+<li>排它锁（写锁）：这里的读锁是相对<strong>表的结构</strong>来说的，alter语句相当于<strong>修改表结构</strong></li>
+</ul>
+<p>查看元数据所的情况</p>
+<pre><code class="mysql">select object_type,object_schema,object_name,lock_type,lock_duration from performance_schema.metadata_locks ;
+</code></pre>
+<p>常见的SQL操作时，所添加的元数据锁：</p>
+<table>
+<thead>
+<tr>
+<th>对应SQL</th>
+<th>锁类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>lock tables xxx read &#x2F; write</td>
+<td>SHARED_READ_ONLY &#x2F; SHARED_NO_READ_WRITE</td>
+<td></td>
+</tr>
+<tr>
+<td>select 、select … lock in share mode</td>
+<td>SHARED_READ 读锁(共享)</td>
+<td>与SHARED_READ、SHARED_WRITE兼容，与EXCLUSIVE互斥</td>
+</tr>
+<tr>
+<td>insert 、update、delete、select … for update</td>
+<td>SHARED_WRITE 写锁(排他)</td>
+<td>与SHARED_READ、SHARED_WRITE兼容，与EXCLUSIVE互斥</td>
+</tr>
+<tr>
+<td>alter table …</td>
+<td>EXCLUSIVE</td>
+<td>与其他的MDL都互斥</td>
+</tr>
+</tbody></table>
+<p><strong>当执行SELECT、INSERT、UPDATE、DELETE等语句时，添加的是元数据共享锁（SHARED_READ &#x2F;SHARED_WRITE），之间是兼容的。</strong></p>
+<p><strong>当执行SELECT语句时，添加的是元数据共享锁（SHARED_READ），会阻塞元数据排他锁（EXCLUSIVE），之间是互斥的。</strong></p>
+<pre><code class="mysql">-- 窗口1 开启使用，执行一条查询语句
+mysql&gt; begin;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql&gt; select * from stu;
++----+--------+-----+
+| id | name   | age |
++----+--------+-----+
+|  1 | xiexie |   1 |
+|  3 | cat    |   3 |
+|  5 | ming   |  11 |
+|  6 | hong   |   1 |
+|  7 | hong   |  20 |
+|  8 | rose   |   8 |
+| 11 | jetty  |  11 |
+| 18 | hei    |  22 |
+| 19 | lily   |  19 |
+| 25 | luci   |  25 |
+| 30 | bai    |   7 |
++----+--------+-----+
+11 rows in set (0.00 sec)
+
+################################################################
+
+-- 窗口3 查看元数据锁的情况，有一条 共享读锁 lock_type=SHARED_READ
+mysql&gt; select object_type,object_schema,object_name,lock_type,lock_duration from performance_schema.metadata_locks ;
++-------------+--------------------+----------------+-------------+---------------+
+| object_type | object_schema      | object_name    | lock_type   | lock_duration |
++-------------+--------------------+----------------+-------------+---------------+
+| TABLE       | temp               | stu            | SHARED_READ | TRANSACTION   |
+| TABLE       | performance_schema | metadata_locks | SHARED_READ | TRANSACTION   |
++-------------+--------------------+----------------+-------------+---------------+
+
+###########################################################################
+
+-- 窗口1 修改一条数据
+mysql&gt; update stu set age = 10 where id=1;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+###############################################################################
+
+-- 窗口3 查看元数据锁的情况，有一条共享写锁
+mysql&gt; select object_type,object_schema,object_name,lock_type,lock_duration from performance_schema.metadata_locks ;
++-------------+--------------------+----------------+--------------+---------------+
+| object_type | object_schema      | object_name    | lock_type    | lock_duration |
++-------------+--------------------+----------------+--------------+---------------+
+| TABLE       | temp               | stu            | SHARED_READ  | TRANSACTION   |
+| TABLE       | temp               | stu            | SHARED_WRITE | TRANSACTION   |
+| TABLE       | performance_schema | metadata_locks | SHARED_READ  | TRANSACTION   |
++-------------+--------------------+----------------+--------------+---------------+
+3 rows in set (0.01 sec)
+
+####################################################################################################
+
+-- 窗口2 删除一条数据，删除成功，又新增一条共享写锁
+mysql&gt; delete from stu where id = 30;
+Query OK, 1 row affected (0.00 sec)
+-- 窗口 3
+mysql&gt; select object_type,object_schema,object_name,lock_type,lock_duration from performance_schema.metadata_locks ;
++-------------+--------------------+----------------+--------------+---------------+
+| object_type | object_schema      | object_name    | lock_type    | lock_duration |
++-------------+--------------------+----------------+--------------+---------------+
+| TABLE       | temp               | stu            | SHARED_READ  | TRANSACTION   |
+| TABLE       | temp               | stu            | SHARED_WRITE | TRANSACTION   |
+| TABLE       | temp               | stu            | SHARED_WRITE | TRANSACTION   |
+| TABLE       | performance_schema | metadata_locks | SHARED_READ  | TRANSACTION   |
++-------------+--------------------+----------------+--------------+---------------+
+
+##############################################################################################
+
+-- 窗口2 修改表结构，无法修改，会被阻塞
+mysql&gt; alter table stu add column gender int;
+^C^C -- query aborted
+ERROR 1317 (70100): Query execution was interrupted
+</code></pre>
+<h2 id="意向锁"><a href="#意向锁" class="headerlink" title="意向锁"></a>意向锁</h2><h3 id="介绍-2"><a href="#介绍-2" class="headerlink" title="介绍"></a>介绍</h3><h4 id="为什么需要意向锁"><a href="#为什么需要意向锁" class="headerlink" title="为什么需要意向锁"></a>为什么需要意向锁</h4><p>为了避免DML在执行时，加的行锁与表锁的冲突，在InnoDB中引入了<strong>意向锁</strong>，<strong>使得表锁不用检查每行数据是否加锁，使用意向锁来减少表锁的检查</strong>。</p>
+<p><strong>假如没有意向锁：</strong></p>
+<p>客户端一对表加了行锁后，客户端二如何给表加表锁呢，来通过示意图简单分析一下：</p>
+<p>首先客户端一，开启一个事务，然后执行DML操作，在执行DML语句时，会对涉及到的行加行锁。</p>
+<img src="MySQLLock/008.jpg"  width="80%" />
+
+<p>当客户端二，<strong>想对这张表加表锁时（lock tables xxx read&#x2F;write），会检查当前表是否有对应的行锁，如果没有，则添加表锁</strong>，此时就会从第一行数据，检查到最后一行数据，效率较低。</p>
+<img src="MySQLLock/009.jpg"  width="90%" />
+
+<p><strong>有了意向锁之后 :</strong></p>
+<p>客户端一，在执行DML操作时，会对涉及的行加行锁，同时也会对该表加上意向锁。</p>
+<img src="MySQLLock/010.jpg"  width="80%" />
+
+<p>而其他客户端，在对这张表加表锁的时候，会根据该表上所加的意向锁来判定是否可以成功加表锁，而不用逐行判断行锁情况了。</p>
+<img src="MySQLLock/011.jpg"  width="80%" />
+
+<h4 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h4><p>意向共享锁(IS)：由语句<code>select ... lock in share mode</code>添加 。与表锁共享锁(read)兼容，与表锁排他锁(write)互斥。</p>
+<p>意向排他锁(IX)：由<code>insert、update、delete、select...for update</code>添加 。与表锁共享锁(read)及排他锁(write)都互斥，意向锁之间不会互斥。</p>
+<p>一旦事务提交了，意向共享锁、意向排他锁，都会自动释放。</p>
+<h4 id="查看意向锁及行锁的加锁情况"><a href="#查看意向锁及行锁的加锁情况" class="headerlink" title="查看意向锁及行锁的加锁情况"></a>查看意向锁及行锁的加锁情况</h4><pre><code class="mysql">select object_schema,object_name,index_name,lock_type,lock_mode,lock_data from performance_schema.data_locks;
+</code></pre>
+<h3 id="演示-2"><a href="#演示-2" class="headerlink" title="演示"></a>演示</h3><p><strong>意向共享锁与表的读锁是兼容的</strong></p>
+<pre><code class="mysql">-- 客户端一：添加共享锁
+mysql&gt; begin;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql&gt; select * from stu where id=1 lock in share mode;
++----+--------+-----+
+| id | name   | age |
++----+--------+-----+
+|  1 | xiexie |  10 |
++----+--------+-----+
+1 row in set (0.00 sec)
+
+-- 这里 lock_mode=IS 就是意向共享锁
+mysql&gt; select object_schema,object_name,index_name,lock_type,lock_mode,lock_data from performance_schema.data_locks;
++---------------+-------------+------------+-----------+---------------+-----------+
+| object_schema | object_name | index_name | lock_type | lock_mode     | lock_data |
++---------------+-------------+------------+-----------+---------------+-----------+
+| temp          | stu         | NULL       | TABLE     | IS            | NULL      |
+| temp          | stu         | PRIMARY    | RECORD    | S,REC_NOT_GAP | 1         |
++---------------+-------------+------------+-----------+---------------+-----------+
+
+###############################################################################################
+
+-- 客户端二 添加表所成功
+mysql&gt; lock tables stu read;
+Query OK, 0 rows affected (0.00 sec)
+
+###############################################################################################
+
+-- 客户端二：添加读锁被阻塞
+mysql&gt; lock tables stu write;
+^C^C -- query aborted
+ERROR 1317 (70100): Query execution was interrupted
+</code></pre>
+<p><strong>意向排他锁与表读锁、写锁都是互斥的</strong></p>
+<pre><code class="mysql">-- 客户端一：添加意向排它锁
+mysql&gt; begin;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql&gt; update stu set age = 14 where id=1;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+-- lock_mode= IX 意向排他锁
+mysql&gt; select object_schema,object_name,index_name,lock_type,lock_mode,lock_data from performance_schema.data_locks;
++---------------+-------------+------------+-----------+---------------+-----------+
+| object_schema | object_name | index_name | lock_type | lock_mode     | lock_data |
++---------------+-------------+------------+-----------+---------------+-----------+
+| temp          | stu         | NULL       | TABLE     | IX            | NULL      |
+| temp          | stu         | PRIMARY    | RECORD    | X,REC_NOT_GAP | 1         |
++---------------+-------------+------------+-----------+---------------+-----------+
+2 rows in set (0.00 sec)
+
+######################################################################################################
+
+-- 客户端二：添加表读锁和表写锁都被阻塞
+mysql&gt; lock tables stu read;
+^C^C -- query aborted
+ERROR 1317 (70100): Query execution was interrupted
+mysql&gt; lock tables stu write;
+^C^C -- query aborted
+ERROR 1317 (70100): Query execution was interrupted
+</code></pre>
+<h1 id="全局锁"><a href="#全局锁" class="headerlink" title="全局锁"></a>全局锁</h1><p>全局锁就是对整个数据库实例加锁，加锁后整个实例就处于只读状态，后续的DML的写语句，DDL语句，已经更新操作的事务提交语句都将被阻塞。</p>
+<p>其典型的使用场景是做全库的逻辑备份，对所有的表进行锁定，从而获取一致性视图，保证数据的完整性。</p>
+<h2 id="全库逻辑备份加全局锁的原因"><a href="#全库逻辑备份加全局锁的原因" class="headerlink" title="全库逻辑备份加全局锁的原因"></a>全库逻辑备份加全局锁的原因</h2><p><strong>我们一起先来分析一下不加全局锁，可能存在的问题。</strong></p>
+<p>假设在数据库中存在这样三张表: tb_stock 库存表，tb_order 订单表，tb_orderlog 订单日志表。</p>
+<img src="MySQLLock/012.jpg"  width="100%" />
+
+<ul>
+<li><p>在进行数据备份时，先备份了tb_stock库存表</p>
+</li>
+<li><p>然后接下来，在业务系统中，执行了下单操作，扣减库存，生成订单（更新<code>tb_stock</code>表，插入<code>tb_order</code>表）。</p>
+</li>
+<li><p>然后再执行备份<code>tb_order</code>表的逻辑。</p>
+</li>
+<li><p>业务中执行插入订单日志操作</p>
+</li>
+<li><p>最后，又备份了<code>tb_orderlog</code>表</p>
+</li>
+<li><p>此时备份出来的数据，是存在问题的。因为备份出来的数据，tb_stock表与tb_order表的数据不一致(有最新操作的订单信息,但是库存数没减)。</p>
+</li>
+</ul>
+<p><strong>再来分析一下加了全局锁后的情况</strong></p>
+<img src="MySQLLock/013.jpg"  width="100%" />
+
+<p>对数据库进行进行逻辑备份之前，先对整个数据库加上全局锁，一旦加了全局锁之后，其他的DDL、DML全部都处于阻塞状态，但是可以执行DQL语句，也就是处于只读状态，而数据备份就是查询操作。那么数据在进行逻辑备份的过程中，数据库中的数据就是不会发生变化的，这样就保证了数据的一致性和完整性。</p>
+<blockquote>
+<p>DDL（Data Definition Language）语句： <code>数据定义语言</code>，主要是进行定义&#x2F;改变表的结构、数据类型、表之间的链接等操作。常用的语句关键字有 CREATE、DROP、ALTER 等。</p>
+<p>DML（Data Manipulation Language）语句: <code>数据操纵语言</code>，主要是对数据进行增加、删除、修改操作。常用的语句关键字有 INSERT、UPDATE、DELETE 等。</p>
+<p>DQL（Data Query Language）语句：<code>数据查询语言</code>，主要是对数据进行查询操作。常用关键字有 SELECT、FROM、WHERE 等。</p>
+<p>DCL（Data Control Language）语句： <code>数据控制语言</code>，主要是用来设置&#x2F;更改数据库用户权限。常用关键字有 GRANT、REVOKE 等。一般人员很少用到DCL语句。</p>
+</blockquote>
+<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><pre><code class="mysql"># 加全局锁
+flush tables with read lock ;
+# 数据备份
+# # 备份整个数据库
+mysqldump -u username -p your_database &gt; your_backup_file.sql
+# # 备份数据库中的表
+mysqldump -u username -p your_database table1 table2 &gt; your_backup_file.sql
+# 释放锁
+unlock tables ;
+</code></pre>
+<h2 id="数据备份演示"><a href="#数据备份演示" class="headerlink" title="数据备份演示"></a>数据备份演示</h2><p>第一步：给数据库加全局锁</p>
+<pre><code class="mysql">-- 客户端一：加全局锁
+mysql&gt; flush tables with read lock;
+Query OK, 0 rows affected (0.07 sec)
+
+-- 客户端二：可以查询
+mysql&gt; select * from stu;
++----+--------+-----+
+| id | name   | age |
++----+--------+-----+
+|  1 | xiexie |  14 |
+|  3 | cat    |   3 |
+|  5 | ming   |  11 |
+|  6 | hong   |   1 |
+|  7 | hong   |  20 |
+|  8 | rose   |   8 |
+| 11 | jetty  |  11 |
+| 18 | hei    |  22 |
+| 19 | lily   |  19 |
+| 25 | luci   |  25 |
++----+--------+-----+
+10 rows in set (0.00 sec)
+
+-- 客户端二：但是不能DDL或者DML
+mysql&gt; alter table stu add column gender int;
+^C^C -- query aborted
+ERROR 1317 (70100): Query execution was interrupted
+mysql&gt; delete from stu where id = 30;
+^C^C -- query aborted
+ERROR 1317 (70100): Query execution was interrupted
+</code></pre>
+<p>第二步：退出MySQL，在控制台进行备份</p>
+<p>如果在MySQL命令行里面会报错误</p>
+<pre><code class="mysql">mysql&gt; mysqldump -uroot -p1234 temp stu &gt; stu.sql;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near &#39;mysqldump -u root -p 1234 temp stu &gt; stu.sql&#39; at line 1
+</code></pre>
+<p>要在命令行里面运行</p>
+<pre><code class="bash">[root@centos01 ~]# mysqldump -uroot -p1234 temp stu &gt; stu.sql;
+mysqldump: [Warning] Using a password on the command line interface can be insecure.
+[root@centos01 ~]# ll
+总用量 32
+-rw-r--r--  1 root root 18623 11月 17 2021 03.jpg
+-rw-------. 1 root root  1246 9月  15 2021 anaconda-ks.cfg
+drwxr-xr-x  3 root root    18 11月 17 2021 docker-volumn
+-rw-r--r--  1 root root    45 11月 18 2021 index.html
+-rw-r--r--  1 root root     0 9月  25 16:24 mysqldump
+-rw-r--r--  1 root root  2073 9月  25 16:25 stu.sql
+</code></pre>
+<p>释放锁</p>
+<pre><code class="mysql">mysql&gt; unlock tables;
+Query OK, 0 rows affected (0.00 sec)
+</code></pre>
+<h2 id="全局锁特点"><a href="#全局锁特点" class="headerlink" title="全局锁特点"></a>全局锁特点</h2><p>如果在<strong>主库</strong>上备份，那么在备份期间都不能执行更新，<strong>业务基本上就得停摆</strong>。</p>
+<p>如果在<strong>从库</strong>上备份，那么在备份期间从库不能执行主库同步过来的二进制日志（binlog），会导致<strong>主从延迟</strong>。</p>
+<p>在InnoDB引擎中，我们可以在备份时加上参数 –single-transaction 参数来完成<strong>不加锁的一致性数据备份</strong>。</p>
+<pre><code class="bash">mysqldump --single-transaction -uroot –p123456 itcast &gt; itcast.sql
+</code></pre>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 1909773034@qq.com </span>
+    </div>
+</article>
+
+
+<p>
+    <a  class="dashang" onclick="dashangToggle()">赏</a>
+</p>
+
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">
+    ©2017 XieShaoLin
+</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+
+<div class="hide_box" onclick="dashangToggle()"></div>
+<div class="shang_box">
+    <a class="shang_close"  onclick="dashangToggle()">×</a>
+    <div class="shang_tit">
+        <p>喜欢就点赞,疼爱就打赏</p>
+    </div>
+    <div class="shang_payimg">
+        <div class="pay_img">
+            <img src="/img/alipay.jpg" class="alipay" title="扫码支持">
+            <img src="/img/weixin.jpg" class="weixin" title="扫码支持">
+        </div>
+    </div>
+    <div class="shang_payselect">
+        <span><label><input type="radio" name="pay" checked value="alipay">支付宝</label></span><span><label><input type="radio" name="pay" value="weixin">微信</label></span>
+    </div>
+</div>
+
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
+
+<script src="/js/script.js?v=1.1.0" ></script>
+<script>
+    var img_resize = 'default';
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $("#post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+        $("input[name=pay]").on("click", function () {
+            if($("input[name=pay]:checked").val()=="weixin"){
+                $(".shang_box .shang_payimg .pay_img").addClass("weixin_img");
+            } else {
+                $(".shang_box .shang_payimg .pay_img").removeClass("weixin_img");
+            }
+        })
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+    function dashangToggle() {
+        $(".shang_box").fadeToggle();
+        $(".hide_box").fadeToggle();
+    }
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>

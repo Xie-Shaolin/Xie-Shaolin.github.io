@@ -1,0 +1,1918 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>docker 基础 | Notes</title>
+  <meta name="keywords" content=" docker ">
+  <meta name="description" content="docker 基础 | Notes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="卸载MySQL停止MySQL服务 systemctl stop mysqld  查询MySQL的安装文件 [root@centos01 ~]# rpm -qa | grep -i mysql mysql-community-client-5.7.28-1.el7.x86_64 mysql-community-server-5.7.28-1.el7.x86_64 mysql-community-co">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL的安装、卸载和启动">
+<meta property="og:url" content="http://example.com/2024/09/25/InstallMySQL8/index.html">
+<meta property="og:site_name" content="Notes">
+<meta property="og:description" content="卸载MySQL停止MySQL服务 systemctl stop mysqld  查询MySQL的安装文件 [root@centos01 ~]# rpm -qa | grep -i mysql mysql-community-client-5.7.28-1.el7.x86_64 mysql-community-server-5.7.28-1.el7.x86_64 mysql-community-co">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2024/09/25/InstallMySQL8/InstallMySQL8/001.png">
+<meta property="og:image" content="http://example.com/2024/09/25/InstallMySQL8/InstallMySQL8/002.png">
+<meta property="og:image" content="http://example.com/2024/09/25/InstallMySQL8/InstallMySQL8/003.png">
+<meta property="article:published_time" content="2024-09-24T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-09-25T10:36:23.945Z">
+<meta property="article:author" content="XieShaoLin">
+<meta property="article:tag" content="MySQL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2024/09/25/InstallMySQL8/InstallMySQL8/001.png">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.1.0" rel="stylesheet">
+
+<link href="/css/hl_theme/github.css?v=1.1.0" rel="stylesheet">
+
+<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
+
+<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="/js/titleTip.js?v=1.1.0" ></script>
+
+<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.1.0" ></script>
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="">
+  <input class="theme_blog_path" value="">
+  <input id="theme_shortcut" value="true" />
+  <input id="theme_highlight_on" value="true" />
+  <input id="theme_code_copy" value="true" />
+</div>
+
+
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/"
+   class="avatar_target">
+    <img class="avatar"
+         src="/img/avatar.jpg"/>
+</a>
+<div class="author">
+    <span>XieShaoLin</span>
+</div>
+
+<div class="icon">
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            <a title="email"
+               href="mailto:1909773034@qq.com"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-email"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="qq"
+               href="http://wpa.qq.com/msgrd?v=3&uin=1909773034&site=qq&menu=yes"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-qq"></use>
+                    </svg>
+                
+            </a>
+        
+    
+</div>
+
+
+
+
+
+<ul>
+    <li>
+        <div class="all active" data-rel="全部文章">全部文章
+            
+                <small>(55)</small>
+            
+        </div>
+    </li>
+    
+        
+            
+                
+    <li>
+        <div data-rel="工具">
+            
+            工具
+            <small>(1)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="前端">
+            
+            前端
+            <small>(1)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="后端">
+            
+            后端
+            <small>(45)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="运维">
+            
+            运维
+            <small>(3)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="财经">
+            
+            财经
+            <small>(1)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="英语">
+            
+            英语
+            <small>(2)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+        
+            
+            
+            
+    </div>
+    <div>
+        
+        
+    </div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="55">
+<input type="hidden" id="yelog_site_word_count" value="299.4k">
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        友情链接
+        <i class="iconfont icon-left"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="http://yelog.org/">叶落阁</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <div class="right-top">
+        <div id="default-panel">
+            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
+            <div class="right-title">全部文章</div>
+            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
+        </div>
+        <div id="search-panel">
+            <i class="iconfont icon-left" data-title="返回"></i>
+            <input id="local-search-input" autocomplete="off"/>
+            <label class="border-line" for="input"></label>
+            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
+            <i class="iconfont icon-tag" data-title="标签"></i>
+        </div>
+        <div id="outline-panel" style="display: none">
+            <div class="right-title">大纲</div>
+            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
+        </div>
+    </div>
+
+    <div class="tags-list">
+    <input id="tag-search" />
+    <div class="tag-wrapper">
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>阿里云</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>跨域</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>前锋教育</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>虚拟机</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>AOF</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>CentOS</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>docker</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>economy</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>element-ui</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>English</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>ES6</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>ESLint</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Feign</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>finalshell</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Getway</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>git</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>grammer</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>gulimall</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>hexo</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>idea</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>java</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>JavaScript</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Jedis</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Js</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>JSR303</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Linux</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>listening</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>maven</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>mq</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Mysql</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>MySql</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>MySQL</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Nacos</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>node.js</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>NoSql</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>npm</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>nvm</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>OAuth2</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>OSS</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Prettier</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>python</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>RDB</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>redis</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>RedisTemplate</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>renren-fast</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>spring</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>springboot</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>SpringCloud</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>springSecurity</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>vue</a>
+            </li>
+        
+    </div>
+
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/InstallMySQL8/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL的安装、卸载和启动">MySQL的安装、卸载和启动</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/MysqlIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL的索引原理和语法">MySQL的索引原理和语法</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/MySQLLock/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：锁">MySQL：锁</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/SQLTips/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：建议MySQL使用哪个索引">MySQL：建议MySQL使用哪个索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/SQLOptimization/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：SQL优化">MySQL：SQL优化</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/combinedIndexColumnIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL:联合索引和单列索引">MySQL:联合索引和单列索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/coveringIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="覆盖索引与锁表">覆盖索引与锁表</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/indexDesign/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：如何设计索引">MySQL：如何设计索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/invalidIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：索引失效">MySQL：索引失效</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/mysqlEngine/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL的存储引擎">MySQL的存储引擎</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/performanceAnalysis/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：慢查询日志、profile、explain">MySQL：慢查询日志、profile、explain</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/prefixIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：前缀索引">MySQL：前缀索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/22/redisPubSub/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="Redis订阅发布">Redis订阅发布</span>
+            <span class="post-date" title="2024-09-22 15:21:35">2024/09/22</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisProblem/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="Redis：缓存穿透、缓存击穿和缓存雪崩">Redis：缓存穿透、缓存击穿和缓存雪崩</span>
+            <span class="post-date" title="2024-09-17 16:33:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisPersistence/"
+           data-tag="redis,RDB,AOF"
+           data-author="" >
+            <span class="post-title" title="Redis持久化">Redis持久化</span>
+            <span class="post-date" title="2024-09-17 16:20:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisTransaction/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="redis的事务">redis的事务</span>
+            <span class="post-date" title="2024-09-17 16:12:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisType/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="redis常用数据类型">redis常用数据类型</span>
+            <span class="post-date" title="2024-09-17 16:04:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisBrief/"
+           data-tag="redis,NoSql"
+           data-author="" >
+            <span class="post-title" title="redis与NoSql的简单介绍">redis与NoSql的简单介绍</span>
+            <span class="post-date" title="2024-09-17 15:59:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisSentinel/"
+           data-tag="Linux,CentOS,虚拟机,redis"
+           data-author="" >
+            <span class="post-title" title="Redis：主从复制与哨兵模式">Redis：主从复制与哨兵模式</span>
+            <span class="post-date" title="2024-09-17 15:59:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redis7SpringBoot/"
+           data-tag="redis,springboot,Jedis,RedisTemplate"
+           data-author="" >
+            <span class="post-title" title="springboot整合redis">springboot整合redis</span>
+            <span class="post-date" title="2024-09-17 15:42:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 运维 "
+           href="/2024/09/17/redis7Install/"
+           data-tag="CentOS,redis,前锋教育"
+           data-author="" >
+            <span class="post-title" title="Redis的安装、卸载、启动和客户端">Redis的安装、卸载、启动和客户端</span>
+            <span class="post-date" title="2024-09-17 15:19:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 前端 "
+           href="/2024/09/17/BasicFrontend/"
+           data-tag="JavaScript,Js,ES6,vue,element-ui"
+           data-author="" >
+            <span class="post-title" title="前端：ES5和Vue的基本用法">前端：ES5和Vue的基本用法</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/OAuth2/"
+           data-tag="OAuth2,spring"
+           data-author="" >
+            <span class="post-title" title="OAuth2和spring">OAuth2和spring</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/SpringCloudBaseUse/"
+           data-tag="SpringCloud,Nacos,Feign,Getway"
+           data-author="" >
+            <span class="post-title" title="SpringCloud：基本使用">SpringCloud：基本使用</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/adminSystem/"
+           data-tag="element-ui,SpringCloud,Feign,gulimall,Prettier,ESLint,跨域,JSR303,OSS,阿里云"
+           data-author="" >
+            <span class="post-title" title="谷粒商城：后台管理系统要点">谷粒商城：后台管理系统要点</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/giliEnviroment/"
+           data-tag="docker,idea,maven,renren-fast,git,nvm,node.js,npm"
+           data-author="" >
+            <span class="post-title" title="谷粒商城：环境搭建">谷粒商城：环境搭建</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/springsecurity/"
+           data-tag="springSecurity"
+           data-author="" >
+            <span class="post-title" title="SpringSecurity">SpringSecurity</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/16/MysqlTransaction/"
+           data-tag="Mysql"
+           data-author="" >
+            <span class="post-title" title="Mysql的事物">Mysql的事物</span>
+            <span class="post-date" title="2024-09-16 14:31:10">2024/09/16</span>
+        </a>
+        
+        
+        <a  class="全部文章 运维 "
+           href="/2024/09/08/finalshell/"
+           data-tag="finalshell,Linux,CentOS,虚拟机"
+           data-author="" >
+            <span class="post-title" title="finalshell与Linux虚拟机的网络配置">finalshell与Linux虚拟机的网络配置</span>
+            <span class="post-date" title="2024-09-08 22:19:10">2024/09/08</span>
+        </a>
+        
+        
+        <a  class="全部文章 英语 "
+           href="/2024/03/25/rabbitGrammer/"
+           data-tag="English,grammer"
+           data-author="" >
+            <span class="post-title" title="英语兔英语语法">英语兔英语语法</span>
+            <span class="post-date" title="2024-03-25 23:12:24">2024/03/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 工具 "
+           href="/2024/03/25/hexoStartFast/"
+           data-tag="hexo"
+           data-author="" >
+            <span class="post-title" title="hexo搭建静态博客">hexo搭建静态博客</span>
+            <span class="post-date" title="2024-03-25 22:14:10">2024/03/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/03/25/PythonBase/"
+           data-tag="python"
+           data-author="" >
+            <span class="post-title" title="Python语法基数">Python语法基数</span>
+            <span class="post-date" title="2024-03-25 22:08:07">2024/03/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 英语 "
+           href="/2023/12/14/heqiongListening/"
+           data-tag="listening"
+           data-author="" >
+            <span class="post-title" title="何琼雅思听力">何琼雅思听力</span>
+            <span class="post-date" title="2023-12-14 00:00:00">2023/12/14</span>
+        </a>
+        
+        
+        <a  class="全部文章 财经 "
+           href="/2023/05/23/EconomicMachine/"
+           data-tag="economy"
+           data-author="" >
+            <span class="post-title" title="经济机器是怎样运行的——RayDalio">经济机器是怎样运行的——RayDalio</span>
+            <span class="post-date" title="2023-05-23 00:00:00">2023/05/23</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-02-grammar/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:基本语法">java:基本语法</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-03-array/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:数组">java:数组</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-05-exception/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:异常">java:异常</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-01-install/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:概述+安装">java:概述+安装</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-04-opp/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:面向对象">java:面向对象</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-06-thread/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:多线程">java:多线程</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-08-time/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:时间相关API">java:时间相关API</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-07-string/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:字符串">java:字符串</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-09-sort/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:比较器">java:比较器</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-11-annotation/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:注解">java:注解</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-10-enum/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:枚举">java:枚举</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-12-collection/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:集合">java:集合</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-13-generics/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:泛型">java:泛型</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-14-IO/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:IO流">java:IO流</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-15-net/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:网络编程">java:网络编程</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-16-reflect/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:反射">java:反射</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 运维 "
+           href="/2020/07/13/dockerBase/"
+           data-tag="docker"
+           data-author="" >
+            <span class="post-title" title="docker 基础">docker 基础</span>
+            <span class="post-date" title="2020-07-13 20:46:25">2020/07/13</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/01/01/MySQLCrashCourse/"
+           data-tag="MySql"
+           data-author="" >
+            <span class="post-title" title="MySQL:必知必会">MySQL:必知必会</span>
+            <span class="post-date" title="2020-01-01 00:00:00">2020/01/01</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/01/01/RocketMq/"
+           data-tag="mq"
+           data-author="" >
+            <span class="post-title" title="RocketMq:分布式消息队列">RocketMq:分布式消息队列</span>
+            <span class="post-date" title="2020-01-01 00:00:00">2020/01/01</span>
+        </a>
+        
+        
+        <a  class="全部文章 "
+           href="/2019/09/29/java-17-new8/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java8新特性：lambda表达式+Stream流">java8新特性：lambda表达式+Stream流</span>
+            <span class="post-date" title="2019-09-29 00:00:00">2019/09/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 "
+           href="/2019/09/29/java-18-above8/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java8以后的新特性">java8以后的新特性</span>
+            <span class="post-date" title="2019-09-29 00:00:00">2019/09/29</span>
+        </a>
+        
+        <div id="no-item-tips">
+
+        </div>
+    </nav>
+    <div id="outline-list">
+    </div>
+</div>
+
+    </div>
+    <div class="hide-list">
+        <div class="semicircle" data-title="切换全屏 快捷键 s">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div id="post">
+    <div class="pjax">
+        <article id="post-dockerBase" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">docker 基础</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            <i class="iconfont icon-category"></i>
+            
+            
+            <a  data-rel="运维">运维</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            <i class="iconfont icon-tag"></i>
+            
+            <a class="color2">docker</a>
+            
+        </span>
+        
+    </div>
+    <div class="article-meta">
+        
+            发布时间 : <time class="date" title='最后更新: 2024-03-25 15:57:10'>2020-07-13 20:46</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        <span>字数:5.9k</span>
+        
+        
+        <span id="busuanzi_container_page_pv">
+            阅读 :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Docker-%E4%B8%BA%E4%BB%80%E4%B9%88%E5%87%BA%E7%8E%B0"><span class="toc-text">Docker 为什么出现</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BD%E4%B8%8E%E5%AE%89%E8%A3%85"><span class="toc-text">下载与安装</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8"><span class="toc-text">快速入门</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E5%91%BD%E4%BB%A4"><span class="toc-text">常见命令</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%9A%84%E6%8C%82%E8%BD%BD"><span class="toc-text">数据的挂载</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88"><span class="toc-text">为什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%8D%B7"><span class="toc-text">数据卷</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%82%E8%BD%BD%E7%9A%84%E5%8E%9F%E7%90%86"><span class="toc-text">挂载的原理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E6%8C%82%E8%BD%BD"><span class="toc-text">如何挂载</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%8D%B7%E7%9A%84%E6%93%8D%E4%BD%9C"><span class="toc-text">数据卷的操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E7%9B%AE%E5%BD%95%E6%8C%82%E8%BD%BD"><span class="toc-text">本地目录挂载</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B0%E6%96%B9%E5%BC%8F%EF%BC%9A%E6%8C%82%E8%BD%BD%E5%88%B0%E4%BB%BB%E6%84%8F%E7%9B%AE%E5%BD%95%E4%B8%8B"><span class="toc-text">新方式：挂载到任意目录下</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E9%95%9C%E5%83%8F%E4%B8%8E-dockerfile"><span class="toc-text">自定义镜像与 dockerfile</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9E%84%E5%BB%BA%E4%B8%80%E4%B8%AA-Java-%E9%95%9C%E5%83%8F%E7%9A%84%E6%AD%A5%E9%AA%A4%EF%BC%9A"><span class="toc-text">构建一个 Java 镜像的步骤：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%95%9C%E5%83%8F%E7%9A%84%E7%BB%93%E6%9E%84%EF%BC%9A"><span class="toc-text">镜像的结构：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Dockerfile"><span class="toc-text">Dockerfile</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9E%84%E5%BB%BA%E9%95%9C%E5%83%8F"><span class="toc-text">构建镜像</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C"><span class="toc-text">网络</span></a></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Docker-为什么出现"><a href="#Docker-为什么出现" class="headerlink" title="Docker 为什么出现"></a>Docker 为什么出现</h1><p><strong>一次镜像，处处运行</strong></p>
+<p>在开发、测试和运维的工作中，总是会遇到各种环境问题，导致项目无法正常运行，阻碍工作进度。</p>
+<p>通过 docker 的&#x3D;&#x3D;容器虚拟化技术&#x3D;&#x3D;，开发人员开发好之后，将程序和相关环境(mysql,jdk 等)打包成镜像，而测试和运维人员只需要拉去镜像即可。实现&#x3D;&#x3D;镜像既应用&#x3D;&#x3D;。这就实现了跨平台、跨服务器。只需要一次配置好环境，换到别的机子上就可以一键部署好，大大简化了操作。</p>
+<p>所谓镜像可以理解为一个绿色免安装的包，下载下来就可以直接运行</p>
+<h1 id="下载与安装"><a href="#下载与安装" class="headerlink" title="下载与安装"></a>下载与安装</h1><p>下载：到<a target="_blank" rel="noopener" href="https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository">docker 官网</a>。对于 CentOS 的系统需要配置 yum，对于 Ubuntu 的需要配置 apt</p>
+<ul>
+<li><p>CentOS</p>
+<pre><code class="bash"># 安装yum工具
+yum install -y yum-utils
+#安装成功后，执行命令，配置Docker的yum源：
+yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+# 使用yum安装
+yum install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+</code></pre>
+</li>
+<li><p>Ubuntu</p>
+<pre><code class="bash"># Add Docker&#39;s official GPG key:
+sudo apt-get update
+sudo apt-get install ca-certificates curl
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+# Add the repository to Apt sources:
+echo \
+  &quot;deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+  $(. /etc/os-release &amp;&amp; echo &quot;$VERSION_CODENAME&quot;) stable&quot; | \
+  sudo tee /etc/apt/sources.list.d/docker.list &gt; /dev/null
+sudo apt-get update
+# To install the latest version
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+# Verify that the Docker Engine installation is successful
+sudo docker run hello-world
+</code></pre>
+</li>
+</ul>
+<p>配置 docker 的镜像：镜像可以在：登录阿里云–产品–容器–容器镜像服务–镜像加速器</p>
+<pre><code class="bash"># 创建目录
+mkdir -p /etc/docker
+
+# 复制内容，注意把其中的镜像加速地址改成你自己的
+tee /etc/docker/daemon.json &lt;&lt;-&#39;EOF&#39;
+&#123;
+  &quot;registry-mirrors&quot;: [&quot;https://xxxx.mirror.aliyuncs.com&quot;]
+&#125;
+EOF
+
+# 重新加载配置
+systemctl daemon-reload
+
+# 重启Docker
+systemctl restart docker
+</code></pre>
+<h1 id="快速入门"><a href="#快速入门" class="headerlink" title="快速入门"></a>快速入门</h1><pre><code class="bash">docker run -d \
+  --name mysql \
+  -p 3306:3306 \
+  -e TZ=Asia/Shanghai \
+  -e MYSQL_ROOT_PASSWORD=123 \
+  mysql:5.7
+####################################
+# docker run ：创建并运行一个容器，-d 是让容器在后台运行
+# --name mysql ：给容器起个名字，必须唯一
+# -p 3306:3306 ：设置端口映射
+# -e KEY=VALUE ：是设置环境变量
+# mysql:5.7  指定运行的镜像的名字
+#######################################
+# 镜像命名规范：[repository]:[tag]
+### repository就是镜像名
+### tag是镜像的版本
+### 在没有指定tag时，默认是latest，代表最新版本的镜像
+</code></pre>
+<p>什么是端口映射</p>
+<img src="dockerBase/002.png"  width="600px" />
+
+<p>-p 宿主机端口(服务器的端口):容器内端口</p>
+<p>容器是一个完全隔离的状态，无法从外部直接连接容器内部的 3306，也就是不能直接连接容器内部的 MySQL。</p>
+<p>如果我们创建连个个 MySQL 的容器，就会发现连个映射关系：<code>3307-&gt;3306</code>和<code>3306-&gt;3306</code></p>
+<pre><code class="bash">root@hcss-ecs-1b9f:~# docker ps
+CONTAINER ID   IMAGE       COMMAND                  CREATED         STATUS         PORTS                                                  NAMES
+3119c3ec4cbb   mysql:5.7   &quot;docker-entrypoint.s…&quot;   9 seconds ago   Up 7 seconds   33060/tcp, 0.0.0.0:3307-&gt;3306/tcp, :::3307-&gt;3306/tcp   mysql2
+7fb520c997ee   mysql:5.7   &quot;docker-entrypoint.s…&quot;   2 hours ago     Up 2 hours     0.0.0.0:3306-&gt;3306/tcp, :::3306-&gt;3306/tcp, 33060/tcp   mysql
+</code></pre>
+<h1 id="常见命令"><a href="#常见命令" class="headerlink" title="常见命令"></a>常见命令</h1><img src="dockerBase/001.png"  width="800px" />
+
+<p>docker inspect 容器名：查看容器详情，如数据卷的挂载等</p>
+<p>一个 docker 使用的正常流程：下载 Nginx 镜像</p>
+<ul>
+<li><p>去<a target="_blank" rel="noopener" href="https://hub.docker.com/">docker hub</a>上查看 Nginx 的版本</p>
+</li>
+<li><p>下载最新的 Nginx 版本：<code>docker pull nginx</code></p>
+</li>
+<li><p>查看是否下载成功：<code>docker images</code></p>
+</li>
+<li><p>想把镜像保存到本地，使用<code>docker save</code>,但不是后面的参数怎么写，使用<code>docker save --help</code></p>
+</li>
+<li><p>将镜像保存到本地：<code>docker save -o 1.tar nginx:latest</code></p>
+<pre><code class="shell">root@hcss-ecs-1b9f:~# docker save -o 1.tar nginx:latest
+root@hcss-ecs-1b9f:~# ll
+total 142588
+drwx------  7 root root      4096 Feb 29 12:17 ./
+drwxr-xr-x 24 root root      4096 Feb 28 20:13 ../
+-rw-------  1 root root 145902080 Feb 29 12:17 1.tar #这
+drwx------  3 root root      4096 Jan 12 13:45 .ansible/
+-rw-r--r--  1 root root      1459 Feb 28 22:25 .bash_history
+-rw-r--r--  1 root root      3106 Oct 15  2021 .bashrc
+drwx------  3 root root      4096 Jan 12 13:51 .cache/
+-rw-------  1 root root         0 Jul 13  2023 .history
+-rwxr-xr-x  1 root root     15353 Jan 12 13:47 HSSInstall*
+-rw-r--r--  1 root root     35331 Jan  4 17:21 install.sh
+drwxr-xr-x  2 root root      4096 Jan 12 13:51 .pip/
+-rw-r--r--  1 root root       161 Jul  9  2019 .profile
+drwx------  3 root root      4096 Jan 12 13:43 snap/
+drwx------  2 root root      4096 Feb 26 22:46 .ssh/
+-rw-------  1 root root       880 Feb 29 11:12 .viminfo
+-rw-r--r--  1 root root       246 Jan 12 13:56 .wget-hsts
+-rw-------  1 root root        58 Jan 12 13:50 .Xauthority
+root@hcss-ecs-1b9f:~# pwd
+/root
+</code></pre>
+</li>
+<li><p>删除 NGINX 镜像<code>docker rmi nginx:latest</code></p>
+</li>
+<li><p>加载本地镜像<code>docker load -i 1.tar -q </code></p>
+<ul>
+<li>-i 1.tar：本地镜像的名字</li>
+<li>-q：加载的时候不会打印日志（quiet）</li>
+</ul>
+</li>
+<li><p>创建并运行一个 Nginx 容器：<code>docker run -d --name nginx -p 80:80 nginx:latest</code></p>
+</li>
+<li><p>查看容器是否运行：<code>docker ps</code></p>
+<pre><code class="shell">root@hcss-ecs-1b9f:~# docker ps
+CONTAINER ID   IMAGE          COMMAND                  CREATED             STATUS             PORTS                                                  NAMES
+f4a55fdafb94   nginx:latest   &quot;/docker-entrypoint.…&quot;   10 seconds ago      Up 9 seconds       0.0.0.0:80-&gt;80/tcp, :::80-&gt;80/tcp                      nginx
+7fb520c997ee   mysql:5.7      &quot;docker-entrypoint.s…&quot;   About an hour ago   Up About an hour   0.0.0.0:3306-&gt;3306/tcp, :::3306-&gt;3306/tcp, 33060/tcp   mysql
+</code></pre>
+</li>
+<li><p>可以对输出的内容进行格式化：<code>docker ps --format &quot;table &#123;&#123;.ID&#125;&#125;\t&#123;&#123;.Image&#125;&#125;\t&#123;&#123;.Ports&#125;&#125;\t&#123;&#123;.Status&#125;&#125;\t&#123;&#123;.Names&#125;&#125;&quot;</code></p>
+<pre><code class="shell">root@hcss-ecs-1b9f:~# docker ps --format &quot;table &#123;&#123;.ID&#125;&#125;\t&#123;&#123;.Image&#125;&#125;\t&#123;&#123;.Ports&#125;&#125;\t&#123;&#123;.Status&#125;&#125;\t&#123;&#123;.Names&#125;&#125;&quot;
+CONTAINER ID   IMAGE          PORTS                                                  STATUS         NAMES
+f4a55fdafb94   nginx:latest   0.0.0.0:80-&gt;80/tcp, :::80-&gt;80/tcp                      Up 3 minutes   nginx
+7fb520c997ee   mysql:5.7      0.0.0.0:3306-&gt;3306/tcp, :::3306-&gt;3306/tcp, 33060/tcp   Up 2 hours     mysql
+</code></pre>
+</li>
+<li><p>停掉 NGINX：<code>docker stop nginx</code></p>
+<pre><code class="shell">root@hcss-ecs-1b9f:~# docker stop nginx
+nginx
+root@hcss-ecs-1b9f:~# docker ps --format &quot;table &#123;&#123;.ID&#125;&#125;\t&#123;&#123;.Image&#125;&#125;\t&#123;&#123;.Status&#125;&#125;\t&#123;&#123;.Names&#125;&#125;&quot;
+CONTAINER ID   IMAGE       STATUS       NAMES
+7fb520c997ee   mysql:5.7   Up 2 hours   mysql
+</code></pre>
+</li>
+<li><p>如果我们想查看所有容器<code>docker ps --format &quot;xxxx&quot; -a</code></p>
+<pre><code class="shell">root@hcss-ecs-1b9f:~# docker ps --format &quot;table &#123;&#123;.ID&#125;&#125;\t&#123;&#123;.Image&#125;&#125;\t&#123;&#123;.Status&#125;&#125;\t&#123;&#123;.Names&#125;&#125;&quot; -a
+CONTAINER ID   IMAGE          STATUS                      NAMES
+f4a55fdafb94   nginx:latest   Exited (0) 3 minutes ago    nginx
+0d59c7149c7d   mysql:5.7      Exited (1) 14 minutes ago   mysql2
+7fb520c997ee   mysql:5.7      Up 2 hours                  mysql
+</code></pre>
+</li>
+<li><p>再次启动 NGINX：<code>docker start nginx</code></p>
+<pre><code class="shell">root@hcss-ecs-1b9f:~# docker start nginx
+nginx
+root@hcss-ecs-1b9f:~# docker ps --format &quot;table &#123;&#123;.ID&#125;&#125;\t&#123;&#123;.Image&#125;&#125;\t&#123;&#123;.Status&#125;&#125;\t&#123;&#123;.Names&#125;&#125;&quot;
+CONTAINER ID   IMAGE          STATUS          NAMES
+f4a55fdafb94   nginx:latest   Up 17 seconds   nginx
+7fb520c997ee   mysql:5.7      Up 2 hours      mysql
+</code></pre>
+</li>
+<li><p>查看 NGINX 的运行日志：<code>docker logs nginx</code></p>
+<pre><code class="shell">root@hcss-ecs-1b9f:~# docker logs nginx
+/docker-entrypoint.sh: /docker-entrypoint.d/ is not empty, will attempt to perform configuration
+......
+/docker-entrypoint.sh: Configuration complete; ready for start up
+2024/02/29 05:00:47 [notice] 1#1: using the &quot;epoll&quot; event method
+......
+2024/02/29 05:12:22 [notice] 1#1: start worker process 25
+root@hcss-ecs-1b9f:~#
+</code></pre>
+</li>
+<li><p>查看 Nginx 的日志：持续输出：<code>docker logs -f nginx</code>。停止：<code>ctl+c</code></p>
+</li>
+<li><p>进入容器内部：<code>docker exec</code></p>
+<pre><code class="bash">root@hcss-ecs-1b9f:~# docker exec --help
+
+Usage:  docker exec [OPTIONS] CONTAINER COMMAND [ARG...]
+
+Execute a command in a running container
+
+Aliases:
+  docker container exec, docker exec
+
+Options:
+  -d, --detach               Detached mode: run command in the background
+      --detach-keys string   Override the key sequence for detaching a container
+  -e, --env list             Set environment variables
+      --env-file list        Read in a file of environment variables
+  -i, --interactive          Keep STDIN open even if not attached
+      --privileged           Give extended privileges to the command
+  -t, --tty                  Allocate a pseudo-TTY
+  -u, --user string          Username or UID (format: &quot;&lt;name|uid&gt;[:&lt;group|gid&gt;]&quot;)
+  -w, --workdir string       Working directory inside the container
+</code></pre>
+<p>在 Linux 中，<code>STDIN</code>是标准的输入流，通常对应终端的键盘</p>
+<p>如果对 Linux 的 TTY 比较熟悉的话，对于这个选项就比较了解了。我们可以把它理解为 Linux 的终端程序，所以<code>-t</code>选项就可以理解为<strong>为容器分配一个伪 tty 终端并绑定到容器的标准输入上，之后用户就可以通过终端来控制容器了。</strong></p>
+<p>一般<code>-t</code>都是与<code>-i</code>一起出现的，也就是<code>-it</code>。</p>
+<p>具体课参考<a target="_blank" rel="noopener" href="https://www.cnblogs.com/alvisClub/p/17091305.html">这篇博客</a>。</p>
+<pre><code class="bash">root@hcss-ecs-1b9f:~# docker exec -it nginx bash
+root@f4a55fdafb94:/#
+</code></pre>
+<p>进入<code>nginx</code>这个容器，使用<code>bash</code>的命令行格式。</p>
+<p>执行完之后：<code>root@hcss-ecs-1b9f</code>变为<code>root@f4a55fdafb94</code>。说明已经进入到容器内部。而<code>f4a55fdafb94</code>这串数字是 Nginx 的容器 ID</p>
+<p>容器内部模拟了一个真实的文件系统（linux）</p>
+<pre><code class="bash">root@f4a55fdafb94:/# ls
+bin   dev		   docker-entrypoint.sh  home  lib64  mnt  proc  run   srv  tmp  var
+boot  docker-entrypoint.d  etc			 lib   media  opt  root  sbin  sys  usr
+root@f4a55fdafb94:/#
+</code></pre>
+</li>
+<li><p>退出容器：<code>exit</code></p>
+<pre><code class="bash">root@f4a55fdafb94:/# exit
+exit
+root@hcss-ecs-1b9f:~#
+</code></pre>
+</li>
+<li><p>也可以在容器中直接使用对应程序，以 mysql 为例</p>
+<pre><code class="bash">root@hcss-ecs-1b9f:~# docker exec -it mysql bash
+root@7fb520c997ee:/# mysql -uroot -p
+Enter password: ## 数据库的密码是在下载mysql的时候配置环境（-e）的时候设置的
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 5
+Server version: 5.7.36 MySQL Community Server (GPL)
+
+Copyright (c) 2000, 2021, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type &#39;help;&#39; or &#39;\h&#39; for help. Type &#39;\c&#39; to clear the current input statement.
+mysql&gt; show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+4 rows in set (0.00 sec)
+mysql&gt; exit
+Bye
+root@7fb520c997ee:/# exit
+exit
+root@hcss-ecs-1b9f:~#
+</code></pre>
+</li>
+<li><p>删除容器：</p>
+<ul>
+<li><p>先停掉容器<code>docker stop nginx</code>，再删除<code>docker rm nginx</code></p>
+<pre><code class="bash">root@hcss-ecs-1b9f:~# docker rm nginx
+Error response from daemon: cannot remove container &quot;/nginx&quot;: container is running: stop the container before removing or force remove
+root@hcss-ecs-1b9f:~# docker stop nginx
+nginx
+root@hcss-ecs-1b9f:~# docker rm nginx
+nginx
+root@hcss-ecs-1b9f:~#
+</code></pre>
+</li>
+<li><p>强制删除<code>docker rm mysql2 -f</code></p>
+<pre><code class="bash">root@hcss-ecs-1b9f:~# docker rm mysql2
+Error response from daemon: cannot remove container &quot;/mysql2&quot;: container is running: stop the container before removing or force remove
+root@hcss-ecs-1b9f:~# docker rm mysql2 -f
+mysql2
+</code></pre>
+</li>
+</ul>
+</li>
+<li><p>别名：简化命令。需要在<code>~/.bashrc</code>这个文件下面配置，配置之后需要启用配置文件<code>source ~/.bashrc</code></p>
+<pre><code class="bash"># 编辑配置文件
+root@hcss-ecs-1b9f:~# vim ~/.bashrc
+
+alias dpsf1=&#39;docker ps --format &quot;table &#123;&#123;.ID&#125;&#125;\t&#123;&#123;.Image&#125;&#125;\t&#123;&#123;.Ports&#125;&#125;\t&#123;&#123;.Status&#125;&#125;\t&#123;&#123;.Names&#125;&#125;&quot;&#39;
+alias dpsf1a=&#39;docker ps --format &quot;table &#123;&#123;.ID&#125;&#125;\t&#123;&#123;.Image&#125;&#125;\t&#123;&#123;.Ports&#125;&#125;\t&#123;&#123;.Status&#125;&#125;\t&#123;&#123;.Names&#125;&#125;&quot; -a&#39;
+alias dpsf2=&#39;docker ps --format &quot;table &#123;&#123;.ID&#125;&#125;\t&#123;&#123;.Image&#125;&#125;\t&#123;&#123;.Status&#125;&#125;\t&#123;&#123;.Names&#125;&#125;&quot;&#39;
+alias dpsf2a=&#39;docker ps --format &quot;table &#123;&#123;.ID&#125;&#125;\t&#123;&#123;.Image&#125;&#125;\t&#123;&#123;.Status&#125;&#125;\t&#123;&#123;.Names&#125;&#125;&quot; -a&#39;
+
+# 启用配置文件
+root@hcss-ecs-1b9f:~# source ~/.bashrc
+
+root@hcss-ecs-1b9f:~# dpsf2
+CONTAINER ID   IMAGE       STATUS       NAMES
+7fb520c997ee   mysql:5.7   Up 3 hours   mysql
+</code></pre>
+</li>
+</ul>
+<h1 id="数据的挂载"><a href="#数据的挂载" class="headerlink" title="数据的挂载"></a>数据的挂载</h1><h2 id="为什么"><a href="#为什么" class="headerlink" title="为什么"></a>为什么</h2><pre><code class="bash">root@hcss-ecs-1b9f:~# docker exec -it nginx bash
+root@d9d0d3603b32:/# cd /usr/share/nginx/html
+root@d9d0d3603b32:/usr/share/nginx/html# ls
+50x.html  index.html
+root@d9d0d3603b32:/usr/share/nginx/html# vi index.html
+bash: vi: command not found
+</code></pre>
+<p>我们希望修改 nginx 的静态资源，但是进入到容器内部，发现没有 vi 命令。这是因为容器只配置了应用运行的最小运行资源。许多类似 vi 的命令都没有，使得修改和上次文件显得特别困难。这个时候我们就需要利用数据卷来挂载。</p>
+<h2 id="数据卷"><a href="#数据卷" class="headerlink" title="数据卷"></a>数据卷</h2><h3 id="挂载的原理"><a href="#挂载的原理" class="headerlink" title="挂载的原理"></a>挂载的原理</h3><p>数据卷（volume）是一个虚拟目录，是容器内目录与宿主机目录之间映射的桥梁。</p>
+<img src="dockerBase/003.png"  width="800px" />
+
+<h2 id="如何挂载"><a href="#如何挂载" class="headerlink" title="如何挂载"></a>如何挂载</h2><p>在创建容器时只需要执行如下命令：</p>
+<pre><code class="bash">docker run -d --name nginx -p80:80 -v 数据卷名字:容器内目录 nginx
+</code></pre>
+<pre><code class="bash"># 数据卷的挂载只能在创建容器时挂载，所有需要先删掉容器
+root@hcss-ecs-1b9f:~# docker rm -f nginx
+nginx
+
+#在执行docker run命令时，使用 -v 数据卷:容器内目录 可以完成数据卷挂载
+root@hcss-ecs-1b9f:~# docker run -d --name nginx -p80:80 -v html:/usr/share/nginx/html nginx
+82538b0c5ea99d79b330e8fc5661e8919ef3e7f0b2fd32b50e07a8c1fc089a1d
+
+# 查看所有数据卷
+root@hcss-ecs-1b9f:~# docker volume ls
+DRIVER    VOLUME NAME
+local     a505a328c817d28f3cfff9def729f0fe463323df23261eb494461b2fdc65cda5
+local     html
+
+# 查看某个数据卷的详情
+root@hcss-ecs-1b9f:~# docker volume inspect html
+[
+    &#123;
+        &quot;CreatedAt&quot;: &quot;2024-03-06T11:36:47+08:00&quot;,
+        &quot;Driver&quot;: &quot;local&quot;,
+        &quot;Labels&quot;: null,
+        &quot;Mountpoint&quot;: &quot;/var/lib/docker/volumes/html/_data&quot;,
+        &quot;Name&quot;: &quot;html&quot;,
+        &quot;Options&quot;: null,
+        &quot;Scope&quot;: &quot;local&quot;
+    &#125;
+]
+</code></pre>
+<p>最终实现的效果是：宿主机&#x2F;var&#x2F;lib&#x2F;docker&#x2F;volumes&#x2F;html&#x2F;_data 和容器&#x2F;usr&#x2F;share&#x2F;nginx&#x2F;html 两个目录下各有一份文件</p>
+<h2 id="数据卷的操作"><a href="#数据卷的操作" class="headerlink" title="数据卷的操作"></a>数据卷的操作</h2><p>docker volume create：创建数据卷</p>
+<p>docker volume ls：查看所有数据卷</p>
+<p>docker volume rm：删除指定数据卷</p>
+<p>docker volume inspect：查看某个数据卷的详情</p>
+<p>docker volume prune：清除数据卷</p>
+<h2 id="本地目录挂载"><a href="#本地目录挂载" class="headerlink" title="本地目录挂载"></a>本地目录挂载</h2><p>如果我们在创建容器的时候没有指定数据卷的挂载，docker 会自动创建一个匿名卷</p>
+<pre><code class="bash">root@hcss-ecs-1b9f:~# docker volume ls
+DRIVER    VOLUME NAME
+local     a505a328c817d28f3cfff9def729f0fe463323df23261eb494461b2fdc65cda5
+local     html
+</code></pre>
+<p>挂载信息如下：</p>
+<pre><code class="bash">root@hcss-ecs-1b9f:~# docker inspect mysql
+
+&quot;Mounts&quot;: [
+    &#123;
+        &quot;Type&quot;: &quot;volume&quot;,
+        &quot;Name&quot;: &quot;a505a328c8...fdc65cda5&quot;,
+        &quot;Source&quot;: &quot;/var/lib/docker/volumes/a505a328c817...dc65cda5/_data&quot;,
+        &quot;Destination&quot;: &quot;/var/lib/mysql&quot;,
+        &quot;Driver&quot;: &quot;local&quot;,
+        &quot;Mode&quot;: &quot;&quot;,
+        &quot;RW&quot;: true,
+        &quot;Propagation&quot;: &quot;&quot;
+     &#125;
+],
+</code></pre>
+<p>挂载的是容器内的<code>/var/lib/mysql</code>目录。这个目录是 mysql 的数据存储目录。</p>
+<p>为什么 mysql 要把他的数据存储目录挂载到宿主机呢？因为如果不挂载，容器的体积越来越大，未来容器迁移会很麻烦，为了数据的解耦，这个做法是有必要的</p>
+<p>为什么不能用匿名卷：</p>
+<ul>
+<li>如果容器升级后需要删除容器，当我们新建容器的时候，再采用匿名卷的方式，就没有产生数据的迁移</li>
+<li>名字太长，今天的许多操作都不方便</li>
+</ul>
+<h3 id="新方式：挂载到任意目录下"><a href="#新方式：挂载到任意目录下" class="headerlink" title="新方式：挂载到任意目录下"></a>新方式：挂载到任意目录下</h3><p>案例：基于宿主机目录实现 MySQL 数据目录、配置文件、初始化脚本的挂载（不知道目录在哪，可以<a target="_blank" rel="noopener" href="https://hub.docker.com/_/mysql">查阅官方镜像文档</a>）</p>
+<ul>
+<li>挂载&#x2F;root&#x2F;mysql&#x2F;data 到容器内的&#x2F;var&#x2F;lib&#x2F;mysql 目录</li>
+<li>挂载&#x2F;root&#x2F;mysql&#x2F;init 到容器内的&#x2F;docker-entrypoint-initdb.d 目录，携带课前资料准备的 SQL 脚本</li>
+<li>挂载&#x2F;root&#x2F;mysql&#x2F;conf 到容器内的&#x2F;etc&#x2F;mysql&#x2F;conf.d 目录，携带课前资料准备的配置文件</li>
+</ul>
+<p>在执行 docker run 命令时，使用 <strong>-v 本地目录 : 容器内目录</strong> 可以完成本地目录挂载</p>
+<p>本地目录必须以“&#x2F;”或 “.&#x2F;“ 开头，如果直接以名称开头，会被识别为数据卷而非本地目录</p>
+<ul>
+<li>-v mysql : &#x2F;var&#x2F;lib&#x2F;mysql 会被识别为一个数据卷叫 mysql</li>
+<li>-v .&#x2F;mysql : &#x2F;var&#x2F;lib&#x2F;mysql 会被识别为当前目录下的 mysql 目录</li>
+</ul>
+<p>在宿主机创建目录之后，再执行以下命令</p>
+<pre><code class="bash">docker run -d \
+  --name mysql \
+  -p 3306:3306 \
+  -e TZ=Asia/Shanghai \
+  -e MYSQL_ROOT_PASSWORD=123 \
+  -v /root/mysql/data:/var/lib/mysql \
+  -v /root/mysql/init:/docker-entrypoint-initdb.d \
+  -v /root/mysql/conf:/etc/mysql/conf.d \
+  mysql:5.7
+</code></pre>
+<hr>
+<p><strong>执行的时候遇到的问题：</strong></p>
+<ul>
+<li><p>首先，自己之前下载的不是最新版本的，是 mysql5.7 的，导致在执行&#x2F;root&#x2F;mysql&#x2F;init 中的初始化脚本的时候，遇到了错误。conf 中的配置文件执行了，但是 sql 脚本没有执行</p>
+</li>
+<li><p>于是我下载最新版本的，把原来 5.7 的镜像卸载掉。结果运行 docker run 之后没有启动。查看日志报了一下错误：</p>
+<pre><code class="bash">Upgrade after a crash is not supported. This redo log was created with MySQL 5.7.36. Please follow the instructions at http://dev.mysql.com/doc/refman/8.0/en/upgrading.html
+</code></pre>
+<p>原因是上一次 docker run 的时候，data 文件夹里面已经生成了一些数据。是个 5.7 版本相关的。这样就和我最新版本的镜像相冲突。</p>
+</li>
+</ul>
+<h1 id="自定义镜像与-dockerfile"><a href="#自定义镜像与-dockerfile" class="headerlink" title="自定义镜像与 dockerfile"></a>自定义镜像与 dockerfile</h1><p>以上都是下载别人制作好的镜像，但是如果我们要项目部署的时候，我们也要报项目打包，制成镜像。</p>
+<p><strong>镜像就是包含了应用程序、程序运行的系统函数库、运行配置等文件的文件包。构建镜像的过程其实就是把上述文件打包的过程。</strong></p>
+<h2 id="构建一个-Java-镜像的步骤："><a href="#构建一个-Java-镜像的步骤：" class="headerlink" title="构建一个 Java 镜像的步骤："></a>构建一个 Java 镜像的步骤：</h2><ul>
+<li>准备一个 Linux 运行环境</li>
+<li>安装 JRE 并配置环境变量</li>
+<li>拷贝 Jar 包</li>
+<li>编写运行脚本</li>
+</ul>
+<h2 id="镜像的结构："><a href="#镜像的结构：" class="headerlink" title="镜像的结构："></a>镜像的结构：</h2><img src="dockerBase/004.png"  width="700px" />
+
+<p>这样分层打包的好处：</p>
+<ul>
+<li><p>可以共享一些基础的层。比如对于所有的 Ubuntu 的操作系统，我们都需要构建 Ubantu 的基础镜像，我们需要把一些基础的函数库挑出来，这是一个非常费时费力的操作。可如果我们挑出来之后，打包成镜像，上传到公共仓库，这样下次就不需要再挑选函数了。</p>
+</li>
+<li><p>与此同时，下载速度也会大大提升。因为 docker 在下载镜像的时候，会先检查本地是否存在同样的镜像，如果有，就不会下载</p>
+<pre><code class="bash">root@hcss-ecs-1b9f:~# docker pull redis
+Using default tag: latest
+latest: Pulling from library/redis
+a2abf6c4d29d: Already exists  ## 这句就在检查本地仓库
+c7a4e4382001: Pull complete
+4044b9ba67c9: Pull complete
+c8388a79482f: Pull complete
+413c8bb60be2: Pull complete
+1abfd3011519: Pull complete
+Digest: sha256:db485f2e245b5b3329fdc7eff4eb00f913e09d8feb9ca720788059fdc2ed8339
+Status: Downloaded newer image for redis:latest
+docker.io/library/redis:latest
+root@hcss-ecs-1b9f:~#
+</code></pre>
+</li>
+</ul>
+<h2 id="Dockerfile"><a href="#Dockerfile" class="headerlink" title="Dockerfile"></a>Dockerfile</h2><p><strong>Dockerfile 就是一个文本文件，其中包含一个个的指令(Instruction)，用指令来说明要执行什么操作来构建镜像。将来 Docker 可以根据 Dockerfile 帮我们构建镜像</strong>。常见指令如下：</p>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>说明</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>FROM</td>
+<td>指定基础镜像</td>
+<td>FROM centos:6</td>
+</tr>
+<tr>
+<td>ENV</td>
+<td>设置环境变量，可在后面指令使用</td>
+<td>ENV key value</td>
+</tr>
+<tr>
+<td>COPY</td>
+<td><strong>拷贝本地文件到镜像的指定目录：</strong>这些目录未必存在，但是只要写了，将来 docker 在创建镜像的时候会创建这个目录，然后把指定词镜像放在这个目录里面</td>
+<td>COPY .&#x2F;jre11.tar.gz &#x2F;tmp</td>
+</tr>
+<tr>
+<td>RUN</td>
+<td>执行 Linux 的 shell 命令，一般是安装过程的命令。</td>
+<td>RUN tar -zxvf &#x2F;tmp&#x2F;jre11.tar.gz&amp;&amp; EXPORTS path&#x3D;&#x2F;tmp&#x2F;jre11:$path</td>
+</tr>
+<tr>
+<td>EXPOSE</td>
+<td>指定容器运行时监听的端口，<strong>是给镜像使用者看的</strong></td>
+<td>EXPOSE 8080</td>
+</tr>
+<tr>
+<td>ENTRYPOINT</td>
+<td>镜像中应用的启动命令，容器运行时调用</td>
+<td>ENTRYPOINT java -jar xx.jar</td>
+</tr>
+</tbody></table>
+<p>例如，要基于 Ubuntu 镜像来构建一个 Java 应用，其 Dockerfile 内容如下：</p>
+<pre><code class="dockerfile"># 指定基础镜像
+FROM ubuntu:16.04
+# 配置环境变量，JDK的安装目录、容器内时区
+ENV JAVA_DIR=/usr/local
+ENV TZ=Asia/Shanghai
+# 拷贝jdk和java项目的包
+COPY ./jdk8.tar.gz $JAVA_DIR/
+COPY ./docker-demo.jar /tmp/app.jar
+# 设定时区
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime &amp;&amp; echo $TZ &gt; /etc/timezone
+# 安装JDK：因为COPY过来的是压缩报，需要解压安装
+RUN cd $JAVA_DIR \
+ &amp;&amp; tar -xf ./jdk8.tar.gz \
+ &amp;&amp; mv ./jdk1.8.0_144 ./java8
+# 配置环境变量
+ENV JAVA_HOME=$JAVA_DIR/java8
+ENV PATH=$PATH:$JAVA_HOME/bin
+# 指定项目监听的端口
+EXPOSE 8080
+# 入口，java项目的启动命令
+ENTRYPOINT [&quot;java&quot;, &quot;-jar&quot;, &quot;/app.jar&quot;]
+</code></pre>
+<p>上述步骤很多，但是主语都是与 jdk 镜像相关的步骤，于是有人把 jdk+系统环境结合在一起，制作了一个基础镜像，如 openjdk:11.0-jre-buster。这样作就大大简化了配置。</p>
+<pre><code class="dockerfile"># 基础镜像
+FROM openjdk:11.0-jre-buster
+# 设定时区
+ENV TZ=Asia/Shanghai
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime &amp;&amp; echo $TZ &gt; /etc/timezone
+# 拷贝jar包
+COPY docker-demo.jar /app.jar
+# 入口
+ENTRYPOINT [&quot;java&quot;, &quot;-jar&quot;, &quot;/app.jar&quot;]
+</code></pre>
+<h2 id="构建镜像"><a href="#构建镜像" class="headerlink" title="构建镜像"></a>构建镜像</h2><pre><code class="bash">root@hcss-ecs-1b9f:~/demo# docker build -t docker-demo .
+</code></pre>
+<ul>
+<li><p><code>docker build</code>：就是构建一个 docker 镜像</p>
+</li>
+<li><p><code>-t docker-demo</code>：给惊喜取名 docker-demo。格式依然是**<code>repository:tag</code>**的格式，不指定 tag 时，默认为 latest。如果我想指定版本就可以写：<code>-t docker-demo:1.0</code></p>
+</li>
+<li><p><code>.</code>：最后的点是指构建时 Dockerfile 所在路径，也就是告诉 docker 去哪里找 dockerfile 文件（告诉 docker 怎么构建）。由于我们进入了 demo 目录，所以指定的是<code>.</code>代表当前目录，也可以直接指定 Dockerfile 目录：</p>
+<pre><code class="bash"># 直接指定Dockerfile目录
+docker build -t docker-demo:1.0 /root/demo
+</code></pre>
+<blockquote>
+<p>对于运行<code>docker build -t docker-demo .</code>这个命令，也必须在 dockerfile 对应的文件夹下，否则回报如下错误：</p>
+<pre><code class="bash">ERROR: failed to solve: failed to read dockerfile: open Dockerfile: no such file or directory
+</code></pre>
+<p>dockerfile 文件要和 docker-demo.jar 在一起，因为我们拷贝 jar 包的时候使用的是相对路径</p>
+<pre><code class="bash"># 拷贝jar包
+COPY docker-demo.jar /app.jar
+</code></pre>
+<p>demo 里面的文件：</p>
+<pre><code class="bash">root@hcss-ecs-1b9f:~/demo# ll
+total 17292
+drwxr-xr-x 2 root root     4096 Mar  6 17:49 ./
+drwx------ 9 root root     4096 Mar  6 17:45 ../
+-rw-r--r-- 1 root root 17692387 Mar  6 17:51 docker-demo.jar
+-rw-r--r-- 1 root root      260 Mar  6 17:49 Dockerfile
+</code></pre>
+<p>另外也必须叫<code>Dockerfile</code>。因为我们的指令（<code>docker build -t docker-demo:1.0 /root/demo</code>）没有指定文件名</p>
+<p><code>/app.jar</code>这个路径是容器内的路径：</p>
+<pre><code class="bash">root@hcss-ecs-1b9f:~/demo# docker exec -it dd bash
+root@887dee3ce049:/# ls
+app.jar  bin  boot  dev  etc  home  lib  lib64	media  mnt  opt  proc  root  run  sbin	srv  sys  tmp  usr  var
+</code></pre>
+</blockquote>
+</li>
+</ul>
+<pre><code class="bash">docker run -d --name dd -p 8080:8080 docker-demo
+</code></pre>
+<p>应用制定的是 8080</p>
+<p>可以用<code>docker logs dd</code>查看日志，看看是否启动</p>
+<h1 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h1><img src="dockerBase/005.png"  width="600px" />
+
+<p><strong>默认情况下，所有容器都是以 bridge 方式连接到 Docker 的一个虚拟网桥上。</strong>图中的<code>/16</code>表示前 16 位不能动，每一段最大数是 255（2^8^），也就是前两段不能动。</p>
+<p>所有虽然个个容器是独立空间，但是可以同网桥相互访问。</p>
+<p>但是因为 IP 地址是网桥自动分配的，不是固定 IP，不固定与某一个容器绑定。如果我们在开发时写死某个 IP，而在部署时很可能 MySQL 容器的 IP 会发生变化，连接会失败。</p>
+<p>我们需要创建一个自定义的网络。一旦创建自定义的网络，就会形成新的网桥，生成新的网段。加入这个自定义网络的容器，就可以相互连接。<strong>加入自定义网络的容器还可以通过容器名互相访问，这样就不需要知道对方的 IP 地址</strong>，Docker 的网络操作命令如下：</p>
+<table>
+<thead>
+<tr>
+<th align="left"><strong>命令</strong></th>
+<th align="left"><strong>说明</strong></th>
+<th align="left"><strong>文档地址</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">docker network create</td>
+<td align="left">创建一个网络</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/network_create/">docker network create</a></td>
+</tr>
+<tr>
+<td align="left">docker network ls</td>
+<td align="left">查看所有网络</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/network_ls/">docs.docker.com</a></td>
+</tr>
+<tr>
+<td align="left">docker network rm</td>
+<td align="left">删除指定网络</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/network_rm/">docs.docker.com</a></td>
+</tr>
+<tr>
+<td align="left">docker network prune</td>
+<td align="left">清除未使用的网络</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/network_prune/">docs.docker.com</a></td>
+</tr>
+<tr>
+<td align="left">docker network connect</td>
+<td align="left">使指定容器连接加入某网络</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/network_connect/">docs.docker.com</a></td>
+</tr>
+<tr>
+<td align="left">docker network disconnect</td>
+<td align="left">使指定容器连接离开某网络</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/network_disconnect/">docker network disconnect</a></td>
+</tr>
+<tr>
+<td align="left">docker network inspect</td>
+<td align="left">查看网络详细信息</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/network_inspect/">docker network inspect</a></td>
+</tr>
+</tbody></table>
+<pre><code class="bash"># 创建一个网络
+root@hcss-ecs-1b9f:~# docker network create test
+6bb868db1b7acdd42d4eb0d80c7ee8a1d5f44c7047484644f1fb14de3ebeaa62
+# 查看所有网络
+root@hcss-ecs-1b9f:~# docker network ls
+NETWORK ID     NAME      DRIVER    SCOPE
+944bbb7fa383   bridge    bridge    local
+614dfc283894   host      host      local
+7850dabd07e4   none      null      local
+6bb868db1b7a   test      bridge    local
+# 使指定容器连接加入某网络 docker network connect [OPTIONS] NETWORK CONTAINER
+root@hcss-ecs-1b9f:~# docker network connect test mysql
+root@hcss-ecs-1b9f:~# docker inspect mysql
+
+# 查看mysql的网络：有两个了bridge和test
+root@hcss-ecs-1b9f:~# docker inspect mysql
+ &quot;Networks&quot;: &#123;
+                &quot;bridge&quot;: &#123; ####notice#####
+                    &quot;IPAMConfig&quot;: null,
+                    &quot;Links&quot;: null,
+                    &quot;Aliases&quot;: null,
+                    &quot;MacAddress&quot;: &quot;02:42:ac:11:00:02&quot;,
+                    &quot;NetworkID&quot;: &quot;944bbb7fa383025fd566712c925ff09e676233ef6beb41b28b485e6c2e4d87cf&quot;,
+                    &quot;EndpointID&quot;: &quot;35beba36e7644ff9ad340cbb5820c1f8695382c9cb2f5e895c39610507fa5301&quot;,
+                    &quot;Gateway&quot;: &quot;172.17.0.1&quot;,
+                    &quot;IPAddress&quot;: &quot;172.17.0.2&quot;,
+                    &quot;IPPrefixLen&quot;: 16,
+                    &quot;IPv6Gateway&quot;: &quot;&quot;,
+                    &quot;GlobalIPv6Address&quot;: &quot;&quot;,
+                    &quot;GlobalIPv6PrefixLen&quot;: 0,
+                    &quot;DriverOpts&quot;: null,
+                    &quot;DNSNames&quot;: null
+                &#125;,
+                &quot;test&quot;: &#123; ####notice#####
+                    &quot;IPAMConfig&quot;: &#123;&#125;,
+                    &quot;Links&quot;: null,
+                    &quot;Aliases&quot;: [
+                        &quot;cf3d698e83e6&quot;
+                    ],
+                    &quot;MacAddress&quot;: &quot;02:42:ac:12:00:02&quot;,
+                    &quot;NetworkID&quot;: &quot;6bb868db1b7acdd42d4eb0d80c7ee8a1d5f44c7047484644f1fb14de3ebeaa62&quot;,
+                    &quot;EndpointID&quot;: &quot;0d8c91c4d270b4a1cfe9041dd3ef756d0622d0d9addc886747f445326d2f809a&quot;,
+                    &quot;Gateway&quot;: &quot;172.18.0.1&quot;,
+                    &quot;IPAddress&quot;: &quot;172.18.0.2&quot;,
+                    &quot;IPPrefixLen&quot;: 16,
+                    &quot;IPv6Gateway&quot;: &quot;&quot;,
+                    &quot;GlobalIPv6Address&quot;: &quot;&quot;,
+                    &quot;GlobalIPv6PrefixLen&quot;: 0,
+                    &quot;DriverOpts&quot;: &#123;&#125;,
+                    &quot;DNSNames&quot;: [
+                        &quot;mysql&quot;,
+                        &quot;cf3d698e83e6&quot;
+                    ]
+                &#125;
+            &#125;
+
+# 创建容器的时候连接
+root@hcss-ecs-1b9f:~# docker run -d --name dd -p 8080:8080 --network test docker-demo
+99100c6381c8917cba470469b2645231ce2b00bed76ab34eac84ab016b0132cc
+
+# dd 里面没有默认的bridge网桥
+root@hcss-ecs-1b9f:~# docker inspect dd
+            &quot;Networks&quot;: &#123;
+                &quot;test&quot;: 
+</code></pre>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 1909773034@qq.com </span>
+    </div>
+</article>
+
+
+<p>
+    <a  class="dashang" onclick="dashangToggle()">赏</a>
+</p>
+
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">
+    ©2017 XieShaoLin
+</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+
+<div class="hide_box" onclick="dashangToggle()"></div>
+<div class="shang_box">
+    <a class="shang_close"  onclick="dashangToggle()">×</a>
+    <div class="shang_tit">
+        <p>喜欢就点赞,疼爱就打赏</p>
+    </div>
+    <div class="shang_payimg">
+        <div class="pay_img">
+            <img src="/img/alipay.jpg" class="alipay" title="扫码支持">
+            <img src="/img/weixin.jpg" class="weixin" title="扫码支持">
+        </div>
+    </div>
+    <div class="shang_payselect">
+        <span><label><input type="radio" name="pay" checked value="alipay">支付宝</label></span><span><label><input type="radio" name="pay" value="weixin">微信</label></span>
+    </div>
+</div>
+
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
+
+<script src="/js/script.js?v=1.1.0" ></script>
+<script>
+    var img_resize = 'default';
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $("#post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+        $("input[name=pay]").on("click", function () {
+            if($("input[name=pay]:checked").val()=="weixin"){
+                $(".shang_box .shang_payimg .pay_img").addClass("weixin_img");
+            } else {
+                $(".shang_box .shang_payimg .pay_img").removeClass("weixin_img");
+            }
+        })
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+    function dashangToggle() {
+        $(".shang_box").fadeToggle();
+        $(".hide_box").fadeToggle();
+    }
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>

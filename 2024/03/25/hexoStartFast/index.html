@@ -1,0 +1,1607 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>hexo搭建静态博客 | Notes</title>
+  <meta name="keywords" content=" hexo ">
+  <meta name="description" content="hexo搭建静态博客 | Notes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="卸载MySQL停止MySQL服务 systemctl stop mysqld  查询MySQL的安装文件 [root@centos01 ~]# rpm -qa | grep -i mysql mysql-community-client-5.7.28-1.el7.x86_64 mysql-community-server-5.7.28-1.el7.x86_64 mysql-community-co">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL的安装、卸载和启动">
+<meta property="og:url" content="http://example.com/2024/09/25/InstallMySQL8/index.html">
+<meta property="og:site_name" content="Notes">
+<meta property="og:description" content="卸载MySQL停止MySQL服务 systemctl stop mysqld  查询MySQL的安装文件 [root@centos01 ~]# rpm -qa | grep -i mysql mysql-community-client-5.7.28-1.el7.x86_64 mysql-community-server-5.7.28-1.el7.x86_64 mysql-community-co">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2024/09/25/InstallMySQL8/InstallMySQL8/001.png">
+<meta property="og:image" content="http://example.com/2024/09/25/InstallMySQL8/InstallMySQL8/002.png">
+<meta property="og:image" content="http://example.com/2024/09/25/InstallMySQL8/InstallMySQL8/003.png">
+<meta property="article:published_time" content="2024-09-24T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-09-25T10:36:23.945Z">
+<meta property="article:author" content="XieShaoLin">
+<meta property="article:tag" content="MySQL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2024/09/25/InstallMySQL8/InstallMySQL8/001.png">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.1.0" rel="stylesheet">
+
+<link href="/css/hl_theme/github.css?v=1.1.0" rel="stylesheet">
+
+<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
+
+<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="/js/titleTip.js?v=1.1.0" ></script>
+
+<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.1.0" ></script>
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="">
+  <input class="theme_blog_path" value="">
+  <input id="theme_shortcut" value="true" />
+  <input id="theme_highlight_on" value="true" />
+  <input id="theme_code_copy" value="true" />
+</div>
+
+
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/"
+   class="avatar_target">
+    <img class="avatar"
+         src="/img/avatar.jpg"/>
+</a>
+<div class="author">
+    <span>XieShaoLin</span>
+</div>
+
+<div class="icon">
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            <a title="email"
+               href="mailto:1909773034@qq.com"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-email"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="qq"
+               href="http://wpa.qq.com/msgrd?v=3&uin=1909773034&site=qq&menu=yes"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-qq"></use>
+                    </svg>
+                
+            </a>
+        
+    
+</div>
+
+
+
+
+
+<ul>
+    <li>
+        <div class="all active" data-rel="全部文章">全部文章
+            
+                <small>(55)</small>
+            
+        </div>
+    </li>
+    
+        
+            
+                
+    <li>
+        <div data-rel="工具">
+            
+            工具
+            <small>(1)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="前端">
+            
+            前端
+            <small>(1)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="后端">
+            
+            后端
+            <small>(45)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="运维">
+            
+            运维
+            <small>(3)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="财经">
+            
+            财经
+            <small>(1)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="英语">
+            
+            英语
+            <small>(2)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+        
+            
+            
+            
+    </div>
+    <div>
+        
+        
+    </div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="55">
+<input type="hidden" id="yelog_site_word_count" value="299.4k">
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        友情链接
+        <i class="iconfont icon-left"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="http://yelog.org/">叶落阁</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <div class="right-top">
+        <div id="default-panel">
+            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
+            <div class="right-title">全部文章</div>
+            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
+        </div>
+        <div id="search-panel">
+            <i class="iconfont icon-left" data-title="返回"></i>
+            <input id="local-search-input" autocomplete="off"/>
+            <label class="border-line" for="input"></label>
+            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
+            <i class="iconfont icon-tag" data-title="标签"></i>
+        </div>
+        <div id="outline-panel" style="display: none">
+            <div class="right-title">大纲</div>
+            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
+        </div>
+    </div>
+
+    <div class="tags-list">
+    <input id="tag-search" />
+    <div class="tag-wrapper">
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>阿里云</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>跨域</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>前锋教育</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>虚拟机</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>AOF</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>CentOS</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>docker</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>economy</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>element-ui</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>English</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>ES6</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>ESLint</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Feign</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>finalshell</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Getway</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>git</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>grammer</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>gulimall</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>hexo</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>idea</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>java</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>JavaScript</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Jedis</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Js</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>JSR303</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Linux</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>listening</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>maven</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>mq</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Mysql</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>MySql</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>MySQL</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Nacos</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>node.js</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>NoSql</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>npm</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>nvm</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>OAuth2</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>OSS</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Prettier</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>python</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>RDB</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>redis</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>RedisTemplate</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>renren-fast</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>spring</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>springboot</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>SpringCloud</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>springSecurity</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>vue</a>
+            </li>
+        
+    </div>
+
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/InstallMySQL8/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL的安装、卸载和启动">MySQL的安装、卸载和启动</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/MysqlIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL的索引原理和语法">MySQL的索引原理和语法</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/MySQLLock/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：锁">MySQL：锁</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/SQLTips/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：建议MySQL使用哪个索引">MySQL：建议MySQL使用哪个索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/SQLOptimization/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：SQL优化">MySQL：SQL优化</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/combinedIndexColumnIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL:联合索引和单列索引">MySQL:联合索引和单列索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/coveringIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="覆盖索引与锁表">覆盖索引与锁表</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/indexDesign/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：如何设计索引">MySQL：如何设计索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/invalidIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：索引失效">MySQL：索引失效</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/mysqlEngine/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL的存储引擎">MySQL的存储引擎</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/performanceAnalysis/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：慢查询日志、profile、explain">MySQL：慢查询日志、profile、explain</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/prefixIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：前缀索引">MySQL：前缀索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/22/redisPubSub/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="Redis订阅发布">Redis订阅发布</span>
+            <span class="post-date" title="2024-09-22 15:21:35">2024/09/22</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisProblem/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="Redis：缓存穿透、缓存击穿和缓存雪崩">Redis：缓存穿透、缓存击穿和缓存雪崩</span>
+            <span class="post-date" title="2024-09-17 16:33:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisPersistence/"
+           data-tag="redis,RDB,AOF"
+           data-author="" >
+            <span class="post-title" title="Redis持久化">Redis持久化</span>
+            <span class="post-date" title="2024-09-17 16:20:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisTransaction/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="redis的事务">redis的事务</span>
+            <span class="post-date" title="2024-09-17 16:12:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisType/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="redis常用数据类型">redis常用数据类型</span>
+            <span class="post-date" title="2024-09-17 16:04:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisBrief/"
+           data-tag="redis,NoSql"
+           data-author="" >
+            <span class="post-title" title="redis与NoSql的简单介绍">redis与NoSql的简单介绍</span>
+            <span class="post-date" title="2024-09-17 15:59:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisSentinel/"
+           data-tag="Linux,CentOS,虚拟机,redis"
+           data-author="" >
+            <span class="post-title" title="Redis：主从复制与哨兵模式">Redis：主从复制与哨兵模式</span>
+            <span class="post-date" title="2024-09-17 15:59:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redis7SpringBoot/"
+           data-tag="redis,springboot,Jedis,RedisTemplate"
+           data-author="" >
+            <span class="post-title" title="springboot整合redis">springboot整合redis</span>
+            <span class="post-date" title="2024-09-17 15:42:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 运维 "
+           href="/2024/09/17/redis7Install/"
+           data-tag="CentOS,redis,前锋教育"
+           data-author="" >
+            <span class="post-title" title="Redis的安装、卸载、启动和客户端">Redis的安装、卸载、启动和客户端</span>
+            <span class="post-date" title="2024-09-17 15:19:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 前端 "
+           href="/2024/09/17/BasicFrontend/"
+           data-tag="JavaScript,Js,ES6,vue,element-ui"
+           data-author="" >
+            <span class="post-title" title="前端：ES5和Vue的基本用法">前端：ES5和Vue的基本用法</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/OAuth2/"
+           data-tag="OAuth2,spring"
+           data-author="" >
+            <span class="post-title" title="OAuth2和spring">OAuth2和spring</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/SpringCloudBaseUse/"
+           data-tag="SpringCloud,Nacos,Feign,Getway"
+           data-author="" >
+            <span class="post-title" title="SpringCloud：基本使用">SpringCloud：基本使用</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/adminSystem/"
+           data-tag="element-ui,SpringCloud,Feign,gulimall,Prettier,ESLint,跨域,JSR303,OSS,阿里云"
+           data-author="" >
+            <span class="post-title" title="谷粒商城：后台管理系统要点">谷粒商城：后台管理系统要点</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/giliEnviroment/"
+           data-tag="docker,idea,maven,renren-fast,git,nvm,node.js,npm"
+           data-author="" >
+            <span class="post-title" title="谷粒商城：环境搭建">谷粒商城：环境搭建</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/springsecurity/"
+           data-tag="springSecurity"
+           data-author="" >
+            <span class="post-title" title="SpringSecurity">SpringSecurity</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/16/MysqlTransaction/"
+           data-tag="Mysql"
+           data-author="" >
+            <span class="post-title" title="Mysql的事物">Mysql的事物</span>
+            <span class="post-date" title="2024-09-16 14:31:10">2024/09/16</span>
+        </a>
+        
+        
+        <a  class="全部文章 运维 "
+           href="/2024/09/08/finalshell/"
+           data-tag="finalshell,Linux,CentOS,虚拟机"
+           data-author="" >
+            <span class="post-title" title="finalshell与Linux虚拟机的网络配置">finalshell与Linux虚拟机的网络配置</span>
+            <span class="post-date" title="2024-09-08 22:19:10">2024/09/08</span>
+        </a>
+        
+        
+        <a  class="全部文章 英语 "
+           href="/2024/03/25/rabbitGrammer/"
+           data-tag="English,grammer"
+           data-author="" >
+            <span class="post-title" title="英语兔英语语法">英语兔英语语法</span>
+            <span class="post-date" title="2024-03-25 23:12:24">2024/03/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 工具 "
+           href="/2024/03/25/hexoStartFast/"
+           data-tag="hexo"
+           data-author="" >
+            <span class="post-title" title="hexo搭建静态博客">hexo搭建静态博客</span>
+            <span class="post-date" title="2024-03-25 22:14:10">2024/03/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/03/25/PythonBase/"
+           data-tag="python"
+           data-author="" >
+            <span class="post-title" title="Python语法基数">Python语法基数</span>
+            <span class="post-date" title="2024-03-25 22:08:07">2024/03/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 英语 "
+           href="/2023/12/14/heqiongListening/"
+           data-tag="listening"
+           data-author="" >
+            <span class="post-title" title="何琼雅思听力">何琼雅思听力</span>
+            <span class="post-date" title="2023-12-14 00:00:00">2023/12/14</span>
+        </a>
+        
+        
+        <a  class="全部文章 财经 "
+           href="/2023/05/23/EconomicMachine/"
+           data-tag="economy"
+           data-author="" >
+            <span class="post-title" title="经济机器是怎样运行的——RayDalio">经济机器是怎样运行的——RayDalio</span>
+            <span class="post-date" title="2023-05-23 00:00:00">2023/05/23</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-02-grammar/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:基本语法">java:基本语法</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-03-array/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:数组">java:数组</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-05-exception/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:异常">java:异常</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-01-install/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:概述+安装">java:概述+安装</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-04-opp/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:面向对象">java:面向对象</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-06-thread/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:多线程">java:多线程</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-08-time/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:时间相关API">java:时间相关API</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-07-string/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:字符串">java:字符串</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-09-sort/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:比较器">java:比较器</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-11-annotation/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:注解">java:注解</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-10-enum/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:枚举">java:枚举</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-12-collection/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:集合">java:集合</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-13-generics/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:泛型">java:泛型</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-14-IO/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:IO流">java:IO流</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-15-net/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:网络编程">java:网络编程</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-16-reflect/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:反射">java:反射</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 运维 "
+           href="/2020/07/13/dockerBase/"
+           data-tag="docker"
+           data-author="" >
+            <span class="post-title" title="docker 基础">docker 基础</span>
+            <span class="post-date" title="2020-07-13 20:46:25">2020/07/13</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/01/01/MySQLCrashCourse/"
+           data-tag="MySql"
+           data-author="" >
+            <span class="post-title" title="MySQL:必知必会">MySQL:必知必会</span>
+            <span class="post-date" title="2020-01-01 00:00:00">2020/01/01</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/01/01/RocketMq/"
+           data-tag="mq"
+           data-author="" >
+            <span class="post-title" title="RocketMq:分布式消息队列">RocketMq:分布式消息队列</span>
+            <span class="post-date" title="2020-01-01 00:00:00">2020/01/01</span>
+        </a>
+        
+        
+        <a  class="全部文章 "
+           href="/2019/09/29/java-17-new8/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java8新特性：lambda表达式+Stream流">java8新特性：lambda表达式+Stream流</span>
+            <span class="post-date" title="2019-09-29 00:00:00">2019/09/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 "
+           href="/2019/09/29/java-18-above8/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java8以后的新特性">java8以后的新特性</span>
+            <span class="post-date" title="2019-09-29 00:00:00">2019/09/29</span>
+        </a>
+        
+        <div id="no-item-tips">
+
+        </div>
+    </nav>
+    <div id="outline-list">
+    </div>
+</div>
+
+    </div>
+    <div class="hide-list">
+        <div class="semicircle" data-title="切换全屏 快捷键 s">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div id="post">
+    <div class="pjax">
+        <article id="post-hexoStartFast" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">hexo搭建静态博客</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            <i class="iconfont icon-category"></i>
+            
+            
+            <a  data-rel="工具">工具</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            <i class="iconfont icon-tag"></i>
+            
+            <a class="color5">hexo</a>
+            
+        </span>
+        
+    </div>
+    <div class="article-meta">
+        
+            发布时间 : <time class="date" title='最后更新: 2024-03-25 23:17:32'>2024-03-25 22:14</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        <span>字数:2.5k</span>
+        
+        
+        <span id="busuanzi_container_page_pv">
+            阅读 :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9C%A8%E6%9C%AC%E5%9C%B0%E5%90%AF%E5%8A%A8"><span class="toc-text">在本地启动</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-GitHub-%E6%8F%90%E4%BE%9B%E7%9A%84%E5%85%8D%E8%B4%B9%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-text">使用 GitHub 提供的免费服务器</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE-git-%E7%94%A8%E6%88%B7%E5%90%8D%E5%92%8C%E9%82%AE%E7%AE%B1"><span class="toc-text">设置 git 用户名和邮箱</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-ssh-%E5%85%8D%E5%AF%86%E7%99%BB%E5%BD%95"><span class="toc-text">使用 ssh 免密登录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9C%A8-github-%E4%B8%8A%E8%BF%90%E8%A1%8C"><span class="toc-text">在 github 上运行</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E4%B8%BB%E9%A2%98"><span class="toc-text">安装主题</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#hexo-%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87"><span class="toc-text">hexo 插入图片</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%98%E6%96%B9%E5%A6%82%E4%BD%95%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87"><span class="toc-text">官方如何插入图片</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9-hexo-renderer-marked"><span class="toc-text">修改 hexo-renderer-marked</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%88%91%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E5%BC%8F"><span class="toc-text">我的解决方式</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#hexo-%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-text">hexo 的使用</span></a></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="在本地启动"><a href="#在本地启动" class="headerlink" title="在本地启动"></a>在本地启动</h1><ol>
+<li>下载生成个人博客所需要的软件&#x2F;环境：git，node.js</li>
+<li>Hexo 的安装与配置<ul>
+<li>创建一个空文件夹（如命名 blog），之后的所有操作都在这个文件夹里进行</li>
+<li>安装 hexo：<code>cnpm install -g hexo-cli</code></li>
+<li>查看是否安装成功：<code>hexo v</code></li>
+<li>初始化 blog 目录：<code>hexo init</code>。</li>
+<li>生成项目：<code>hexo generate</code>或者<code>hexo g</code>。这一步是把 md 文件生成 html 文件</li>
+<li>启动本地服务：<code>hexo server</code>或者<code>hexo s</code>。访问：<code>http://localhost:4000/</code></li>
+</ul>
+</li>
+</ol>
+<p>安装遇到的问题：</p>
+<p>我把我安装的文件，直接拖到&#x2F;blog&#x2F;source&#x2F;_posts 目录下，接着我运行<code>hexo s</code>和<code>hexo g</code>都会报如下错误：</p>
+<pre><code>YAMLException: unidentified alias
+</code></pre>
+<p>因为<code>heox g</code>生成博文，是会检查你的文件有没有按照 hexo 的格式。其格式要求为：</p>
+<pre><code>---
+title: Hello World
+date: 2013/7/13 20:46:25
+---
+</code></pre>
+<p>只要添加上面格式，就不会报错了</p>
+<h1 id="使用-GitHub-提供的免费服务器"><a href="#使用-GitHub-提供的免费服务器" class="headerlink" title="使用 GitHub 提供的免费服务器"></a>使用 GitHub 提供的免费服务器</h1><h2 id="设置-git-用户名和邮箱"><a href="#设置-git-用户名和邮箱" class="headerlink" title="设置 git 用户名和邮箱"></a>设置 git 用户名和邮箱</h2><pre><code class="bash"># 设置
+$ git config --global user.name &quot;username&quot;
+$ git config --global user.email &quot;email&quot;
+# 查看
+$ git config user.name
+$ git config user.email
+</code></pre>
+<ol>
+<li>加–global 是为所有 git 项目设置，不加则是在当前目录的 git 项目设置</li>
+<li>这里的 yourname 输入你的 GitHub 用户名，youremail 输入你 GitHub 的邮箱。这样 GitHub 才能知道你是不是对应它的账户。</li>
+</ol>
+<h2 id="使用-ssh-免密登录"><a href="#使用-ssh-免密登录" class="headerlink" title="使用 ssh 免密登录"></a>使用 ssh 免密登录</h2><ol>
+<li><p>生成秘钥：<code>ssh-keygen -t rsa -C &quot;youremail&quot;</code></p>
+<blockquote>
+<p>[!CAUTION]</p>
+<p>在运行这个命令的时，日志如下：</p>
+<pre><code class="bash">xieshaolin@xieshaolindeMacBook-Pro blog % ssh-keygen -t rsa -C “xxxxxx@qq.com“
+Generating public/private rsa key pair.
+Enter file in which to save the key (/Users/xieshaolin/.ssh/id_rsa):
+/Users/xieshaolin/.ssh/id_rsa already exists.
+Overwrite (y/n)? y
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in /Users/xieshaolin/.ssh/id_rsa.
+Your public key has been saved in /Users/xieshaolin/.ssh/id_rsa.pub.
+</code></pre>
+<ul>
+<li><code>.ssh/id_rsa already exists.</code>：提示我秘钥已经存在。这是我之前已经配置过的。</li>
+<li><code>Enter passphrase (empty for no passphrase):</code> 如果这里直接按回车，那么之后提交拉取 github 的代码，就不需要提交密码。如果这里输入值的话，比如 xxx；那么以后每次拉取或者推送都需要输入 xxx 的密码</li>
+</ul>
+</blockquote>
+</li>
+<li><p>获取密钥：<code>cat ~/.ssh/id_rsa.pub</code></p>
+<pre><code class="bash">xieshaolin@xieshaolindeMacBook-Pro blog % cat ~/.ssh/id_rsa.pub
+ssh-rsa AAAAB3N............uExy1kddkoT2A/V84LdrCaBUJJGM= “xxxxx@qq.com“
+</code></pre>
+</li>
+<li><p>把这行秘钥复制到 github 上面</p>
+<img src="hexoStartFast/001.png"  width="450px" /></li>
+</ol>
+<h2 id="在-github-上运行"><a href="#在-github-上运行" class="headerlink" title="在 github 上运行"></a>在 github 上运行</h2><ol>
+<li><p>在 git 上创建仓库，仓库名必须是：username.github.io。如我 github 的用户名是 Xie-Shaolin，建立的仓库就是 Xie-Shaolin.github.io。</p>
+</li>
+<li><p>设置 pages：</p>
+<ul>
+<li><p>在仓库的 Settings 里面</p>
+<img src="hexoStartFast/002.png"  width="550px" />
+</li>
+<li><p>做如下配置：</p>
+<img src="hexoStartFast/003.png"  width="550px" /></li>
+</ul>
+</li>
+<li><p>下载 github 部署插件：运行命令：<code>cnpm install hexo-deployer-git --save</code></p>
+</li>
+<li><p>配置<code>/blog/_config.yml</code>文件：</p>
+<pre><code class="yaml">deploy:
+  type: &#39;git&#39;
+  repo: git@github.com:Xie-Shaolin/Xie-Shaolin.github.io.git
+  branch: master
+</code></pre>
+<blockquote>
+<p>[!CAUTION]</p>
+<p>如果 这么配置：<code>repo: https://github.com/Xie-Shaolin/Xie-Shaolin.github.io.git</code></p>
+<p>等我们启动时，会出现如下异常：</p>
+<pre><code class="bash">xieshaolin@xieshaolindeMacBook-Pro blog % hexo d
+......
+remote: Support for password authentication was removed on August 13, 2021.
+......
+Error: Spawn failed
+......
+</code></pre>
+<p>意思是：自从 21 年 8 月 13 后不再支持用户名密码的方式验证了，需要创建个人访问令牌(personal access token)。</p>
+</blockquote>
+</li>
+<li><p>清除之前生成的项目：<code>hexo clean</code>（可以清除之前项目的一些问题）</p>
+</li>
+<li><p>在本地生成项目：<code>hexo g</code></p>
+</li>
+<li><p>把项目部署到 GitHub 上：<code>hexo d</code>或者<code>hexo deploy</code></p>
+<blockquote>
+<p>[!NOTE]</p>
+<p>首先提交到 git 仓库的时候并不是马上就可以访问，需要等项目部署完</p>
+<p>下面是正在部署的样子：</p>
+<img src="hexoStartFast/006.png"  width="450px" />
+
+<p>下面是部署成功的样子：</p>
+<img src="hexoStartFast/005.png"  width="450px" />
+
+<p>其次，如果 GitHub 创建个人主页报错 404 <strong>There is not a GitHub Pages site here.</strong></p>
+<p>那么很可能是 pages 页面没有设置好，或者项目正在部署当中</p>
+</blockquote>
+</li>
+</ol>
+<h1 id="安装主题"><a href="#安装主题" class="headerlink" title="安装主题"></a>安装主题</h1><p>官方支持的<a target="_blank" rel="noopener" href="https://hexo.io/themes/">主题</a></p>
+<ol>
+<li><p>克隆：要在 blog 目录下</p>
+<pre><code class="bash">git clone https://github.com/yelog/hexo-theme-3-hexo.git themes/3-hexo
+</code></pre>
+</li>
+<li><p>修改<code>_config.yml</code>的配置</p>
+<pre><code class="yaml">theme: 3-hexo
+</code></pre>
+</li>
+</ol>
+<h1 id="hexo-插入图片"><a href="#hexo-插入图片" class="headerlink" title="hexo 插入图片"></a>hexo 插入图片</h1><h2 id="官方如何插入图片"><a href="#官方如何插入图片" class="headerlink" title="官方如何插入图片"></a>官方如何插入图片</h2><p><a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/asset-folders">官方教程</a></p>
+<ol>
+<li><p>打开<code>package.json</code>文件，确认当前安装并启用的渲染插件是<code>hexo-renderer-marked</code>：</p>
+<pre><code class="json">&#123;
+  // ...
+  &quot;dependencies&quot;: &#123;
+    // ...
+    &quot;hexo-renderer-marked&quot;: &quot;^6.2.0&quot;
+    // ...
+  &#125;
+  // ...
+&#125;
+</code></pre>
+<p>如果没有，就下载插件：<code>npm install hexo-renderer-marked --save</code></p>
+</li>
+<li><p>配置<code>_config.yml</code></p>
+<pre><code class="yaml">post_asset_folder: true # 打开资源文件管理功能
+marked:
+  prependRoot: true # 将文章根路径添加到文章内的链接之前。此为默认配置。
+  postAsset: true # 在所有链接开头添加文章根路径之前，先将文章内资源的路径解析为相对于资源目录的路径
+</code></pre>
+</li>
+<li><p><code>hexo new demo</code>：会在<code>_posts</code>目录下生成<code>demo.md</code>文件和<code>demo</code>文件夹，接着像 demo 文件夹里面存如几张图片</p>
+<img src="hexoStartFast/007.png"  width="250px" />
+</li>
+<li><p>在 demo 引入图片</p>
+<pre><code class="markdown">![003](003.png) [comment]: &lt;&gt; (要想在 hexo 里面显示，必须这么写，但在 typora 或者其他编辑器里面无法显示)
+![003](demo/003.png)[comment]: &lt;&gt; (这个可以在 typora 里面显示，但是无法再 hexo 里面显示)
+</code></pre>
+</li>
+<li><p><code>hexo g</code>：生成项目 public</p>
+<img src="hexoStartFast/008.png"  width="250px" />
+</li>
+<li><p>比较 index.html 的路径：</p>
+<ul>
+<li><p>项目的根路径是从 public 开始的</p>
+</li>
+<li><p><code>demo/003.png</code> &gt;&gt;&gt;&gt;&gt;&gt;&gt; <code>/demo/003.png</code> &gt;&gt;&gt;&gt;&gt;&gt; 无法访问图片</p>
+</li>
+<li><p><code>003.png</code> &gt;&gt;&gt;&gt;&gt;&gt; <code>/2024/03/24/demo/003.png</code> &gt;&gt;&gt;&gt;&gt;&gt; 可以访问图片</p>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="修改-hexo-renderer-marked"><a href="#修改-hexo-renderer-marked" class="headerlink" title="修改 hexo-renderer-marked"></a>修改 hexo-renderer-marked</h2><p><a target="_blank" rel="noopener" href="https://www.hwpo.top/posts/d87f7e0c/index.html">参考博客</a></p>
+<p>打开<code>./node_modules/hexo-renderer-marked/lib/renderer.js</code>，按如下方式修改代码：</p>
+<pre><code class="js">// Prepend root to image path
+image(href, title, text) &#123;
+  const &#123; hexo, options &#125; = this;
+  const &#123; relative_link &#125; = hexo.config;
+  const &#123; lazyload, figcaption, prependRoot, postPath &#125; = options;
+
+  if (!/^(#|\/\/|http(s)?:)/.test(href) &amp;&amp; !relative_link &amp;&amp; prependRoot) &#123;
+    if (!href.startsWith(&#39;/&#39;) &amp;&amp; !href.startsWith(&#39;\\&#39;) &amp;&amp; postPath) &#123;
+      const PostAsset = hexo.model(&#39;PostAsset&#39;);
+      // findById requires forward slash
+
+      // ============================== 以下代码有改动 ==============================
+      const fixPostPath = join(postPath, &#39;../&#39;);
+      const asset = PostAsset.findById(join(fixPostPath, href.replace(/\\/g, &#39;/&#39;)));
+      // const asset = PostAsset.findById(join(postPath, href.replace(/\\/g, &#39;/&#39;)));
+      // ============================== 以上代码有改动 ==============================
+
+      // asset.path is backward slash in Windows
+      if (asset) href = asset.path.replace(/\\/g, &#39;/&#39;);
+    &#125;
+    href = url_for.call(hexo, href);
+  &#125;
+
+  let out = `&lt;img src=&quot;$&#123;encodeURL(href)&#125;&quot;`;
+  if (text) out += ` alt=&quot;$&#123;text&#125;&quot;`;
+  if (title) out += ` title=&quot;$&#123;title&#125;&quot;`;
+  if (lazyload) out += &#39; loading=&quot;lazy&quot;&#39;;
+
+  out += &#39;&gt;&#39;;
+  if (figcaption) &#123;
+    if (text) out += `&lt;figcaption aria-hidden=&quot;true&quot;&gt;$&#123;text&#125;&lt;/figcaption&gt;`;
+  &#125;
+  return out;
+&#125;
+</code></pre>
+<p>在 <code>hexo g</code>之后，再比较 index.html 的路径：</p>
+<ul>
+<li><code>demo/003.png</code> &gt;&gt;&gt;&gt;&gt;&gt;&gt; <code>/2024/03/24/demo/003.png</code> &gt;&gt;&gt;&gt;&gt;&gt; 可以访问图片</li>
+<li><code>003.png</code> &gt;&gt;&gt;&gt;&gt;&gt; <code>/003.png</code> &gt;&gt;&gt;&gt;&gt;&gt; 无法访问图片</li>
+</ul>
+<p>也就是在修改代码之后，<code>![003](demo/003.png)</code> 可以实现 hexo 和本地编辑器的双访问</p>
+<h2 id="我的解决方式"><a href="#我的解决方式" class="headerlink" title="我的解决方式"></a>我的解决方式</h2><p>我使用的是<code>&lt;img&gt;</code> 标签引入图片，hexo 不会去重写<code>&lt;img&gt;</code>标签里面的相对路径</p>
+<pre><code class="markdown">&lt;img src=&quot;test/001.png&quot;  width=&quot;450px&quot; /&gt;
+</code></pre>
+<p>我的解决方式是在 test 下载放一个 test 目录，目录结构如图：</p>
+<img src="hexoStartFast/009.png"  width="250px" />
+
+<p>在<code>hexo g</code>之后，生成的项目结构为：</p>
+<img src="hexoStartFast/010.png"  width="250px" />
+
+<p>这样，就实现了访问</p>
+<h1 id="hexo-的使用"><a href="#hexo-的使用" class="headerlink" title="hexo 的使用"></a>hexo 的使用</h1><p>更多内容可以参考这篇<a target="_blank" rel="noopener" href="https://yelog.org/2017/03/23/3-hexo-instruction/">博客</a></p>
+<ol>
+<li><p>设置高亮：</p>
+<ul>
+<li><p>关闭hexo字段的高亮，在<code>_config.yml</code>里面作如下设置：</p>
+<pre><code class="yaml"># _config.yml
+syntax_highlighter:  # empty
+</code></pre>
+</li>
+<li><p>开启<code>3-hexo</code>主题的高亮，在<code>/themes/3-hexo/_config.yml</code>里面作如下设置</p>
+<pre><code class="yaml">highlight:
+  on: true # true开启代码高亮，开启需要关闭博客 _config.yml 中的 highlight
+  lineNum: false # true显示行号
+  copy: true # 复制功能
+  theme: github
+</code></pre>
+</li>
+</ul>
+</li>
+<li><p>开启字数统计</p>
+<ul>
+<li><p>下载插件：<code>npm i hexo-wordcount --save</code></p>
+</li>
+<li><p>修改<code>/themes/3-hexo/_config.yml</code></p>
+<pre><code class="yaml">word_count: true
+</code></pre>
+</li>
+</ul>
+</li>
+<li><p>更换头像</p>
+<ul>
+<li><p>方式一：替换 <code>source/img/avatar.jpg</code> 图片。</p>
+</li>
+<li><p>方式二：修改<code>/themes/3-hexo/_config.yml</code></p>
+<pre><code class="yaml"># 你的头像url
+avatar: /img/avatar.jpg
+favicon: /img/avatar.jpg
+</code></pre>
+</li>
+</ul>
+</li>
+<li><p>分类排序</p>
+<p>默认按照首字母正序排序，由于中文在 <code>nodejs</code> 环境下不能按照拼音首字母排序，所以添加了自定义排序方式，在主题下 <code>_config.yml</code> 中找到如下配置，<code>category.sort</code>则是定义分类顺序的。</p>
+<p><strong>规则：</strong>在 <code>sort</code>中定义的 <code>category</code> 比 没有在 <code>sort</code> 中定义的更靠前</p>
+<pre><code class="yaml"># 文章分类设置
+category:
+  num: true # 分类显示文章数
+  sub: true # 开启多级分类
+  sort:
+    - 读书
+    - 工具
+    - 大前端
+    - 后端
+    - 数据库
+    - 运维
+  width:
+    lg: 120 # 1468px&lt;屏幕宽度 左侧分类宽度
+    md: 100 # 1024px&lt;屏幕宽度&lt;=1468px 左侧分类宽度
+    sm: 100 # 426px&lt;屏幕宽度&lt;=1024px 左侧分类宽度（ipad）
+</code></pre>
+</li>
+<li><p>文章排序</p>
+<p>文章列表默认按照创建时间（如下文章内定义的<code>date</code>）倒序。</p>
+<p>使用 <code>top</code> 将会置顶文章，多个置顶文章时，<code>top</code> 定义的值越大，越靠前。</p>
+<pre><code class="yaml">---
+title: 每天一个linux命令
+date: 2017-01-23 11:41:48
+top: 1
+categories:
+- 运维
+tags:
+- linux命令
+---
+</code></pre>
+</li>
+<li><p>要注意对文章进行分类</p>
+<p>每篇文章最好写上文集和标签，方便筛选和查看。<br>一般推荐一篇文章设置一个文集，一个或多个标签<br><code>categories</code>:文集，为左侧列表<br><code>tags</code>:标签，通过#来筛选<br>例如 本篇文章的设置</p>
+<pre><code class="yaml">---
+title: 3-hexo使用说明
+date: 2017-03-23 15:13:47
+categories:
+- 工具
+tags:
+- hexo
+- 3-hexo
+---
+</code></pre>
+</li>
+<li><p>设置模板</p>
+<p>blog根目录 scaffolds&#x2F;post.md<br>加入categories,tags等，这样以后通过 hexo new 生成的模板就不用写这两个单词了。</p>
+<pre><code class="yaml">---
+title: &#123;&#123; title &#125;&#125;
+date: &#123;&#123; date &#125;&#125;
+categories:
+tags:
+---
+</code></pre>
+</li>
+<li><p>配置首页</p>
+<ul>
+<li><p>首页路径为：<code>/themes/3-hexo/layout/indexs.md</code> 。只需要修改这个文件就可以了</p>
+</li>
+<li><p>文章数统计&#x2F;字数统计</p>
+<pre><code class="html">&lt;!-- 我这里是借用了code的样式，所以直接使用code标签。
+    自定义样式，可加入style属性设置--&gt;
+&lt;code class=&quot;article_number&quot;&gt;&lt;/code&gt;
+&lt;code class=&quot;site_word_count&quot;&gt;&lt;/code&gt;
+</code></pre>
+</li>
+<li><p>流量统计</p>
+<pre><code class="html">&lt;!-- 我这里是借用了code的样式，所以直接使用code标签。
+    自定义样式，可加入style属性设置--&gt;
+&lt;code class=&quot;site_uv&quot;&gt;&lt;/code&gt;
+&lt;code class=&quot;site_pv&quot;&gt;&lt;/code&gt;
+</code></pre>
+</li>
+</ul>
+</li>
+<li><p>修改作者和配置网站信息</p>
+<p>配置文件不是主题的配置，而是hexo的配置：<code>blog/_config.yml</code></p>
+<pre><code class="yaml"># Site
+title: Notes # 网站标题
+subtitle: &#39;&#39; # 网站副标题
+description: &#39;&#39; # 网站描述
+keywords: # 网站的关键词。支持多个关键词。
+author: XieShaoLin # 您的名字
+language: zh-CN # 网站使用的语言。
+timezone: &#39;Asia/Shanghai&#39; # 网站时区
+</code></pre>
+<p>配置的具体信息可以查看<a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/configuration#%E7%BD%91%E5%9D%80">官网</a></p>
+</li>
+</ol>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 1909773034@qq.com </span>
+    </div>
+</article>
+
+
+<p>
+    <a  class="dashang" onclick="dashangToggle()">赏</a>
+</p>
+
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">
+    ©2017 XieShaoLin
+</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+
+<div class="hide_box" onclick="dashangToggle()"></div>
+<div class="shang_box">
+    <a class="shang_close"  onclick="dashangToggle()">×</a>
+    <div class="shang_tit">
+        <p>喜欢就点赞,疼爱就打赏</p>
+    </div>
+    <div class="shang_payimg">
+        <div class="pay_img">
+            <img src="/img/alipay.jpg" class="alipay" title="扫码支持">
+            <img src="/img/weixin.jpg" class="weixin" title="扫码支持">
+        </div>
+    </div>
+    <div class="shang_payselect">
+        <span><label><input type="radio" name="pay" checked value="alipay">支付宝</label></span><span><label><input type="radio" name="pay" value="weixin">微信</label></span>
+    </div>
+</div>
+
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
+
+<script src="/js/script.js?v=1.1.0" ></script>
+<script>
+    var img_resize = 'default';
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $("#post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+        $("input[name=pay]").on("click", function () {
+            if($("input[name=pay]:checked").val()=="weixin"){
+                $(".shang_box .shang_payimg .pay_img").addClass("weixin_img");
+            } else {
+                $(".shang_box .shang_payimg .pay_img").removeClass("weixin_img");
+            }
+        })
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+    function dashangToggle() {
+        $(".shang_box").fadeToggle();
+        $(".hide_box").fadeToggle();
+    }
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>

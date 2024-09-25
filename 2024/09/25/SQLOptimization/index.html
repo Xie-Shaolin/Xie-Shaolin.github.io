@@ -1,0 +1,1741 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>MySQL：SQL优化 | Notes</title>
+  <meta name="keywords" content=" MySQL ">
+  <meta name="description" content="MySQL：SQL优化 | Notes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="卸载MySQL停止MySQL服务 systemctl stop mysqld  查询MySQL的安装文件 [root@centos01 ~]# rpm -qa | grep -i mysql mysql-community-client-5.7.28-1.el7.x86_64 mysql-community-server-5.7.28-1.el7.x86_64 mysql-community-co">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL的安装、卸载和启动">
+<meta property="og:url" content="http://example.com/2024/09/25/InstallMySQL8/index.html">
+<meta property="og:site_name" content="Notes">
+<meta property="og:description" content="卸载MySQL停止MySQL服务 systemctl stop mysqld  查询MySQL的安装文件 [root@centos01 ~]# rpm -qa | grep -i mysql mysql-community-client-5.7.28-1.el7.x86_64 mysql-community-server-5.7.28-1.el7.x86_64 mysql-community-co">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2024/09/25/InstallMySQL8/InstallMySQL8/001.png">
+<meta property="og:image" content="http://example.com/2024/09/25/InstallMySQL8/InstallMySQL8/002.png">
+<meta property="og:image" content="http://example.com/2024/09/25/InstallMySQL8/InstallMySQL8/003.png">
+<meta property="article:published_time" content="2024-09-24T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-09-25T10:36:23.945Z">
+<meta property="article:author" content="XieShaoLin">
+<meta property="article:tag" content="MySQL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2024/09/25/InstallMySQL8/InstallMySQL8/001.png">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.1.0" rel="stylesheet">
+
+<link href="/css/hl_theme/github.css?v=1.1.0" rel="stylesheet">
+
+<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
+
+<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="/js/titleTip.js?v=1.1.0" ></script>
+
+<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.1.0" ></script>
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="">
+  <input class="theme_blog_path" value="">
+  <input id="theme_shortcut" value="true" />
+  <input id="theme_highlight_on" value="true" />
+  <input id="theme_code_copy" value="true" />
+</div>
+
+
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/"
+   class="avatar_target">
+    <img class="avatar"
+         src="/img/avatar.jpg"/>
+</a>
+<div class="author">
+    <span>XieShaoLin</span>
+</div>
+
+<div class="icon">
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            <a title="email"
+               href="mailto:1909773034@qq.com"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-email"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="qq"
+               href="http://wpa.qq.com/msgrd?v=3&uin=1909773034&site=qq&menu=yes"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-qq"></use>
+                    </svg>
+                
+            </a>
+        
+    
+</div>
+
+
+
+
+
+<ul>
+    <li>
+        <div class="all active" data-rel="全部文章">全部文章
+            
+                <small>(55)</small>
+            
+        </div>
+    </li>
+    
+        
+            
+                
+    <li>
+        <div data-rel="工具">
+            
+            工具
+            <small>(1)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="前端">
+            
+            前端
+            <small>(1)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="后端">
+            
+            后端
+            <small>(45)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="运维">
+            
+            运维
+            <small>(3)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="财经">
+            
+            财经
+            <small>(1)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="英语">
+            
+            英语
+            <small>(2)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+        
+            
+            
+            
+    </div>
+    <div>
+        
+        
+    </div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="55">
+<input type="hidden" id="yelog_site_word_count" value="299.4k">
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        友情链接
+        <i class="iconfont icon-left"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="http://yelog.org/">叶落阁</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <div class="right-top">
+        <div id="default-panel">
+            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
+            <div class="right-title">全部文章</div>
+            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
+        </div>
+        <div id="search-panel">
+            <i class="iconfont icon-left" data-title="返回"></i>
+            <input id="local-search-input" autocomplete="off"/>
+            <label class="border-line" for="input"></label>
+            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
+            <i class="iconfont icon-tag" data-title="标签"></i>
+        </div>
+        <div id="outline-panel" style="display: none">
+            <div class="right-title">大纲</div>
+            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
+        </div>
+    </div>
+
+    <div class="tags-list">
+    <input id="tag-search" />
+    <div class="tag-wrapper">
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>阿里云</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>跨域</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>前锋教育</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>虚拟机</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>AOF</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>CentOS</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>docker</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>economy</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>element-ui</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>English</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>ES6</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>ESLint</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Feign</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>finalshell</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Getway</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>git</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>grammer</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>gulimall</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>hexo</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>idea</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>java</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>JavaScript</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Jedis</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Js</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>JSR303</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Linux</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>listening</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>maven</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>mq</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Mysql</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>MySql</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>MySQL</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Nacos</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>node.js</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>NoSql</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>npm</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>nvm</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>OAuth2</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>OSS</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Prettier</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>python</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>RDB</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>redis</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>RedisTemplate</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>renren-fast</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>spring</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>springboot</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>SpringCloud</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>springSecurity</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>vue</a>
+            </li>
+        
+    </div>
+
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/InstallMySQL8/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL的安装、卸载和启动">MySQL的安装、卸载和启动</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/MysqlIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL的索引原理和语法">MySQL的索引原理和语法</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/MySQLLock/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：锁">MySQL：锁</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/SQLTips/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：建议MySQL使用哪个索引">MySQL：建议MySQL使用哪个索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/SQLOptimization/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：SQL优化">MySQL：SQL优化</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/combinedIndexColumnIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL:联合索引和单列索引">MySQL:联合索引和单列索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/coveringIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="覆盖索引与锁表">覆盖索引与锁表</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/indexDesign/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：如何设计索引">MySQL：如何设计索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/invalidIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：索引失效">MySQL：索引失效</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/mysqlEngine/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL的存储引擎">MySQL的存储引擎</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/performanceAnalysis/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：慢查询日志、profile、explain">MySQL：慢查询日志、profile、explain</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/prefixIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：前缀索引">MySQL：前缀索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/22/redisPubSub/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="Redis订阅发布">Redis订阅发布</span>
+            <span class="post-date" title="2024-09-22 15:21:35">2024/09/22</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisProblem/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="Redis：缓存穿透、缓存击穿和缓存雪崩">Redis：缓存穿透、缓存击穿和缓存雪崩</span>
+            <span class="post-date" title="2024-09-17 16:33:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisPersistence/"
+           data-tag="redis,RDB,AOF"
+           data-author="" >
+            <span class="post-title" title="Redis持久化">Redis持久化</span>
+            <span class="post-date" title="2024-09-17 16:20:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisTransaction/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="redis的事务">redis的事务</span>
+            <span class="post-date" title="2024-09-17 16:12:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisType/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="redis常用数据类型">redis常用数据类型</span>
+            <span class="post-date" title="2024-09-17 16:04:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisBrief/"
+           data-tag="redis,NoSql"
+           data-author="" >
+            <span class="post-title" title="redis与NoSql的简单介绍">redis与NoSql的简单介绍</span>
+            <span class="post-date" title="2024-09-17 15:59:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisSentinel/"
+           data-tag="Linux,CentOS,虚拟机,redis"
+           data-author="" >
+            <span class="post-title" title="Redis：主从复制与哨兵模式">Redis：主从复制与哨兵模式</span>
+            <span class="post-date" title="2024-09-17 15:59:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redis7SpringBoot/"
+           data-tag="redis,springboot,Jedis,RedisTemplate"
+           data-author="" >
+            <span class="post-title" title="springboot整合redis">springboot整合redis</span>
+            <span class="post-date" title="2024-09-17 15:42:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 运维 "
+           href="/2024/09/17/redis7Install/"
+           data-tag="CentOS,redis,前锋教育"
+           data-author="" >
+            <span class="post-title" title="Redis的安装、卸载、启动和客户端">Redis的安装、卸载、启动和客户端</span>
+            <span class="post-date" title="2024-09-17 15:19:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 前端 "
+           href="/2024/09/17/BasicFrontend/"
+           data-tag="JavaScript,Js,ES6,vue,element-ui"
+           data-author="" >
+            <span class="post-title" title="前端：ES5和Vue的基本用法">前端：ES5和Vue的基本用法</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/OAuth2/"
+           data-tag="OAuth2,spring"
+           data-author="" >
+            <span class="post-title" title="OAuth2和spring">OAuth2和spring</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/SpringCloudBaseUse/"
+           data-tag="SpringCloud,Nacos,Feign,Getway"
+           data-author="" >
+            <span class="post-title" title="SpringCloud：基本使用">SpringCloud：基本使用</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/adminSystem/"
+           data-tag="element-ui,SpringCloud,Feign,gulimall,Prettier,ESLint,跨域,JSR303,OSS,阿里云"
+           data-author="" >
+            <span class="post-title" title="谷粒商城：后台管理系统要点">谷粒商城：后台管理系统要点</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/giliEnviroment/"
+           data-tag="docker,idea,maven,renren-fast,git,nvm,node.js,npm"
+           data-author="" >
+            <span class="post-title" title="谷粒商城：环境搭建">谷粒商城：环境搭建</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/springsecurity/"
+           data-tag="springSecurity"
+           data-author="" >
+            <span class="post-title" title="SpringSecurity">SpringSecurity</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/16/MysqlTransaction/"
+           data-tag="Mysql"
+           data-author="" >
+            <span class="post-title" title="Mysql的事物">Mysql的事物</span>
+            <span class="post-date" title="2024-09-16 14:31:10">2024/09/16</span>
+        </a>
+        
+        
+        <a  class="全部文章 运维 "
+           href="/2024/09/08/finalshell/"
+           data-tag="finalshell,Linux,CentOS,虚拟机"
+           data-author="" >
+            <span class="post-title" title="finalshell与Linux虚拟机的网络配置">finalshell与Linux虚拟机的网络配置</span>
+            <span class="post-date" title="2024-09-08 22:19:10">2024/09/08</span>
+        </a>
+        
+        
+        <a  class="全部文章 英语 "
+           href="/2024/03/25/rabbitGrammer/"
+           data-tag="English,grammer"
+           data-author="" >
+            <span class="post-title" title="英语兔英语语法">英语兔英语语法</span>
+            <span class="post-date" title="2024-03-25 23:12:24">2024/03/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 工具 "
+           href="/2024/03/25/hexoStartFast/"
+           data-tag="hexo"
+           data-author="" >
+            <span class="post-title" title="hexo搭建静态博客">hexo搭建静态博客</span>
+            <span class="post-date" title="2024-03-25 22:14:10">2024/03/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/03/25/PythonBase/"
+           data-tag="python"
+           data-author="" >
+            <span class="post-title" title="Python语法基数">Python语法基数</span>
+            <span class="post-date" title="2024-03-25 22:08:07">2024/03/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 英语 "
+           href="/2023/12/14/heqiongListening/"
+           data-tag="listening"
+           data-author="" >
+            <span class="post-title" title="何琼雅思听力">何琼雅思听力</span>
+            <span class="post-date" title="2023-12-14 00:00:00">2023/12/14</span>
+        </a>
+        
+        
+        <a  class="全部文章 财经 "
+           href="/2023/05/23/EconomicMachine/"
+           data-tag="economy"
+           data-author="" >
+            <span class="post-title" title="经济机器是怎样运行的——RayDalio">经济机器是怎样运行的——RayDalio</span>
+            <span class="post-date" title="2023-05-23 00:00:00">2023/05/23</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-02-grammar/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:基本语法">java:基本语法</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-03-array/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:数组">java:数组</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-05-exception/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:异常">java:异常</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-01-install/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:概述+安装">java:概述+安装</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-04-opp/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:面向对象">java:面向对象</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-06-thread/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:多线程">java:多线程</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-08-time/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:时间相关API">java:时间相关API</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-07-string/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:字符串">java:字符串</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-09-sort/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:比较器">java:比较器</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-11-annotation/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:注解">java:注解</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-10-enum/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:枚举">java:枚举</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-12-collection/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:集合">java:集合</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-13-generics/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:泛型">java:泛型</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-14-IO/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:IO流">java:IO流</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-15-net/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:网络编程">java:网络编程</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-16-reflect/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:反射">java:反射</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 运维 "
+           href="/2020/07/13/dockerBase/"
+           data-tag="docker"
+           data-author="" >
+            <span class="post-title" title="docker 基础">docker 基础</span>
+            <span class="post-date" title="2020-07-13 20:46:25">2020/07/13</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/01/01/MySQLCrashCourse/"
+           data-tag="MySql"
+           data-author="" >
+            <span class="post-title" title="MySQL:必知必会">MySQL:必知必会</span>
+            <span class="post-date" title="2020-01-01 00:00:00">2020/01/01</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/01/01/RocketMq/"
+           data-tag="mq"
+           data-author="" >
+            <span class="post-title" title="RocketMq:分布式消息队列">RocketMq:分布式消息队列</span>
+            <span class="post-date" title="2020-01-01 00:00:00">2020/01/01</span>
+        </a>
+        
+        
+        <a  class="全部文章 "
+           href="/2019/09/29/java-17-new8/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java8新特性：lambda表达式+Stream流">java8新特性：lambda表达式+Stream流</span>
+            <span class="post-date" title="2019-09-29 00:00:00">2019/09/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 "
+           href="/2019/09/29/java-18-above8/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java8以后的新特性">java8以后的新特性</span>
+            <span class="post-date" title="2019-09-29 00:00:00">2019/09/29</span>
+        </a>
+        
+        <div id="no-item-tips">
+
+        </div>
+    </nav>
+    <div id="outline-list">
+    </div>
+</div>
+
+    </div>
+    <div class="hide-list">
+        <div class="semicircle" data-title="切换全屏 快捷键 s">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div id="post">
+    <div class="pjax">
+        <article id="post-SQLOptimization" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">MySQL：SQL优化</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            <i class="iconfont icon-category"></i>
+            
+            
+            <a  data-rel="后端">后端</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            <i class="iconfont icon-tag"></i>
+            
+            <a class="color1">MySQL</a>
+            
+        </span>
+        
+    </div>
+    <div class="article-meta">
+        
+            发布时间 : <time class="date" title='最后更新: 2024-09-25 18:55:18'>2024-09-25 00:00</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        <span>字数:4.5k</span>
+        
+        
+        <span id="busuanzi_container_page_pv">
+            阅读 :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#insert%E4%BC%98%E5%8C%96"><span class="toc-text">insert优化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E6%AC%A1%E9%9C%80%E8%A6%81%E5%90%91%E8%A1%A8%E4%B8%AD%E6%8F%92%E5%85%A5%E5%A4%9A%E6%9D%A1%E6%95%B0%E6%8D%AE"><span class="toc-text">一次需要向表中插入多条数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%A7%E6%89%B9%E9%87%8F%E6%8F%92%E5%85%A5%E6%95%B0%E6%8D%AE"><span class="toc-text">大批量插入数据</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%94%E7%A4%BA"><span class="toc-text">演示</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%BB%E9%94%AE%E4%BC%98%E5%8C%96"><span class="toc-text">主键优化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%BB%84%E7%BB%87%E6%96%B9%E5%BC%8F"><span class="toc-text">数据组织方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B5%E5%88%86%E8%A3%82"><span class="toc-text">页分裂</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E9%94%AE%E9%A1%BA%E5%BA%8F%E6%8F%92%E5%85%A5%E6%95%88%E6%9E%9C"><span class="toc-text">主键顺序插入效果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E9%94%AE%E4%B9%B1%E5%BA%8F%E6%8F%92%E5%85%A5%E6%95%88%E6%9E%9C"><span class="toc-text">主键乱序插入效果</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B5%E5%90%88%E5%B9%B6"><span class="toc-text">页合并</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B4%A2%E5%BC%95%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99"><span class="toc-text">索引设计原则</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#order-by%E4%BC%98%E5%8C%96"><span class="toc-text">order by优化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%A4%E7%A7%8D%E6%8E%92%E5%BA%8F%E6%96%B9%E5%BC%8F"><span class="toc-text">两种排序方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95"><span class="toc-text">测试</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%86%E5%A4%87%E6%95%B0%E6%8D%AE"><span class="toc-text">准备数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%A7%E8%A1%8C%E6%8E%92%E5%BA%8FSQL"><span class="toc-text">执行排序SQL</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95"><span class="toc-text">创建索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95%E5%90%8E%EF%BC%8C%E6%A0%B9%E6%8D%AEage-phone%E8%BF%9B%E8%A1%8C%E5%8D%87%E5%BA%8F%E6%8E%92%E5%BA%8F"><span class="toc-text">创建索引后，根据age, phone进行升序排序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95%E5%90%8E%EF%BC%8C%E6%A0%B9%E6%8D%AEage-phone%E8%BF%9B%E8%A1%8C%E9%99%8D%E5%BA%8F%E6%8E%92%E5%BA%8F"><span class="toc-text">创建索引后，根据age, phone进行降序排序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%B9%E6%8D%AEphone%EF%BC%8Cage%E8%BF%9B%E8%A1%8C%E5%8D%87%E5%BA%8F%E6%8E%92%E5%BA%8F%EF%BC%8Cphone%E5%9C%A8%E5%89%8D%EF%BC%8Cage%E5%9C%A8%E5%90%8E%E3%80%82"><span class="toc-text">根据phone，age进行升序排序，phone在前，age在后。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%B9%E6%8D%AEage-phone%E8%BF%9B%E8%A1%8C%E9%99%8D%E5%BA%8F%E4%B8%80%E4%B8%AA%E5%8D%87%E5%BA%8F%EF%BC%8C%E4%B8%80%E4%B8%AA%E9%99%8D%E5%BA%8F"><span class="toc-text">根据age, phone进行降序一个升序，一个降序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E8%81%94%E5%90%88%E7%B4%A2%E5%BC%95-age-%E5%8D%87%E5%BA%8F%E6%8E%92%E5%BA%8F%EF%BC%8Cphone-%E5%80%92%E5%BA%8F%E6%8E%92%E5%BA%8F"><span class="toc-text">创建联合索引(age 升序排序，phone 倒序排序)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%87%E5%BA%8F-%E9%99%8D%E5%BA%8F%E8%81%94%E5%90%88%E7%B4%A2%E5%BC%95%E7%BB%93%E6%9E%84%E5%9B%BE%E7%A4%BA"><span class="toc-text">升序&#x2F;降序联合索引结构图示:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#order-by%E4%BC%98%E5%8C%96%E5%8E%9F%E5%88%99"><span class="toc-text">order by优化原则</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#group-by%E4%BC%98%E5%8C%96"><span class="toc-text">group by优化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%98%E5%8C%96%E5%8E%9F%E5%88%99"><span class="toc-text">优化原则</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#limit-%E4%BC%98%E5%8C%96"><span class="toc-text">limit 优化</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#count%E4%BC%98%E5%8C%96"><span class="toc-text">count优化</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#update%E4%BC%98%E5%8C%96"><span class="toc-text">update优化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A3%E5%B8%B8%E6%83%85%E5%86%B5"><span class="toc-text">正常情况</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%94%81%E8%A1%A8%E7%9A%84%E6%83%85%E5%86%B5"><span class="toc-text">锁表的情况</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%99name%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95"><span class="toc-text">给name创建索引</span></a></li></ol></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="insert优化"><a href="#insert优化" class="headerlink" title="insert优化"></a>insert优化</h1><h2 id="一次需要向表中插入多条数据"><a href="#一次需要向表中插入多条数据" class="headerlink" title="一次需要向表中插入多条数据"></a>一次需要向表中插入多条数据</h2><p>如果我们需要一次性往数据库表中插入多条记录，可以从以下三个方面进行优化。</p>
+<pre><code class="mysql">insert into tb_test values(1,&#39;tom&#39;);
+insert into tb_test values(2,&#39;cat&#39;);
+insert into tb_test values(3,&#39;jerry&#39;);
+.....
+</code></pre>
+<p>优化要点一：批量插入数据</p>
+<pre><code class="mysql">-- 一次性所插入的数据不建议超过1000条，500--1000条是比较合适的
+Insert into tb_test values(1,&#39;Tom&#39;),(2,&#39;1 Cat&#39;),(3,&#39;Jerry&#39;);
+</code></pre>
+<p>优化要点二：手动控制事务</p>
+<pre><code class="mysql">start transaction;
+insert into tb_test values(1,&#39;Tom&#39;),(2,&#39;Cat&#39;),(3,&#39;Jerry&#39;);
+insert into tb_test values(4,&#39;Tom&#39;),(5,&#39;Cat&#39;),(6,&#39;Jerry&#39;);
+insert into tb_test values(7,&#39;Tom&#39;),(8,&#39;Cat&#39;),(9,&#39;Jerry&#39;);
+commit;
+</code></pre>
+<p>优化要点三：主键顺序插入，性能要高于乱序插入。</p>
+<pre><code class="mysql">主键乱序插入 : 8 1 9 21 88 2 4 15 89 5 7 3
+主键顺序插入 : 1 2 3 4 5 7 8 9 15 21 88 89
+</code></pre>
+<h2 id="大批量插入数据"><a href="#大批量插入数据" class="headerlink" title="大批量插入数据"></a>大批量插入数据</h2><p>如果一次性需要插入大批量数据(比如: 几百万的记录)，使用insert语句插入性能较低，此时可以使用MySQL数据库提供的load指令进行插入。操作如下：</p>
+<img src="SQLOptimization/001.jpg"  width="100%" />
+
+<p>可以执行如下指令，将数据脚本文件中的数据加载到表结构中：</p>
+<pre><code class="mysql">-- 客户端连接服务端时，加上参数 -–local-infile
+mysql --local-infile -u root -p
+-- 设置全局参数local_infile为1，开启从本地加载文件导入数据的开关
+set global local_infile = 1;
+-- 查询该配置是否开启
+select @@local_infile;
+-- 执行load指令将准备好的数据，加载到表结构中
+-- fields terminated by &#39;,&#39; 表示每一个属性值是通过“,”分割的
+-- lines terminated by &#39;\n&#39;  表示每一行使用 &#39;\n&#39;（换行）分割
+load data local infile &#39;文件路径&#39; into table &#39;表名&#39; fields terminated by &#39;,&#39; lines terminated by &#39;\n&#39; ;
+</code></pre>
+<h3 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h3><p>创建一张表：</p>
+<pre><code class="mysql">CREATE TABLE `tb_user2` (
+`id` INT(11) NOT NULL AUTO_INCREMENT,
+`username` VARCHAR(50) NOT NULL,
+`password` VARCHAR(50) NOT NULL,
+`name` VARCHAR(20) NOT NULL,
+`birthday` DATE DEFAULT NULL,
+`sex` CHAR(1) DEFAULT NULL,
+PRIMARY KEY (`id`),
+UNIQUE KEY `unique_user_username` (`username`)
+) ENGINE=INNODB DEFAULT CHARSET=utf8 ;
+</code></pre>
+<p>使用finalshell把脚本上传到服务器（虚拟机）上</p>
+<img src="SQLOptimization/002.png"  width="80%" />
+
+<p>放在根目录下就可以了</p>
+<pre><code class="mysql">[root@centos01 ~]# ll
+总用量 56328
+-rw-r--r--  1 root root    18623 11月 17 2021 03.jpg
+-rw-------. 1 root root     1246 9月  15 2021 anaconda-ks.cfg
+drwxr-xr-x  3 root root       18 11月 17 2021 docker-volumn
+-rw-r--r--  1 root root       45 11月 18 2021 index.html
+-rw-r--r--  1 root root 57650380 9月  23 00:02 load_user_100w_sort.sql
+</code></pre>
+<p><code>load_user_100w_sort.sql</code>里面文件内容的格式如下：</p>
+<pre><code class="sql">[root@centos01 ~]# head load_user_100w_sort.sql 
+1,jdTmmKQlwu1,jdTmmKQlwu,jdTmmKQlwu,2020-10-13,1
+2,BTJOeWjRiw2,BTJOeWjRiw,BTJOeWjRiw,2020-6-12,2
+3,waQTJIIlHI3,waQTJIIlHI,waQTJIIlHI,2020-6-2,0
+4,XmeFHwozIo4,XmeFHwozIo,XmeFHwozIo,2020-1-11,1
+5,xRrvQSHcZn5,xRrvQSHcZn,xRrvQSHcZn,2020-10-18,2
+6,gTDfGFNLEj6,gTDfGFNLEj,gTDfGFNLEj,2020-1-13,0
+7,nBETIlVCle7,nBETIlVCle,nBETIlVCle,2020-9-27,1
+8,vmePKKZjJU8,vmePKKZjJU,vmePKKZjJU,2020-10-20,2
+9,pWjaLhJVaB9,pWjaLhJVaB,pWjaLhJVaB,2020-5-7,0
+10,zimgGFPEQe10,zimgGFPEQe,zimgGFPEQe,2020-8-1,1
+</code></pre>
+<p>执行命令，只需要8秒就可以导入100w条数据</p>
+<pre><code class="mysql">mysql&gt; load data local infile &#39;/root/load_user_100w_sort.sql&#39; into table tb_user2 fields terminated by &#39;,&#39; lines terminated by &#39;\n&#39;;
+Query OK, 1000000 rows affected (8.09 sec)
+Records: 1000000  Deleted: 0  Skipped: 0  Warnings: 0
+</code></pre>
+<h1 id="主键优化"><a href="#主键优化" class="headerlink" title="主键优化"></a>主键优化</h1><h2 id="数据组织方式"><a href="#数据组织方式" class="headerlink" title="数据组织方式"></a>数据组织方式</h2><p>在InnoDB存储引擎中，表数据都是根据主键顺序组织存放的，这种存储方式的表称为索引组织表 (index organized table IOT)。</p>
+<img src="SQLOptimization/003.jpg"  width="8=100%" />
+
+<p>在InnoDB引擎中，数据行是记录在逻辑结构 page 页中的，而每一个页的大小是固定的，默认16K。那也就意味着， 一个页中所存储的行也是有限的，如果插入的数据行row在该页存储不小，将会存储到下一个页中，页与页之间会通过指针连接。</p>
+<h2 id="页分裂"><a href="#页分裂" class="headerlink" title="页分裂"></a>页分裂</h2><h3 id="主键顺序插入效果"><a href="#主键顺序插入效果" class="headerlink" title="主键顺序插入效果"></a>主键顺序插入效果</h3><p>从磁盘中申请页， 主键顺序插入</p>
+<img src="SQLOptimization/004.jpg"  width="8=100%" />
+
+<p>第一个页没有满，继续往第一页插入</p>
+<img src="SQLOptimization/005.jpg"  width="8=100%" />
+
+<p>当第一个也写满之后，再写入第二个页，页与页之间会通过指针连接</p>
+<img src="SQLOptimization/006.jpg"  width="8=100%" />
+
+<p>当第二页写满了，再往第三页写入</p>
+<img src="SQLOptimization/007.jpg"  width="8=100%" />
+
+<h3 id="主键乱序插入效果"><a href="#主键乱序插入效果" class="headerlink" title="主键乱序插入效果"></a>主键乱序插入效果</h3><p>加入1#,2#页都已经写满了，存放了如图所示的数据</p>
+<img src="SQLOptimization/008.jpg"  width="8=100%" />
+
+<p>此时再插入id为50的记录，我们来看看会发生什么现象</p>
+<img src="SQLOptimization/009.jpg"  width="8=100%" />
+
+<p>这个时候MySQL不会开启一个新页，因为，索引结构的叶子节点是有顺序的。按照顺序，应该存储在47之后。</p>
+<img src="SQLOptimization/010.jpg"  width="8=100%" />
+
+<p>但是47所在的1#页，已经写满了，存储不了50对应的数据了。 那么此时会开辟一个新的页 3#。</p>
+<img src="SQLOptimization/011.jpg"  width="8=100%" />
+
+<p>但是并不会直接将50存入3#页，而是会将1#页后<strong>一半的数据</strong>，移动到3#页，然后在3#页，插入50。</p>
+<img src="SQLOptimization/012.jpg"  width="8=100%" />
+
+<img src="SQLOptimization/013.jpg"  width="100%" />
+
+<p>移动数据，并插入id为50的数据之后，那么此时，这三个页之间的数据顺序是有问题的。 1#的下一个页，应该是3#， 3#的下一个页是2#。 所以，此时，<strong>需要重新设置链表指针</strong>。</p>
+<img src="SQLOptimization/014.jpg"  width="100%" />
+
+<p>上述的这种现象，称之为 “页分裂”，是比较耗费性能的操作。</p>
+<h2 id="页合并"><a href="#页合并" class="headerlink" title="页合并"></a>页合并</h2><p>目前表中已有数据的索引结构(叶子节点)如下：</p>
+<img src="SQLOptimization/015.jpg"  width="100%" />
+
+<p>当我们对已有数据进行删除时，具体的效果如下:</p>
+<p><strong>当删除一行记录时，实际上记录并没有被物理删除，只是记录被标记（flaged）为删除并且它的空间变得允许被其他记录声明使用。</strong></p>
+<img src="SQLOptimization/016.jpg"  width="100%" />
+
+<p>当我们继续删除2#的数据记录</p>
+<img src="SQLOptimization/017.jpg"  width="100%" />
+
+<p>当页中删除的记录达到 <strong>MERGE_THRESHOLD（默认为页的50%），InnoDB会开始寻找最靠近的页（前或后）看看是否可以将两个页合并以优化空间使用</strong>。</p>
+<img src="SQLOptimization/018.jpg"  width="100%" />
+
+<img src="SQLOptimization/019.jpg"  width="100%" />
+
+<p>删除数据，并将页合并之后，再次插入新的数据21，则直接插入3#页</p>
+<img src="SQLOptimization/020.jpg"  width="100%" />
+
+<p>这个里面所发生的合并页的这个现象，就称之为 “页合并”。</p>
+<p><strong>MERGE_THRESHOLD：合并页的阈值，可以自己设置，在创建表或者创建索引时指定。</strong></p>
+<h2 id="索引设计原则"><a href="#索引设计原则" class="headerlink" title="索引设计原则"></a>索引设计原则</h2><p>满足业务需求的情况下，尽量降低主键的长度。</p>
+<p>插入数据时，尽量选择顺序插入，选择使用AUTO_INCREMENT自增主键。</p>
+<p><strong>尽量不要使用UUID做主键或者是其他自然主键，如身份证号。</strong></p>
+<blockquote>
+<p>分布式系统：</p>
+<ul>
+<li><strong>UUID</strong>：非常适合分布式系统，因为它能够保证全局唯一性，无需额外的协调机制。</li>
+<li><strong>自增ID</strong>：在分布式系统中，如果直接使用自增ID作为主键，可能会遇到ID冲突的问题，需要额外的服务（如ID生成器服务）来确保ID的唯一性。</li>
+</ul>
+<p>文心一言的建议：</p>
+<ul>
+<li>如果你的应用是分布式的，或者你需要全局唯一的主键，那么UUID可能是一个更好的选择。</li>
+<li>如果你的应用是单体应用，或者对性能有较高要求，特别是在高并发的写入和范围查询场景下，自增ID可能更适合。</li>
+<li>在一些情况下，也可以考虑将UUID和自增ID结合使用，例如使用UUID作为业务ID，同时维护一个自增ID作为数据库主键，以满足不同的需求</li>
+</ul>
+</blockquote>
+<p>业务操作时，避免对主键的修改。</p>
+<h1 id="order-by优化"><a href="#order-by优化" class="headerlink" title="order by优化"></a>order by优化</h1><h2 id="两种排序方式"><a href="#两种排序方式" class="headerlink" title="两种排序方式"></a>两种排序方式</h2><p><code>Using filesort</code> : 通过表的索引或全表扫描，<strong>读取满足条件的数据行</strong>，<strong>然后在排序缓冲区sort buffer中完成排序操作</strong>，所有<strong>不是通过索引直接返回排序结果的排序都叫 FileSort 排序</strong>。</p>
+<p><code>Using index</code> : 通过<strong>有序索引顺序扫描直接返回有序数据</strong>，这种情况即为 using index，<strong>不需要额外排序，操作效率高</strong>。</p>
+<p>对于以上的两种排序方式，<code>Using index</code>的性能高，而<code>Using filesort</code>的性能低，我们在优化排序操作时，尽量要优化为 <code>Using index</code>。</p>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><h3 id="准备数据"><a href="#准备数据" class="headerlink" title="准备数据"></a>准备数据</h3><p>把之前测试时，为tb_user表所建立的部分索引直接删除掉，保留如下：</p>
+<pre><code class="mysql">idx_user_pro_age_sta：`profession`, `age`, `status`
+idx_email_5：`email`(5)
+</code></pre>
+<h3 id="执行排序SQL"><a href="#执行排序SQL" class="headerlink" title="执行排序SQL"></a>执行排序SQL</h3><pre><code class="mysql">
+mysql&gt; explain select id,age,phone from tb_user order by age\G;
+*************************** 1. row ***************************
+           id: 1
+  select_type: SIMPLE
+        table: tb_user
+   partitions: NULL
+         type: ALL
+possible_keys: NULL
+          key: NULL
+      key_len: NULL
+          ref: NULL
+         rows: 24
+     filtered: 100.00
+        Extra: Using filesort 
+1 row in set, 1 warning (0.00 sec)
+
+mysql&gt; explain select id,age,phone from tb_user order by age, phone\G;
+*************************** 1. row ***************************
+           id: 1
+  select_type: SIMPLE
+        table: tb_user
+   partitions: NULL
+         type: ALL
+possible_keys: NULL
+          key: NULL
+      key_len: NULL
+          ref: NULL
+         rows: 24
+     filtered: 100.00
+        Extra: Using filesort
+1 row in set, 1 warning (0.00 sec)
+</code></pre>
+<p>由于 age, phone 都没有索引，所以此时再排序时，出现Using filesort， 排序性能较低。</p>
+<h3 id="创建索引"><a href="#创建索引" class="headerlink" title="创建索引"></a>创建索引</h3><pre><code class="mysql">create index idx_user_age_phone_aa on tb_user(age,phone);
+</code></pre>
+<h3 id="创建索引后，根据age-phone进行升序排序"><a href="#创建索引后，根据age-phone进行升序排序" class="headerlink" title="创建索引后，根据age, phone进行升序排序"></a>创建索引后，根据age, phone进行升序排序</h3><pre><code class="mysql">mysql&gt; explain select id,age,phone from tb_user order by age\G;
+*************************** 1. row ***************************
+           id: 1
+  select_type: SIMPLE
+        table: tb_user
+   partitions: NULL
+         type: index
+possible_keys: NULL
+          key: idx_user_age_phone_aa
+      key_len: 37
+          ref: NULL
+         rows: 24
+     filtered: 100.00
+        Extra: Using index
+1 row in set, 1 warning (0.00 sec)
+
+
+mysql&gt; explain select id,age,phone from tb_user order by age, phone\G;
+*************************** 1. row ***************************
+           id: 1
+  select_type: SIMPLE
+        table: tb_user
+   partitions: NULL
+         type: index
+possible_keys: NULL
+          key: idx_user_age_phone_aa
+      key_len: 37
+          ref: NULL
+         rows: 24
+     filtered: 100.00
+        Extra: Using index
+1 row in set, 1 warning (0.00 sec)
+</code></pre>
+<p>建立索引之后，再次进行排序查询，就由原来的Using filesort， 变为了 Using index，性能就是比较高的了。</p>
+<h3 id="创建索引后，根据age-phone进行降序排序"><a href="#创建索引后，根据age-phone进行降序排序" class="headerlink" title="创建索引后，根据age, phone进行降序排序"></a>创建索引后，根据age, phone进行降序排序</h3><pre><code class="mysql">mysql&gt; explain select id,age,phone from tb_user order by age desc , phone desc\G ;
+*************************** 1. row ***************************
+           id: 1
+  select_type: SIMPLE
+        table: tb_user
+   partitions: NULL
+         type: index
+possible_keys: NULL
+          key: idx_user_age_phone_aa
+      key_len: 37
+          ref: NULL
+         rows: 24
+     filtered: 100.00
+        Extra: Using index, Backward index scan
+1 row in set, 1 warning (0.00 sec)
+</code></pre>
+<p>也出现 <code>Using index</code>， 但是此时Extra中出现了 <code>Backward index scan</code>，这个<strong>代表反向扫描索引</strong>，因为在MySQL中我们创建的索引，默认索引的叶子节点是从小到大排序的，而此时我们查询排序时，是从大到小，所以，在扫描时，就是反向扫描，就会出现 Backward index scan。 </p>
+<p>在MySQL8版本中，支持降序索引，我们也可以创建降序索引</p>
+<h3 id="根据phone，age进行升序排序，phone在前，age在后。"><a href="#根据phone，age进行升序排序，phone在前，age在后。" class="headerlink" title="根据phone，age进行升序排序，phone在前，age在后。"></a>根据phone，age进行升序排序，phone在前，age在后。</h3><pre><code class="mysql">mysql&gt; explain select id,age,phone from tb_user order by phone , age\G;
+*************************** 1. row ***************************
+           id: 1
+  select_type: SIMPLE
+        table: tb_user
+   partitions: NULL
+         type: index
+possible_keys: NULL
+          key: idx_user_age_phone_aa
+      key_len: 37
+          ref: NULL
+         rows: 24
+     filtered: 100.00
+        Extra: Using index; Using filesort
+1 row in set, 1 warning (0.00 sec)
+</code></pre>
+<p>排序时,也需要满足最左前缀法则,否则也会出现 filesort。因为在创建索引的时候， <strong>age是第一个字段，phone是第二个字段，所以排序时，也就该按照这个顺序来，否则就会出现 Using filesort</strong>。这个和where过滤不一样，我想是因为<code>order by phone , age</code> 是有顺序的：先根据phone排序，然后再根据age排序</p>
+<h3 id="根据age-phone进行降序一个升序，一个降序"><a href="#根据age-phone进行降序一个升序，一个降序" class="headerlink" title="根据age, phone进行降序一个升序，一个降序"></a>根据age, phone进行降序一个升序，一个降序</h3><pre><code class="mysql">mysql&gt; explain select id,age,phone from tb_user order by age asc , phone desc\G;
+*************************** 1. row ***************************
+           id: 1
+  select_type: SIMPLE
+        table: tb_user
+   partitions: NULL
+         type: index
+possible_keys: NULL
+          key: idx_user_age_phone_aa
+      key_len: 37
+          ref: NULL
+         rows: 24
+     filtered: 100.00
+        Extra: Using index; Using filesort
+1 row in set, 1 warning (0.00 sec)
+</code></pre>
+<p>因为创建索引时，如果未指定顺序，默认都是按照升序排序的，而查询时，一个升序，一个降序，此时就会出现Using filesort。</p>
+<h3 id="创建联合索引-age-升序排序，phone-倒序排序"><a href="#创建联合索引-age-升序排序，phone-倒序排序" class="headerlink" title="创建联合索引(age 升序排序，phone 倒序排序)"></a>创建联合索引(age 升序排序，phone 倒序排序)</h3><p>为了解决上述的问题，我们可以创建一个索引，这个联合索引中 age 升序排序，phone 倒序排序。</p>
+<pre><code class="mysql">create index idx_user_age_phone_ad on tb_user(age asc ,phone desc);
+</code></pre>
+<img src="SQLOptimization/022.png"  width="100%" />
+
+<p>然后再次执行如下SQL</p>
+<pre><code class="mysql">mysql&gt; explain select id,age,phone from tb_user order by age asc , phone desc\G;
+*************************** 1. row ***************************
+           id: 1
+  select_type: SIMPLE
+        table: tb_user
+   partitions: NULL
+         type: index
+possible_keys: NULL
+          key: idx_user_age_phone_ad
+      key_len: 48
+          ref: NULL
+         rows: 24
+     filtered: 100.00
+        Extra: Using index
+1 row in set, 1 warning (0.00 sec)
+</code></pre>
+<h2 id="升序-降序联合索引结构图示"><a href="#升序-降序联合索引结构图示" class="headerlink" title="升序&#x2F;降序联合索引结构图示:"></a>升序&#x2F;降序联合索引结构图示:</h2><img src="SQLOptimization/023.jpg"  width="100%" />
+
+<img src="SQLOptimization/024.jpg"  width="100%" />
+
+<h2 id="order-by优化原则"><a href="#order-by优化原则" class="headerlink" title="order by优化原则"></a>order by优化原则</h2><p>根据排序字段建立合适的索引，多字段排序时，也遵循<strong>最左前缀法则</strong>。</p>
+<p>尽量使用<strong>覆盖索引</strong>。</p>
+<p>多字段排序, 一个升序一个降序，此时需要注意<strong>联合索引在创建时的规则（ASC&#x2F;DESC）</strong>。</p>
+<p>如果不可避免的出现filesort，大数据量排序时，**可以适当增大排序缓冲区大小sort_buffer_size(默认256k)**。</p>
+<ul>
+<li>临时修改（仅对当前会话有效）</li>
+</ul>
+<pre><code class="mysql">SET SESSION sort_buffer_size = 256*1024; -- 设置为256KB
+</code></pre>
+<ul>
+<li><p>运行时动态修改（对于支持动态变量的MySQL版本）</p>
+<pre><code class="mysql">SET GLOBAL sort_buffer_size = 8*1024*1024; -- 设置为8MB
+</code></pre>
+</li>
+<li><p>全局修改（对所有新会话有效）</p>
+<pre><code class="ini">[mysqld]  
+sort_buffer_size = 8M
+</code></pre>
+</li>
+</ul>
+<h1 id="group-by优化"><a href="#group-by优化" class="headerlink" title="group by优化"></a>group by优化</h1><p>把其他索引都删掉，只留下下面的索引</p>
+<pre><code class="mysql">idx_user_pro_age_sta： `profession`, `age`, `status`
+</code></pre>
+<p>接着，做如下实验</p>
+<pre><code class="mysql">mysql&gt; explain select profession , count(*) from tb_user group by profession\G;
+*************************** 1. row ***************************
+           id: 1
+  select_type: SIMPLE
+        table: tb_user
+   partitions: NULL
+         type: index
+possible_keys: idx_user_pro_age_sta
+          key: idx_user_pro_age_sta
+      key_len: 54
+          ref: NULL
+         rows: 24
+     filtered: 100.00
+        Extra: Using index
+1 row in set, 1 warning (0.01 sec)
+
+mysql&gt; explain select profession , count(*) from tb_user group by profession,age\G;
+*************************** 1. row ***************************
+           id: 1
+  select_type: SIMPLE
+        table: tb_user
+   partitions: NULL
+         type: index
+possible_keys: idx_user_pro_age_sta
+          key: idx_user_pro_age_sta
+      key_len: 54
+          ref: NULL
+         rows: 24
+     filtered: 100.00
+        Extra: Using index
+1 row in set, 1 warning (0.00 sec)
+
+mysql&gt; explain select age, count(*) from tb_user group by age\G;
+*************************** 1. row ***************************
+           id: 1
+  select_type: SIMPLE
+        table: tb_user
+   partitions: NULL
+         type: index
+possible_keys: idx_user_pro_age_sta
+          key: idx_user_pro_age_sta
+      key_len: 54
+          ref: NULL
+         rows: 24
+     filtered: 100.00
+        Extra: Using index; Using temporary
+1 row in set, 1 warning (0.00 sec)
+</code></pre>
+<p>我们发现，如果仅仅根据age分组，就会出现 Using temporary ；</p>
+<p>而如果是 根据 profession,age两个字段同时分组，则不会出现 Using temporary。</p>
+<p>原因是因为<strong>对于分组操作，在联合索引中，也是符合最左前缀法则的</strong>。</p>
+<h2 id="优化原则"><a href="#优化原则" class="headerlink" title="优化原则"></a>优化原则</h2><p>在分组操作时，可以通过索引来提高效率。</p>
+<p>分组操作时，索引的使用也是满足最左前缀法则的。</p>
+<h1 id="limit-优化"><a href="#limit-优化" class="headerlink" title="limit 优化"></a>limit 优化</h1><p>在数据量比较大时，<strong>如果进行limit分页查询，在查询时，越往后，分页查询效率越低。</strong></p>
+<p>为了便于测试，避免 MySQL 内的缓存机制干扰分析结果，我们在分析 SQL 语句时取消 SQL 语句的缓存功能。</p>
+<p>使用 <code>SQL_NO_CACHE</code> 关键字</p>
+<pre><code class="mysql">mysql&gt; select SQL_NO_CACHE * from tb_sku limit 1000,10;
+10 rows in set, 1 warning (0.00 sec)
+mysql&gt; select SQL_NO_CACHE * from tb_sku limit 1000000,10;
+10 rows in set, 1 warning (1.24 sec)
+mysql&gt; select SQL_NO_CACHE * from tb_sku limit 5000000,10;
+10 rows in set, 1 warning (5.97 sec)
+mysql&gt; select SQL_NO_CACHE * from tb_sku limit 9000000,10;
+10 rows in set, 1 warning (10.89 sec)
+</code></pre>
+<p>通过测试我们会看到，越往后，分页查询效率越低，这就是分页查询的问题所在。因为，当在进行分页查询时，<strong>如果执行 limit 2000000,10 ，此时需要MySQL排序前2000010 记录，仅仅返回 2000000 - 2000010 的记录，其他记录丢弃，查询排序的代价非常大</strong> 。</p>
+<p>优化思路: 一般分页查询时，通过创建 <strong>覆盖索引</strong> 能够比较好地提高性能，可以<strong>通过覆盖索引加子查询形式进行优化</strong>。</p>
+<pre><code class="mysql">select SQL_NO_CACHE * from tb_sku t , (select id from tb_sku order by id limit 9000000,10) a where t.id = a.id;
+10 rows in set, 1 warning (6.30 sec)
+</code></pre>
+<h1 id="count优化"><a href="#count优化" class="headerlink" title="count优化"></a>count优化</h1><p>count() 是一个聚合函数，对于返回的结果集，一行行地判断，如果 count 函数的参数不是NULL，累计值就加 1，否则不加，最后返回累计值。</p>
+<table>
+<thead>
+<tr>
+<th>count用法</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>count(主键)</td>
+<td>InnoDB 引擎会遍历整张表，<strong>把每一行的 主键id 值都取出来</strong>，返回给服务层。服务层拿到主键后，直接按行进行累加(主键不可能为null)</td>
+</tr>
+<tr>
+<td>count(字段)</td>
+<td>没有not null 约束 : InnoDB 引擎会遍历整张<strong>表把每一行的字段值都取出来</strong>，返回给服务层，服务层判断是否为null，不为null，计数累加。<br />有not null 约束：InnoDB 引擎会遍历整张表把每一行的字段值都取出来，返回给服务层，直接按行进行累加。</td>
+</tr>
+<tr>
+<td>count(数字)</td>
+<td>InnoDB 引擎遍历整张表，但不取值。服务层对于返回的每一行，放一个数字“1”进去，直接按行进行累加。</td>
+</tr>
+<tr>
+<td>count(*)</td>
+<td>InnoDB引擎并不会把全部字段取出来，而是专门做了优化，不取值，服务层直接按行进行累加。</td>
+</tr>
+</tbody></table>
+<p>按照效率排序的话，<code>count(字段)</code> &lt;<code> count(主键 id)</code> &lt; <code>count(1)</code> ≈<code>count(*)</code>，所以尽量使用 <code>count(*)</code>。</p>
+<h1 id="update优化"><a href="#update优化" class="headerlink" title="update优化"></a>update优化</h1><p><strong>如果根据没有索引的字段去修改某个值，那么行锁会变成表所</strong></p>
+<h2 id="正常情况"><a href="#正常情况" class="headerlink" title="正常情况"></a>正常情况</h2><p>窗口A：修改id&#x3D;1的用户名字</p>
+<pre><code class="mysql">mysql&gt; begin;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql&gt; update tb_user set name = &#39;a&#39; where id =1;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql&gt; commit;
+Query OK, 0 rows affected (0.00 sec)
+</code></pre>
+<p>窗口B：修改id&#x3D;2的用户的名字</p>
+<pre><code class="mysql">mysql&gt; begin;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql&gt; update tb_user set name = &#39;b&#39; where id =2;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql&gt; commit;
+Query OK, 0 rows affected (0.01 sec)
+</code></pre>
+<p>两个都修改成功</p>
+<h2 id="锁表的情况"><a href="#锁表的情况" class="headerlink" title="锁表的情况"></a>锁表的情况</h2><p>窗口A：修改name&#x3D;a的用户名字，然后事务没提交</p>
+<pre><code class="mysql">mysql&gt; begin;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql&gt; update tb_user set name = &#39;aa&#39; where name =&#39;a&#39;;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+</code></pre>
+<p>窗口B：修改id&#x3D;2的用户的名字</p>
+<pre><code class="mysql">mysql&gt; begin;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql&gt; update tb_user set name = &#39;bb&#39; where id =2;
+ERROR 1205 (HY000): Lock wait timeout exceeded; try restarting transaction
+</code></pre>
+<p>这个时候tb_user 锁表了</p>
+<h2 id="给name创建索引"><a href="#给name创建索引" class="headerlink" title="给name创建索引"></a>给name创建索引</h2><p>创建索引：</p>
+<pre><code class="mysql">create index idx_user_name on tb_user(name);
+</code></pre>
+<p>窗口A：修改name&#x3D;a的用户名字，然后事务没提交</p>
+<pre><code class="mysql">mysql&gt; begin;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql&gt; update tb_user set name = &#39;aa&#39; where name =&#39;a&#39;;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+</code></pre>
+<p>窗口B：修改id&#x3D;2的用户的名字，提交。成功修改</p>
+<pre><code class="mysql">mysql&gt; begin;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql&gt; update tb_user set name = &#39;bb&#39; where id =2;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql&gt; commit;
+Query OK, 0 rows affected (0.00 sec)
+</code></pre>
+<p><strong>InnoDB的行锁是针对索引加的锁，不是针对记录加的锁 ,并且该索引不能失效，否则会从行锁升级为表锁 。</strong></p>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 1909773034@qq.com </span>
+    </div>
+</article>
+
+
+<p>
+    <a  class="dashang" onclick="dashangToggle()">赏</a>
+</p>
+
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">
+    ©2017 XieShaoLin
+</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+
+<div class="hide_box" onclick="dashangToggle()"></div>
+<div class="shang_box">
+    <a class="shang_close"  onclick="dashangToggle()">×</a>
+    <div class="shang_tit">
+        <p>喜欢就点赞,疼爱就打赏</p>
+    </div>
+    <div class="shang_payimg">
+        <div class="pay_img">
+            <img src="/img/alipay.jpg" class="alipay" title="扫码支持">
+            <img src="/img/weixin.jpg" class="weixin" title="扫码支持">
+        </div>
+    </div>
+    <div class="shang_payselect">
+        <span><label><input type="radio" name="pay" checked value="alipay">支付宝</label></span><span><label><input type="radio" name="pay" value="weixin">微信</label></span>
+    </div>
+</div>
+
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
+
+<script src="/js/script.js?v=1.1.0" ></script>
+<script>
+    var img_resize = 'default';
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $("#post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+        $("input[name=pay]").on("click", function () {
+            if($("input[name=pay]:checked").val()=="weixin"){
+                $(".shang_box .shang_payimg .pay_img").addClass("weixin_img");
+            } else {
+                $(".shang_box .shang_payimg .pay_img").removeClass("weixin_img");
+            }
+        })
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+    function dashangToggle() {
+        $(".shang_box").fadeToggle();
+        $(".hide_box").fadeToggle();
+    }
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>

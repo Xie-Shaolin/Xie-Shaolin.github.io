@@ -1,0 +1,1599 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>java:字符串 | Notes</title>
+  <meta name="keywords" content=" java ">
+  <meta name="description" content="java:字符串 | Notes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="卸载MySQL停止MySQL服务 systemctl stop mysqld  查询MySQL的安装文件 [root@centos01 ~]# rpm -qa | grep -i mysql mysql-community-client-5.7.28-1.el7.x86_64 mysql-community-server-5.7.28-1.el7.x86_64 mysql-community-co">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL的安装、卸载和启动">
+<meta property="og:url" content="http://example.com/2024/09/25/InstallMySQL8/index.html">
+<meta property="og:site_name" content="Notes">
+<meta property="og:description" content="卸载MySQL停止MySQL服务 systemctl stop mysqld  查询MySQL的安装文件 [root@centos01 ~]# rpm -qa | grep -i mysql mysql-community-client-5.7.28-1.el7.x86_64 mysql-community-server-5.7.28-1.el7.x86_64 mysql-community-co">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2024/09/25/InstallMySQL8/InstallMySQL8/001.png">
+<meta property="og:image" content="http://example.com/2024/09/25/InstallMySQL8/InstallMySQL8/002.png">
+<meta property="og:image" content="http://example.com/2024/09/25/InstallMySQL8/InstallMySQL8/003.png">
+<meta property="article:published_time" content="2024-09-24T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-09-25T10:36:23.945Z">
+<meta property="article:author" content="XieShaoLin">
+<meta property="article:tag" content="MySQL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2024/09/25/InstallMySQL8/InstallMySQL8/001.png">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.1.0" rel="stylesheet">
+
+<link href="/css/hl_theme/github.css?v=1.1.0" rel="stylesheet">
+
+<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
+
+<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="/js/titleTip.js?v=1.1.0" ></script>
+
+<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.1.0" ></script>
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="">
+  <input class="theme_blog_path" value="">
+  <input id="theme_shortcut" value="true" />
+  <input id="theme_highlight_on" value="true" />
+  <input id="theme_code_copy" value="true" />
+</div>
+
+
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/"
+   class="avatar_target">
+    <img class="avatar"
+         src="/img/avatar.jpg"/>
+</a>
+<div class="author">
+    <span>XieShaoLin</span>
+</div>
+
+<div class="icon">
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            <a title="email"
+               href="mailto:1909773034@qq.com"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-email"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="qq"
+               href="http://wpa.qq.com/msgrd?v=3&uin=1909773034&site=qq&menu=yes"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-qq"></use>
+                    </svg>
+                
+            </a>
+        
+    
+</div>
+
+
+
+
+
+<ul>
+    <li>
+        <div class="all active" data-rel="全部文章">全部文章
+            
+                <small>(55)</small>
+            
+        </div>
+    </li>
+    
+        
+            
+                
+    <li>
+        <div data-rel="工具">
+            
+            工具
+            <small>(1)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="前端">
+            
+            前端
+            <small>(1)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="后端">
+            
+            后端
+            <small>(45)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="运维">
+            
+            运维
+            <small>(3)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="财经">
+            
+            财经
+            <small>(1)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="英语">
+            
+            英语
+            <small>(2)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+        
+            
+            
+            
+    </div>
+    <div>
+        
+        
+    </div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="55">
+<input type="hidden" id="yelog_site_word_count" value="299.4k">
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        友情链接
+        <i class="iconfont icon-left"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="http://yelog.org/">叶落阁</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <div class="right-top">
+        <div id="default-panel">
+            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
+            <div class="right-title">全部文章</div>
+            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
+        </div>
+        <div id="search-panel">
+            <i class="iconfont icon-left" data-title="返回"></i>
+            <input id="local-search-input" autocomplete="off"/>
+            <label class="border-line" for="input"></label>
+            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
+            <i class="iconfont icon-tag" data-title="标签"></i>
+        </div>
+        <div id="outline-panel" style="display: none">
+            <div class="right-title">大纲</div>
+            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
+        </div>
+    </div>
+
+    <div class="tags-list">
+    <input id="tag-search" />
+    <div class="tag-wrapper">
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>阿里云</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>跨域</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>前锋教育</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>虚拟机</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>AOF</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>CentOS</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>docker</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>economy</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>element-ui</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>English</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>ES6</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>ESLint</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Feign</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>finalshell</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Getway</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>git</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>grammer</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>gulimall</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>hexo</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>idea</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>java</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>JavaScript</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Jedis</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Js</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>JSR303</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Linux</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>listening</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>maven</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>mq</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Mysql</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>MySql</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>MySQL</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Nacos</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>node.js</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>NoSql</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>npm</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>nvm</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>OAuth2</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>OSS</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Prettier</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>python</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>RDB</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>redis</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>RedisTemplate</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>renren-fast</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>spring</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>springboot</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>SpringCloud</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>springSecurity</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>vue</a>
+            </li>
+        
+    </div>
+
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/InstallMySQL8/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL的安装、卸载和启动">MySQL的安装、卸载和启动</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/MysqlIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL的索引原理和语法">MySQL的索引原理和语法</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/MySQLLock/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：锁">MySQL：锁</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/SQLTips/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：建议MySQL使用哪个索引">MySQL：建议MySQL使用哪个索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/SQLOptimization/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：SQL优化">MySQL：SQL优化</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/combinedIndexColumnIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL:联合索引和单列索引">MySQL:联合索引和单列索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/coveringIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="覆盖索引与锁表">覆盖索引与锁表</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/indexDesign/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：如何设计索引">MySQL：如何设计索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/invalidIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：索引失效">MySQL：索引失效</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/mysqlEngine/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL的存储引擎">MySQL的存储引擎</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/performanceAnalysis/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：慢查询日志、profile、explain">MySQL：慢查询日志、profile、explain</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/prefixIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：前缀索引">MySQL：前缀索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/22/redisPubSub/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="Redis订阅发布">Redis订阅发布</span>
+            <span class="post-date" title="2024-09-22 15:21:35">2024/09/22</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisProblem/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="Redis：缓存穿透、缓存击穿和缓存雪崩">Redis：缓存穿透、缓存击穿和缓存雪崩</span>
+            <span class="post-date" title="2024-09-17 16:33:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisPersistence/"
+           data-tag="redis,RDB,AOF"
+           data-author="" >
+            <span class="post-title" title="Redis持久化">Redis持久化</span>
+            <span class="post-date" title="2024-09-17 16:20:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisTransaction/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="redis的事务">redis的事务</span>
+            <span class="post-date" title="2024-09-17 16:12:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisType/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="redis常用数据类型">redis常用数据类型</span>
+            <span class="post-date" title="2024-09-17 16:04:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisBrief/"
+           data-tag="redis,NoSql"
+           data-author="" >
+            <span class="post-title" title="redis与NoSql的简单介绍">redis与NoSql的简单介绍</span>
+            <span class="post-date" title="2024-09-17 15:59:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisSentinel/"
+           data-tag="Linux,CentOS,虚拟机,redis"
+           data-author="" >
+            <span class="post-title" title="Redis：主从复制与哨兵模式">Redis：主从复制与哨兵模式</span>
+            <span class="post-date" title="2024-09-17 15:59:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redis7SpringBoot/"
+           data-tag="redis,springboot,Jedis,RedisTemplate"
+           data-author="" >
+            <span class="post-title" title="springboot整合redis">springboot整合redis</span>
+            <span class="post-date" title="2024-09-17 15:42:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 运维 "
+           href="/2024/09/17/redis7Install/"
+           data-tag="CentOS,redis,前锋教育"
+           data-author="" >
+            <span class="post-title" title="Redis的安装、卸载、启动和客户端">Redis的安装、卸载、启动和客户端</span>
+            <span class="post-date" title="2024-09-17 15:19:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 前端 "
+           href="/2024/09/17/BasicFrontend/"
+           data-tag="JavaScript,Js,ES6,vue,element-ui"
+           data-author="" >
+            <span class="post-title" title="前端：ES5和Vue的基本用法">前端：ES5和Vue的基本用法</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/OAuth2/"
+           data-tag="OAuth2,spring"
+           data-author="" >
+            <span class="post-title" title="OAuth2和spring">OAuth2和spring</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/SpringCloudBaseUse/"
+           data-tag="SpringCloud,Nacos,Feign,Getway"
+           data-author="" >
+            <span class="post-title" title="SpringCloud：基本使用">SpringCloud：基本使用</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/adminSystem/"
+           data-tag="element-ui,SpringCloud,Feign,gulimall,Prettier,ESLint,跨域,JSR303,OSS,阿里云"
+           data-author="" >
+            <span class="post-title" title="谷粒商城：后台管理系统要点">谷粒商城：后台管理系统要点</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/giliEnviroment/"
+           data-tag="docker,idea,maven,renren-fast,git,nvm,node.js,npm"
+           data-author="" >
+            <span class="post-title" title="谷粒商城：环境搭建">谷粒商城：环境搭建</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/springsecurity/"
+           data-tag="springSecurity"
+           data-author="" >
+            <span class="post-title" title="SpringSecurity">SpringSecurity</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/16/MysqlTransaction/"
+           data-tag="Mysql"
+           data-author="" >
+            <span class="post-title" title="Mysql的事物">Mysql的事物</span>
+            <span class="post-date" title="2024-09-16 14:31:10">2024/09/16</span>
+        </a>
+        
+        
+        <a  class="全部文章 运维 "
+           href="/2024/09/08/finalshell/"
+           data-tag="finalshell,Linux,CentOS,虚拟机"
+           data-author="" >
+            <span class="post-title" title="finalshell与Linux虚拟机的网络配置">finalshell与Linux虚拟机的网络配置</span>
+            <span class="post-date" title="2024-09-08 22:19:10">2024/09/08</span>
+        </a>
+        
+        
+        <a  class="全部文章 英语 "
+           href="/2024/03/25/rabbitGrammer/"
+           data-tag="English,grammer"
+           data-author="" >
+            <span class="post-title" title="英语兔英语语法">英语兔英语语法</span>
+            <span class="post-date" title="2024-03-25 23:12:24">2024/03/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 工具 "
+           href="/2024/03/25/hexoStartFast/"
+           data-tag="hexo"
+           data-author="" >
+            <span class="post-title" title="hexo搭建静态博客">hexo搭建静态博客</span>
+            <span class="post-date" title="2024-03-25 22:14:10">2024/03/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/03/25/PythonBase/"
+           data-tag="python"
+           data-author="" >
+            <span class="post-title" title="Python语法基数">Python语法基数</span>
+            <span class="post-date" title="2024-03-25 22:08:07">2024/03/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 英语 "
+           href="/2023/12/14/heqiongListening/"
+           data-tag="listening"
+           data-author="" >
+            <span class="post-title" title="何琼雅思听力">何琼雅思听力</span>
+            <span class="post-date" title="2023-12-14 00:00:00">2023/12/14</span>
+        </a>
+        
+        
+        <a  class="全部文章 财经 "
+           href="/2023/05/23/EconomicMachine/"
+           data-tag="economy"
+           data-author="" >
+            <span class="post-title" title="经济机器是怎样运行的——RayDalio">经济机器是怎样运行的——RayDalio</span>
+            <span class="post-date" title="2023-05-23 00:00:00">2023/05/23</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-02-grammar/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:基本语法">java:基本语法</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-03-array/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:数组">java:数组</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-05-exception/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:异常">java:异常</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-01-install/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:概述+安装">java:概述+安装</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-04-opp/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:面向对象">java:面向对象</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-06-thread/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:多线程">java:多线程</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-08-time/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:时间相关API">java:时间相关API</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-07-string/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:字符串">java:字符串</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-09-sort/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:比较器">java:比较器</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-11-annotation/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:注解">java:注解</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-10-enum/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:枚举">java:枚举</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-12-collection/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:集合">java:集合</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-13-generics/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:泛型">java:泛型</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-14-IO/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:IO流">java:IO流</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-15-net/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:网络编程">java:网络编程</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-16-reflect/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:反射">java:反射</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 运维 "
+           href="/2020/07/13/dockerBase/"
+           data-tag="docker"
+           data-author="" >
+            <span class="post-title" title="docker 基础">docker 基础</span>
+            <span class="post-date" title="2020-07-13 20:46:25">2020/07/13</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/01/01/MySQLCrashCourse/"
+           data-tag="MySql"
+           data-author="" >
+            <span class="post-title" title="MySQL:必知必会">MySQL:必知必会</span>
+            <span class="post-date" title="2020-01-01 00:00:00">2020/01/01</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/01/01/RocketMq/"
+           data-tag="mq"
+           data-author="" >
+            <span class="post-title" title="RocketMq:分布式消息队列">RocketMq:分布式消息队列</span>
+            <span class="post-date" title="2020-01-01 00:00:00">2020/01/01</span>
+        </a>
+        
+        
+        <a  class="全部文章 "
+           href="/2019/09/29/java-17-new8/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java8新特性：lambda表达式+Stream流">java8新特性：lambda表达式+Stream流</span>
+            <span class="post-date" title="2019-09-29 00:00:00">2019/09/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 "
+           href="/2019/09/29/java-18-above8/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java8以后的新特性">java8以后的新特性</span>
+            <span class="post-date" title="2019-09-29 00:00:00">2019/09/29</span>
+        </a>
+        
+        <div id="no-item-tips">
+
+        </div>
+    </nav>
+    <div id="outline-list">
+    </div>
+</div>
+
+    </div>
+    <div class="hide-list">
+        <div class="semicircle" data-title="切换全屏 快捷键 s">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div id="post">
+    <div class="pjax">
+        <article id="post-java-07-string" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">java:字符串</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            <i class="iconfont icon-category"></i>
+            
+            
+            <a  data-rel="后端">后端</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            <i class="iconfont icon-tag"></i>
+            
+            <a class="color5">java</a>
+            
+        </span>
+        
+    </div>
+    <div class="article-meta">
+        
+            发布时间 : <time class="date" title='最后更新: 2024-03-28 00:34:43'>2020-12-29 00:00</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        <span>字数:3.1k</span>
+        
+        
+        <span id="busuanzi_container_page_pv">
+            阅读 :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#String"><span class="toc-text">String</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#String%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="toc-text">String的概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#String-%E7%9A%84%E5%AE%9E%E4%BE%8B%E5%8C%96%E6%96%B9%E5%BC%8F%EF%BC%9A"><span class="toc-text">String 的实例化方式：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E6%8B%BC%E6%8E%A5"><span class="toc-text">字符串的拼接</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E6%96%B9%E6%B3%95"><span class="toc-text">常见方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#String-%E4%B8%8E%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E3%80%81%E5%8C%85%E8%A3%85%E7%B1%BB%E4%B9%8B%E9%97%B4%E7%9A%84%E8%BD%AC%E6%8D%A2"><span class="toc-text">String 与基本数据类型、包装类之间的转换</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#String-%E4%B8%8E-char-%E4%B9%8B%E9%97%B4%E7%9A%84%E8%BD%AC%E6%8D%A2"><span class="toc-text">String 与 char[ ]之间的转换</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#String-%E4%B8%8E-byte-%E4%B9%8B%E9%97%B4%E7%9A%84%E8%BD%AC%E6%8D%A2"><span class="toc-text">String 与 byte[]之间的转换</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#StringBuffer-%E4%B8%8E-StringBuilder"><span class="toc-text">StringBuffer 与 StringBuilder</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#String%E3%80%81StringBuffer%E3%80%81StringBuilder-%E4%B8%89%E8%80%85%E7%9A%84%E5%BC%82%E5%90%8C%EF%BC%9F"><span class="toc-text">String、StringBuffer、StringBuilder 三者的异同？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90"><span class="toc-text">源码分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#StringBuffer-%E7%9A%84%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95%EF%BC%9A"><span class="toc-text">StringBuffer 的常用方法：</span></a></li></ol></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>课程：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Kb411W75N">宋红康 JAVA</a></p>
+<h1 id="String"><a href="#String" class="headerlink" title="String"></a>String</h1><pre><code class="java">public final class String
+   implements java.io.Serializable, Comparable&lt;String&gt;, CharSequence &#123;
+   /** The value is used for character storage. */
+   private final char value[];
+
+   /** Cache the hash code for the string */
+   private int hash; // Default to 0
+</code></pre>
+<h2 id="String的概念"><a href="#String的概念" class="headerlink" title="String的概念"></a>String的概念</h2><ol>
+<li><p>String:字符串，使用一对<code>&quot;&quot;</code>引起来表示。</p>
+</li>
+<li><p>String 声明为 final 的，不可被继承</p>
+</li>
+<li><p>String 实现了 Serializable 接口：表示字符串是支持序列化的。实现了 Comparable 接口：表示 String 可以比较大小</p>
+</li>
+<li><p>String 内部定义了 final char[ ] value 用于存储字符串数据</p>
+</li>
+<li><p>String:代表不可变的字符序列。简称：<strong>不可变性</strong>。具体的说就是我们<strong>在常量池里面创建</strong>的字符串的 value 改变时，这个 value<strong>不会被替换掉</strong>，<strong>会重新开辟空间，创建一个字符串</strong>。体现：</p>
+<ul>
+<li>当对字符串重新赋值时，需要重写指定内存区域赋值，不能使用原有的 value 进行赋值。</li>
+<li>当对现有的字符串进行连接操作时，也需要重新指定内存区域赋值，不能使用原有的 value 进行赋值。</li>
+<li>当调用 String 的 replace()方法修改指定字符或字符串时，也需要重新指定内存区域赋值，不能使用原有的 value 进行赋值。</li>
+</ul>
+<pre><code class="java">@Test
+public void test1()&#123;
+    String s1 = &quot;abc&quot;;//字面量的定义方式
+    String s2 = &quot;abc&quot;;
+    //字符串常量池中是不会存储相同内容的字符串的。所以才会为true
+    System.out.println(s1 == s2);//比较s1和s2的地址值:true
+    System.out.println(s1 == &quot;abc&quot;);//true
+    System.out.println(s1 == new String(&quot;abc&quot;));//false
+    s1 = &quot;hello&quot;;
+
+    System.out.println(s1 == s2);//比较s1和s2的地址值:false
+
+    System.out.println(s1);//hello
+    System.out.println(s2);//abc
+
+    System.out.println(&quot;*****************&quot;);
+
+    String s3 = &quot;abc&quot;;
+    s3 += &quot;def&quot;;
+    System.out.println(s3);//abcdef
+    System.out.println(s2);
+
+    System.out.println(&quot;*****************&quot;);
+
+    String s4 = &quot;abc&quot;;
+    String s5 = s4.replace(&#39;a&#39;, &#39;m&#39;);
+    System.out.println(s4);//abc
+    System.out.println(s5);//mbc
+&#125;
+</code></pre>
+</li>
+<li><p>通过字面量的方式（区别于 new）给一个字符串赋值，此时的字符串值声明在字符串常量池中。</p>
+</li>
+<li><p>字符串常量池中是不会存储相同内容的字符串的。</p>
+</li>
+</ol>
+<h2 id="String-的实例化方式："><a href="#String-的实例化方式：" class="headerlink" title="String 的实例化方式："></a>String 的实例化方式：</h2><ul>
+<li><p>通过字面量定义的方式</p>
+</li>
+<li><p>通过 new + 构造器的方式</p>
+</li>
+<li><p>面试题：String s &#x3D; new String(“abc”);方式创建对象，在内存中创建了几个对象？</p>
+<p>两个:一个是堆空间中 new 结构，另一个是 char[]对应的常量池中的数据：”abc”</p>
+</li>
+</ul>
+<pre><code class="java">@Test
+public void test2()&#123;
+    //通过字面量定义的方式：此时的s1和s2的数据javaEE声明在方法区中的字符串常量池中。
+    String s1 = &quot;javaEE&quot;;
+    String s2 = &quot;javaEE&quot;;
+    //通过new + 构造器的方式:此时的s3和s4保存的地址值，是数据在堆空间中开辟空间以后对应的地址值。
+    String s3 = new String(&quot;javaEE&quot;);
+    String s4 = new String(&quot;javaEE&quot;);
+
+    System.out.println(s1 == s2);//true
+    System.out.println(s1 == s3);//false
+    System.out.println(s1 == s4);//false
+    System.out.println(s3 == s4);//false
+
+    System.out.println(&quot;***********************&quot;);
+    Person p1 = new Person(&quot;Tom&quot;,12);
+    Person p2 = new Person(&quot;Tom&quot;,12);
+
+    System.out.println(p1.name.equals(p2.name));//true
+    System.out.println(p1.name == p2.name);//true
+
+    p1.name = &quot;Jerry&quot;;
+    System.out.println(p2.name);//Tom
+&#125;
+</code></pre>
+<h2 id="字符串的拼接"><a href="#字符串的拼接" class="headerlink" title="字符串的拼接"></a>字符串的拼接</h2><ul>
+<li><p><strong>常量与常量的拼接结果在常量池。且常量池中不会存在相同内容的常量</strong>。</p>
+</li>
+<li><p><strong>只要其中有一个是变量，结果就在堆中</strong>。</p>
+</li>
+<li><p>如果拼接的结果调用 intern()方法，返回值就在常量池中</p>
+<pre><code class="java">@Test
+public void test4()&#123;
+    String s1 = &quot;javaEEhadoop&quot;;//常量池
+    String s2 = &quot;javaEE&quot;;
+    String s3 = s2 + &quot;hadoop&quot;;//堆
+    System.out.println(s1 == s3);//false
+
+    final String s4 = &quot;javaEE&quot;;//s4:常量
+    String s5 = s4 + &quot;hadoop&quot;;// 常量池
+    System.out.println(s1 == s5);//true
+&#125;
+@Test
+public void test3()&#123;
+    String s1 = &quot;javaEE&quot;;
+    String s2 = &quot;hadoop&quot;;
+
+    String s3 = &quot;javaEEhadoop&quot;;
+    String s4 = &quot;javaEE&quot; + &quot;hadoop&quot;;
+    String s5 = s1 + &quot;hadoop&quot;;//堆
+    String s6 = &quot;javaEE&quot; + s2;//堆
+    String s7 = s1 + s2;//堆
+
+    System.out.println(s3 == s4);//true
+    System.out.println(s3 == s5);//false
+    System.out.println(s3 == s6);//false
+    System.out.println(s3 == s7);//false
+    System.out.println(s5 == s6);//false
+    System.out.println(s5 == s7);//false
+    System.out.println(s6 == s7);//false
+    String s8 = s6.intern();//返回值得到的s8使用的常量值中已经存在的“javaEEhadoop”
+    System.out.println(s3 == s8);//true
+&#125;
+</code></pre>
+</li>
+<li><p>面试题</p>
+<pre><code class="java">public class StringTest &#123;
+    String str = new String(&quot;good&quot;);//堆
+    char[] ch = &#123; &#39;t&#39;, &#39;e&#39;, &#39;s&#39;, &#39;t&#39; &#125;;// 常量池
+    public void change(String str, char ch[]) &#123;
+        str = &quot;test ok&quot;;
+        ch[0] = &#39;b&#39;;
+    &#125;
+    public static void main(String[] args) &#123;
+        StringTest ex = new StringTest();
+        ex.change(ex.str, ex.ch);
+        System.out.println(ex.str);//good
+        System.out.println(ex.ch);//best
+    &#125;
+&#125;
+</code></pre>
+<p>为什么 ex.str&#x3D;good？</p>
+<p>首先 String str 是一个成员变量，在方法里面的形参也是一个变量，ex.change(ex.str, ex.ch)，相当于把成员变量的 String str&#x3D;good 赋值给形参的 String str&#x3D;good（赋值的是地址值） ，而方法里面的 str &#x3D; “test ok”是把常量池里面的字符串地址值赋值给形参的 str 。这一系列操作都不影响属性 String str。</p>
+<p>而对于数组， char ch[] &#x3D; char[] ch &#x3D; { ‘t’, ‘e’, ‘s’, ‘t’ } - - -&gt;赋值了堆空间的地址值—&gt;数组的字符在常量池里 – &gt;ch[0] &#x3D; ‘b’改变的是数组第一个元素指向堆空间的值</p>
+</li>
+</ul>
+<h2 id="常见方法"><a href="#常见方法" class="headerlink" title="常见方法"></a>常见方法</h2><p><code>int length()</code>：返回字符串的长度： return value.length</p>
+<p><code>char charAt(int index)</code>： 返回某索引处的字符 return value[index]</p>
+<p><code>boolean isEmpty()</code>：判断是否是空字符串：return value.length &#x3D;&#x3D; 0</p>
+<p><code>String toLowerCase()</code>：使用默认语言环境，将 String 中的所有字符转换为小写</p>
+<p><code>String toUpperCase()</code>：使用默认语言环境，将 String 中的所有字符转换为大写</p>
+<p><code>String trim()</code>：返回字符串的副本，忽略前导空白和尾部空白</p>
+<p><code>boolean equals(Object obj)</code>：比较字符串的<strong>内容</strong>是否相同</p>
+<p><code>boolean equalsIgnoreCase(String anotherString)</code>：与 equals 方法类似，忽略大小写</p>
+<p><code>String concat(String str)</code>：将指定字符串连接到此字符串的结尾。 等价于用“+”</p>
+<p><code>int compareTo(String anotherString)</code>：比较两个字符串的大小</p>
+<p><code>String substring(int beginIndex)</code>：返回一个新的字符串，它是此字符串的<strong>从 beginIndex 开始截取</strong>到最后的一个子字符串。</p>
+<p><code>String substring(int beginIndex, int endIndex)</code> ：返回一个新字符串，它是此字符串**从 beginIndex 开始截取到 endIndex(不包含)**的一个子字符串。</p>
+<p><code>boolean endsWith(String suffix)</code>：测试此字符串是否以指定的<strong>后缀</strong>结束</p>
+<p><code>boolean startsWith(String prefix)</code>：测试此字符串是否以指定的<strong>前缀</strong>开始</p>
+<p><code>boolean startsWith(String prefix, int toffset)</code>：测试此字符串从指定<strong>索引开始</strong>的子字符串是否以指定前缀开始</p>
+<p><code>boolean contains(CharSequence s)</code>：当且仅当此字符串包含指定的 char 值序列时，返回 true</p>
+<p><code>int indexOf(String str)</code>：返回指定子字符串在此字符串中<strong>第一次出现处的索引</strong></p>
+<p><code>int indexOf(String str, int fromIndex)</code>：返回指定子字符串在此字符串中第一次出现处的索引，<strong>从指定的索引开始</strong></p>
+<p><code>int lastIndexOf(String str)</code>：返回指定子字符串在此字符串中最右边出现处的索引</p>
+<p><code>int lastIndexOf(String str, int fromIndex)</code>：返回指定子字符串在此字符串中最后一次出现处的索引，从指定的索引开始反向搜索</p>
+<p>注：indexOf 和 lastIndexOf 方法如果未找到都是返回-1</p>
+<p><code>String replace(char oldChar, char newChar)</code>：返回一个新的字符串，它是通过用 newChar 替换此字符串中出现的所有 oldChar 得到的。</p>
+<p><code>String replace(CharSequence target, CharSequence replacement)</code>：使用指定的字面值替换序列替换此字符串所有匹配字面值目标序列的子字符串。</p>
+<p><code>String replaceAll(String regex, String replacement)</code>：使用给定的 replacement 替换此字符串所有匹配给定的正则表达式的子字符串。</p>
+<p><code>String replaceFirst(String regex, String replacement)</code>：使用给定的 replacement 替换此字符串匹配给定的正则表达式的第一个子字符串。</p>
+<p>匹配：<code>boolean matches(String regex)</code>：告知此字符串是否匹配给定的正则表达式。</p>
+<p>切片：</p>
+<p><code>String[] split(String regex)</code>：根据给定正则表达式的匹配拆分此字符串。</p>
+<p><code>String[] split(String regex, int limit)</code>：根据匹配给定的正则表达式来拆分此字符串，最多不超过 limit 个，如果超过了，剩下的全部都放到最后一个元素中。</p>
+<h2 id="String-与基本数据类型、包装类之间的转换"><a href="#String-与基本数据类型、包装类之间的转换" class="headerlink" title="String 与基本数据类型、包装类之间的转换"></a>String 与基本数据类型、包装类之间的转换</h2><img src="string/string01.png">
+
+<h2 id="String-与-char-之间的转换"><a href="#String-与-char-之间的转换" class="headerlink" title="String 与 char[ ]之间的转换"></a>String 与 char[ ]之间的转换</h2><ul>
+<li><code>String</code> –&gt; <code>char[]</code>:调用 String 的 <code>toCharArray()</code></li>
+<li><code>char[]</code> –&gt;<code> String</code>:调用 String 的构造器</li>
+</ul>
+<pre><code class="java">@Test
+public void test2()&#123;
+    String str1 = &quot;abc123&quot;;  //题目： a21cb3
+    char[] charArray = str1.toCharArray();
+    for (int i = 0; i &lt; charArray.length; i++) &#123;
+        System.out.println(charArray[i]);
+    &#125;
+    char[] arr = new char[]&#123;&#39;h&#39;,&#39;e&#39;,&#39;l&#39;,&#39;l&#39;,&#39;o&#39;&#125;;
+    String str2 = new String(arr);
+    System.out.println(str2);
+&#125;
+</code></pre>
+<h2 id="String-与-byte-之间的转换"><a href="#String-与-byte-之间的转换" class="headerlink" title="String 与 byte[]之间的转换"></a>String 与 byte[]之间的转换</h2><p>编码：String –&gt; byte[]:调用 String 的 getBytes()</p>
+<p>解码：byte[] –&gt; String:调用 String 的构造器</p>
+<p>编码：字符串 –&gt;字节 (看得懂 —&gt;看不懂的二进制数据)</p>
+<p>解码：编码的逆过程，字节 –&gt; 字符串 （看不懂的二进制数据 —&gt; 看得懂）</p>
+<p>说明：解码时，要求解码使用的字符集必须与编码时使用的字符集一致，否则会出现乱码。</p>
+<pre><code class="java">@Test
+public void test3() throws UnsupportedEncodingException &#123;
+    String str1 = &quot;abc123中国&quot;;
+    byte[] bytes = str1.getBytes();//使用默认的字符集，进行编码。
+    System.out.println(Arrays.toString(bytes));
+    byte[] gbks = str1.getBytes(&quot;gbk&quot;);//使用gbk字符集进行编码。
+    System.out.println(Arrays.toString(gbks));
+    System.out.println(&quot;******************&quot;);
+    String str2 = new String(bytes);//使用默认的字符集，进行解码。
+    System.out.println(str2);
+    String str3 = new String(gbks);
+    System.out.println(str3);//出现乱码。原因：编码集和解码集不一致！
+    String str4 = new String(gbks, &quot;gbk&quot;);
+    System.out.println(str4);//没有出现乱码。原因：编码集和解码集一致！
+&#125;
+</code></pre>
+<h1 id="StringBuffer-与-StringBuilder"><a href="#StringBuffer-与-StringBuilder" class="headerlink" title="StringBuffer 与 StringBuilder"></a>StringBuffer 与 StringBuilder</h1><h2 id="String、StringBuffer、StringBuilder-三者的异同？"><a href="#String、StringBuffer、StringBuilder-三者的异同？" class="headerlink" title="String、StringBuffer、StringBuilder 三者的异同？"></a>String、StringBuffer、StringBuilder 三者的异同？</h2><p>String:不可变的字符序列；底层使用 char[]存储</p>
+<p>StringBuffer:可变的字符序列；线程安全的，效率低；底层使用 char[]存储</p>
+<p>StringBuilder:可变的字符序列；jdk5.0 新增的，线程不安全的，效率高；底层使用 char[]存储</p>
+<h2 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h2><p><code>String str = new String();//char[] value = new char[0];</code></p>
+<p><code>String str1 = new String(&quot;abc&quot;);//char[] value = new char[]&#123;&#39;a&#39;,&#39;b&#39;,&#39;c&#39;&#125;;</code></p>
+<pre><code class="java">private final char value[];
+// 无参构造器
+public String() &#123;
+    this.value = &quot;&quot;.value;
+&#125;
+// 有参构造器
+public String(String original) &#123;
+    this.value = original.value;
+    this.hash = original.hash;
+&#125;
+</code></pre>
+<p><code>StringBuffer sb1 = new StringBuffer();//char[] value = new char[16];底层创建了一个长度是16的数组。</code></p>
+<p><code>System.out.println(sb1.length());//16</code></p>
+<p><code>sb1.append(&#39;a&#39;);//value[0] = &#39;a&#39;;</code></p>
+<p><code>sb1.append(&#39;b&#39;);//value[1] = &#39;b&#39;;</code></p>
+<pre><code class="java">abstract class AbstractStringBuilder implements Appendable, CharSequence &#123;
+    /**
+     * The value is used for character storage.
+     */
+    char[] value;
+    /**
+     * The count is the number of characters used.
+     */
+    int count;
+    /**
+     * This no-arg constructor is necessary for serialization of subclasses.
+     */
+    AbstractStringBuilder() &#123;
+    &#125;
+    /**
+     * Creates an AbstractStringBuilder of the specified capacity.
+     */
+    AbstractStringBuilder(int capacity) &#123;
+        value = new char[capacity];
+    &#125;
+    
+public final class StringBuffer
+   extends AbstractStringBuilder
+   implements java.io.Serializable, CharSequence
+    
+/**
+ * Constructs a string buffer with no characters in it and an
+ * initial capacity of 16 characters.
+ */
+public StringBuffer() &#123;
+    super(16);
+&#125;
+
+@Override
+public synchronized StringBuffer append(String str) &#123;
+    toStringCache = null;
+    super.append(str);
+    return this;
+&#125;
+
+public AbstractStringBuilder append(String str) &#123;
+    if (str == null)
+        return appendNull();
+    int len = str.length();
+    ensureCapacityInternal(count + len);
+    str.getChars(0, len, value, count);
+    count += len;
+    return this;
+&#125;
+</code></pre>
+<p> <code>StringBuffer sb2 = new StringBuffer(&quot;abc&quot;);//char[] value=new char[&quot;abc&quot;.length()+16];</code></p>
+<pre><code class="java"> public StringBuffer(String str) &#123;
+    super(str.length() + 16);
+    append(str);
+&#125;
+</code></pre>
+<p><strong>问题1：<code>System.out.println(sb2.length());//3</code></strong></p>
+<pre><code class="java">@Override
+public synchronized int length() &#123;
+    return count;
+&#125;
+</code></pre>
+<p><strong>问题2. 扩容问题：如果要添加的数据底层数组盛不下了，那就需要扩容底层的数组。</strong></p>
+<p><strong>默认情况下，扩容为原来容量的2倍 + 2，同时将原有数组中的元素复制到新的数组中。</strong></p>
+<pre><code class="java">private void ensureCapacityInternal(int minimumCapacity) &#123;
+    // overflow-conscious code
+    if (minimumCapacity - value.length &gt; 0) &#123;
+        value = Arrays.copyOf(value,
+                newCapacity(minimumCapacity));
+    &#125;
+&#125;
+
+private int newCapacity(int minCapacity) &#123;
+    // overflow-conscious code
+    int newCapacity = (value.length &lt;&lt; 1) + 2;
+    if (newCapacity - minCapacity &lt; 0) &#123;
+        newCapacity = minCapacity;
+    &#125;
+    return (newCapacity &lt;= 0 || MAX_ARRAY_SIZE - newCapacity &lt; 0)
+        ? hugeCapacity(minCapacity)
+        : newCapacity;
+&#125;
+</code></pre>
+<p> <strong>指导意义：开发中建议大家使用：<code>StringBuffer(int capacity)</code> 或 <code>StringBuilder(int capacity)</code></strong></p>
+<h2 id="StringBuffer-的常用方法："><a href="#StringBuffer-的常用方法：" class="headerlink" title="StringBuffer 的常用方法："></a>StringBuffer 的常用方法：</h2><p><code>StringBuffer append(xxx)</code>：提供了很多的 append()方法，用于进行字符串拼接</p>
+<p><code>StringBuffer delete(int start,int end)</code>：删除指定位置的内容</p>
+<p><code>StringBuffer replace(int start, int end, String str)</code>：把[start,end)位置替换为 str</p>
+<p><code>StringBuffer insert(int offset, xxx)</code>：在指定位置插入 xxx</p>
+<p><code>StringBuffer reverse() </code>：把当前字符序列逆转</p>
+<p><code>public int indexOf(String str)</code></p>
+<p><code>public String substring(int start,int end)</code>:返回一个从 start 开始到 end 索引结束的左闭右开区间的子字符串</p>
+<p><code>public int length()</code></p>
+<p><code>public char charAt(int n )</code></p>
+<p><code>public void setCharAt(int n ,char ch)</code></p>
+<p><strong>总结：</strong></p>
+<p>增：append(xxx)</p>
+<p>删：delete(int start,int end)</p>
+<p>改：setCharAt(int n ,char ch) &#x2F; replace(int start, int end, String str)</p>
+<p>查：charAt(int n )</p>
+<p>插：insert(int offset, xxx)</p>
+<p>长度：length();</p>
+<p>遍历：for() + charAt() &#x2F; toString()</p>
+<ol>
+<li>对比 String、StringBuffer、StringBuilder 三者的效率：从高到低排列：<strong>StringBuilder &gt; StringBuffer &gt; String</strong></li>
+</ol>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 1909773034@qq.com </span>
+    </div>
+</article>
+
+
+<p>
+    <a  class="dashang" onclick="dashangToggle()">赏</a>
+</p>
+
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">
+    ©2017 XieShaoLin
+</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+
+<div class="hide_box" onclick="dashangToggle()"></div>
+<div class="shang_box">
+    <a class="shang_close"  onclick="dashangToggle()">×</a>
+    <div class="shang_tit">
+        <p>喜欢就点赞,疼爱就打赏</p>
+    </div>
+    <div class="shang_payimg">
+        <div class="pay_img">
+            <img src="/img/alipay.jpg" class="alipay" title="扫码支持">
+            <img src="/img/weixin.jpg" class="weixin" title="扫码支持">
+        </div>
+    </div>
+    <div class="shang_payselect">
+        <span><label><input type="radio" name="pay" checked value="alipay">支付宝</label></span><span><label><input type="radio" name="pay" value="weixin">微信</label></span>
+    </div>
+</div>
+
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
+
+<script src="/js/script.js?v=1.1.0" ></script>
+<script>
+    var img_resize = 'default';
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $("#post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+        $("input[name=pay]").on("click", function () {
+            if($("input[name=pay]:checked").val()=="weixin"){
+                $(".shang_box .shang_payimg .pay_img").addClass("weixin_img");
+            } else {
+                $(".shang_box .shang_payimg .pay_img").removeClass("weixin_img");
+            }
+        })
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+    function dashangToggle() {
+        $(".shang_box").fadeToggle();
+        $(".hide_box").fadeToggle();
+    }
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>

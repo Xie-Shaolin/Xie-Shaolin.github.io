@@ -1,0 +1,2526 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>java:IO流 | Notes</title>
+  <meta name="keywords" content=" java ">
+  <meta name="description" content="java:IO流 | Notes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="卸载MySQL停止MySQL服务 systemctl stop mysqld  查询MySQL的安装文件 [root@centos01 ~]# rpm -qa | grep -i mysql mysql-community-client-5.7.28-1.el7.x86_64 mysql-community-server-5.7.28-1.el7.x86_64 mysql-community-co">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL的安装、卸载和启动">
+<meta property="og:url" content="http://example.com/2024/09/25/InstallMySQL8/index.html">
+<meta property="og:site_name" content="Notes">
+<meta property="og:description" content="卸载MySQL停止MySQL服务 systemctl stop mysqld  查询MySQL的安装文件 [root@centos01 ~]# rpm -qa | grep -i mysql mysql-community-client-5.7.28-1.el7.x86_64 mysql-community-server-5.7.28-1.el7.x86_64 mysql-community-co">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2024/09/25/InstallMySQL8/InstallMySQL8/001.png">
+<meta property="og:image" content="http://example.com/2024/09/25/InstallMySQL8/InstallMySQL8/002.png">
+<meta property="og:image" content="http://example.com/2024/09/25/InstallMySQL8/InstallMySQL8/003.png">
+<meta property="article:published_time" content="2024-09-24T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-09-25T10:36:23.945Z">
+<meta property="article:author" content="XieShaoLin">
+<meta property="article:tag" content="MySQL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2024/09/25/InstallMySQL8/InstallMySQL8/001.png">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.1.0" rel="stylesheet">
+
+<link href="/css/hl_theme/github.css?v=1.1.0" rel="stylesheet">
+
+<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
+
+<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="/js/titleTip.js?v=1.1.0" ></script>
+
+<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.1.0" ></script>
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="">
+  <input class="theme_blog_path" value="">
+  <input id="theme_shortcut" value="true" />
+  <input id="theme_highlight_on" value="true" />
+  <input id="theme_code_copy" value="true" />
+</div>
+
+
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/"
+   class="avatar_target">
+    <img class="avatar"
+         src="/img/avatar.jpg"/>
+</a>
+<div class="author">
+    <span>XieShaoLin</span>
+</div>
+
+<div class="icon">
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            <a title="email"
+               href="mailto:1909773034@qq.com"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-email"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="qq"
+               href="http://wpa.qq.com/msgrd?v=3&uin=1909773034&site=qq&menu=yes"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-qq"></use>
+                    </svg>
+                
+            </a>
+        
+    
+</div>
+
+
+
+
+
+<ul>
+    <li>
+        <div class="all active" data-rel="全部文章">全部文章
+            
+                <small>(55)</small>
+            
+        </div>
+    </li>
+    
+        
+            
+                
+    <li>
+        <div data-rel="工具">
+            
+            工具
+            <small>(1)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="前端">
+            
+            前端
+            <small>(1)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="后端">
+            
+            后端
+            <small>(45)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="运维">
+            
+            运维
+            <small>(3)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="财经">
+            
+            财经
+            <small>(1)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="英语">
+            
+            英语
+            <small>(2)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+        
+            
+            
+            
+    </div>
+    <div>
+        
+        
+    </div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="55">
+<input type="hidden" id="yelog_site_word_count" value="299.4k">
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        友情链接
+        <i class="iconfont icon-left"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="http://yelog.org/">叶落阁</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <div class="right-top">
+        <div id="default-panel">
+            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
+            <div class="right-title">全部文章</div>
+            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
+        </div>
+        <div id="search-panel">
+            <i class="iconfont icon-left" data-title="返回"></i>
+            <input id="local-search-input" autocomplete="off"/>
+            <label class="border-line" for="input"></label>
+            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
+            <i class="iconfont icon-tag" data-title="标签"></i>
+        </div>
+        <div id="outline-panel" style="display: none">
+            <div class="right-title">大纲</div>
+            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
+        </div>
+    </div>
+
+    <div class="tags-list">
+    <input id="tag-search" />
+    <div class="tag-wrapper">
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>阿里云</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>跨域</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>前锋教育</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>虚拟机</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>AOF</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>CentOS</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>docker</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>economy</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>element-ui</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>English</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>ES6</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>ESLint</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Feign</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>finalshell</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Getway</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>git</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>grammer</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>gulimall</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>hexo</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>idea</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>java</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>JavaScript</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Jedis</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Js</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>JSR303</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Linux</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>listening</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>maven</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>mq</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Mysql</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>MySql</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>MySQL</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Nacos</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>node.js</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>NoSql</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>npm</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>nvm</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>OAuth2</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>OSS</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Prettier</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>python</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>RDB</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>redis</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>RedisTemplate</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>renren-fast</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>spring</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>springboot</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>SpringCloud</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>springSecurity</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>vue</a>
+            </li>
+        
+    </div>
+
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/InstallMySQL8/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL的安装、卸载和启动">MySQL的安装、卸载和启动</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/MysqlIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL的索引原理和语法">MySQL的索引原理和语法</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/MySQLLock/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：锁">MySQL：锁</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/SQLTips/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：建议MySQL使用哪个索引">MySQL：建议MySQL使用哪个索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/SQLOptimization/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：SQL优化">MySQL：SQL优化</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/combinedIndexColumnIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL:联合索引和单列索引">MySQL:联合索引和单列索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/coveringIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="覆盖索引与锁表">覆盖索引与锁表</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/indexDesign/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：如何设计索引">MySQL：如何设计索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/invalidIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：索引失效">MySQL：索引失效</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/mysqlEngine/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL的存储引擎">MySQL的存储引擎</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/performanceAnalysis/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：慢查询日志、profile、explain">MySQL：慢查询日志、profile、explain</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/prefixIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：前缀索引">MySQL：前缀索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/22/redisPubSub/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="Redis订阅发布">Redis订阅发布</span>
+            <span class="post-date" title="2024-09-22 15:21:35">2024/09/22</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisProblem/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="Redis：缓存穿透、缓存击穿和缓存雪崩">Redis：缓存穿透、缓存击穿和缓存雪崩</span>
+            <span class="post-date" title="2024-09-17 16:33:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisPersistence/"
+           data-tag="redis,RDB,AOF"
+           data-author="" >
+            <span class="post-title" title="Redis持久化">Redis持久化</span>
+            <span class="post-date" title="2024-09-17 16:20:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisTransaction/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="redis的事务">redis的事务</span>
+            <span class="post-date" title="2024-09-17 16:12:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisType/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="redis常用数据类型">redis常用数据类型</span>
+            <span class="post-date" title="2024-09-17 16:04:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisBrief/"
+           data-tag="redis,NoSql"
+           data-author="" >
+            <span class="post-title" title="redis与NoSql的简单介绍">redis与NoSql的简单介绍</span>
+            <span class="post-date" title="2024-09-17 15:59:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisSentinel/"
+           data-tag="Linux,CentOS,虚拟机,redis"
+           data-author="" >
+            <span class="post-title" title="Redis：主从复制与哨兵模式">Redis：主从复制与哨兵模式</span>
+            <span class="post-date" title="2024-09-17 15:59:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redis7SpringBoot/"
+           data-tag="redis,springboot,Jedis,RedisTemplate"
+           data-author="" >
+            <span class="post-title" title="springboot整合redis">springboot整合redis</span>
+            <span class="post-date" title="2024-09-17 15:42:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 运维 "
+           href="/2024/09/17/redis7Install/"
+           data-tag="CentOS,redis,前锋教育"
+           data-author="" >
+            <span class="post-title" title="Redis的安装、卸载、启动和客户端">Redis的安装、卸载、启动和客户端</span>
+            <span class="post-date" title="2024-09-17 15:19:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 前端 "
+           href="/2024/09/17/BasicFrontend/"
+           data-tag="JavaScript,Js,ES6,vue,element-ui"
+           data-author="" >
+            <span class="post-title" title="前端：ES5和Vue的基本用法">前端：ES5和Vue的基本用法</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/OAuth2/"
+           data-tag="OAuth2,spring"
+           data-author="" >
+            <span class="post-title" title="OAuth2和spring">OAuth2和spring</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/SpringCloudBaseUse/"
+           data-tag="SpringCloud,Nacos,Feign,Getway"
+           data-author="" >
+            <span class="post-title" title="SpringCloud：基本使用">SpringCloud：基本使用</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/adminSystem/"
+           data-tag="element-ui,SpringCloud,Feign,gulimall,Prettier,ESLint,跨域,JSR303,OSS,阿里云"
+           data-author="" >
+            <span class="post-title" title="谷粒商城：后台管理系统要点">谷粒商城：后台管理系统要点</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/giliEnviroment/"
+           data-tag="docker,idea,maven,renren-fast,git,nvm,node.js,npm"
+           data-author="" >
+            <span class="post-title" title="谷粒商城：环境搭建">谷粒商城：环境搭建</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/springsecurity/"
+           data-tag="springSecurity"
+           data-author="" >
+            <span class="post-title" title="SpringSecurity">SpringSecurity</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/16/MysqlTransaction/"
+           data-tag="Mysql"
+           data-author="" >
+            <span class="post-title" title="Mysql的事物">Mysql的事物</span>
+            <span class="post-date" title="2024-09-16 14:31:10">2024/09/16</span>
+        </a>
+        
+        
+        <a  class="全部文章 运维 "
+           href="/2024/09/08/finalshell/"
+           data-tag="finalshell,Linux,CentOS,虚拟机"
+           data-author="" >
+            <span class="post-title" title="finalshell与Linux虚拟机的网络配置">finalshell与Linux虚拟机的网络配置</span>
+            <span class="post-date" title="2024-09-08 22:19:10">2024/09/08</span>
+        </a>
+        
+        
+        <a  class="全部文章 英语 "
+           href="/2024/03/25/rabbitGrammer/"
+           data-tag="English,grammer"
+           data-author="" >
+            <span class="post-title" title="英语兔英语语法">英语兔英语语法</span>
+            <span class="post-date" title="2024-03-25 23:12:24">2024/03/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 工具 "
+           href="/2024/03/25/hexoStartFast/"
+           data-tag="hexo"
+           data-author="" >
+            <span class="post-title" title="hexo搭建静态博客">hexo搭建静态博客</span>
+            <span class="post-date" title="2024-03-25 22:14:10">2024/03/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/03/25/PythonBase/"
+           data-tag="python"
+           data-author="" >
+            <span class="post-title" title="Python语法基数">Python语法基数</span>
+            <span class="post-date" title="2024-03-25 22:08:07">2024/03/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 英语 "
+           href="/2023/12/14/heqiongListening/"
+           data-tag="listening"
+           data-author="" >
+            <span class="post-title" title="何琼雅思听力">何琼雅思听力</span>
+            <span class="post-date" title="2023-12-14 00:00:00">2023/12/14</span>
+        </a>
+        
+        
+        <a  class="全部文章 财经 "
+           href="/2023/05/23/EconomicMachine/"
+           data-tag="economy"
+           data-author="" >
+            <span class="post-title" title="经济机器是怎样运行的——RayDalio">经济机器是怎样运行的——RayDalio</span>
+            <span class="post-date" title="2023-05-23 00:00:00">2023/05/23</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-02-grammar/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:基本语法">java:基本语法</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-03-array/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:数组">java:数组</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-05-exception/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:异常">java:异常</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-01-install/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:概述+安装">java:概述+安装</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-04-opp/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:面向对象">java:面向对象</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-06-thread/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:多线程">java:多线程</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-08-time/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:时间相关API">java:时间相关API</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-07-string/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:字符串">java:字符串</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-09-sort/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:比较器">java:比较器</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-11-annotation/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:注解">java:注解</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-10-enum/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:枚举">java:枚举</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-12-collection/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:集合">java:集合</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-13-generics/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:泛型">java:泛型</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-14-IO/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:IO流">java:IO流</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-15-net/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:网络编程">java:网络编程</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-16-reflect/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:反射">java:反射</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 运维 "
+           href="/2020/07/13/dockerBase/"
+           data-tag="docker"
+           data-author="" >
+            <span class="post-title" title="docker 基础">docker 基础</span>
+            <span class="post-date" title="2020-07-13 20:46:25">2020/07/13</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/01/01/MySQLCrashCourse/"
+           data-tag="MySql"
+           data-author="" >
+            <span class="post-title" title="MySQL:必知必会">MySQL:必知必会</span>
+            <span class="post-date" title="2020-01-01 00:00:00">2020/01/01</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/01/01/RocketMq/"
+           data-tag="mq"
+           data-author="" >
+            <span class="post-title" title="RocketMq:分布式消息队列">RocketMq:分布式消息队列</span>
+            <span class="post-date" title="2020-01-01 00:00:00">2020/01/01</span>
+        </a>
+        
+        
+        <a  class="全部文章 "
+           href="/2019/09/29/java-17-new8/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java8新特性：lambda表达式+Stream流">java8新特性：lambda表达式+Stream流</span>
+            <span class="post-date" title="2019-09-29 00:00:00">2019/09/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 "
+           href="/2019/09/29/java-18-above8/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java8以后的新特性">java8以后的新特性</span>
+            <span class="post-date" title="2019-09-29 00:00:00">2019/09/29</span>
+        </a>
+        
+        <div id="no-item-tips">
+
+        </div>
+    </nav>
+    <div id="outline-list">
+    </div>
+</div>
+
+    </div>
+    <div class="hide-list">
+        <div class="semicircle" data-title="切换全屏 快捷键 s">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div id="post">
+    <div class="pjax">
+        <article id="post-java-14-IO" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">java:IO流</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            <i class="iconfont icon-category"></i>
+            
+            
+            <a  data-rel="后端">后端</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            <i class="iconfont icon-tag"></i>
+            
+            <a class="color5">java</a>
+            
+        </span>
+        
+    </div>
+    <div class="article-meta">
+        
+            发布时间 : <time class="date" title='最后更新: 2024-03-28 00:37:05'>2020-12-29 00:00</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        <span>字数:9.7k</span>
+        
+        
+        <span id="busuanzi_container_page_pv">
+            阅读 :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#File%E7%B1%BB%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-text">File类的使用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0%EF%BC%9A"><span class="toc-text">概述：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E6%9E%84%E9%80%A0%E5%99%A8"><span class="toc-text">常用构造器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B7%AF%E5%BE%84%E5%88%86%E9%9A%94%E7%AC%A6"><span class="toc-text">路径分隔符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95"><span class="toc-text">常用方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#File%E7%B1%BB%E7%9A%84%E8%8E%B7%E5%8F%96%E5%8A%9F%E8%83%BD"><span class="toc-text">File类的获取功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#File%E7%B1%BB%E7%9A%84%E9%87%8D%E5%91%BD%E5%90%8D%E5%8A%9F%E8%83%BD"><span class="toc-text">File类的重命名功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#File%E7%B1%BB%E7%9A%84%E5%88%A4%E6%96%AD%E5%8A%9F%E8%83%BD"><span class="toc-text">File类的判断功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#File%E7%B1%BB%E7%9A%84%E5%88%9B%E5%BB%BA%E5%8A%9F%E8%83%BD"><span class="toc-text">File类的创建功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#File%E7%B1%BB%E7%9A%84%E5%88%A0%E9%99%A4%E5%8A%9F%E8%83%BD"><span class="toc-text">File类的删除功能</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#IO%E6%B5%81%E5%8E%9F%E7%90%86%E5%8F%8A%E6%B5%81%E7%9A%84%E5%88%86%E7%B1%BB"><span class="toc-text">IO流原理及流的分类</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Java-IO%E5%8E%9F%E7%90%86"><span class="toc-text">Java IO原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%81%E7%9A%84%E5%88%86%E7%B1%BB"><span class="toc-text">流的分类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IO%E6%B5%81%E4%BD%93%E7%B3%BB"><span class="toc-text">IO流体系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B%E9%80%9A%E7%94%A8%E6%96%B9%E6%B3%95"><span class="toc-text">一些通用方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#InputStream"><span class="toc-text">InputStream</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Reader"><span class="toc-text">Reader</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#OutputStream"><span class="toc-text">OutputStream</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Writer"><span class="toc-text">Writer</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%8A%82%E7%82%B9%E6%B5%81-%E6%88%96%E6%96%87%E4%BB%B6%E6%B5%81"><span class="toc-text">节点流(或文件流)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#FileReader"><span class="toc-text">FileReader</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#FileWriter"><span class="toc-text">FileWriter</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#FileInputStream%E5%92%8CFileOutputStream"><span class="toc-text">FileInputStream和FileOutputStream</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BC%93%E5%86%B2%E6%B5%81"><span class="toc-text">缓冲流</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#BufferedReader%E5%92%8CBufferedWriter"><span class="toc-text">BufferedReader和BufferedWriter</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%93%E5%AD%98%E6%B5%81%E7%9A%84%E4%BD%9C%E7%94%A8%EF%BC%9A%E6%8F%90%E9%AB%98%E8%AF%BB%E5%86%99%E9%80%9F%E5%BA%A6%E2%80%94%E2%80%94%E5%8E%9F%E5%9B%A0%EF%BC%9A%E5%86%85%E9%83%A8%E6%8F%90%E4%BE%9B%E4%BA%86%E4%B8%80%E4%B8%AA%E7%BC%93%E5%86%B2%E5%8C%BA"><span class="toc-text">缓存流的作用：提高读写速度——原因：内部提供了一个缓冲区</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BD%AC%E6%8D%A2%E6%B5%81"><span class="toc-text">转换流</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#InputStreamReader%E4%B8%8EOutputStreamWriter%EF%BC%9A%E5%AD%97%E7%AC%A6%E6%B5%81"><span class="toc-text">InputStreamReader与OutputStreamWriter：字符流</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E7%BC%96%E7%A0%81"><span class="toc-text">字符编码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E7%A0%81%E8%A1%A8%E7%9A%84%E7%94%B1%E6%9D%A5"><span class="toc-text">编码表的由来</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E7%BC%96%E7%A0%81%E8%A1%A8"><span class="toc-text">常见的编码表.</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Unicode%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-text">Unicode的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#UTF"><span class="toc-text">UTF</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E9%9B%86%E4%B8%8E%E7%BC%96%E7%A0%81"><span class="toc-text">字符集与编码</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A0%87%E5%87%86%E8%BE%93%E5%85%A5%E3%80%81%E8%BE%93%E5%87%BA%E6%B5%81-%E4%BA%86%E8%A7%A3"><span class="toc-text">标准输入、输出流(了解)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%89%93%E5%8D%B0%E6%B5%81-%E4%BA%86%E8%A7%A3"><span class="toc-text">打印流(了解)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E6%B5%81-%E4%BA%86%E8%A7%A3"><span class="toc-text">数据流(了解)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AF%B9%E8%B1%A1%E6%B5%81"><span class="toc-text">对象流</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%BA%8F%E5%88%97%E5%8C%96"><span class="toc-text">对象的序列化</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%9A%8F%E6%9C%BA%E5%AD%98%E5%8F%96%E6%96%87%E4%BB%B6%E6%B5%81%EF%BC%9ARandomAccessFile%E7%B1%BB"><span class="toc-text">随机存取文件流：RandomAccessFile类</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#NIO-2%E4%B8%ADPath%E3%80%81Paths%E3%80%81-Files%E7%B1%BB%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-text">NIO.2中Path、Paths、 Files类的使用</span></a></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>课程：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Kb411W75N">宋红康 JAVA</a></p>
+<h1 id="File类的使用"><a href="#File类的使用" class="headerlink" title="File类的使用"></a>File类的使用</h1><h2 id="概述："><a href="#概述：" class="headerlink" title="概述："></a>概述：</h2><ol>
+<li>java.io.File类：文件和文件目录路径的抽象表示形式，与平台无关.</li>
+<li><strong>File能新建、删除、重命名文件和目录</strong>，但File不能访问文件内容本身。如果需要访问文件内容本身，则需要使用<strong>输入&#x2F;输出流</strong>。</li>
+<li>想要在Java程序中表示一个真实存在的文件或目录，那么必须有一个File对象，但是Java程序中的一个File对象，可能没有一个真实存在的文件或目录。</li>
+<li>后续File类的对象常会作为参数传递到流的构造器中，指明读取或写入的”终点”.</li>
+</ol>
+<h2 id="常用构造器"><a href="#常用构造器" class="headerlink" title="常用构造器"></a>常用构造器</h2><ol>
+<li><p><code>public File(String pathname)</code>：以pathname为路径创建File对象，可以是绝对路径或者相对路径，如果pathname是相对路径，则默认的当前路径在系统属性user.dir中存储。</p>
+<ul>
+<li>绝对路径：是一个固定的路径,从盘符开始——相对于当前module</li>
+<li>相对路径：是相对于某个位置开始</li>
+</ul>
+</li>
+<li><p><code>public File(String parent,String child)</code>：以parent为父路径，child为子路径创建File对象。，</p>
+</li>
+<li><p><code>public File(File parent, String child)</code>：根据一个父File对象和子文件路径创建File对象</p>
+</li>
+</ol>
+<pre><code class="java">//这里只是创建对象，未必存储文件或者存在该目录
+@Test
+public void test1()&#123;
+    //构造器1
+    File file1 = new File(&quot;hello.txt&quot;);//相对于当前module
+    File file2 =  new File(&quot;D:\\IO\\he.txt&quot;);
+
+    System.out.println(file1);
+    System.out.println(file2);
+
+    //构造器2：
+    File file3 = new File(&quot;D:\\IO&quot;,&quot;he.txt&quot;);
+    System.out.println(file3);
+
+    //构造器3：
+    File file4 = new File(file3,&quot;hi.txt&quot;);
+    System.out.println(file4);
+&#125;
+</code></pre>
+<img src="IO/0075.png" width="600">
+
+<img src="IO/0080.png" width="800">
+
+<h2 id="路径分隔符"><a href="#路径分隔符" class="headerlink" title="路径分隔符"></a>路径分隔符</h2><ol>
+<li><p>路径中的每级目录之间用一个路径分隔符隔开。</p>
+</li>
+<li><p>路径分隔符和系统有关:</p>
+<ul>
+<li>windows和DOS系统默认使用“\”来表示</li>
+<li>UNIX和URL使用“&#x2F;“来表示</li>
+</ul>
+</li>
+<li><p>Java程序支持跨平台运行，因此路径分隔符要慎用。</p>
+</li>
+<li><p>为了解决这个隐患，File类提供 了一个常量：<code>public static final String separator</code>——根据操作系统，动态的提供分隔符。</p>
+</li>
+</ol>
+<img src="IO/0076.png" width="800">
+
+<h2 id="常用方法"><a href="#常用方法" class="headerlink" title="常用方法"></a>常用方法</h2><h3 id="File类的获取功能"><a href="#File类的获取功能" class="headerlink" title="File类的获取功能"></a>File类的获取功能</h3><ul>
+<li><code>public String getAbsolutePath()</code>：获取绝对路径</li>
+<li><code>public String getPath() </code>：获取路径</li>
+<li><code>public String getName()</code> ：获取名称</li>
+<li><code>public String getParent()</code>：获取上层文件目录路径。若无，返回null</li>
+<li><code>public long length()</code> ：获取文件长度（即：字节数）。不能获取目录的长度。</li>
+<li><code>public long lastModified()</code> ：获取最后一次的修改时间，毫秒值</li>
+</ul>
+<p><strong>如下的两个方法适用于文件目录：</strong></p>
+<ul>
+<li><code>public String[] list()</code> ：获取指定目录下的所有文件或者文件目录的<strong>名称数组</strong></li>
+<li><code>public File[] listFiles() </code>：获取指定目录下的所有文件或者文件目录的<strong>File数组</strong></li>
+</ul>
+<pre><code class="java">@Test
+public void test2()&#123;
+    File file1 = new File(&quot;hello.txt&quot;);
+    File file2 = new File(&quot;d:\\io\\hi.txt&quot;);
+
+    System.out.println(file1.getAbsolutePath());
+    System.out.println(file1.getPath());
+    System.out.println(file1.getName());
+    System.out.println(file1.getParent());
+    System.out.println(file1.length());
+    System.out.println(new Date(file1.lastModified()));
+
+    System.out.println();
+
+    System.out.println(file2.getAbsolutePath());
+    System.out.println(file2.getPath());
+    System.out.println(file2.getName());
+    System.out.println(file2.getParent());
+    System.out.println(file2.length());
+    System.out.println(file2.lastModified());
+&#125;
+</code></pre>
+<center>
+    <img src="class/0077.png" width="400">
+    <img src="class/0078.png" width="400">
+<center/>
+
+<pre><code class="java">@Test
+public void test3()&#123;
+    File file = new File(&quot;d:\\io&quot;);
+    String[] list = file.list();
+    for(String s : list)&#123;
+        System.out.println(s);
+    &#125;
+    System.out.println();
+    File[] files = file.listFiles();
+    for(File f : files)&#123;
+        System.out.println(f);
+    &#125;
+&#125;
+</code></pre>
+<img src="IO/0079.png" width="300">
+
+<h3 id="File类的重命名功能"><a href="#File类的重命名功能" class="headerlink" title="File类的重命名功能"></a>File类的重命名功能</h3><p>public boolean renameTo(File dest)：把文件重命名为指定的文件路径</p>
+<ul>
+<li>比如：<code>file1.renameTo(file2)</code>为例：要想保证返回true,需要file1在硬盘中是存在的，且file2不能在硬盘中存在。</li>
+</ul>
+<pre><code class="java">@Test
+public void test4()&#123;
+    File file1 = new File(&quot;hello.txt&quot;);
+    File file2 = new File(&quot;D:\\IO\\hi.txt&quot;);
+
+    boolean renameTo = file1.renameTo(file2);
+    System.out.println(renameTo);
+
+&#125;
+</code></pre>
+<h3 id="File类的判断功能"><a href="#File类的判断功能" class="headerlink" title="File类的判断功能"></a>File类的判断功能</h3><p><code>public boolean isDirectory()</code>：判断是否是文件目录</p>
+<p><code>public boolean isFile() </code>：判断是否是文件</p>
+<p><code>public boolean exists()</code> ：判断是否存在</p>
+<p><code>public boolean canRead()</code> ：判断是否可读</p>
+<p><code>public boolean canWrite()</code> ：判断是否可写</p>
+<p><code>public boolean isHidden()</code> ：判断是否隐藏</p>
+<h3 id="File类的创建功能"><a href="#File类的创建功能" class="headerlink" title="File类的创建功能"></a>File类的创建功能</h3><p><code>public boolean createNewFile() </code>：创建文件。若文件存在，则不创建，返回false</p>
+<p><code>public boolean mkdir() </code>：创建文件目录。如果此文件目录存在，就不创建了。如果此文件目录的上层目录不存在，也不创建。</p>
+<p><code>public boolean mkdirs()</code>：创建文件目录。如果此文件目录存在，就不创建了。如果上层文件目录不存在，一并创建</p>
+<p>注意事项：如果你创建文件或者文件目录没有写盘符路径，那么，默认在项目路径下。</p>
+<h3 id="File类的删除功能"><a href="#File类的删除功能" class="headerlink" title="File类的删除功能"></a>File类的删除功能</h3><p><code>public boolean delete()</code>：删除文件或者文件夹</p>
+<p>删除注意事项</p>
+<ul>
+<li>Java中的删除不走回收站</li>
+<li>要删除一个文件目录，请注意该文件目录内不能包含文件或者文件目录</li>
+</ul>
+<h1 id="IO流原理及流的分类"><a href="#IO流原理及流的分类" class="headerlink" title="IO流原理及流的分类"></a>IO流原理及流的分类</h1><h2 id="Java-IO原理"><a href="#Java-IO原理" class="headerlink" title="Java IO原理"></a>Java IO原理</h2><ol>
+<li><p>I&#x2F;O是Input&#x2F;Output的缩写，I&#x2F;O技术是非常实用的技术，用于处理设备之间的数据传输。如读&#x2F;写文件，网络通讯等。</p>
+</li>
+<li><p>Java程序中，对于数据的输入&#x2F;输出操作以“流(stream)”的方式进行。</p>
+</li>
+<li><p>java.io包下提供了各种“流”类和接口，用以获取不同种类的数据，并通过标准的方法输入或输出数据。</p>
+</li>
+<li><p>输入与输出</p>
+<img src="IO/0081.png" width="300">
+
+<p><strong>输入input：读取外部数据(磁盘、光盘等存储设备的数据)到<u>程序(内存)中</u>。</strong></p>
+<p><strong>输出output：将程序( 内存)数据<u>输出到磁盘、光盘等存储设备中</u>。</strong></p>
+<p>输入与输出都是站在程序的角度上看的</p>
+</li>
+</ol>
+<h2 id="流的分类"><a href="#流的分类" class="headerlink" title="流的分类"></a>流的分类</h2><ol>
+<li><p>按操作数据单位不同分为:<strong>字节流(8 bit)， 字符流(16 bit)</strong></p>
+</li>
+<li><p>按数据流的流向不同分为:<strong>输入流，输出流</strong></p>
+</li>
+<li><p>按流的角色的不同分为:<strong>节点流，处理流</strong></p>
+<ul>
+<li><p>节点流：可以从或<strong>向一个特定的地方（节点）读写数据</strong>—&gt;<strong>操作数据</strong></p>
+</li>
+<li><p>处理流：是对一个已存在的流进行连接和封装，通过所封装的流的功能调用实现数据读写。—&gt;<strong>处理流</strong></p>
+</li>
+</ul>
+<img src="IO/0082.png" width="700"></li>
+</ol>
+<h2 id="IO流体系"><a href="#IO流体系" class="headerlink" title="IO流体系"></a>IO流体系</h2><ol>
+<li><p>Java的IO流共涉及40多个类，实际上非常规则，都是从如下4个抽象基类派生的。</p>
+<img src="IO/0083.png" width="500">
+</li>
+<li><p>由这四个类派生出来的子类名称都是以其父类名作为子类名后缀。</p>
+<img src="IO/0084.png" width="800"></li>
+</ol>
+<h2 id="一些通用方法"><a href="#一些通用方法" class="headerlink" title="一些通用方法"></a>一些通用方法</h2><h3 id="InputStream"><a href="#InputStream" class="headerlink" title="InputStream"></a>InputStream</h3><p><code>int read()</code>：从输入流中读取数据的下一个字节。返回0到255范围内的int字节值。如果因为已经到达流末尾而没有可用的字节，则返回值-1。</p>
+<p><code>int read(byte[] b)</code>：从此输入流中将最多<code>b.length</code>个字节的数据读入一个byte 数组中。如果因为已经到达流末尾而没有可用的字节，则返回值-1。否则以整数形式返回实际读取的字节数。</p>
+<p><code>int read(byte[] b, int off,int len)</code>：将输入流中最多len个数据字节读入byte 数组。尝试读取len个字节，但读取的字节也可能小于该值。以整数形式返回实际读取的字节数。如果因为流位于文件末尾而没有可用的字节，则返回值-1。</p>
+<p><code>public void close() throws IOException</code>：关闭此输入流并释放与该流关联的所有系统资源。</p>
+<h3 id="Reader"><a href="#Reader" class="headerlink" title="Reader"></a>Reader</h3><p><code>int read()</code>：读取单个字符。作为整数读取的字符，范围在0到65535之间(0x00-0ffff) (2 个字节的Unicode码)，如果已到达流的末尾，则返回-1</p>
+<p><code>int read(char[] cbuf)</code>：将字符<strong>读入数组</strong>。如果已到达流的末尾，则返回-1。否则返回本次读取的字符数。</p>
+<p><code>int read(char[] cbuf,int off,int len)</code>：将字符读入数组的某一部分。存到数组cbuf中，从off处开始存储，最多读len个字符。如果已到达流的末尾，则返回-1。否则返回本次读取的字符数。</p>
+<p><code>public void close() throws IOException</code>：关闭此输入流并释放与该流关联的所有系统资源。</p>
+<h3 id="OutputStream"><a href="#OutputStream" class="headerlink" title="OutputStream"></a>OutputStream</h3><p><code>void write(int b)</code>：将指定的字节写入此输出流。write 的常规协定是：向输出流写入一个字节。要写入的字节是参数b的八个低位。b的24个高位将被忽略。即写 入0~255范围的。</p>
+<p><code>void write(byte[] b)</code>：将b.length个字节从指定的byte数组写入此输出流。<code>write(b)</code> 的常规协定是:应该与调用<code>write(b,0,b.length)</code>的效果完全相同。</p>
+<p><code>void write(byte[] b,int off,int len)</code>：将指定byte数组中从偏移量off开始的len个字节写入此输出流。</p>
+<p><code>public void flush()throws IOException</code>：刷新此输出流并强制写出所有缓冲的输出字节，调用此方法指示应将这些字节立即写入它们预期的目标。</p>
+<p><code>public void close() throws IOException</code>：关闭此输出流并释放与该流关联的所有系统资源。</p>
+<h3 id="Writer"><a href="#Writer" class="headerlink" title="Writer"></a>Writer</h3><p><code>void write(int c)</code>：写入单个字符。要写入的字符包含在给定整数值的16个低位中，16高位被忽略。即写入0到65535之间的Unicode码。</p>
+<p><code>void write(char[] cbuf)</code>：写入字符数组。</p>
+<p><code>void write(char[] cbuf,int off,int len)</code>：写入字符数组的某一部分。从off开始， 写入len个字符</p>
+<p><code>void write(String str)</code>：写入字符串。</p>
+<p><code>void write(String str,int off,int len)</code>：写入字符串的某一-部分。</p>
+<p><code>void flush()</code>：刷新该流的缓冲，则立即将它们写入预期目标。</p>
+<p><code>public void close() throws IOException</code>：关闭此输出流并释放与该流关联的所有系统资源。</p>
+<h1 id="节点流-或文件流"><a href="#节点流-或文件流" class="headerlink" title="节点流(或文件流)"></a>节点流(或文件流)</h1><h2 id="FileReader"><a href="#FileReader" class="headerlink" title="FileReader"></a>FileReader</h2><pre><code class="java">@Test
+public void testFileReader()&#123;
+    FileReader fr = null;
+    try &#123;
+        //1.实例化File类的对象，指明要操作的文件
+        File file = new File(&quot;hello.txt&quot;);//相较于当前Module
+        //2.提供具体的流
+        fr = new FileReader(file);
+        //3.数据的读入
+        //read():返回读入的一个字符。如果达到文件末尾，返回-1。
+        //方式一：
+        //        int data = fr.read();
+        //        while(data != -1)&#123;
+        //            System.out.print((char)data);
+        //            data = fr.read();
+        //        &#125;
+
+        //方式二：语法上针对于方式一的修改
+        int data;
+        while((data = fr.read()) != -1)&#123;
+            System.out.print((char)data);
+        &#125;
+    &#125; catch (IOException e) &#123;
+        e.printStackTrace();
+    &#125; finally &#123;
+        //4.流的关闭操作
+        //            try &#123;
+        //                if(fr != null)
+        //                    fr.close();
+        //            &#125; catch (IOException e) &#123;
+        //                e.printStackTrace();
+        //            &#125;
+        //或
+        if(fr != null)&#123;
+            try &#123;
+                fr.close();
+            &#125; catch (IOException e) &#123;
+                e.printStackTrace();
+            &#125;
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<hr>
+<pre><code class="java">@Test
+public void testFileReader1()  &#123;
+    FileReader fr = null;
+    try &#123;
+        //1.File类的实例化
+        File file = new File(&quot;hello.txt&quot;);
+
+        //2.FileReader流的实例化
+        fr = new FileReader(file);
+
+        //3.读入的操作
+        //read(char[] cbuf):返回每次读入cbuf数组中的字符的个数。如果达到文件末尾，返回-1
+        char[] cbuf = new char[5];
+        int len;
+        while((len = fr.read(cbuf)) != -1)&#123;
+            //方式一：
+            //错误的写法
+            //                for(int i = 0;i &lt; cbuf.length;i++)&#123;
+            //                    System.out.print(cbuf[i]);
+            //                &#125;
+            //正确的写法
+            //                for(int i = 0;i &lt; len;i++)&#123;
+            //                    System.out.print(cbuf[i]);
+            //                &#125;
+            //方式二：
+            //错误的写法,对应着方式一的错误的写法
+            //                String str = new String(cbuf);
+            //                System.out.print(str);
+            //正确的写法
+            String str = new String(cbuf,0,len);
+            System.out.print(str);
+        &#125;
+    &#125; catch (IOException e) &#123;
+        e.printStackTrace();
+    &#125; finally &#123;
+        if(fr != null)&#123;
+            //4.资源的关闭
+            try &#123;
+                fr.close();
+            &#125; catch (IOException e) &#123;
+                e.printStackTrace();
+            &#125;
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<p><strong>1-【为什么for(int i &#x3D; 0;i &lt; cbuf.length;i++)和String str &#x3D; new String(cbuf)是错的写法】</strong></p>
+<blockquote>
+<p>1-假设**”hello.txt”**里面的内容为：helloworld123<br>2-那么我们在批量读取的时候是这么操作的：第一次读取5个字符 [h e l l o ]，返回的len为5 —&gt; 第二次读取5个字符 [w o r l d]，替换<code>char[]cbuf </code>数组里面的5个字符，同时返回值为5 —&gt;第三次只能读到3个字符[1 2 3]，替换<code>char[] cbuf</code> 数组里面的3个字符，最终的<code>char[] cbuf</code>数组为 [1 2 3 l d]，同时值为3 —&gt; 第四次读的时候已经没有字符了，返回值为-1<br>3-因此最终读取的内容为：helloworld123ld</p>
+</blockquote>
+<p>2-read()的理解：返回读入的一个字符。如果达到文件末尾，返回-1</p>
+<p>3-异常的处理：为了保证流资源一定可以执行关闭操作。需要使用try-catch-finally处理</p>
+<p>4-读入的文件一定要存在，否则就会报FileNotFoundException。</p>
+<h2 id="FileWriter"><a href="#FileWriter" class="headerlink" title="FileWriter"></a>FileWriter</h2><pre><code class="java">@Test
+public void testFileWriter() &#123;
+    FileWriter fw = null;
+    try &#123;
+        //1.提供File类的对象，指明写出到的文件
+        File file = new File(&quot;hello.txt&quot;);
+
+        //2.提供FileWriter的对象，用于数据的写出
+        fw = new FileWriter(file,true);
+
+        //3.写出的操作
+        fw.write(&quot;I have a dream!\n&quot;);
+        fw.write(&quot;you need to have a dream!&quot;);
+    &#125; catch (IOException e) &#123;
+        e.printStackTrace();
+    &#125; finally &#123;
+        //4.流资源的关闭
+        if(fw != null)&#123;
+            try &#123;
+                fw.close();
+            &#125; catch (IOException e) &#123;
+                e.printStackTrace();
+            &#125;
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<hr>
+<pre><code class="java">@Test
+public void testFileReaderFileWriter() &#123;
+    FileReader fr = null;
+    FileWriter fw = null;
+    try &#123;
+        //1.创建File类的对象，指明读入和写出的文件
+        File srcFile = new File(&quot;hello.txt&quot;);
+        File destFile = new File(&quot;hello2.txt&quot;);
+        //不能使用字符流来处理图片等字节数据
+        //            File srcFile = new File(&quot;爱情与友情.jpg&quot;);
+        //            File destFile = new File(&quot;爱情与友情1.jpg&quot;);
+        //2.创建输入流和输出流的对象
+        fr = new FileReader(srcFile);
+        fw = new FileWriter(destFile);
+        //3.数据的读入和写出操作
+        char[] cbuf = new char[5];
+        int len;//记录每次读入到cbuf数组中的字符的个数
+        while((len = fr.read(cbuf)) != -1)&#123;
+            //每次写出len个字符
+            fw.write(cbuf,0,len);
+        &#125;
+    &#125; catch (IOException e) &#123;
+        e.printStackTrace();
+    &#125; finally &#123;
+        //4.关闭流资源
+        try &#123;
+            if(fw != null)
+                fw.close();
+        &#125; catch (IOException e) &#123;
+            e.printStackTrace();
+        &#125;
+        try &#123;
+            if(fr != null)
+                fr.close();
+        &#125; catch (IOException e) &#123;
+            e.printStackTrace();
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<p>1-输出操作，对应的File可以不存在的。并不会报异常</p>
+<p>2-File对应的硬盘中的文件如果不存在，在输出的过程中，会自动创建此文件。</p>
+<p>3-File对应的硬盘中的文件如果存在：</p>
+<ul>
+<li>3-1-如果流使用的构造器是：<code>FileWriter(file,false)</code> &#x2F; <code>FileWriter(file)</code>：对原有文件的覆盖</li>
+<li>3-2-如果流使用的构造器是：<code>FileWriter(file,true)</code>：不会对原有文件覆盖，而是在原有文件基础上追加内容</li>
+</ul>
+<h2 id="FileInputStream和FileOutputStream"><a href="#FileInputStream和FileOutputStream" class="headerlink" title="FileInputStream和FileOutputStream"></a>FileInputStream和FileOutputStream</h2><pre><code class="java">//使用字节流FileInputStream处理文本文件，可能出现乱码。
+@Test
+public void testFileInputStream() &#123;
+    FileInputStream fis = null;
+    try &#123;
+        //1. 造文件
+        File file = new File(&quot;hello.txt&quot;);
+        //2.造流
+        fis = new FileInputStream(file);
+        //3.读数据
+        byte[] buffer = new byte[5];
+        int len;//记录每次读取的字节的个数
+        while((len = fis.read(buffer)) != -1)&#123;
+            String str = new String(buffer,0,len);
+            System.out.print(str);
+        &#125;
+    &#125; catch (IOException e) &#123;
+        e.printStackTrace();
+    &#125; finally &#123;
+        if(fis != null)&#123;
+            //4.关闭资源
+            try &#123;
+                fis.close();
+            &#125; catch (IOException e) &#123;
+                e.printStackTrace();
+            &#125;
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<p><strong>为什么使用字节流处理文本文件会出现乱码？</strong></p>
+<p>1-因为字节流传送数据用的是byte[]buffer，是<strong>字节数组</strong>。对于英文字母来说，都是一个字母占一个字节，所以其实输入输出都没问题</p>
+<p>2-但是对于<strong>中文字符</strong>，在<strong>UTF-8</strong> 编码中一个中文字符占<strong>3个字节</strong>，在<strong>Unicode</strong> 编码中一个中文字符占<strong>两个字节</strong></p>
+<p>3-我们是每运5个字节处理一次（比如打印），这样就会乱码</p>
+<hr>
+<pre><code class="java">/*
+实现对图片的复制操作
+ */
+@Test
+public void testFileInputOutputStream()  &#123;
+    FileInputStream fis = null;
+    FileOutputStream fos = null;
+    try &#123;
+        //
+        File srcFile = new File(&quot;爱情与友情.jpg&quot;);
+        File destFile = new File(&quot;爱情与友情1.jpg&quot;);
+
+        //
+        fis = new FileInputStream(srcFile);
+        fos = new FileOutputStream(destFile);
+
+        //复制的过程
+        byte[] buffer = new byte[5];
+        int len;
+        while((len = fis.read(buffer)) != -1)&#123;
+            fos.write(buffer,0,len);
+        &#125;
+
+    &#125; catch (IOException e) &#123;
+        e.printStackTrace();
+    &#125; finally &#123;
+        if(fos != null)&#123;
+            //
+            try &#123;
+                fos.close();
+            &#125; catch (IOException e) &#123;
+                e.printStackTrace();
+            &#125;
+        &#125;
+        if(fis != null)&#123;
+            try &#123;
+                fis.close();
+            &#125; catch (IOException e) &#123;
+                e.printStackTrace();
+            &#125;
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<hr>
+<pre><code class="java">//指定路径下文件的复制
+public void copyFile(String srcPath,String destPath)&#123;
+    FileInputStream fis = null;
+    FileOutputStream fos = null;
+    try &#123;
+        File srcFile = new File(srcPath);
+        File destFile = new File(destPath);
+
+        fis = new FileInputStream(srcFile);
+        fos = new FileOutputStream(destFile);
+
+        //复制的过程
+        byte[] buffer = new byte[1024];
+        int len;
+        while((len = fis.read(buffer)) != -1)&#123;
+            fos.write(buffer,0,len);
+        &#125;
+    &#125; catch (IOException e) &#123;
+        e.printStackTrace();
+    &#125; finally &#123;
+        if(fos != null)&#123;
+            //
+            try &#123;
+                fos.close();
+            &#125; catch (IOException e) &#123;
+                e.printStackTrace();
+            &#125;
+        &#125;
+        if(fis != null)&#123;
+            try &#123;
+                fis.close();
+            &#125; catch (IOException e) &#123;
+                e.printStackTrace();
+            &#125;
+        &#125;
+    &#125;
+&#125;
+@Test
+public void testCopyFile()&#123;
+    long start = System.currentTimeMillis();
+    String srcPath = &quot;C:\\Users\\Administrator\\Desktop\\01-视频.avi&quot;;
+    String destPath = &quot;C:\\Users\\Administrator\\Desktop\\02-视频.avi&quot;;
+
+    //        String srcPath = &quot;hello.txt&quot;;
+    //        String destPath = &quot;hello3.txt&quot;;
+
+    copyFile(srcPath,destPath);
+    long end = System.currentTimeMillis();
+    System.out.println(&quot;复制操作花费的时间为：&quot; + (end - start));//618
+&#125;
+</code></pre>
+<p><strong>为什么我们使用字节流复制文本文件就不会出问题呢？</strong>：因为我们<strong>没有处理字节</strong>，只是<strong>5个一次搬运字节</strong>，最后打开，所以最后不会出现乱码</p>
+<p>对于文本文件(.txt,.java,.c,.cpp)，使用字符流处理</p>
+<p>对于非文本文件(.jpg,.mp3,.mp4,.avi,.doc,.ppt,…)，使用字节流处理</p>
+<h1 id="缓冲流"><a href="#缓冲流" class="headerlink" title="缓冲流"></a>缓冲流</h1><p>BufferedInputStream和BufferedOutputStream</p>
+<pre><code class="java">@Test
+public void BufferedStreamTest() throws FileNotFoundException &#123;
+    BufferedInputStream bis = null;
+    BufferedOutputStream bos = null;
+    try &#123;
+        //1.造文件
+        File srcFile = new File(&quot;爱情与友情.jpg&quot;);
+        File destFile = new File(&quot;爱情与友情3.jpg&quot;);
+        //2.造流
+        //2.1 造节点流
+        FileInputStream fis = new FileInputStream((srcFile));
+        FileOutputStream fos = new FileOutputStream(destFile);
+        //2.2 造缓冲流 ———— 处理流
+        bis = new BufferedInputStream(fis);
+        bos = new BufferedOutputStream(fos);
+        //3.复制的细节：读取、写入
+        byte[] buffer = new byte[10];
+        int len;
+        while((len = bis.read(buffer)) != -1)&#123;
+            bos.write(buffer,0,len);
+            //   bos.flush();//刷新缓冲区
+        &#125;
+    &#125; catch (IOException e) &#123;
+        e.printStackTrace();
+    &#125; finally &#123;
+        //4.资源关闭
+        //要求：先关闭外层的流，再关闭内层的流
+        if(bos != null)&#123;
+            try &#123;
+                bos.close();
+            &#125; catch (IOException e) &#123;
+                e.printStackTrace();
+            &#125;
+        &#125;
+        if(bis != null)&#123;
+            try &#123;
+                bis.close();
+            &#125; catch (IOException e) &#123;
+                e.printStackTrace();
+            &#125;
+        &#125;
+        //说明：关闭外层流的同时，内层流也会自动的进行关闭。关于内层流的关闭，我们可以省略.
+        //        fos.close();
+        //        fis.close();
+    &#125;
+&#125;
+</code></pre>
+<hr>
+<pre><code class="java">//实现文件复制的方法
+public void copyFileWithBuffered(String srcPath,String destPath)&#123;
+    BufferedInputStream bis = null;
+    BufferedOutputStream bos = null;
+
+    try &#123;
+        //1.造文件
+        File srcFile = new File(srcPath);
+        File destFile = new File(destPath);
+        //2.造流
+        //2.1 造节点流
+        FileInputStream fis = new FileInputStream((srcFile));
+        FileOutputStream fos = new FileOutputStream(destFile);
+        //2.2 造缓冲流
+        bis = new BufferedInputStream(fis);
+        bos = new BufferedOutputStream(fos);
+
+        //3.复制的细节：读取、写入
+        byte[] buffer = new byte[1024];
+        int len;
+        while((len = bis.read(buffer)) != -1)&#123;
+            bos.write(buffer,0,len);
+        &#125;
+    &#125; catch (IOException e) &#123;
+        e.printStackTrace();
+    &#125; finally &#123;
+        //4.资源关闭
+        //要求：先关闭外层的流，再关闭内层的流
+        if(bos != null)&#123;
+            try &#123;
+                bos.close();
+            &#125; catch (IOException e) &#123;
+                e.printStackTrace();
+            &#125;
+        &#125;
+        if(bis != null)&#123;
+            try &#123;
+                bis.close();
+            &#125; catch (IOException e) &#123;
+                e.printStackTrace();
+            &#125;
+
+        &#125;
+        //说明：关闭外层流的同时，内层流也会自动的进行关闭。关于内层流的关闭，我们可以省略.
+        //        fos.close();
+        //        fis.close();
+    &#125;
+&#125;
+
+@Test
+public void testCopyFileWithBuffered()&#123;
+    long start = System.currentTimeMillis();
+    String srcPath = &quot;C:\\Users\\Administrator\\Desktop\\01-视频.avi&quot;;
+    String destPath = &quot;C:\\Users\\Administrator\\Desktop\\03-视频.avi&quot;;
+    copyFileWithBuffered(srcPath,destPath);
+    long end = System.currentTimeMillis();
+    System.out.println(&quot;复制操作花费的时间为：&quot; + (end - start));//618 - 176
+&#125;
+</code></pre>
+<h2 id="BufferedReader和BufferedWriter"><a href="#BufferedReader和BufferedWriter" class="headerlink" title="BufferedReader和BufferedWriter"></a>BufferedReader和BufferedWriter</h2><pre><code class="java">@Test
+public void testBufferedReaderBufferedWriter()&#123;
+    BufferedReader br = null;
+    BufferedWriter bw = null;
+    try &#123;
+        //创建文件和相应的流
+        br = new BufferedReader(new FileReader(new File(&quot;dbcp.txt&quot;)));
+        bw = new BufferedWriter(new FileWriter(new File(&quot;dbcp1.txt&quot;)));
+
+        //读写操作
+        //方式一：使用char[]数组
+        //            char[] cbuf = new char[1024];
+        //            int len;
+        //            while((len = br.read(cbuf)) != -1)&#123;
+        //                bw.write(cbuf,0,len);
+        //    //            bw.flush();
+        //            &#125;
+        //方式二：使用String
+        String data;
+        while((data = br.readLine()) != null)&#123;
+            //方法一：
+            //                bw.write(data + &quot;\n&quot;);//data中不包含换行符
+            //方法二：
+            bw.write(data);//data中不包含换行符
+            bw.newLine();//提供换行的操作
+        &#125;
+    &#125; catch (IOException e) &#123;
+        e.printStackTrace();
+    &#125; finally &#123;
+        //关闭资源
+        if(bw != null)&#123;
+            try &#123;
+                bw.close();
+            &#125; catch (IOException e) &#123;
+                e.printStackTrace();
+            &#125;
+        &#125;
+        if(br != null)&#123;
+            try &#123;
+                br.close();
+            &#125; catch (IOException e) &#123;
+                e.printStackTrace();
+            &#125;
+        &#125;
+    &#125;
+&#125; 
+</code></pre>
+<h2 id="缓存流的作用：提高读写速度——原因：内部提供了一个缓冲区"><a href="#缓存流的作用：提高读写速度——原因：内部提供了一个缓冲区" class="headerlink" title="缓存流的作用：提高读写速度——原因：内部提供了一个缓冲区"></a>缓存流的作用：提高读写速度——原因：内部提供了一个缓冲区</h2><p><strong>BufferedInputStream和BufferedOutputStream的源码片段：</strong></p>
+<pre><code class="java">private static int DEFAULT_BUFFER_SIZE = 8192;
+ 
+public BufferedInputStream(InputStream in) &#123;
+    this(in, DEFAULT_BUFFER_SIZE);
+&#125;
+ 
+public BufferedInputStream(InputStream in, int size) &#123;
+    super(in);
+    if (size &lt;= 0) &#123;
+        throw new IllegalArgumentException(&quot;Buffer size &lt;= 0&quot;);
+    &#125;
+    buf = new byte[size];
+&#125;
+</code></pre>
+<p><strong>BufferedReader和BufferedWriter的源码片段：</strong></p>
+<pre><code class="java">private static int defaultCharBufferSize = 8192;
+ 
+public BufferedReader(Reader in) &#123;
+    this(in, defaultCharBufferSize);
+&#125;
+ 
+public BufferedReader(Reader in, int sz) &#123;
+    super(in);
+    if (sz &lt;= 0)
+        throw new IllegalArgumentException(&quot;Buffer size &lt;= 0&quot;);
+    this.in = in;
+    cb = new char[sz];
+    nextChar = nChars = 0;
+&#125;
+</code></pre>
+<img src="IO/0085.png" width="800">
+
+<p>1-当读取数据时，数据按块读入缓冲区，其后的读操作则直接访问缓冲区</p>
+<p>2-当使用BufferedInputStream读取字节文件时，BufferedInputStream会 **一次性从文件中读取8192个(8Kb)**，存在缓冲区中，直到缓冲区装满了，才重新从文件中读取下一个8192个字节数组。</p>
+<p>3-向流中写入字节时，<strong>不会直接写到文件，先写到缓冲区中直到缓冲区写满</strong>，BufferedOutputStream<strong>才会把缓冲区中的数据一次性写到文件里</strong>。<strong>使用方法<code>flush()</code>可以强制将缓冲区的内容全部写入输出流</strong>。</p>
+<p>4-关闭流的顺序和打开流的顺序相反。只要关闭最外层流即可，关闭最外层流也会相应关闭内层节点流</p>
+<p>5-<code>flush()</code>方法的使用：手动将buffer中内容写入文件</p>
+<p>6-如果是带缓冲区的流对象的<code>close()</code>方法，不但会关闭流，还会在关闭流之前刷新缓冲区，关闭后不能再写出。</p>
+<h1 id="转换流"><a href="#转换流" class="headerlink" title="转换流"></a>转换流</h1><h2 id="InputStreamReader与OutputStreamWriter：字符流"><a href="#InputStreamReader与OutputStreamWriter：字符流" class="headerlink" title="InputStreamReader与OutputStreamWriter：字符流"></a>InputStreamReader与OutputStreamWriter：字符流</h2><pre><code class="java">@Test
+public void test1() throws IOException &#123;
+    FileInputStream fis = new FileInputStream(&quot;dbcp.txt&quot;);
+    //InputStreamReader isr = new InputStreamReader(fis);//使用系统默认的字符集
+    //参数2指明了字符集，具体使用哪个字符集，取决于文件dbcp.txt保存时使用的字符集
+    InputStreamReader isr = 
+            new InputStreamReader(fis,&quot;UTF-8&quot;);//使用系统（idea）默认的字符集
+    char[] cbuf = new char[20];
+    int len;
+    while((len = isr.read(cbuf)) != -1)&#123;
+        String str = new String(cbuf,0,len);
+        System.out.print(str);//结果是没有出现乱码
+    &#125;
+    isr.close();
+&#125;
+</code></pre>
+<p>使用FileInputStream读取文本文件 —&gt; <strong>在字节流的基础上使用InputStreamReader转换成字符流</strong> —&gt;使用字符流处理文件（打印文件内容到控制台）</p>
+<pre><code class="JAVA">@Test
+public void test2() throws Exception &#123;
+    //1.造文件、造流
+    File file1 = new File(&quot;dbcp.txt&quot;);
+    File file2 = new File(&quot;dbcp_gbk.txt&quot;);
+
+    FileInputStream fis = new FileInputStream(file1);
+    FileOutputStream fos = new FileOutputStream(file2);
+
+    InputStreamReader isr = new InputStreamReader(fis,&quot;utf-8&quot;);
+    OutputStreamWriter osw = new OutputStreamWriter(fos,&quot;gbk&quot;);
+
+    //2.读写过程
+    char[] cbuf = new char[20];
+    int len;
+    while((len = isr.read(cbuf)) != -1)&#123;
+        osw.write(cbuf,0,len);
+    &#125;
+    //3.关闭资源
+    isr.close();
+    osw.close();
+&#125;
+</code></pre>
+<img src="IO/0086.png" width="600">
+
+<h2 id="字符编码"><a href="#字符编码" class="headerlink" title="字符编码"></a>字符编码</h2><h3 id="编码表的由来"><a href="#编码表的由来" class="headerlink" title="编码表的由来"></a>编码表的由来</h3><p>计算机只能识别二进制数据，早期由来是电信号。为了方便应用计算机，让它可以识别各个国家的文字。就将各个国家的文字用数字来表示，并一一对应，形成一张表。这就是编码表。</p>
+<h3 id="常见的编码表"><a href="#常见的编码表" class="headerlink" title="常见的编码表."></a>常见的编码表.</h3><p>ASCII：美国标准信息交换码。用一个字节的7位可以表示。</p>
+<p>IS08859-1: 拉丁码表。欧洲码表。用一个字节的8位表示。</p>
+<p>GB2312：中国的中文编码表。最多两个字节编码所有字符。</p>
+<p>GBK：中国的中文编码表升级，融合了更多的中文文字符号。最多两个字节编码</p>
+<p><strong>Unicode</strong>：国际标准码，融合了目前人类使用的所有字符。为每个字符分配唯一的字符码。<strong>所有的文字都用两个字节来表示</strong>。</p>
+<p>UTF-8：变长的编码方式，可用1-4个字节来表示一个字符。</p>
+<h3 id="Unicode的问题"><a href="#Unicode的问题" class="headerlink" title="Unicode的问题"></a>Unicode的问题</h3><p>Unicode不完美，这里就有三个问题：</p>
+<ul>
+<li>一个是，我们已经知道，英文字母只用一个字节表示就够了，</li>
+<li>第二个问题是如何才能区别Unicode和ASCII？计算机怎么知道两个字节表示一个符号，而不是分别表示两个符号呢?</li>
+<li>第三个，如果和GBK等双字节编码方式一样，用最高位是1或0表示两个字节和一个字节，就少了很多值无法用于表示字符，不够表示所有字符。</li>
+</ul>
+<p>Unicode在很 长一段时间内无法推广，直到互联网的出现。</p>
+<h3 id="UTF"><a href="#UTF" class="headerlink" title="UTF"></a>UTF</h3><p>面向传输的众多 UTF ( UCS Transfer Format)标准出现了，顾名思义，UTF-8就是每次8个位传输数据，而UTF-16就是每次16个位。这是为传输而设计的编码，并使编码无国界，这样就可以显示全世界上所有文化的字符了。</p>
+<h3 id="字符集与编码"><a href="#字符集与编码" class="headerlink" title="字符集与编码"></a>字符集与编码</h3><img src="IO/0087.png" width="600">
+
+<img src="IO/0088.png" width="600">
+
+<h1 id="标准输入、输出流-了解"><a href="#标准输入、输出流-了解" class="headerlink" title="标准输入、输出流(了解)"></a>标准输入、输出流(了解)</h1><p><code>System.in</code>和<code>System.out</code>分别代表了系统标准的输入和输出设备</p>
+<p>默认输入设备是:键盘，输出设备是:显示器</p>
+<p><code>System.in</code>的类型是<code>InputStream</code>：</p>
+<ul>
+<li><p><code>public final static InputStream in = null;</code></p>
+<p> <strong>public   final static</strong> InputStream <em><strong>in</strong></em> &#x3D; <strong>null</strong>;   </p>
+</li>
+<li><p><code>public final static PrintStream out = null;</code></p>
+</li>
+</ul>
+<p><code>System</code>类的<code>setIn(InputStream is) </code>&#x2F;<code> setOut(PrintStream ps)</code>方式重新指定输入和输出的流。</p>
+<ul>
+<li><p><code>public static void setln(InputStream in)</code></p>
+</li>
+<li><p><code>public static void setOut(PrintStream out)</code></p>
+</li>
+</ul>
+<pre><code class="java">/**练习：
+从键盘输入字符串，要求将读取到的整行字符串转成大写输出。然后继续进行输入操作，
+直至当输入“e”或者“exit”时，退出程序。
+方法一：使用Scanner实现，调用next()返回一个字符串
+方法二：使用System.in实现。System.in  ---&gt;  转换流 ---&gt; BufferedReader的readLine()*/
+public static void main(String[] args) &#123;
+    BufferedReader br = null;
+    try &#123;
+        //从字节流转换为字符类
+        InputStreamReader isr = new InputStreamReader(System.in);
+        //缓存流包装字符流
+        br = new BufferedReader(isr);
+        while (true) &#123;
+            System.out.println(&quot;请输入字符串：&quot;);
+            String data = br.readLine();
+            if (&quot;e&quot;.equalsIgnoreCase(data) || &quot;exit&quot;.equalsIgnoreCase(data)) &#123;
+                System.out.println(&quot;程序结束&quot;);
+                break;
+            &#125;
+            String upperCase = data.toUpperCase();
+            System.out.println(upperCase);
+        &#125;
+    &#125; catch (IOException e) &#123;
+        e.printStackTrace();
+    &#125; finally &#123;
+        if (br != null) &#123;
+            try &#123;
+                br.close();
+            &#125; catch (IOException e) &#123;
+                e.printStackTrace();
+            &#125;
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<h1 id="打印流-了解"><a href="#打印流-了解" class="headerlink" title="打印流(了解)"></a>打印流(了解)</h1><p>实现将基本数据类型的数据格式转化为字符串输出</p>
+<p>打印流：<code>PrintStream</code>和<code>PrintWriter</code>  —&gt;打印到文件上</p>
+<ul>
+<li>提供了一系列重载的<code>print()</code>和<code>println()</code>方法，用于多种数据类型的输出</li>
+<li>PrintStream和PrintWriter的输出不会抛出lOException异常</li>
+<li>PrintStream和PrintWriter有自动flush功能</li>
+<li>PrintStream打印的所有字符都<strong>使用平台的默认字符编码转换为字节</strong>。</li>
+<li>在需要写入字符而不是写入字节的情况下，应该使用PrintWriter 类。</li>
+</ul>
+<pre><code class="java">//报ASCII字符输出到 &quot;D:\\IO\\text.txt&quot; 里面
+@Test
+public void test2() &#123;
+    PrintStream ps = null;
+    try &#123;
+        FileOutputStream fos = new FileOutputStream(new File(&quot;D:\\IO\\text.txt&quot;));
+        // 创建打印输出流,设置为自动刷新模式(写入换行符或字节 &#39;\n&#39; 时都会刷新输出缓冲区)
+        ps = new PrintStream(fos, true);
+        if (ps != null) &#123;// 把标准输出流(控制台输出)改成文件（打印输出流）
+            System.setOut(ps);
+        &#125;
+
+        for (int i = 0; i &lt;= 255; i++) &#123; // 输出ASCII字符
+            System.out.print((char) i);
+            if (i % 50 == 0) &#123; // 每50个数据一行
+                System.out.println(); // 换行
+            &#125;
+        &#125;
+
+    &#125; catch (FileNotFoundException e) &#123;
+        e.printStackTrace();
+    &#125; finally &#123;
+        if (ps != null) &#123;
+            ps.close();
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<h1 id="数据流-了解"><a href="#数据流-了解" class="headerlink" title="数据流(了解)"></a>数据流(了解)</h1><p>为了方便地操作Java语言的基本数据类型和String的数据，可以使用数据流。</p>
+<p>数据流有两个类:      (用于读取和写出基本数据类型、String类的数据)</p>
+<ul>
+<li>DatalnputStream和DataOutputStream</li>
+<li>分别“套接”在InputStream和OutputStream子类的流上</li>
+</ul>
+<p><strong>DatalnputStream</strong>中的方法</p>
+<ul>
+<li>boolean readBoolean()</li>
+<li>byte readByte()</li>
+<li>char readChar()</li>
+<li>float readFloat( )</li>
+<li>double readDouble()</li>
+<li>short readShort( )</li>
+<li>long readL ong()</li>
+<li>int readInt()</li>
+<li>String readUTF()</li>
+<li>void readFully(byte[] b)</li>
+</ul>
+<p><strong>DataOutputStream</strong>中的方法：将上述的方法的read改为相应的write即可。</p>
+<pre><code class="java">//将内存中的字符串、基本数据类型的变量写出到文件中。
+@Test
+public void test3() throws IOException &#123;
+    DataOutputStream dos = 
+            new DataOutputStream(new FileOutputStream(&quot;data.txt&quot;));
+    dos.writeUTF(&quot;刘亦菲&quot;);
+    dos.flush();//刷新操作，将内存中的数据写入文件
+    dos.writeInt(35);
+    dos.flush();
+    dos.writeBoolean(true);
+    dos.flush();
+    dos.close();
+&#125;
+
+//将文件中存储的基本数据类型变量和字符串读取到内存中，保存在变量中。
+@Test
+public void test4() throws IOException &#123;
+    DataInputStream dis = 
+            new DataInputStream(new FileInputStream(&quot;data.txt&quot;));
+    String name = dis.readUTF();
+    int age = dis.readInt();
+    boolean isMale = dis.readBoolean();
+
+    System.out.println(&quot;name = &quot; + name);
+    System.out.println(&quot;age = &quot; + age);
+    System.out.println(&quot;isMale = &quot; + isMale);
+
+    dis.close();
+&#125;
+</code></pre>
+<h1 id="对象流"><a href="#对象流" class="headerlink" title="对象流"></a>对象流</h1><p><strong>ObjectInputStream和OjbectOutputSteam：</strong>用于存储和读取基本数据类型数据或对象的处理流。它的强大之处就是可以把Java中的对象写入到数据源中，也能把对象从数据源中还原回来。</p>
+<h2 id="对象的序列化"><a href="#对象的序列化" class="headerlink" title="对象的序列化"></a>对象的序列化</h2><p>序列化与反序列化</p>
+<ul>
+<li>序列化：将<strong>内存中</strong>的java对象保存到<strong>磁盘</strong>中或通过<strong>网络传输</strong>出去</li>
+<li>反序列化：将<strong>磁盘</strong>文件中的对象还原为内存中的一个java对象</li>
+</ul>
+<p>对象序列化机制：</p>
+<ul>
+<li><strong>允许把内存中的Java对象转换成平台无关的二进制流</strong>，从而允许把这种二进制流持久地保存在磁盘上，或通过网络将这种二进制流传输到另一个网络节点。当<strong>其它程序获取了这种二进制流，就可以恢复成原来的Java对象</strong>（反序列化）</li>
+</ul>
+<p>序列化的好处在于可将任何实现了<strong>Serializable接口</strong>的对象转化为字节数据，<strong>使其在保存和传输时可被还原</strong></p>
+<p>序列化是RMI(Remote Method Invoke-远程方法调用)过程的参数和返回值都必须实现的机制，而RMI是JavaEE的基础。因此序列化机制是JavaEE平台的基础</p>
+<p>如果需要让某个对象支持序列化机制，则必须让对象所属的类及其属性是可序列化的，<strong>为了让某个类是可序列化的，该类必须实现如下两个接口之一</strong>。否则，会抛出<strong>NotSerializableException</strong>异常</p>
+<ul>
+<li>Serializable</li>
+<li>Externalizable</li>
+</ul>
+<p>ObjectOutputStream和ObjectInputStream不能序列化<strong>static</strong>和<strong>transient</strong>修饰的成员变量。</p>
+<p><strong>一个类需要满足如下的要求，方可序列化</strong></p>
+<ul>
+<li>需要实现接口：Serializable</li>
+<li>当前类提供一个全局常量：serialVersionUID</li>
+<li>除了当前Person类需要实现Serializable接口之外，<strong>还必须保证其内部所有属性也必须是可序列化的</strong>。（默认情况下，基本数据类型可序列化）</li>
+</ul>
+<pre><code class="java">public class Person implements Serializable&#123; // 需要实现接口：Serializable
+    public static final long serialVersionUID = 475463534532L; // 当前类提供一个全局常量：serialVersionUID
+    private String name;
+    private int age;
+    private int id;
+    private Account acct; // Account也支持序列化
+    public Person(String name, int age, int id) &#123;
+        this.name = name;
+        this.age = age;
+        this.id = id;
+    &#125;
+    public Person(String name, int age, int id, Account acct) &#123;
+        this.name = name;
+        this.age = age;
+        this.id = id;
+        this.acct = acct;
+    &#125;
+    @Override
+    public String toString() &#123;
+        return &quot;Person&#123;&quot; +
+                &quot;name=&#39;&quot; + name + &#39;\&#39;&#39; +
+                &quot;, age=&quot; + age +
+                &quot;, id=&quot; + id +
+                &quot;, acct=&quot; + acct +
+                &#39;&#125;&#39;;
+    &#125;
+
+    public int getId() &#123;
+        return id;
+    &#125;
+
+    public void setId(int id) &#123;
+        this.id = id;
+    &#125;
+
+    public String getName() &#123;
+        return name;
+    &#125;
+
+    public void setName(String name) &#123;
+        this.name = name;
+    &#125;
+
+    public int getAge() &#123;
+        return age;
+    &#125;
+
+    public void setAge(int age) &#123;
+        this.age = age;
+    &#125;
+
+    public Person(String name, int age) &#123;
+
+        this.name = name;
+        this.age = age;
+    &#125;
+
+    public Person() &#123;
+
+    &#125;
+&#125;
+class Account implements Serializable&#123; // Account也支持序列化
+    public static final long serialVersionUID = 4754534532L;
+    private double balance;
+
+    @Override
+    public String toString() &#123;
+        return &quot;Account&#123;&quot; +
+                &quot;balance=&quot; + balance +
+                &#39;&#125;&#39;;
+    &#125;
+    public double getBalance() &#123;
+        return balance;
+    &#125;
+    public void setBalance(double balance) &#123;
+        this.balance = balance;
+    &#125;
+    public Account(double balance) &#123;
+        this.balance = balance;
+    &#125;
+&#125;
+</code></pre>
+<hr>
+<pre><code class="java">/*
+序列化过程：将内存中的java对象保存到磁盘中或通过网络传输出去
+使用ObjectOutputStream实现
+ */
+@Test
+public void testObjectOutputStream()&#123;
+    ObjectOutputStream oos = null;
+
+    try &#123;
+        //1.
+        oos = new ObjectOutputStream(new FileOutputStream(&quot;object.dat&quot;));
+        //2.
+        oos.writeObject(new String(&quot;我爱北京天安门&quot;));
+        oos.flush();//刷新操作
+
+        oos.writeObject(new Person(&quot;王铭&quot;,23));
+        oos.flush();
+
+        oos.writeObject(new Person(&quot;张学良&quot;,23,1001,new Account(5000)));
+        oos.flush();
+
+    &#125; catch (IOException e) &#123;
+        e.printStackTrace();
+    &#125; finally &#123;
+        if(oos != null)&#123;
+            //3.
+            try &#123;
+                oos.close();
+            &#125; catch (IOException e) &#123;
+                e.printStackTrace();
+            &#125;
+
+        &#125;
+    &#125;
+&#125;
+
+
+/*
+反序列化：将磁盘文件中的对象还原为内存中的一个java对象
+使用ObjectInputStream来实现
+ */
+@Test
+public void testObjectInputStream()&#123;
+    ObjectInputStream ois = null;
+    try &#123;
+        ois = new ObjectInputStream(new FileInputStream(&quot;object.dat&quot;));
+
+        Object obj = ois.readObject();
+        String str = (String) obj;
+
+        Person p = (Person) ois.readObject();
+        Person p1 = (Person) ois.readObject();
+
+        System.out.println(str);
+        System.out.println(p);
+        System.out.println(p1);
+
+    &#125; catch (IOException e) &#123;
+        e.printStackTrace();
+    &#125; catch (ClassNotFoundException e) &#123;
+        e.printStackTrace();
+    &#125; finally &#123;
+        if(ois != null)&#123;
+            try &#123;
+                ois.close();
+            &#125; catch (IOException e) &#123;
+                e.printStackTrace();
+            &#125;
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<p><strong>serialVersionUID的作用：</strong></p>
+<ul>
+<li><p>serialVersionUID用来表明类的不同版本间的兼容性。简言之，<strong>其目的是以序列化对象进行版本控制</strong>，有关各版本反序列化时是否兼容。</p>
+</li>
+<li><p>就是如果我们没有显示声明这个常量，时当我们序列化的时候，其实<code>jvm</code>会根据类的内容<strong>自动分配一个ID</strong>，如果该类的代码没变，依然可以正常反序列化。但是如果这个类的代码变了，<code>JVM</code>会根据内容又生成一个ID，然后序列化时候的ID和反序列化时候的ID不一致，就无法反序列化</p>
+</li>
+</ul>
+<h1 id="随机存取文件流：RandomAccessFile类"><a href="#随机存取文件流：RandomAccessFile类" class="headerlink" title="随机存取文件流：RandomAccessFile类"></a>随机存取文件流：RandomAccessFile类</h1><p><strong>RandomAccessFile</strong>声明在<code>java.io</code>包下，但直接继承于<code>java.lang.Object</code>类。并且它实现了<code>Datalnput</code>、<code>DataOutput</code>这两个接口，也就意味着这个类既可以读也可以写。</p>
+<p>RandomAccessFile类支持“随机访问”的方式，<strong>程序可以直接跳到文件的任意地方来读、写文件</strong></p>
+<p>RandomAccessFile对象包含-一个记录指针，用以标示当前读写处的位置。</p>
+<p>RandomAccessFile类对象可以自由移动记录指针：</p>
+<ul>
+<li><code>long getFilePointer()</code>：获取文件记录指针的当前位置</li>
+<li><code>void seek(long pos)</code>：将文件记录指针定位到pos位置</li>
+</ul>
+<p>构造器</p>
+<ul>
+<li><code>public RandomAccessFile(File file, String mode)</code></li>
+<li><code>public RandomAccessFile(String name, String mode)</code></li>
+</ul>
+<p> 创建RandomAccessFile类实例需要指定一个mode参数，该参数指定RandomAccessFile的访问模式：</p>
+<ul>
+<li><strong>r</strong>：以只读方式打开</li>
+<li><strong>rw</strong>：打开以便读取和写入</li>
+<li><strong>rwd</strong>：打开以便读取和写入；同步文件内容的更新</li>
+<li><strong>rws</strong>：打开以便读取和写入；同步文件内容和元数据的更新</li>
+</ul>
+<pre><code class="java">@Test
+public void test1() &#123;
+    RandomAccessFile raf1 = null;
+    RandomAccessFile raf2 = null;
+    try &#123;
+        //1.
+        raf1 = new RandomAccessFile(
+            new File(&quot;爱情与友情.jpg&quot;),&quot;r&quot;);
+        raf2 = new RandomAccessFile(
+            new File(&quot;爱情与友情3.jpg&quot;),&quot;rw&quot;);
+        //2.
+        byte[] buffer = new byte[1024];
+        int len;
+        while((len = raf1.read(buffer)) != -1)&#123;
+            raf2.write(buffer,0,len);
+        &#125;
+    &#125; catch (IOException e) &#123;
+        e.printStackTrace();
+    &#125; finally &#123;
+        //3.
+        if(raf1 != null)&#123;
+            try &#123;
+                raf1.close();
+            &#125; catch (IOException e) &#123;
+                e.printStackTrace();
+            &#125;
+        &#125;
+        if(raf2 != null)&#123;
+            try &#123;
+                raf2.close();
+            &#125; catch (IOException e) &#123;
+                e.printStackTrace();
+            &#125;
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<hr>
+<pre><code class="java">@Test
+public void test2() throws IOException &#123;
+    RandomAccessFile raf1 = 
+            new RandomAccessFile(&quot;hello.txt&quot;,&quot;rw&quot;);
+    raf1.seek(3);//将指针调到角标为3的位置
+    raf1.write(&quot;xyz&quot;.getBytes());//
+    raf1.close();
+&#125;
+</code></pre>
+<hr>
+<pre><code class="java">@Test
+public void test3() throws IOException &#123;
+    RandomAccessFile raf1 =
+            new RandomAccessFile(&quot;hello.txt&quot;,&quot;rw&quot;);
+    raf1.seek(3);//将指针调到角标为3的位置
+    //保存指针3后面的所有数据存到StringBuilder中
+    StringBuilder builder =
+            new StringBuilder(
+                    (int) new File(&quot;hello.txt&quot;)
+                            .length());
+    byte[] buffer = new byte[20];
+    int len;
+    while((len = raf1.read(buffer)) != -1)&#123;
+        builder.append(new String(buffer,0,len)) ;
+    &#125;
+    //调回指针，写入“xyz”
+    raf1.seek(3);
+    raf1.write(&quot;xyz&quot;.getBytes());
+    //将StringBuilder中的数据写入到文件中
+    raf1.write(builder.toString().getBytes());
+    raf1.close();
+    //思考：将StringBuilder替换为ByteArrayOutputStream
+&#125;
+</code></pre>
+<p>以插入为例，说一说指针的运动</p>
+<ul>
+<li><p>raf1.seek(3)：把指针调到角标为3的位置</p>
+</li>
+<li><p>raf1.read(buffer))：读取文件的时候指针会接着往后运动，到读完文件的时候，指针回到最后，或者是第一</p>
+</li>
+<li><p>raf1.seek(3）：在把指针调回角标为3的位置</p>
+</li>
+</ul>
+<p><strong>我们可以用RandomAccessFile这个类，来实现一个多线程断点下载的功能</strong>，用过下载工具的朋友们都知道，下载前都会建立两个临时文件，一个是与被下载文件大小相同的空文件，另一个是记录文件指针的位置文件，每次暂停的时候，都会保存上一次的指针，然后断点下载的时候，会继续从上一次的地方下载，从而实现断点下载或上传的功能，有兴趣的朋友们可以自己实现下。</p>
+<h1 id="NIO-2中Path、Paths、-Files类的使用"><a href="#NIO-2中Path、Paths、-Files类的使用" class="headerlink" title="NIO.2中Path、Paths、 Files类的使用"></a>NIO.2中Path、Paths、 Files类的使用</h1><p>Java NIO (New IO，Non-Blocking IO)是从Java 1.4版本开始引入的一套新的IO API， 可以替代标准的Java IO API。NIO与原来的IO有同样的作用和目的，但是使用的方式完全不同，NIO支持面向缓冲区的(IO是面向流的)、基于通道的IO操作。NIO将以更加高效的方式进行文件的读写操作。</p>
+<p>JavaAPI中提供了两套NIO，一套是针对标准输入输出NIO，另一套就是网络编程NIO。</p>
+<img src="IO/0089.png" width="600">
+
+<p>随着JDK 7的发布，Java对NIO进行了极大的扩展，增强了对文件处理和文件系统特性的支持，以至于我们称他们为NIO.2。因为NIO提供的一些功能，NIO已经成为文件处理中越来越重要的部分。</p>
+<p>早期的Java只提供了一个File类来访问文件系统，但File类的功能比较有限，所提供的方法性能也不高。而且，大多数方法在出错时仅返回失败，并不会提供异常信息。</p>
+<p>NIO.2为了弥补这种不足，引入了Path接口，代表一个平台无关的平台路径，描述了目录结构中文件的位置。Path可以看成是File类的升级版本，实际引用的资源也可以不存在。</p>
+<p>在以前IO操作都是这样写的:</p>
+<pre><code class="java">import java.io.File;
+File file = new File(&quot;index.html&quot;);
+</code></pre>
+<p>但在Java7中，我们可以这样写:</p>
+<pre><code class="java">import java.nio.file. Path;
+import java.nio.file. Paths;
+Path path = Paths.get(&quot;index.html&quot;);
+</code></pre>
+<p>同时，NIO.2在java.nio.file包 下还提供了Files、Paths工具类，Files包含了大量静态的工具方法来操作文件; Paths类提供的静态get()方法用来获取Path对象</p>
+<ul>
+<li><code>static Path get(String first, String ... more)</code>:用于将多个字符串串连成路径</li>
+<li><code>static Path get(URI uri)</code>:返回指定uri对应的Path路径</li>
+</ul>
+<p>Path常用方法:</p>
+<ul>
+<li><p><code>String toString()</code> :返回调用Path对象的字符串表示形式</p>
+</li>
+<li><p><code>boolean startsWith(String path)</code>:判断是否以path路径开始</p>
+</li>
+<li><p><code>boolean endsWith(String path)</code>:判断是否以path路径结束</p>
+</li>
+<li><p><code>boolean isAbsolute()</code>:判断是否是绝对路径</p>
+</li>
+<li><p><code>Path getParent()</code>:返回Path对象包含整个路径，不包含Path对象指定的文件路径</p>
+</li>
+<li><p><code>PathgetRoot()</code>:返回调用Path对象的根路径</p>
+</li>
+<li><p><code>Path getFileName()</code>:返回与调用Path对象关联的文件名</p>
+</li>
+<li><p><code>int getNameCount()</code>:返回Path根目录后面元素的数量</p>
+</li>
+<li><p><code>Path getName(int idx)</code> :返回指定索引位置 idx的路径名称</p>
+</li>
+<li><p><code>Path toAbsolutePath()</code>: 作为绝对 路径返回调用Path对象</p>
+</li>
+<li><p><code>Pathresolve(Pathp)</code>:合并两个路径，返回合并后的路径对应的Path对象</p>
+</li>
+<li><p><code>File toFile()</code>:将Path转化为File类的对象</p>
+</li>
+</ul>
+<p>Files常用方法:</p>
+<ul>
+<li><p><code>Path copy(Path src, Path dest, CopyOption ... how)</code>:文件的复制</p>
+</li>
+<li><p><code>Path createDirectory(Path path, FileAttribute&lt;?&gt; ... attr)</code>:创建-一个目录</p>
+</li>
+<li><p><code>Path createFile(Path path, FileAttribute&lt;?&gt; ... arr)</code>:创建一个文件</p>
+</li>
+<li><p><code>void delete(Path path)</code>:删除一一个 文件&#x2F;目录，如果不存在，执行报错</p>
+</li>
+<li><p><code>void deletelfExists(Path path)</code> : Path对应的文件&#x2F;目录如果存在，执行删除</p>
+</li>
+<li><p><code>Path move(Path src, Path dest, CopyOption...how)</code>:将src移动到dest位置</p>
+</li>
+<li><p><code>long size(Path path)</code>:返回path指定文件的大小</p>
+</li>
+<li><p><code>boolean exists(Path path, LinkOption ... opts)</code>:判断文件是否存在</p>
+</li>
+<li><p><code>boolean isDirectory(Path path, LinkOption ... opts)</code>:判断是否是目录</p>
+</li>
+<li><p><code>boolean isRegularFile(Path path, LinkOption ... opts)</code>:判断是否是文件</p>
+</li>
+<li><p><code>boolean isHidden(Path path)</code>:判断是否是隐藏文件</p>
+</li>
+<li><p><code>boolean isReadable(Path path)</code>:判断文件是否可读</p>
+</li>
+<li><p><code>boolean isWritable(Path path)</code>:判断文件是否可写</p>
+</li>
+<li><p><code>boolean notExists(Path path, LinkOption ... opts)</code>:判断文件是否不存在</p>
+</li>
+<li><p><code>SeekableByteChannel newByteChannel(Path path, OpenOption...how)</code>:获取与指定文件的连接，how指定打开方式。</p>
+</li>
+<li><p><code>DirectoryStream&lt;Path&gt; newDirectoryStream(Path path)</code>:打开path指定的目录</p>
+</li>
+<li><p><code>InputStream newInputStream(Path path, OpenOption.. .how)</code>:获取InputStream对象</p>
+</li>
+<li><p><code>OutputStream newOutputStream(Path path, OpenOption...how)</code>:获取OutputStream对象</p>
+</li>
+</ul>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 1909773034@qq.com </span>
+    </div>
+</article>
+
+
+<p>
+    <a  class="dashang" onclick="dashangToggle()">赏</a>
+</p>
+
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">
+    ©2017 XieShaoLin
+</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+
+<div class="hide_box" onclick="dashangToggle()"></div>
+<div class="shang_box">
+    <a class="shang_close"  onclick="dashangToggle()">×</a>
+    <div class="shang_tit">
+        <p>喜欢就点赞,疼爱就打赏</p>
+    </div>
+    <div class="shang_payimg">
+        <div class="pay_img">
+            <img src="/img/alipay.jpg" class="alipay" title="扫码支持">
+            <img src="/img/weixin.jpg" class="weixin" title="扫码支持">
+        </div>
+    </div>
+    <div class="shang_payselect">
+        <span><label><input type="radio" name="pay" checked value="alipay">支付宝</label></span><span><label><input type="radio" name="pay" value="weixin">微信</label></span>
+    </div>
+</div>
+
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
+
+<script src="/js/script.js?v=1.1.0" ></script>
+<script>
+    var img_resize = 'default';
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $("#post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+        $("input[name=pay]").on("click", function () {
+            if($("input[name=pay]:checked").val()=="weixin"){
+                $(".shang_box .shang_payimg .pay_img").addClass("weixin_img");
+            } else {
+                $(".shang_box .shang_payimg .pay_img").removeClass("weixin_img");
+            }
+        })
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+    function dashangToggle() {
+        $(".shang_box").fadeToggle();
+        $(".hide_box").fadeToggle();
+    }
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>

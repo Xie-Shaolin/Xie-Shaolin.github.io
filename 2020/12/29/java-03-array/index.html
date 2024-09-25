@@ -1,0 +1,1850 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>java:数组 | Notes</title>
+  <meta name="keywords" content=" java ">
+  <meta name="description" content="java:数组 | Notes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="卸载MySQL停止MySQL服务 systemctl stop mysqld  查询MySQL的安装文件 [root@centos01 ~]# rpm -qa | grep -i mysql mysql-community-client-5.7.28-1.el7.x86_64 mysql-community-server-5.7.28-1.el7.x86_64 mysql-community-co">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL的安装、卸载和启动">
+<meta property="og:url" content="http://example.com/2024/09/25/InstallMySQL8/index.html">
+<meta property="og:site_name" content="Notes">
+<meta property="og:description" content="卸载MySQL停止MySQL服务 systemctl stop mysqld  查询MySQL的安装文件 [root@centos01 ~]# rpm -qa | grep -i mysql mysql-community-client-5.7.28-1.el7.x86_64 mysql-community-server-5.7.28-1.el7.x86_64 mysql-community-co">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2024/09/25/InstallMySQL8/InstallMySQL8/001.png">
+<meta property="og:image" content="http://example.com/2024/09/25/InstallMySQL8/InstallMySQL8/002.png">
+<meta property="og:image" content="http://example.com/2024/09/25/InstallMySQL8/InstallMySQL8/003.png">
+<meta property="article:published_time" content="2024-09-24T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-09-25T10:36:23.945Z">
+<meta property="article:author" content="XieShaoLin">
+<meta property="article:tag" content="MySQL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2024/09/25/InstallMySQL8/InstallMySQL8/001.png">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.1.0" rel="stylesheet">
+
+<link href="/css/hl_theme/github.css?v=1.1.0" rel="stylesheet">
+
+<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
+
+<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="/js/titleTip.js?v=1.1.0" ></script>
+
+<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.1.0" ></script>
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="">
+  <input class="theme_blog_path" value="">
+  <input id="theme_shortcut" value="true" />
+  <input id="theme_highlight_on" value="true" />
+  <input id="theme_code_copy" value="true" />
+</div>
+
+
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/"
+   class="avatar_target">
+    <img class="avatar"
+         src="/img/avatar.jpg"/>
+</a>
+<div class="author">
+    <span>XieShaoLin</span>
+</div>
+
+<div class="icon">
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            <a title="email"
+               href="mailto:1909773034@qq.com"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-email"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="qq"
+               href="http://wpa.qq.com/msgrd?v=3&uin=1909773034&site=qq&menu=yes"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-qq"></use>
+                    </svg>
+                
+            </a>
+        
+    
+</div>
+
+
+
+
+
+<ul>
+    <li>
+        <div class="all active" data-rel="全部文章">全部文章
+            
+                <small>(55)</small>
+            
+        </div>
+    </li>
+    
+        
+            
+                
+    <li>
+        <div data-rel="工具">
+            
+            工具
+            <small>(1)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="前端">
+            
+            前端
+            <small>(1)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="后端">
+            
+            后端
+            <small>(45)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="运维">
+            
+            运维
+            <small>(3)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="财经">
+            
+            财经
+            <small>(1)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="英语">
+            
+            英语
+            <small>(2)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+        
+            
+            
+            
+    </div>
+    <div>
+        
+        
+    </div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="55">
+<input type="hidden" id="yelog_site_word_count" value="299.4k">
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        友情链接
+        <i class="iconfont icon-left"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="http://yelog.org/">叶落阁</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <div class="right-top">
+        <div id="default-panel">
+            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
+            <div class="right-title">全部文章</div>
+            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
+        </div>
+        <div id="search-panel">
+            <i class="iconfont icon-left" data-title="返回"></i>
+            <input id="local-search-input" autocomplete="off"/>
+            <label class="border-line" for="input"></label>
+            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
+            <i class="iconfont icon-tag" data-title="标签"></i>
+        </div>
+        <div id="outline-panel" style="display: none">
+            <div class="right-title">大纲</div>
+            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
+        </div>
+    </div>
+
+    <div class="tags-list">
+    <input id="tag-search" />
+    <div class="tag-wrapper">
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>阿里云</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>跨域</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>前锋教育</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>虚拟机</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>AOF</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>CentOS</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>docker</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>economy</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>element-ui</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>English</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>ES6</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>ESLint</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Feign</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>finalshell</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Getway</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>git</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>grammer</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>gulimall</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>hexo</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>idea</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>java</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>JavaScript</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Jedis</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Js</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>JSR303</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Linux</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>listening</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>maven</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>mq</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Mysql</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>MySql</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>MySQL</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Nacos</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>node.js</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>NoSql</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>npm</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>nvm</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>OAuth2</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>OSS</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Prettier</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>python</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>RDB</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>redis</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>RedisTemplate</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>renren-fast</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>spring</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>springboot</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>SpringCloud</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>springSecurity</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>vue</a>
+            </li>
+        
+    </div>
+
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/InstallMySQL8/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL的安装、卸载和启动">MySQL的安装、卸载和启动</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/MysqlIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL的索引原理和语法">MySQL的索引原理和语法</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/MySQLLock/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：锁">MySQL：锁</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/SQLTips/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：建议MySQL使用哪个索引">MySQL：建议MySQL使用哪个索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/SQLOptimization/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：SQL优化">MySQL：SQL优化</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/combinedIndexColumnIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL:联合索引和单列索引">MySQL:联合索引和单列索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/coveringIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="覆盖索引与锁表">覆盖索引与锁表</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/indexDesign/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：如何设计索引">MySQL：如何设计索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/invalidIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：索引失效">MySQL：索引失效</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/mysqlEngine/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL的存储引擎">MySQL的存储引擎</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/performanceAnalysis/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：慢查询日志、profile、explain">MySQL：慢查询日志、profile、explain</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/prefixIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：前缀索引">MySQL：前缀索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/22/redisPubSub/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="Redis订阅发布">Redis订阅发布</span>
+            <span class="post-date" title="2024-09-22 15:21:35">2024/09/22</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisProblem/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="Redis：缓存穿透、缓存击穿和缓存雪崩">Redis：缓存穿透、缓存击穿和缓存雪崩</span>
+            <span class="post-date" title="2024-09-17 16:33:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisPersistence/"
+           data-tag="redis,RDB,AOF"
+           data-author="" >
+            <span class="post-title" title="Redis持久化">Redis持久化</span>
+            <span class="post-date" title="2024-09-17 16:20:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisTransaction/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="redis的事务">redis的事务</span>
+            <span class="post-date" title="2024-09-17 16:12:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisType/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="redis常用数据类型">redis常用数据类型</span>
+            <span class="post-date" title="2024-09-17 16:04:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisBrief/"
+           data-tag="redis,NoSql"
+           data-author="" >
+            <span class="post-title" title="redis与NoSql的简单介绍">redis与NoSql的简单介绍</span>
+            <span class="post-date" title="2024-09-17 15:59:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisSentinel/"
+           data-tag="Linux,CentOS,虚拟机,redis"
+           data-author="" >
+            <span class="post-title" title="Redis：主从复制与哨兵模式">Redis：主从复制与哨兵模式</span>
+            <span class="post-date" title="2024-09-17 15:59:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redis7SpringBoot/"
+           data-tag="redis,springboot,Jedis,RedisTemplate"
+           data-author="" >
+            <span class="post-title" title="springboot整合redis">springboot整合redis</span>
+            <span class="post-date" title="2024-09-17 15:42:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 运维 "
+           href="/2024/09/17/redis7Install/"
+           data-tag="CentOS,redis,前锋教育"
+           data-author="" >
+            <span class="post-title" title="Redis的安装、卸载、启动和客户端">Redis的安装、卸载、启动和客户端</span>
+            <span class="post-date" title="2024-09-17 15:19:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 前端 "
+           href="/2024/09/17/BasicFrontend/"
+           data-tag="JavaScript,Js,ES6,vue,element-ui"
+           data-author="" >
+            <span class="post-title" title="前端：ES5和Vue的基本用法">前端：ES5和Vue的基本用法</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/OAuth2/"
+           data-tag="OAuth2,spring"
+           data-author="" >
+            <span class="post-title" title="OAuth2和spring">OAuth2和spring</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/SpringCloudBaseUse/"
+           data-tag="SpringCloud,Nacos,Feign,Getway"
+           data-author="" >
+            <span class="post-title" title="SpringCloud：基本使用">SpringCloud：基本使用</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/adminSystem/"
+           data-tag="element-ui,SpringCloud,Feign,gulimall,Prettier,ESLint,跨域,JSR303,OSS,阿里云"
+           data-author="" >
+            <span class="post-title" title="谷粒商城：后台管理系统要点">谷粒商城：后台管理系统要点</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/giliEnviroment/"
+           data-tag="docker,idea,maven,renren-fast,git,nvm,node.js,npm"
+           data-author="" >
+            <span class="post-title" title="谷粒商城：环境搭建">谷粒商城：环境搭建</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/springsecurity/"
+           data-tag="springSecurity"
+           data-author="" >
+            <span class="post-title" title="SpringSecurity">SpringSecurity</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/16/MysqlTransaction/"
+           data-tag="Mysql"
+           data-author="" >
+            <span class="post-title" title="Mysql的事物">Mysql的事物</span>
+            <span class="post-date" title="2024-09-16 14:31:10">2024/09/16</span>
+        </a>
+        
+        
+        <a  class="全部文章 运维 "
+           href="/2024/09/08/finalshell/"
+           data-tag="finalshell,Linux,CentOS,虚拟机"
+           data-author="" >
+            <span class="post-title" title="finalshell与Linux虚拟机的网络配置">finalshell与Linux虚拟机的网络配置</span>
+            <span class="post-date" title="2024-09-08 22:19:10">2024/09/08</span>
+        </a>
+        
+        
+        <a  class="全部文章 英语 "
+           href="/2024/03/25/rabbitGrammer/"
+           data-tag="English,grammer"
+           data-author="" >
+            <span class="post-title" title="英语兔英语语法">英语兔英语语法</span>
+            <span class="post-date" title="2024-03-25 23:12:24">2024/03/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 工具 "
+           href="/2024/03/25/hexoStartFast/"
+           data-tag="hexo"
+           data-author="" >
+            <span class="post-title" title="hexo搭建静态博客">hexo搭建静态博客</span>
+            <span class="post-date" title="2024-03-25 22:14:10">2024/03/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/03/25/PythonBase/"
+           data-tag="python"
+           data-author="" >
+            <span class="post-title" title="Python语法基数">Python语法基数</span>
+            <span class="post-date" title="2024-03-25 22:08:07">2024/03/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 英语 "
+           href="/2023/12/14/heqiongListening/"
+           data-tag="listening"
+           data-author="" >
+            <span class="post-title" title="何琼雅思听力">何琼雅思听力</span>
+            <span class="post-date" title="2023-12-14 00:00:00">2023/12/14</span>
+        </a>
+        
+        
+        <a  class="全部文章 财经 "
+           href="/2023/05/23/EconomicMachine/"
+           data-tag="economy"
+           data-author="" >
+            <span class="post-title" title="经济机器是怎样运行的——RayDalio">经济机器是怎样运行的——RayDalio</span>
+            <span class="post-date" title="2023-05-23 00:00:00">2023/05/23</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-02-grammar/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:基本语法">java:基本语法</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-03-array/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:数组">java:数组</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-05-exception/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:异常">java:异常</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-01-install/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:概述+安装">java:概述+安装</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-04-opp/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:面向对象">java:面向对象</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-06-thread/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:多线程">java:多线程</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-08-time/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:时间相关API">java:时间相关API</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-07-string/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:字符串">java:字符串</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-09-sort/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:比较器">java:比较器</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-11-annotation/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:注解">java:注解</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-10-enum/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:枚举">java:枚举</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-12-collection/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:集合">java:集合</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-13-generics/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:泛型">java:泛型</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-14-IO/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:IO流">java:IO流</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-15-net/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:网络编程">java:网络编程</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-16-reflect/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:反射">java:反射</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 运维 "
+           href="/2020/07/13/dockerBase/"
+           data-tag="docker"
+           data-author="" >
+            <span class="post-title" title="docker 基础">docker 基础</span>
+            <span class="post-date" title="2020-07-13 20:46:25">2020/07/13</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/01/01/MySQLCrashCourse/"
+           data-tag="MySql"
+           data-author="" >
+            <span class="post-title" title="MySQL:必知必会">MySQL:必知必会</span>
+            <span class="post-date" title="2020-01-01 00:00:00">2020/01/01</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/01/01/RocketMq/"
+           data-tag="mq"
+           data-author="" >
+            <span class="post-title" title="RocketMq:分布式消息队列">RocketMq:分布式消息队列</span>
+            <span class="post-date" title="2020-01-01 00:00:00">2020/01/01</span>
+        </a>
+        
+        
+        <a  class="全部文章 "
+           href="/2019/09/29/java-17-new8/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java8新特性：lambda表达式+Stream流">java8新特性：lambda表达式+Stream流</span>
+            <span class="post-date" title="2019-09-29 00:00:00">2019/09/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 "
+           href="/2019/09/29/java-18-above8/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java8以后的新特性">java8以后的新特性</span>
+            <span class="post-date" title="2019-09-29 00:00:00">2019/09/29</span>
+        </a>
+        
+        <div id="no-item-tips">
+
+        </div>
+    </nav>
+    <div id="outline-list">
+    </div>
+</div>
+
+    </div>
+    <div class="hide-list">
+        <div class="semicircle" data-title="切换全屏 快捷键 s">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div id="post">
+    <div class="pjax">
+        <article id="post-java-03-array" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">java:数组</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            <i class="iconfont icon-category"></i>
+            
+            
+            <a  data-rel="后端">后端</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            <i class="iconfont icon-tag"></i>
+            
+            <a class="color5">java</a>
+            
+        </span>
+        
+    </div>
+    <div class="article-meta">
+        
+            发布时间 : <time class="date" title='最后更新: 2024-03-28 00:21:05'>2020-12-29 00:00</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        <span>字数:5k</span>
+        
+        
+        <span id="busuanzi_container_page_pv">
+            阅读 :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%B0%E7%BB%84%E7%9A%84%E6%A6%82%E8%BF%B0"><span class="toc-text">数组的概述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E7%BB%B4%E6%95%B0%E7%BB%84%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-text">一维数组的使用</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A4%9A%E7%BB%B4%E6%95%B0%E7%BB%84%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-text">多维数组的使用</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%B0%E7%BB%84%E4%B8%AD%E6%B6%89%E5%8F%8A%E7%9A%84%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95"><span class="toc-text">数组中涉及的常见算法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E7%BB%84%E5%85%83%E7%B4%A0%E7%9A%84%E8%B5%8B%E5%80%BC-%E6%9D%A8%E8%BE%89%E4%B8%89%E8%A7%92%E3%80%81%E5%9B%9E%E5%BD%A2%E6%95%B0%E7%AD%89"><span class="toc-text">数组元素的赋值(杨辉三角、回形数等)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B1%82%E6%95%B0%E5%80%BC%E5%9E%8B%E6%95%B0%E7%BB%84%E4%B8%AD%E5%85%83%E7%B4%A0%E7%9A%84%E6%9C%80%E5%A4%A7%E5%80%BC%E3%80%81%E6%9C%80%E5%B0%8F%E5%80%BC%E3%80%81%E5%B9%B3%E5%9D%87%E6%95%B0%E3%80%81%E6%80%BB%E5%92%8C%E7%AD%89"><span class="toc-text">求数值型数组中元素的最大值、最小值、平均数、总和等</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E7%BB%84%E7%9A%84%E5%A4%8D%E5%88%B6%E3%80%81%E5%8F%8D%E8%BD%AC%E3%80%81%E6%9F%A5%E6%89%BE-%E7%BA%BF%E6%80%A7%E6%9F%A5%E6%89%BE%E3%80%81%E4%BA%8C%E5%88%86%E6%B3%95%E6%9F%A5%E6%89%BE"><span class="toc-text">数组的复制、反转、查找(线性查找、二分法查找)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E7%BB%84%E5%85%83%E7%B4%A0%E7%9A%84%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95"><span class="toc-text">数组元素的排序算法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Arrays-%E5%B7%A5%E5%85%B7%E7%B1%BB%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-text">Arrays 工具类的使用</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text"></span></a></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>课程：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Kb411W75N">宋红康 JAVA</a></p>
+<h1 id="数组的概述"><a href="#数组的概述" class="headerlink" title="数组的概述"></a>数组的概述</h1><ol>
+<li><p>数组(Array)：就是<strong>相同数据类型</strong>的元素按一定顺序排列的集合，就是把有限个类型相同的变量用一个名字命名，以便统一管理他们，然后用编号区分他们，这个名字称为<strong>数组名</strong>，编号称为<strong>下标或索引</strong>(index)。组成数组的各个变量称为数组的<strong>元素</strong>(element)。数组中元素的个数称为<strong>数组的长度</strong>(length)。一维数组的使用</p>
+<img src="array/0023.png" width="500">
+</li>
+<li><p><strong>数组本身是引用数据类型，而数组中的元素可以是任何数据类型，包括基本数据类型和引用数据类型。</strong></p>
+</li>
+<li><p>创建数组对象会在内存中开辟一整块连续的空间，而数组名中引用的是这块连续空间的首地址。</p>
+</li>
+<li><p>数组的长度一旦确定，就不能修改。</p>
+</li>
+<li><p>我们可以直接通过下标(或索引)的方式调用指定位置的元素，速度很快。</p>
+</li>
+<li><p>数组的分类:</p>
+<ul>
+<li>按照维度:一维数组、二维数组、三维数组、…</li>
+<li>按照元素的数据类型分:基本数据类型元素的数组、引用数据类型元素的数组(即对象数组)</li>
+</ul>
+</li>
+</ol>
+<h1 id="一维数组的使用"><a href="#一维数组的使用" class="headerlink" title="一维数组的使用"></a>一维数组的使用</h1><ol>
+<li><p>声明和初始化</p>
+<ul>
+<li><p>数组的声明</p>
+<ul>
+<li>元素的数据类型[ ] 一维数组的名称;</li>
+<li>元素的数据类型 一维数组名[ ];</li>
+</ul>
+</li>
+<li><p>初始化</p>
+<ul>
+<li><p>静态初始化：立即赋值</p>
+<ul>
+<li><p>数据类型[] 数组名 &#x3D; {元素 1,元素 2,元素 3…};</p>
+</li>
+<li><p>数据类型[] 数组名 &#x3D; new 数据类型[]{元素 1,元素 2,元素 3…};</p>
+</li>
+<li><p>数据类型[] 数组名;</p>
+<p>数组名&#x3D; new 数据类型[]{元素 1,元素 2,元素 3…};</p>
+</li>
+</ul>
+</li>
+<li><p>动态初始化：规定长度，没赋值</p>
+<ul>
+<li><p>数组存储的元素的数据类型[ ] 数组名字 &#x3D; new 数组存储的元素的数据类型[长度];</p>
+</li>
+<li><p>数组存储的数据类型[ ] 数组名字;</p>
+<p>数组名字 &#x3D; new 数组存储的数据类型[长度];</p>
+</li>
+</ul>
+</li>
+<li><p>元素的类型可以是任意的 Java 的数据类型。例如：int, String, Student 等</p>
+</li>
+<li><p><strong>new</strong>：关键字，创建数组使用的关键字。因为数组本身是引用数据类型，所以要用 new 创建数组对象。</p>
+<ul>
+<li>在 Java 中 new 的操作往往意味着在内存中<strong>开辟新的空间</strong>，<strong>这个内存空间分配在内存的堆区</strong>。</li>
+<li><strong>堆是用来存放由 new 创建的对象和数组</strong>，即动态申请的内存都存放在堆区。<strong>栈</strong>是用来存放在方法中定义的一些<strong>基本类型的变量</strong>和<strong>对象的引用变量</strong>。</li>
+</ul>
+</li>
+<li><p><strong>数组有定长特性，长度一旦指定，不可更改。</strong></p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>一维数组的引用（调用）：数组名[下标]，如：array[0]</p>
+<ul>
+<li>数组的角标（或索引）从 0 开始的，到数组的长度-1 结束。</li>
+<li>任何获取数组长度：数组.length</li>
+</ul>
+</li>
+<li><p>如何遍历数组：for 循环语句</p>
+</li>
+<li><p>数组元素的默认初始化值</p>
+<ul>
+<li>数组元素是整型：0；long 是 0L</li>
+<li>数组元素是浮点型：0.0；float 是 0.0F</li>
+<li>数组元素是 char 型：0 或’\u0000’（表现为空），而非’0’</li>
+<li>数组元素是 boolean 型：false</li>
+<li>引用类型：null</li>
+</ul>
+</li>
+<li><p>数组的内存解析</p>
+<ul>
+<li><p>内存的简化结构</p>
+<img src="array/0024.png" width="500">
+</li>
+<li><p>一维数组的内存解析</p>
+<img src="array/0025.png" width="500">
+
+<ul>
+<li>首先，放在 main 方法里面的都是局部变量，<strong>局部变量放在栈空间中</strong></li>
+<li>new 的结构在堆空间中</li>
+<li>int[]arr：数组声明，在栈空间中加载一个叫 arr 的变量</li>
+<li>new int[]{1,2,3}：实际上做了两件事情<ul>
+<li>第一件事情：在堆空间中开辟了一个长度为 3 的数组的内存空间，并生成了一个首地址值（0x34ab）同时把地址值赋给栈空间的 arr ，这样栈空间的 arr 就可以通过地址值找到对应数据，并且初始化数组值（默认值 0）</li>
+<li>第二件事情：把{1，2，3}的值分别赋值给对应位置的数组</li>
+</ul>
+</li>
+<li>String[] arr1：在栈空间又声明一个 arr1</li>
+<li>new String[4]：在堆空间中开辟一个长度为 4 的数组内存，同时生成一个首地址值（0x12ab），然后赋给 arr1。开始时是默认值 null</li>
+<li>arr1[1]：通过地址值和角标找到堆空间中对应的值</li>
+<li>arr1[1] &#x3D; “刘德华”：然后把“刘德华”这个值赋给对应的内存空间</li>
+<li>arr1[2] &#x3D; “张学友”：同上</li>
+<li>new String[3]：在堆空间又创建了一个长度为 3 的数组的内存空间，并生成首地址值（0x5566）</li>
+<li>arr1 &#x3D; new String[3]：又把地址值（0x5566）赋值给 arr1，于是 arr1 指向（0x12ab）的指针就没有了，而变成指向（0x5566）。最后（0x5566）的默认初始化值为 null</li>
+<li>sysout（arr1[1])：通过新的地址值和指针得到的输出结果是 null</li>
+<li>而对于没有指针指向的数组，系统会根据垃圾回收机制（引用计数算法）在某个时间把该内存空间清空</li>
+<li>当 main 方法执行完成之后，变量的作用域就没了，于是相继的 arr1 出栈，（0x5566）内存空间被回收；然后 arr 出栈，（0x34ab）内存空间被垃圾回收器回收</li>
+<li><strong>注意：对于 string 类型的数组，上面“刘德华”和“张学友”并不是直接放在堆空间中</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h1 id="多维数组的使用"><a href="#多维数组的使用" class="headerlink" title="多维数组的使用"></a>多维数组的使用</h1><ol>
+<li><p>对于二维数组的理解：对于二维数组的理解，我们可以看成是一维数组 array1 又作为另一个一维数组 array2 的元素而存在。其实，从数组底层的运行机制来看，其实没有多维数组。</p>
+</li>
+<li><p>二维数组的声明和初始化</p>
+<ul>
+<li><p>声明：</p>
+<ul>
+<li><strong>元素的数据类型</strong><code>[ ][ ]</code> 二维数组的名称（<strong>推荐</strong>）：<code>int[][] arr</code></li>
+<li>元素的数据类型 <code>二维数组名[][]</code>：<code>int arr[][] </code></li>
+<li>元素的数据类型[] <code>二维数组名[]</code>：<code>int[] arr[]</code></li>
+</ul>
+</li>
+<li><p>静态初始化</p>
+<pre><code class="java">public class ArraysTest &#123;
+    public static void main(String[] args) &#123;
+        /*
+        元素的数据类型[][] 二维数组名 = new 元素的数据类型[][]&#123;
+            &#123;元素1，元素2，元素3 。。。&#125;,
+            &#123;第二行的值列表&#125;,
+            ...
+            &#123;第n行的值列表&#125;
+        &#125;;
+  ------------------------------------------------------------
+            元素的数据类型[][] 二维数组名;
+        二维数组名 = new 元素的数据类型[][]&#123;
+                    &#123;元素1，元素2，元素3 。。。&#125;,
+                    &#123;第二行的值列表&#125;,
+                    ...
+                    &#123;第n行的值列表&#125;
+                &#125;;
+        */
+         int[][] arr;
+        arr = new int[][]&#123;
+                &#123;1,2,3&#125;,
+                &#123;4,5,6&#125;,
+                &#123;7,8,9&#125;
+            &#125;;
+        /*
+        元素的数据类型[][] 二维数组的名称 = &#123;
+                    &#123;元素1，元素2，元素3 。。。&#125;,
+                    &#123;第二行的值列表&#125;,
+                    ...
+                    &#123;第n行的值列表&#125;
+                &#125;;
+        */
+
+        int[][] arr = &#123;
+            &#123;1,2,3&#125;,
+            &#123;4,5,6&#125;,
+            &#123;7,8,9&#125;
+        &#125;;
+    &#125;
+&#125;
+</code></pre>
+</li>
+<li><p>动态初始化</p>
+<ul>
+<li><p>规则二维表：每一行的列数是相同的</p>
+<pre><code class="java">public class ArraysTest &#123;
+    public static void main(String[] args) &#123;
+          //（1）确定行数和列数
+        // 元素的数据类型[][] 二维数组名 = new 元素的数据类型[m][n];
+       int[][]arr=new int[3][2];
+        // m:表示这个二维数组有多少个一维数组。或者说一共二维表有几行
+        // n:表示每一个一维数组的元素有多少个。或者说每一行共有一个单元格
+        //此时创建完数组，行数、列数确定，而且元素也都有默认值
+    //（2）再为元素赋新值
+     //   二维数组名[行下标][列下标] = 值;
+        arr[0][0]=1;
+    &#125;
+&#125;
+</code></pre>
+</li>
+<li><p>不规则：每一行的列数可能不一样</p>
+<pre><code class="java">public class ArraysTest &#123;
+    public static void main(String[] args) &#123;
+            //（1）先确定总行数
+            //  元素的数据类型[][] 二维数组名 = new 元素的数据类型[总行数][];
+           int[][]arr=new int[3][];
+           //此时只是确定了总行数，每一行里面现在是null
+           //（2）再确定每一行的列数，创建每一行的一维数组
+           //二维数组名[行下标] = new 元素的数据类型[该行的总列数];
+           //此时已经new完的行的元素就有默认值了，没有new的行还是null
+          //(3)再为元素赋值
+          //二维数组名[行下标][列下标] = 值;
+          arr[0][5]=0;
+    &#125;
+&#125;
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>如何调用数组的指定位置的元素：利用下角标：<code>arr1[0][1]</code></p>
+</li>
+<li><p>如何获取数组的长度：arr4.length</p>
+</li>
+<li><p>如何遍历数组：双重 for 循环</p>
+</li>
+<li><p>数组元素的默认初始化值</p>
+<ul>
+<li><p>数组元素: 二维数组分为外层数组的元素，内层数组的元素</p>
+<p>如：<code>int[][]arr = new int[4][3];</code></p>
+<ul>
+<li>外层元素：<code>arr[0]</code>,<code>arr[1]</code>等</li>
+<li>内层元素：<code>arr[0][0]</code>,<code>arr[1][2]</code>等</li>
+</ul>
+</li>
+<li><p><strong>针对于初始化方式一：比如：<code>int[][] arr = new int[4][3];</code></strong></p>
+<p>外层元素的初始化值为：地址值</p>
+<p>内层元素的初始化值为：与一维数组初始化情况相同</p>
+</li>
+<li><p><strong>针对于初始化方式二：比如：<code>int[][] arr = new int[4][];</code></strong></p>
+<p>外层元素的初始化值为：null</p>
+<p>内层元素的初始化值为：不能调用，否则报错。</p>
+</li>
+</ul>
+</li>
+<li><p>数组的内存解析</p>
+<img src="array/0026.png" width="500">
+
+<ul>
+<li><code>int[][] arr1 = new int[4][]</code>：在栈空间中声明了一个 arr1 的变量，然后再堆空间中开辟了一个长度为 4 的二维数组的内存空间，生成首地址值（0x1234)，然后把首地址值赋给栈空间的 arr1，通过地址值，栈空间的 arr1 就可以指向堆空间的（0x1234)。因为二维数组的每个位置都还没赋值，二维数组的每个元素其实是一个一维数组，是一个引用类型，所有每个位置的默认初始化为 null</li>
+<li><code>arr1[1] = new int[]&#123;1,2,3&#125;</code>：在堆空间里面开辟了长度为 3 的一维数组的内存空间，生成首地址值（0x7788），然后讲首地址值赋给 arr1[1]，arr1[1]就可以通过首地址值找到对应数据。arr1[1]是一个一维数组，对应的元素就是一个 int 的整数类型的数据，因此默认值是 0，然后把{1，2，3}赋给各个位置上</li>
+<li><code>arr1[2] = new int[4]</code>：开辟一个长度为 4 的一维数组空间（0x6677），并赋值</li>
+<li><code>arr1[2][1] = 30</code> ：通过（0x1234)找到外层数组，然后通过<code>arr1[2]</code>找到对应的（0x6677）的一维数组，通过<code>arr1[2][1]</code>找到（0x6677）的第 2 个元素，并赋值 30。</li>
+</ul>
+</li>
+</ol>
+<h1 id="数组中涉及的常见算法"><a href="#数组中涉及的常见算法" class="headerlink" title="数组中涉及的常见算法"></a>数组中涉及的常见算法</h1><h2 id="数组元素的赋值-杨辉三角、回形数等"><a href="#数组元素的赋值-杨辉三角、回形数等" class="headerlink" title="数组元素的赋值(杨辉三角、回形数等)"></a>数组元素的赋值(杨辉三角、回形数等)</h2><img src="array/0027.png" width="500">
+
+<pre><code class="java"> /*
+ * 使用二维数组打印一个 10 行杨辉三角。
+
+【提示】
+ 1. 第一行有 1 个元素, 第 n 行有 n 个元素
+ 2. 每一行的第一个元素和最后一个元素都是 1
+ 3. 从第三行开始, 对于非第一个元素和最后一个元素的元素。即：
+yanghui[i][j] = yanghui[i-1][j-1] + yanghui[i-1][j];
+ *
+ */
+public class YangHuiTest &#123;
+    public static void main(String[] args) &#123;
+        //1.声明并初始化二维数组
+        int[][] yangHui = new int[10][];
+        //2.给数组的元素赋值
+        for(int i = 0;i &lt; yangHui.length;i++)&#123;
+            yangHui[i] = new int[i + 1];
+            //2.1 给首末元素赋值
+            yangHui[i][0] = yangHui[i][i] = 1;
+            //2.2 给每行的非首末元素赋值
+            //if(i &gt; 1)&#123;
+            for(int j = 1;j &lt; yangHui[i].length - 1;j++)&#123;
+                yangHui[i][j] = yangHui[i-1][j-1] + yangHui[i-1][j];
+            &#125;
+            //&#125;
+        &#125;
+        //3.遍历二维数组
+        for(int i = 0;i &lt; yangHui.length;i++)&#123;
+            for(int j = 0;j &lt; yangHui[i].length;j++)&#123;
+                System.out.print(yangHui[i][j] + &quot;  &quot;);
+            &#125;
+            System.out.println();
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<h2 id="求数值型数组中元素的最大值、最小值、平均数、总和等"><a href="#求数值型数组中元素的最大值、最小值、平均数、总和等" class="headerlink" title="求数值型数组中元素的最大值、最小值、平均数、总和等"></a>求数值型数组中元素的最大值、最小值、平均数、总和等</h2><pre><code class="java">/*
+ * 算法的考查：求数值型数组中元素的最大值、最小值、平均数、总和等
+ *
+ * 定义一个int型的一维数组，包含10个元素，分别赋一些随机整数，
+ * 然后求出所有元素的最大值，最小值，和值，平均值，并输出出来。
+ * 要求：所有随机数都是两位数。
+ *
+ * [10,99]
+ * 公式：(int)(Math.random() * (99 - 10 + 1) + 10)
+ *
+ */
+public class ArrayTest1 &#123;
+    public static void main(String[] args) &#123;
+        int[] arr = new int[10];
+
+        for(int i = 0;i &lt; arr.length;i++)&#123;
+            arr[i] = (int)(Math.random() * (99 - 10 + 1) + 10);
+        &#125;
+
+        //遍历
+        for(int i = 0;i &lt; arr.length;i++)&#123;
+            System.out.print(arr[i] + &quot;\t&quot;);
+        &#125;
+        System.out.println();
+
+        //求数组元素的最大值
+        int maxValue = arr[0];
+        for(int i = 1;i &lt; arr.length;i++)&#123;
+            if(maxValue &lt; arr[i])&#123;
+                maxValue = arr[i];
+            &#125;
+        &#125;
+        System.out.println(&quot;最大值为：&quot; + maxValue);
+
+        //求数组元素的最小值
+        int minValue = arr[0];
+        for(int i = 1;i &lt; arr.length;i++)&#123;
+            if(minValue &gt; arr[i])&#123;
+                minValue = arr[i];
+            &#125;
+        &#125;
+        System.out.println(&quot;最小值为：&quot; + minValue);
+        //求数组元素的总和
+        int sum = 0;
+        for(int i = 0;i &lt; arr.length;i++)&#123;
+            sum += arr[i];
+        &#125;
+        System.out.println(&quot;总和为：&quot; + sum);
+        //求数组元素的平均数
+        int avgValue = sum / arr.length;
+        System.out.println(&quot;平均数为：&quot; + avgValue);
+    &#125;
+&#125;
+</code></pre>
+<h2 id="数组的复制、反转、查找-线性查找、二分法查找"><a href="#数组的复制、反转、查找-线性查找、二分法查找" class="headerlink" title="数组的复制、反转、查找(线性查找、二分法查找)"></a>数组的复制、反转、查找(线性查找、二分法查找)</h2><pre><code class="java"> /*
+   使用简单数组
+  (1)创建一个名为ArrayExer2的类，在main()方法中声明array1和array2两个变量，他们是int[]类型的数组。
+  (2)使用大括号&#123;&#125;，把array1初始化为8个素数：2,3,5,7,11,13,17,19。
+  (3)显示array1的内容。
+  (4)赋值array2变量等于array1，修改array2中的偶索引元素，使其等于索引值(如array[0]=0,array[2]=2)。打印出array1。
+  思考：array1和array2是什么关系？array1和array2地址值相同，都指向了堆空间的唯一的一个数组实体。
+   拓展：修改题目，实现array2对array1数组的复制
+*/
+  public class ArrayExer2 &#123;
+      public static void main(String[] args) &#123;  //alt + /
+          int[] array1,array2;
+
+          array1 = new int[]&#123;2,3,5,7,11,13,17,19&#125;;
+
+          //显示array1的内容
+          for(int i = 0;i &lt; array1.length;i++)&#123;
+              System.out.print(array1[i] + &quot;\t&quot;);
+          &#125;
+          //赋值array2变量等于array1
+          //不能称作数组的复制。只是把array1的地址值给了array2
+          array2 = array1;
+
+          //修改array2中的偶索引元素，使其等于索引值(如array[0]=0,array[2]=2)
+          for(int i = 0;i &lt; array2.length;i++)&#123;
+              if(i % 2 == 0)&#123;
+                  array2[i] = i;
+              &#125;
+          &#125;
+          System.out.println();
+          //打印出array1
+          for(int i = 0;i &lt; array1.length;i++)&#123;
+              System.out.print(array1[i] + &quot;\t&quot;);
+          &#125;
+      &#125;
+  &#125;
+
+
+
+/*
+ * 使用简单数组
+ * 拓展：修改题目，实现array2对array1数组的复制
+ */
+public class ArrayExer3 &#123;
+    public static void main(String[] args) &#123;  //alt + /
+        int[] array1,array2;
+
+        array1 = new int[]&#123;2,3,5,7,11,13,17,19&#125;;
+
+        //显示array1的内容
+        for(int i = 0;i &lt; array1.length;i++)&#123;
+            System.out.print(array1[i] + &quot;\t&quot;);
+        &#125;
+        //数组的复制:
+        array2 = new int[array1.length];
+        for(int i = 0;i &lt; array2.length;i++)&#123;
+            array2[i] = array1[i];
+        &#125;
+        //修改array2中的偶索引元素，使其等于索引值(如array[0]=0,array[2]=2)
+        for(int i = 0;i &lt; array2.length;i++)&#123;
+            if(i % 2 == 0)&#123;
+                array2[i] = i;
+            &#125;
+        &#125;
+        System.out.println();
+        //打印出array1
+        for(int i = 0;i &lt; array1.length;i++)&#123;
+            System.out.print(array1[i] + &quot;\t&quot;);
+        &#125;
+    &#125;
+&#125;
+
+
+/*
+ * 算法的考查：数组的复制、反转、查找(线性查找、二分法查找)
+ */
+public class ArrayTest2 &#123;
+
+    public static void main(String[] args) &#123;
+
+        String[] arr = new String[]&#123;&quot;JJ&quot;,&quot;DD&quot;,&quot;MM&quot;,&quot;BB&quot;,&quot;GG&quot;,&quot;AA&quot;&#125;;
+        //数组的复制(区别于数组变量的赋值：arr1 = arr)
+        String[] arr1 = new String[arr.length];
+        for(int i = 0;i &lt; arr1.length;i++)&#123;
+            arr1[i] = arr[i];
+        &#125;
+        //数组的反转
+        //方法一：
+        //    for(int i = 0;i &lt; arr.length / 2;i++)&#123;
+        //       String temp = arr[i];
+        //       arr[i] = arr[arr.length - i -1];
+        //       arr[arr.length - i -1] = temp;
+        //    &#125;
+
+        //方法二：
+        //    for(int i = 0,j = arr.length - 1;i &lt; j;i++,j--)&#123;
+        //       String temp = arr[i];
+        //       arr[i] = arr[j];
+        //       arr[j] = temp;
+        //    &#125;
+        //遍历
+        for(int i = 0;i &lt; arr.length;i++)&#123;
+            System.out.print(arr[i] + &quot;\t&quot;);
+        &#125;
+        System.out.println();
+        //查找（或搜索）
+        //线性查找：
+        String dest = &quot;BB&quot;;
+        dest = &quot;CC&quot;;
+        boolean isFlag = true;
+        for(int i = 0;i &lt; arr.length;i++)&#123;
+            if(dest.equals(arr[i]))&#123;
+                System.out.println(&quot;找到了指定的元素，位置为：&quot; + i);
+                isFlag = false;
+                break;
+            &#125;
+        &#125;
+        if(isFlag)&#123;
+            System.out.println(&quot;很遗憾，没有找到的啦！&quot;);
+        &#125;
+        //二分法查找：(熟悉)
+        //前提：所要查找的数组必须有序。
+        int[] arr2 = new int[]&#123;-98,-34,2,34,54,66,79,105,210,333&#125;;
+        int dest1 = -34;
+        dest1 = 35;
+        int head = 0;//初始的首索引
+        int end = arr2.length - 1;//初始的末索引
+        boolean isFlag1 = true;
+        while(head &lt;= end)&#123;
+            int middle = (head + end)/2;
+            if(dest1 == arr2[middle])&#123;
+                System.out.println(&quot;找到了指定的元素，位置为：&quot; + middle);
+                isFlag1 = false;
+                break;
+            &#125;else if(arr2[middle] &gt; dest1)&#123;
+                end = middle - 1;
+            &#125;else&#123;//arr2[middle] &lt; dest1
+                head = middle + 1;
+            &#125;
+        &#125;
+        if(isFlag1)&#123;
+            System.out.println(&quot;很遗憾，没有找到的啦！&quot;);
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<h2 id="数组元素的排序算法"><a href="#数组元素的排序算法" class="headerlink" title="数组元素的排序算法"></a>数组元素的排序算法</h2><ol>
+<li><p>冒泡排序：</p>
+<ul>
+<li>比较相邻的元素。如果第一个比第二个大(升序)，就交换他们两个。</li>
+<li>对每一对相邻元素作同样的工作，从开始第一对到结尾的最后一对。这步做完后，最后的元素会是最大的数。</li>
+<li>针对所有的元素重复以上的步骤，除了最后一个。</li>
+<li>持续每次对越来越少的元素重复上面的步骤，直到没有任何一对数字需要比较为止。</li>
+</ul>
+<pre><code class="java">/*
+ * 数组的冒泡排序的实现
+ *
+ */
+public class BubbleSortTest &#123;
+    public static void main(String[] args) &#123;
+
+        int[] arr = new int[]&#123;43,32,76,-98,0,64,33,-21,32,99&#125;;
+        //冒泡排序
+        for(int i = 0;i &lt; arr.length - 1;i++)&#123;
+            for(int j = 0;j &lt; arr.length - 1 - i;j++)&#123;
+                if(arr[j] &gt; arr[j + 1])&#123;
+                    int temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
+                &#125;
+            &#125;
+        &#125;
+        for(int i = 0;i &lt; arr.length;i++)&#123;
+            System.out.print(arr[i] + &quot;\t&quot;);
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+</li>
+<li><p>快速排序：</p>
+<ul>
+<li>从数列中挑出一个元素，称为“基准” ( pivot)。</li>
+<li>重新排序数列，所有元素比基准值小的摆放在基准前面，所有元素比基准。值大的摆在基准的后面(相同的数可以到任一-边)。在这个分区结束之后，该基准就处于数列的中间位置。这个称为分区(partition) 操作。</li>
+<li>递归地(recursive) 把小于基准值元素的子数列和大于基准值元素的子数列排序。</li>
+<li>递归的最底部情形，是数列的大小是零或一，也就是永远都已经被排序好了。虽然一直递归下去，但是这个算法总会结束，因为在每次的迭代(iteration)中，它至少会把一-个元素摆到它最后的位置去。</li>
+</ul>
+<pre><code class="java">public class QuickSort implements IArraySort &#123;
+
+    @Override
+    public int[] sort(int[] sourceArray) throws Exception &#123;
+        // 对 arr 进行拷贝，不改变参数内容
+        int[] arr = Arrays.copyOf(sourceArray, sourceArray.length);
+
+        return quickSort(arr, 0, arr.length - 1);
+    &#125;
+
+    private int[] quickSort(int[] arr, int left, int right) &#123;
+        if (left &lt; right) &#123;
+            int partitionIndex = partition(arr, left, right);
+            quickSort(arr, left, partitionIndex - 1);
+            quickSort(arr, partitionIndex + 1, right);
+        &#125;
+        return arr;
+    &#125;
+
+    private int partition(int[] arr, int left, int right) &#123;
+        // 设定基准值（pivot）
+        int pivot = left;
+        int index = pivot + 1;
+        for (int i = index; i &lt;= right; i++) &#123;
+            if (arr[i] &lt; arr[pivot]) &#123;// 找到 小于arr[pivot] 的index
+                swap(arr, i, index);// 把小于arr[pivot]的数放在最左边
+                index++; // 记录小于arr[pivot]的数字
+            &#125;
+        &#125;
+        // index - 1是遍历一次找到的最后一个小于arr[pivot]的数
+        swap(arr, pivot, index - 1);
+        return index - 1;
+    &#125;
+
+    private void swap(int[] arr, int i, int j) &#123;
+        int temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    &#125;
+
+&#125;
+</code></pre>
+</li>
+</ol>
+<h1 id="Arrays-工具类的使用"><a href="#Arrays-工具类的使用" class="headerlink" title="Arrays 工具类的使用"></a>Arrays 工具类的使用</h1><pre><code class="java">public class ArraysTest &#123;
+        public static void main(String[] args) &#123;
+
+            //1.boolean equals(int[] a,int[] b):判断两个数组是否相等。比较的是两个数组的值
+            int[] arr1 = new int[]&#123;1,2,3,4&#125;;
+            int[] arr2 = new int[]&#123;1,3,2,4&#125;;
+            boolean isEquals = Arrays.equals(arr1, arr2);
+            System.out.println(isEquals);//false
+
+            //2.String toString(int[] a):输出数组信息。
+            System.out.println(Arrays.toString(arr1));//[1, 2, 3, 4]
+
+            //3.void fill(int[] a,int val):将指定值填充到数组之中。
+            Arrays.fill(arr1,10);
+            System.out.println(Arrays.toString(arr1));//[10, 10, 10, 10]
+
+            //4.void sort(int[] a):对数组进行排序。
+            Arrays.sort(arr2);//[1, 2, 3, 4]
+            System.out.println(Arrays.toString(arr2));
+
+            //5.int binarySearch(int[] a,int key)
+            int[] arr3 = new int[]&#123;-98,-34,2,34,54,66,79,105,210,333&#125;;
+            // 对排序后的数组进行二分法检索指定的指
+            int index = Arrays.binarySearch(arr3, 210);
+            if(index &gt;= 0)&#123;
+                System.out.println(index);//8
+            &#125;else&#123;
+                System.out.println(&quot;未找到&quot;);
+            &#125;
+        &#125;
+&#125;
+</code></pre>
+<h1 id=""><a href="#" class="headerlink" title=""></a></h1>
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 1909773034@qq.com </span>
+    </div>
+</article>
+
+
+<p>
+    <a  class="dashang" onclick="dashangToggle()">赏</a>
+</p>
+
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">
+    ©2017 XieShaoLin
+</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+
+<div class="hide_box" onclick="dashangToggle()"></div>
+<div class="shang_box">
+    <a class="shang_close"  onclick="dashangToggle()">×</a>
+    <div class="shang_tit">
+        <p>喜欢就点赞,疼爱就打赏</p>
+    </div>
+    <div class="shang_payimg">
+        <div class="pay_img">
+            <img src="/img/alipay.jpg" class="alipay" title="扫码支持">
+            <img src="/img/weixin.jpg" class="weixin" title="扫码支持">
+        </div>
+    </div>
+    <div class="shang_payselect">
+        <span><label><input type="radio" name="pay" checked value="alipay">支付宝</label></span><span><label><input type="radio" name="pay" value="weixin">微信</label></span>
+    </div>
+</div>
+
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
+
+<script src="/js/script.js?v=1.1.0" ></script>
+<script>
+    var img_resize = 'default';
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $("#post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+        $("input[name=pay]").on("click", function () {
+            if($("input[name=pay]:checked").val()=="weixin"){
+                $(".shang_box .shang_payimg .pay_img").addClass("weixin_img");
+            } else {
+                $(".shang_box .shang_payimg .pay_img").removeClass("weixin_img");
+            }
+        })
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+    function dashangToggle() {
+        $(".shang_box").fadeToggle();
+        $(".hide_box").fadeToggle();
+    }
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>

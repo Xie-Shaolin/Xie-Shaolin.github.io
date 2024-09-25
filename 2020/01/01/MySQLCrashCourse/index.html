@@ -1,0 +1,3828 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>MySQL:必知必会 | Notes</title>
+  <meta name="keywords" content=" MySql ">
+  <meta name="description" content="MySQL:必知必会 | Notes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="卸载MySQL停止MySQL服务 systemctl stop mysqld  查询MySQL的安装文件 [root@centos01 ~]# rpm -qa | grep -i mysql mysql-community-client-5.7.28-1.el7.x86_64 mysql-community-server-5.7.28-1.el7.x86_64 mysql-community-co">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL的安装、卸载和启动">
+<meta property="og:url" content="http://example.com/2024/09/25/InstallMySQL8/index.html">
+<meta property="og:site_name" content="Notes">
+<meta property="og:description" content="卸载MySQL停止MySQL服务 systemctl stop mysqld  查询MySQL的安装文件 [root@centos01 ~]# rpm -qa | grep -i mysql mysql-community-client-5.7.28-1.el7.x86_64 mysql-community-server-5.7.28-1.el7.x86_64 mysql-community-co">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2024/09/25/InstallMySQL8/InstallMySQL8/001.png">
+<meta property="og:image" content="http://example.com/2024/09/25/InstallMySQL8/InstallMySQL8/002.png">
+<meta property="og:image" content="http://example.com/2024/09/25/InstallMySQL8/InstallMySQL8/003.png">
+<meta property="article:published_time" content="2024-09-24T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-09-25T10:36:23.945Z">
+<meta property="article:author" content="XieShaoLin">
+<meta property="article:tag" content="MySQL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2024/09/25/InstallMySQL8/InstallMySQL8/001.png">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.1.0" rel="stylesheet">
+
+<link href="/css/hl_theme/github.css?v=1.1.0" rel="stylesheet">
+
+<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
+
+<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="/js/titleTip.js?v=1.1.0" ></script>
+
+<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.1.0" ></script>
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="">
+  <input class="theme_blog_path" value="">
+  <input id="theme_shortcut" value="true" />
+  <input id="theme_highlight_on" value="true" />
+  <input id="theme_code_copy" value="true" />
+</div>
+
+
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/"
+   class="avatar_target">
+    <img class="avatar"
+         src="/img/avatar.jpg"/>
+</a>
+<div class="author">
+    <span>XieShaoLin</span>
+</div>
+
+<div class="icon">
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            <a title="email"
+               href="mailto:1909773034@qq.com"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-email"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="qq"
+               href="http://wpa.qq.com/msgrd?v=3&uin=1909773034&site=qq&menu=yes"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-qq"></use>
+                    </svg>
+                
+            </a>
+        
+    
+</div>
+
+
+
+
+
+<ul>
+    <li>
+        <div class="all active" data-rel="全部文章">全部文章
+            
+                <small>(55)</small>
+            
+        </div>
+    </li>
+    
+        
+            
+                
+    <li>
+        <div data-rel="工具">
+            
+            工具
+            <small>(1)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="前端">
+            
+            前端
+            <small>(1)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="后端">
+            
+            后端
+            <small>(45)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="运维">
+            
+            运维
+            <small>(3)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="财经">
+            
+            财经
+            <small>(1)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="英语">
+            
+            英语
+            <small>(2)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+        
+            
+            
+            
+    </div>
+    <div>
+        
+        
+    </div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="55">
+<input type="hidden" id="yelog_site_word_count" value="299.4k">
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        友情链接
+        <i class="iconfont icon-left"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="http://yelog.org/">叶落阁</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <div class="right-top">
+        <div id="default-panel">
+            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
+            <div class="right-title">全部文章</div>
+            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
+        </div>
+        <div id="search-panel">
+            <i class="iconfont icon-left" data-title="返回"></i>
+            <input id="local-search-input" autocomplete="off"/>
+            <label class="border-line" for="input"></label>
+            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
+            <i class="iconfont icon-tag" data-title="标签"></i>
+        </div>
+        <div id="outline-panel" style="display: none">
+            <div class="right-title">大纲</div>
+            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
+        </div>
+    </div>
+
+    <div class="tags-list">
+    <input id="tag-search" />
+    <div class="tag-wrapper">
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>阿里云</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>跨域</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>前锋教育</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>虚拟机</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>AOF</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>CentOS</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>docker</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>economy</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>element-ui</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>English</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>ES6</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>ESLint</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Feign</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>finalshell</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Getway</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>git</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>grammer</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>gulimall</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>hexo</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>idea</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>java</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>JavaScript</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Jedis</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Js</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>JSR303</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Linux</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>listening</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>maven</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>mq</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Mysql</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>MySql</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>MySQL</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Nacos</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>node.js</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>NoSql</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>npm</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>nvm</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>OAuth2</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>OSS</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Prettier</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>python</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>RDB</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>redis</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>RedisTemplate</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>renren-fast</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>spring</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>springboot</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>SpringCloud</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>springSecurity</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>vue</a>
+            </li>
+        
+    </div>
+
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/InstallMySQL8/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL的安装、卸载和启动">MySQL的安装、卸载和启动</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/MysqlIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL的索引原理和语法">MySQL的索引原理和语法</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/MySQLLock/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：锁">MySQL：锁</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/SQLTips/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：建议MySQL使用哪个索引">MySQL：建议MySQL使用哪个索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/SQLOptimization/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：SQL优化">MySQL：SQL优化</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/combinedIndexColumnIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL:联合索引和单列索引">MySQL:联合索引和单列索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/coveringIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="覆盖索引与锁表">覆盖索引与锁表</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/indexDesign/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：如何设计索引">MySQL：如何设计索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/invalidIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：索引失效">MySQL：索引失效</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/mysqlEngine/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL的存储引擎">MySQL的存储引擎</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/performanceAnalysis/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：慢查询日志、profile、explain">MySQL：慢查询日志、profile、explain</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/prefixIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：前缀索引">MySQL：前缀索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/22/redisPubSub/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="Redis订阅发布">Redis订阅发布</span>
+            <span class="post-date" title="2024-09-22 15:21:35">2024/09/22</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisProblem/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="Redis：缓存穿透、缓存击穿和缓存雪崩">Redis：缓存穿透、缓存击穿和缓存雪崩</span>
+            <span class="post-date" title="2024-09-17 16:33:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisPersistence/"
+           data-tag="redis,RDB,AOF"
+           data-author="" >
+            <span class="post-title" title="Redis持久化">Redis持久化</span>
+            <span class="post-date" title="2024-09-17 16:20:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisTransaction/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="redis的事务">redis的事务</span>
+            <span class="post-date" title="2024-09-17 16:12:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisType/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="redis常用数据类型">redis常用数据类型</span>
+            <span class="post-date" title="2024-09-17 16:04:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisBrief/"
+           data-tag="redis,NoSql"
+           data-author="" >
+            <span class="post-title" title="redis与NoSql的简单介绍">redis与NoSql的简单介绍</span>
+            <span class="post-date" title="2024-09-17 15:59:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisSentinel/"
+           data-tag="Linux,CentOS,虚拟机,redis"
+           data-author="" >
+            <span class="post-title" title="Redis：主从复制与哨兵模式">Redis：主从复制与哨兵模式</span>
+            <span class="post-date" title="2024-09-17 15:59:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redis7SpringBoot/"
+           data-tag="redis,springboot,Jedis,RedisTemplate"
+           data-author="" >
+            <span class="post-title" title="springboot整合redis">springboot整合redis</span>
+            <span class="post-date" title="2024-09-17 15:42:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 运维 "
+           href="/2024/09/17/redis7Install/"
+           data-tag="CentOS,redis,前锋教育"
+           data-author="" >
+            <span class="post-title" title="Redis的安装、卸载、启动和客户端">Redis的安装、卸载、启动和客户端</span>
+            <span class="post-date" title="2024-09-17 15:19:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 前端 "
+           href="/2024/09/17/BasicFrontend/"
+           data-tag="JavaScript,Js,ES6,vue,element-ui"
+           data-author="" >
+            <span class="post-title" title="前端：ES5和Vue的基本用法">前端：ES5和Vue的基本用法</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/OAuth2/"
+           data-tag="OAuth2,spring"
+           data-author="" >
+            <span class="post-title" title="OAuth2和spring">OAuth2和spring</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/SpringCloudBaseUse/"
+           data-tag="SpringCloud,Nacos,Feign,Getway"
+           data-author="" >
+            <span class="post-title" title="SpringCloud：基本使用">SpringCloud：基本使用</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/adminSystem/"
+           data-tag="element-ui,SpringCloud,Feign,gulimall,Prettier,ESLint,跨域,JSR303,OSS,阿里云"
+           data-author="" >
+            <span class="post-title" title="谷粒商城：后台管理系统要点">谷粒商城：后台管理系统要点</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/giliEnviroment/"
+           data-tag="docker,idea,maven,renren-fast,git,nvm,node.js,npm"
+           data-author="" >
+            <span class="post-title" title="谷粒商城：环境搭建">谷粒商城：环境搭建</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/springsecurity/"
+           data-tag="springSecurity"
+           data-author="" >
+            <span class="post-title" title="SpringSecurity">SpringSecurity</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/16/MysqlTransaction/"
+           data-tag="Mysql"
+           data-author="" >
+            <span class="post-title" title="Mysql的事物">Mysql的事物</span>
+            <span class="post-date" title="2024-09-16 14:31:10">2024/09/16</span>
+        </a>
+        
+        
+        <a  class="全部文章 运维 "
+           href="/2024/09/08/finalshell/"
+           data-tag="finalshell,Linux,CentOS,虚拟机"
+           data-author="" >
+            <span class="post-title" title="finalshell与Linux虚拟机的网络配置">finalshell与Linux虚拟机的网络配置</span>
+            <span class="post-date" title="2024-09-08 22:19:10">2024/09/08</span>
+        </a>
+        
+        
+        <a  class="全部文章 英语 "
+           href="/2024/03/25/rabbitGrammer/"
+           data-tag="English,grammer"
+           data-author="" >
+            <span class="post-title" title="英语兔英语语法">英语兔英语语法</span>
+            <span class="post-date" title="2024-03-25 23:12:24">2024/03/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 工具 "
+           href="/2024/03/25/hexoStartFast/"
+           data-tag="hexo"
+           data-author="" >
+            <span class="post-title" title="hexo搭建静态博客">hexo搭建静态博客</span>
+            <span class="post-date" title="2024-03-25 22:14:10">2024/03/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/03/25/PythonBase/"
+           data-tag="python"
+           data-author="" >
+            <span class="post-title" title="Python语法基数">Python语法基数</span>
+            <span class="post-date" title="2024-03-25 22:08:07">2024/03/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 英语 "
+           href="/2023/12/14/heqiongListening/"
+           data-tag="listening"
+           data-author="" >
+            <span class="post-title" title="何琼雅思听力">何琼雅思听力</span>
+            <span class="post-date" title="2023-12-14 00:00:00">2023/12/14</span>
+        </a>
+        
+        
+        <a  class="全部文章 财经 "
+           href="/2023/05/23/EconomicMachine/"
+           data-tag="economy"
+           data-author="" >
+            <span class="post-title" title="经济机器是怎样运行的——RayDalio">经济机器是怎样运行的——RayDalio</span>
+            <span class="post-date" title="2023-05-23 00:00:00">2023/05/23</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-02-grammar/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:基本语法">java:基本语法</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-03-array/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:数组">java:数组</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-05-exception/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:异常">java:异常</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-01-install/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:概述+安装">java:概述+安装</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-04-opp/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:面向对象">java:面向对象</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-06-thread/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:多线程">java:多线程</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-08-time/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:时间相关API">java:时间相关API</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-07-string/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:字符串">java:字符串</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-09-sort/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:比较器">java:比较器</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-11-annotation/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:注解">java:注解</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-10-enum/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:枚举">java:枚举</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-12-collection/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:集合">java:集合</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-13-generics/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:泛型">java:泛型</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-14-IO/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:IO流">java:IO流</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-15-net/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:网络编程">java:网络编程</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-16-reflect/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:反射">java:反射</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 运维 "
+           href="/2020/07/13/dockerBase/"
+           data-tag="docker"
+           data-author="" >
+            <span class="post-title" title="docker 基础">docker 基础</span>
+            <span class="post-date" title="2020-07-13 20:46:25">2020/07/13</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/01/01/MySQLCrashCourse/"
+           data-tag="MySql"
+           data-author="" >
+            <span class="post-title" title="MySQL:必知必会">MySQL:必知必会</span>
+            <span class="post-date" title="2020-01-01 00:00:00">2020/01/01</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/01/01/RocketMq/"
+           data-tag="mq"
+           data-author="" >
+            <span class="post-title" title="RocketMq:分布式消息队列">RocketMq:分布式消息队列</span>
+            <span class="post-date" title="2020-01-01 00:00:00">2020/01/01</span>
+        </a>
+        
+        
+        <a  class="全部文章 "
+           href="/2019/09/29/java-17-new8/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java8新特性：lambda表达式+Stream流">java8新特性：lambda表达式+Stream流</span>
+            <span class="post-date" title="2019-09-29 00:00:00">2019/09/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 "
+           href="/2019/09/29/java-18-above8/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java8以后的新特性">java8以后的新特性</span>
+            <span class="post-date" title="2019-09-29 00:00:00">2019/09/29</span>
+        </a>
+        
+        <div id="no-item-tips">
+
+        </div>
+    </nav>
+    <div id="outline-list">
+    </div>
+</div>
+
+    </div>
+    <div class="hide-list">
+        <div class="semicircle" data-title="切换全屏 快捷键 s">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div id="post">
+    <div class="pjax">
+        <article id="post-MySQLCrashCourse" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">MySQL:必知必会</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            <i class="iconfont icon-category"></i>
+            
+            
+            <a  data-rel="后端">后端</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            <i class="iconfont icon-tag"></i>
+            
+            <a class="color1">MySql</a>
+            
+        </span>
+        
+    </div>
+    <div class="article-meta">
+        
+            发布时间 : <time class="date" title='最后更新: 2024-03-28 01:11:35'>2020-01-01 00:00</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        <span>字数:17.6k</span>
+        
+        
+        <span id="busuanzi_container_page_pv">
+            阅读 :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC-1-%E7%AB%A0%EF%BC%9A%E4%BA%86%E8%A7%A3-SQL"><span class="toc-text">第 1 章：了解 SQL</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC-2-%E7%AB%A0%EF%BC%9AMySQL-%E7%AE%80%E4%BB%8B"><span class="toc-text">第 2 章：MySQL 简介</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC-3-%E7%AB%A0%EF%BC%9A%E4%BD%BF%E7%94%A8-MySQL"><span class="toc-text">第 3 章：使用 MySQL</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8-MySQL"><span class="toc-text">启动 MySQL</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MySQL-%E7%9A%84%E7%99%BB%E5%BD%95-mysql-u-root-p"><span class="toc-text">MySQL 的登录: mysql -u root -p</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E6%95%B0%E6%8D%AE%E5%BA%93-create-database-%E6%95%B0%E6%8D%AE%E5%90%8D"><span class="toc-text">创建数据库: create database 数据名</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%89%E6%8B%A9%E6%95%B0%E6%8D%AE%E5%BA%93-use-%E6%95%B0%E6%8D%AE%E5%BA%93%E5%90%8D"><span class="toc-text">选择数据库: use 数据库名</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%86%E8%A7%A3%E6%95%B0%E6%8D%AE%E5%BA%93%E5%92%8C%E8%A1%A8%EF%BC%9Ashow"><span class="toc-text">了解数据库和表：show</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC-4-%E7%AB%A0%EF%BC%9A%E6%A3%80%E7%B4%A2%E6%95%B0%E6%8D%AE-SELECT"><span class="toc-text">第 4 章：检索数据 SELECT</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%95%E5%88%97%E6%9F%A5%E8%AF%A2%EF%BC%9A"><span class="toc-text">单列查询：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E5%88%97%E6%9F%A5%E8%AF%A2"><span class="toc-text">多列查询</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E9%80%9A%E9%85%8D%E7%AC%A6"><span class="toc-text">使用通配符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%BB%E9%87%8D"><span class="toc-text">去重</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%99%90%E5%88%B6%E7%BB%93%E6%9E%9C"><span class="toc-text">限制结果</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%8C%E5%85%A8%E9%99%90%E5%AE%9A%E7%9A%84%E8%A1%A8%E5%90%8D"><span class="toc-text">完全限定的表名</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC-3-%E7%AB%A0%EF%BC%9A%E6%8E%92%E5%BA%8F%E6%A3%80%E7%B4%A2%E6%95%B0%E6%8D%AE-ORDER-BY"><span class="toc-text">第 3 章：排序检索数据 ORDER BY</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC-6-%E7%AB%A0%EF%BC%9A%E8%BF%87%E6%BB%A4%E6%95%B0%E6%8D%AE-%E2%80%94%E2%80%94-%E5%8D%95%E4%B8%AA-where-%E6%9D%A1%E4%BB%B6"><span class="toc-text">第 6 章：过滤数据 —— 单个 where 条件</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC-7-%E7%AB%A0%EF%BC%9A%E8%BF%87%E6%BB%A4%E6%95%B0%E6%8D%AE-%E2%80%94%E2%80%94-%E7%BB%84%E5%90%88-WHERE-IN-NOT"><span class="toc-text">第 7 章：过滤数据 —— 组合 WHERE,IN,NOT</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC-8-%E7%AB%A0%EF%BC%9A%E7%94%A8%E9%80%9A%E9%85%8D%E7%AC%A6%E8%BF%9B%E8%A1%8C%E6%90%9C%E7%B4%A2-%E2%80%94%E2%80%94-LIKE"><span class="toc-text">第 8 章：用通配符进行搜索 —— LIKE</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC-9-%E7%AB%A0%EF%BC%9A%E7%94%A8%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E8%BF%9B%E8%A1%8C%E6%90%9C%E7%B4%A2-%E2%80%94%E2%80%94-REGEXP"><span class="toc-text">第 9 章：用正则表达式进行搜索 —— REGEXP</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC-10-%E7%AB%A0%EF%BC%9A%E5%88%9B%E5%BB%BA%E8%AE%A1%E7%AE%97%E5%AD%97%E6%AE%B5"><span class="toc-text">第 10 章：创建计算字段</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC-11-%E7%AB%A0%EF%BC%9A%E4%BD%BF%E7%94%A8%E5%87%BD%E6%95%B0%E5%A4%84%E7%90%86%E6%95%B0%E6%8D%AE"><span class="toc-text">第 11 章：使用函数处理数据</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%96%87%E6%9C%AC%E5%A4%84%E7%90%86%E5%87%BD%E6%95%B0"><span class="toc-text">1.文本处理函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%97%A5%E6%9C%9F%E5%92%8C%E6%97%B6%E9%97%B4%E5%A4%84%E7%90%86%E5%87%BD%E6%95%B0"><span class="toc-text">2.日期和时间处理函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%95%B0%E5%80%BC%E5%A4%84%E7%90%86%E5%87%BD%E6%95%B0-%E5%BE%88%E5%B0%91%E7%94%A8"><span class="toc-text">3.数值处理函数: 很少用</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC-12-%E7%AB%A0%EF%BC%9A%E6%B1%87%E6%80%BB%E6%95%B0%E6%8D%AE"><span class="toc-text">第 12 章：汇总数据</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC-13-%E7%AB%A0%EF%BC%9A%E5%88%86%E7%BB%84%E6%95%B0%E6%8D%AE"><span class="toc-text">第 13 章：分组数据</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC-14-%E7%AB%A0%EF%BC%9A%E4%BD%BF%E7%94%A8%E5%AD%90%E6%9F%A5%E8%AF%A2"><span class="toc-text">第 14 章：使用子查询</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC-15-%E7%AB%A0%EF%BC%9A%E8%81%94%E7%BB%93%E8%A1%A8"><span class="toc-text">第 15 章：联结表</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC-16-%E7%AB%A0%EF%BC%9A%E5%88%9B%E5%BB%BA%E9%AB%98%E7%BA%A7%E8%81%94%E7%BB%93"><span class="toc-text">第 16 章：创建高级联结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC-17-%E7%AB%A0%EF%BC%9A%E7%BB%84%E5%90%88%E6%9F%A5%E8%AF%A2-UNION"><span class="toc-text">第 17 章：组合查询 UNION</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC-18-%E7%AB%A0%EF%BC%9A%E5%85%A8%E6%96%87%E6%9C%AC%E6%90%9C%E7%B4%A2-Match-Against"><span class="toc-text">第 18 章：全文本搜索 Match() Against()</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%A6%82%E4%BD%95%E7%90%86%E8%A7%A3%E5%85%A8%E6%96%87%E6%9C%AC%E6%90%9C%E7%B4%A2"><span class="toc-text">1. 如何理解全文本搜索</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E5%85%A8%E6%96%87%E6%90%9C%E7%B4%A2"><span class="toc-text">2. 如何使用全文搜索</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E4%BD%BF%E7%94%A8%E6%9F%A5%E8%AF%A2%E6%89%A9%E5%B1%95-WITH-QUERY-EXPANSION"><span class="toc-text">3.使用查询扩展 WITH QUERY EXPANSION</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%B8%83%E5%B0%94%E6%96%87%E6%9C%AC%E6%90%9C%E7%B4%A2-IN-BOOLEAN-MODE"><span class="toc-text">4.布尔文本搜索 IN BOOLEAN MODE</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E5%85%A8%E6%96%87%E6%9C%AC%E6%90%9C%E7%B4%A2%E7%9A%84%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E"><span class="toc-text">5.全文本搜索的使用说明</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC-19-%E7%AB%A0%EF%BC%9A%E6%8F%92%E5%85%A5%E6%95%B0%E6%8D%AE"><span class="toc-text">第 19 章：插入数据</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC-20-%E7%AB%A0%EF%BC%9A%E6%9B%B4%E6%96%B0%E5%92%8C%E5%88%A0%E9%99%A4%E6%95%B0%E6%8D%AE"><span class="toc-text">第 20 章：更新和删除数据</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC-21-%E7%AB%A0%EF%BC%9A%E5%88%9B%E5%BB%BA%E5%92%8C%E6%93%8D%E7%BA%B5%E8%A1%A8"><span class="toc-text">第 21 章：创建和操纵表</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC-22-%E7%AB%A0%EF%BC%9A%E4%BD%BF%E7%94%A8%E8%A7%86%E5%9B%BE"><span class="toc-text">第 22 章：使用视图</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC-23-%E7%AB%A0%EF%BC%9A%E4%BD%BF%E7%94%A8%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B"><span class="toc-text">第 23 章：使用存储过程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%A6%82%E4%BD%95%E7%90%86%E8%A7%A3%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B"><span class="toc-text">1.如何理解存储过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%88%9B%E5%BB%BA%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B"><span class="toc-text">2.创建存储过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%89%A7%E8%A1%8C%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B"><span class="toc-text">3.执行存储过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%88%A0%E9%99%A4%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B"><span class="toc-text">4.删除存储过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E4%BD%BF%E7%94%A8%E5%8F%82%E6%95%B0"><span class="toc-text">4.使用参数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E5%BB%BA%E7%AB%8B%E6%99%BA%E8%83%BD%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B-%E5%8C%85%E5%90%AB%E4%B8%9A%E5%8A%A1%E7%9A%84%EF%BC%8C%E6%9B%B4%E5%A4%8D%E6%9D%82%E7%9A%84%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B"><span class="toc-text">5.建立智能存储过程(包含业务的，更复杂的存储过程)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E6%A3%80%E6%9F%A5%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B"><span class="toc-text">6.检查存储过程</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC-24-%E7%AB%A0%EF%BC%9A%E4%BD%BF%E7%94%A8%E6%B8%B8%E6%A0%87"><span class="toc-text">第 24 章：使用游标</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC-25-%E7%AB%A0%EF%BC%9A%E4%BD%BF%E7%94%A8%E8%A7%A6%E5%8F%91%E5%99%A8"><span class="toc-text">第 25 章：使用触发器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC-26-%E7%AB%A0%EF%BC%9A%E7%AE%A1%E7%90%86%E4%BA%8B%E5%8A%A1%E5%A4%84%E7%90%86"><span class="toc-text">第 26 章：管理事务处理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC-27-%E7%AB%A0%EF%BC%9A%E5%85%A8%E7%90%83%E5%8C%96%E5%92%8C%E6%9C%AC%E5%9C%B0%E5%8C%96%EF%BC%88%E5%AD%97%E7%AC%A6%E9%9B%86%E9%97%AE%E9%A2%98%EF%BC%89"><span class="toc-text">第 27 章：全球化和本地化（字符集问题）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC-28-%E7%AB%A0%EF%BC%9A%E5%AE%89%E5%85%A8%E7%AE%A1%E7%90%86%EF%BC%88%E7%AE%A1%E7%90%86%E7%94%A8%E6%88%B7%E5%92%8C%E6%8E%88%E6%9D%83%EF%BC%89"><span class="toc-text">第 28 章：安全管理（管理用户和授权）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC-29-%E7%AB%A0%EF%BC%9A%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BB%B4%E6%8A%A4"><span class="toc-text">第 29 章：数据库维护</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC-30-%E7%AB%A0%EF%BC%9A%E6%94%B9%E5%96%84%E6%80%A7%E8%83%BD"><span class="toc-text">第 30 章：改善性能</span></a></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="第-1-章：了解-SQL"><a href="#第-1-章：了解-SQL" class="headerlink" title="第 1 章：了解 SQL"></a>第 1 章：了解 SQL</h1><ol>
+<li><p><strong>数据库（database）</strong> 保存有组织的数据的容器（通常是一个文件或一组文件）。</p>
+<blockquote>
+<p>我们用的通常是数据库软件应称为 DBMS（数据库管理系统）。MySQL 就是一种 DBMS。数据库是通过 DBMS 创建和操纵的容器。数据库可以是保存在硬设备上的文件，但也可以不是。</p>
+</blockquote>
+</li>
+<li><p><strong>表（table）</strong> 某种特定类型数据的结构化清单。</p>
+<blockquote>
+<p>同一数据库的表名具有唯一性。</p>
+<p>模式（schema） 关于数据库和表的布局及特性的信息。模式可以用来描述数据库中特定的表以及整个数据库（和其中表的关系）。</p>
+</blockquote>
+</li>
+<li><p><strong>列（column）</strong> 表中的一个字段</p>
+<blockquote>
+<p><strong>数据类型（datatype）</strong> 所容许的数据的类型。每个表列都有相 应的数据类型，它限制（或容许）该列中存储的数据。</p>
+</blockquote>
+</li>
+<li><p><strong>行（row）</strong> 表中的一个记录。</p>
+</li>
+<li><p>主键（primary key）一列（或一组列），其值能够唯一区分表中每个行。主键要唯一。可以是一个，也可以是一组</p>
+<blockquote>
+<p>主键的好习惯：</p>
+<ul>
+<li>不更新主键列中的值；</li>
+<li>不重用主键列的值；</li>
+<li>不在主键列中使用可能会更改的值（主键最好不要更改）</li>
+</ul>
+</blockquote>
+</li>
+<li><p>SQL（发音为字母 S-Q-L 或<strong>sequel</strong>）是结构化查询语言（<strong>Structured Query Language</strong>）的缩写。SQL 是一种专门用来与数据库通信的语言。</p>
+<blockquote>
+<p>SQL 不是一种专利语言，而且存在一个标准委员会，他们试图定义可供所有 DBMS 使用的 SQL 语法，但事实上任意两个 DBMS 实现的 SQL 都不完全相同。</p>
+</blockquote>
+</li>
+</ol>
+<h1 id="第-2-章：MySQL-简介"><a href="#第-2-章：MySQL-简介" class="headerlink" title="第 2 章：MySQL 简介"></a>第 2 章：MySQL 简介</h1><ol>
+<li><p>MySQL 是一种 DBMS，即它是一种数据库软件</p>
+</li>
+<li><p>MySQL 数据库是基于客户机—服务器的数据库。</p>
+<blockquote>
+<p>DBMS 可分为两类：一类为基于共享文件系统的 DBMS，另一类为基于客户机—服务器的 DBMS</p>
+<blockquote>
+<p>共享文件系统的 DBMS: Microsoft Access 和 FileMaker，用于桌面用途</p>
+<p>客户机—服务器的 DBMS：MySQL、Oracle 以及 Microsoft SQL Server</p>
+</blockquote>
+<p>服务器部分是负责所有数据访问和处理的一个软件。这个软件运行在称为<strong>数据库服务器</strong>的计算机上。</p>
+<p>客户机是与用户打交道的软件</p>
+</blockquote>
+</li>
+<li><p>MySQL 工具</p>
+<blockquote>
+<p>简单命令行实用程序 : mysql</p>
+<p>图形交互客户机: MySQL Administrator，MySQL Query Browser</p>
+</blockquote>
+</li>
+</ol>
+<h1 id="第-3-章：使用-MySQL"><a href="#第-3-章：使用-MySQL" class="headerlink" title="第 3 章：使用 MySQL"></a>第 3 章：使用 MySQL</h1><h2 id="启动-MySQL"><a href="#启动-MySQL" class="headerlink" title="启动 MySQL"></a>启动 MySQL</h2><ul>
+<li><p>在 Windows 环境下</p>
+<ul>
+<li><p>通过管理员运行 cmd：win+R &gt;&gt; cmd &gt;&gt;&gt; Ctrl+Shift+Enter</p>
+</li>
+<li><p>net start mysql 用这行命令的时候报如下错误</p>
+<pre><code class="powershell">C:\Windows\System32&gt;net start mysql
+服务名无效。
+
+请键入 NET HELPMSG 2185 以获得更多的帮助。
+</code></pre>
+</li>
+<li><p>这样因为服务名错了</p>
+<p><img src="/2020/01/01/MySQLCrashCourse/img/001.png"></p>
+<p>net start mysql80 就可以正常启动</p>
+<pre><code class="powershell">C:\Windows\System32&gt;net start mysql80
+请求的服务已经启动。
+ 
+请键入 NET HELPMSG 2182 以获得更多的帮助。
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="MySQL-的登录-mysql-u-root-p"><a href="#MySQL-的登录-mysql-u-root-p" class="headerlink" title="MySQL 的登录: mysql -u root -p"></a>MySQL 的登录: mysql -u root -p</h2><pre><code class="powershell">C:\Windows\System32&gt;mysql -u root -p
+Enter password: ****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 1596
+Server version: 8.0.28 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2022, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type &#39;help;&#39; or &#39;\h&#39; for help. Type &#39;\c&#39; to clear the current input statement.
+
+mysql&gt;
+</code></pre>
+<h2 id="创建数据库-create-database-数据名"><a href="#创建数据库-create-database-数据名" class="headerlink" title="创建数据库: create database 数据名"></a>创建数据库: create database 数据名</h2><pre><code class="powershell">mysql&gt; create database temp;
+Query OK, 1 row affected (0.01 sec)
+</code></pre>
+<h2 id="选择数据库-use-数据库名"><a href="#选择数据库-use-数据库名" class="headerlink" title="选择数据库: use 数据库名"></a>选择数据库: use 数据库名</h2><pre><code class="powershell">mysql&gt; use temp
+Database changed
+</code></pre>
+<h2 id="了解数据库和表：show"><a href="#了解数据库和表：show" class="headerlink" title="了解数据库和表：show"></a>了解数据库和表：show</h2><ul>
+<li>了解数据库：mysql&gt; SHOW DATABASES;</li>
+<li>了解数据库表：mysql&gt; SHOW TABLES;</li>
+<li>了解数据库的字段：<ul>
+<li>mysql&gt; show columns from customers;</li>
+<li>mysql&gt; describe customers;</li>
+<li>mysql&gt; show full columns from customers;</li>
+</ul>
+</li>
+<li>了解更多关于 show 的内容：HELP SHOW</li>
+</ul>
+<h1 id="第-4-章：检索数据-SELECT"><a href="#第-4-章：检索数据-SELECT" class="headerlink" title="第 4 章：检索数据 SELECT"></a>第 4 章：检索数据 SELECT</h1><h2 id="单列查询："><a href="#单列查询：" class="headerlink" title="单列查询："></a>单列查询：</h2><p>单列：SELECT prod_name FROM products;</p>
+<ul>
+<li>查询出来的数据是未经过排序的</li>
+<li>SQL 不区分大小写，作者倾向：对所有 SQL 关键字使用大写，而对所有列和表名使用小写，这样做使代码更易于阅读和调试。</li>
+<li>在处理 SQL 语句时，其中所有空格都被忽略，但作者倾向保留空格，便于阅读和调试</li>
+</ul>
+<h2 id="多列查询"><a href="#多列查询" class="headerlink" title="多列查询"></a>多列查询</h2><p>多列：SELECT prod_id, prod_name, prod_price FROM products;</p>
+<h2 id="使用通配符"><a href="#使用通配符" class="headerlink" title="使用通配符"></a>使用通配符</h2><p>使用通配符：SELECT * FROM products;</p>
+<ul>
+<li>作者不建议使用通配符（*）：检索不需要的列通常会降低检索和应用程序的性能</li>
+</ul>
+<pre><code class="powershell">   mysql&gt; SELECT * FROM products;
+   +---------+---------+----------------+------------+----------------------------------------------------------------+
+   | prod_id | vend_id | prod_name      | prod_price | prod_desc                                                      |
+   +---------+---------+----------------+------------+----------------------------------------------------------------+
+   | ANV01   |    1001 | .5 ton anvil   |       5.99 | .5 ton anvil, black, complete with handy hook                  |
+   | ANV02   |    1001 | 1 ton anvil    |       9.99 | 1 ton anvil, black, complete with handy hook and carrying case |
+   | ANV03   |    1001 | 2 ton anvil    |      14.99 | 2 ton anvil, black, complete with handy hook and carrying case |
+   | DTNTR   |    1003 | Detonator      |      13.00 | Detonator (plunger powered), fuses not included                |
+   | FB      |    1003 | Bird seed      |      10.00 | Large bag (suitable for road runners)                          |
+   | FC      |    1003 | Carrots        |       2.50 | Carrots (rabbit hunting season only)                           |
+   | FU1     |    1002 | Fuses          |       3.42 | 1 dozen, extra long                                            |
+   | JP1000  |    1005 | JetPack 1000   |      35.00 | JetPack 1000, intended for single use                          |
+   | JP2000  |    1005 | JetPack 2000   |      55.00 | JetPack 2000, multi-use                                        |
+   | OL1     |    1002 | Oil can        |       8.99 | Oil can, red                                                   |
+   | SAFE    |    1003 | Safe           |      50.00 | Safe with combination lock                                     |
+   | SLING   |    1003 | Sling          |       4.49 | Sling, one size fits all                                       |
+   | TNT1    |    1003 | TNT (1 stick)  |       2.50 | TNT, red, single stick                                         |
+   | TNT2    |    1003 | TNT (5 sticks) |      10.00 | TNT, red, pack of 10 sticks                                    |
+   +---------+---------+----------------+------------+----------------------------------------------------------------+
+   14 rows in set (0.00 sec)
+</code></pre>
+<h2 id="去重"><a href="#去重" class="headerlink" title="去重"></a>去重</h2><p>检索不同行：DISTINCT-去重</p>
+<ul>
+<li>SELECT DISTINCT vend_id FROM products;<pre><code class="powershell">     mysql&gt; SELECT DISTINCT vend_id FROM products;
+     +---------+
+     | vend_id |
+     +---------+
+     |    1001 |
+     |    1002 |
+     |    1003 |
+     |    1005 |
+     +---------+
+</code></pre>
+</li>
+<li>不能部分使用 DISTINCT: DISTINCT 关键字应用于所有列而不仅是前置它的列<pre><code class="powershell">   mysql&gt; SELECT DISTINCT vend_id,prod_price FROM products;
+   +---------+------------+
+   | vend_id | prod_price |
+   +---------+------------+
+   |    1001 |       5.99 |
+   |    1001 |       9.99 |
+   |    1001 |      14.99 |
+   |    1003 |      13.00 |
+   |    1003 |      10.00 |
+   |    1003 |       2.50 |
+   |    1002 |       3.42 |
+   |    1005 |      35.00 |
+   |    1005 |      55.00 |
+   |    1002 |       8.99 |
+   |    1003 |      50.00 |
+   |    1003 |       4.49 |
+   +---------+------------+
+   12 rows in set (0.00 sec)
+</code></pre>
+vend_id 和 prod_price 要合起来不一致</li>
+</ul>
+<h2 id="限制结果"><a href="#限制结果" class="headerlink" title="限制结果"></a>限制结果</h2><p>限制结果: limit</p>
+<p>select * from table_name limit 5;</p>
+<ul>
+<li>限制返回结果不多于 5 行<br>select * from table_name limit 3,4;</li>
+<li>从第 3 行开始，查询 4 条记录</li>
+<li>检索出的第一条记录为第 0 行，而不是第 1 行<br>select * from table_name limit 4 offset 3</li>
+<li>从第 3 行开始，查询 4 条记录</li>
+<li>等同于：select * from table_name limit 3,4;</li>
+</ul>
+<h2 id="完全限定的表名"><a href="#完全限定的表名" class="headerlink" title="完全限定的表名"></a>完全限定的表名</h2><p>使用完全限定的表名：select * from 数据库名.表名</p>
+<h1 id="第-3-章：排序检索数据-ORDER-BY"><a href="#第-3-章：排序检索数据-ORDER-BY" class="headerlink" title="第 3 章：排序检索数据 ORDER BY"></a>第 3 章：排序检索数据 ORDER BY</h1><ol>
+<li><p>为什么要排序：如果不排序，数据一般将以它在底层表中出现的顺序显示。这可以是数据最初添加到表中的顺序。但是，如果数据后来进行过更新或删除，则此顺序将会受到 MySQL 重用回收存储空间的影响。因此，如果不明确控制的话，不能（也不应该）依赖该排序顺序。</p>
+</li>
+<li><p><strong>子句（clause）</strong> SQL 语句由子句构成，有些子句是必需的，而有的是可选的。一个子句通常由一个关键字和所提供的数据组成。子句的例子有 SELECT 语句的 FROM 子句，</p>
+</li>
+<li><p>ORDER BY</p>
+</li>
+</ol>
+<pre><code class="sql">   mysql&gt; SELECT prod_id,prod_price,prod_name FROM products ORDER BY prod_price DESC , prod_name ASC;
+   +---------+------------+----------------+
+   | prod_id | prod_price | prod_name      |
+   +---------+------------+----------------+
+   | JP2000  |      55.00 | JetPack 2000   |
+   | SAFE    |      50.00 | Safe           |
+   | JP1000  |      35.00 | JetPack 1000   |
+   | ANV03   |      14.99 | 2 ton anvil    |
+   | DTNTR   |      13.00 | Detonator      |
+   | FB      |      10.00 | Bird seed      |
+   | TNT2    |      10.00 | TNT (5 sticks) |
+   | ANV02   |       9.99 | 1 ton anvil    |
+   | OL1     |       8.99 | Oil can        |
+   | ANV01   |       5.99 | .5 ton anvil   |
+   | SLING   |       4.49 | Sling          |
+   | FU1     |       3.42 | Fuses          |
+   | FC      |       2.50 | Carrots        |
+   | TNT1    |       2.50 | TNT (1 stick)  |
+   +---------+------------+----------------+
+</code></pre>
+<ul>
+<li>ORDER BY A B : 想根据 A 排序，A 有相同的值，就再根据 B 排序</li>
+<li>DESC（descending）降序；ASC(ASCENDING)升序<ul>
+<li>只作用于其前面的字段</li>
+<li>prod_price DESC , prod_name ASC ：prod_price 降序；prod_name 升序</li>
+</ul>
+</li>
+<li>ORDER BY + LIMIT 找到最大值或者最小值<ul>
+<li>SELECT prod_id,prod_price,prod_name FROM products ORDER BY prod_price DESC LIMIT 1;</li>
+<li>ORDER BY 子句 位于 FROM 子句之后</li>
+<li>LIMIT 子句位于 ORDER BY 子句之后</li>
+</ul>
+</li>
+<li>区分大小写和排序顺序：<ul>
+<li>这个问题的答案取决于数据库如何设置</li>
+<li>A 和 a 相同 是 MySQL 的默认行为</li>
+<li>也可以通过配置数据库，改变这个默认行为</li>
+</ul>
+</li>
+</ul>
+<h1 id="第-6-章：过滤数据-——-单个-where-条件"><a href="#第-6-章：过滤数据-——-单个-where-条件" class="headerlink" title="第 6 章：过滤数据 —— 单个 where 条件"></a>第 6 章：过滤数据 —— 单个 where 条件</h1><ol>
+<li>一个例子<pre><code class="sql">   mysql&gt; SELECT prod_name, prod_price FROM products WHERE prod_name = &#39;fuses&#39;;
+   +-----------+------------+
+   | prod_name | prod_price |
+   +-----------+------------+
+   | Fuses     |       3.42 |
+   +-----------+------------+
+   1 row in set (0.00 sec)
+</code></pre>
+<ul>
+<li>MySQL 在执行匹配时默认不区分大小写</li>
+<li>SQL 过滤与应用过滤<ul>
+<li>应用过滤就是全部查出来，然后循环遍历出需要的值</li>
+<li>作者不建议应用过滤<ul>
+<li>SQL 过滤效率更高</li>
+<li>服务器传输更多的数据，导致带宽的浪费</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>WHERE 子句的位置：FROM 之后，ORDER BY 之前</li>
+</ul>
+</li>
+<li>WHERE 子句操作符<pre><code class="txt">= 等于
+&lt;&gt; 不等于
+!= 不等于
+&lt; 小于；&lt;= 小于等于
+&gt; 大于；&gt;= 大于等于
+BETWEEN a AND b: [a,b]
+IS NULL  不为NULL
+</code></pre>
+</li>
+<li>BETWEEN<pre><code class="sql">   mysql&gt; SELECT prod_name, prod_price FROM products WHERE prod_price BETWEEN 5.99 AND 10.00;
+   +----------------+------------+
+   | prod_name      | prod_price |
+   +----------------+------------+
+   | .5 ton anvil   |       5.99 |
+   | 1 ton anvil    |       9.99 |
+   | Bird seed      |      10.00 |
+   | Oil can        |       8.99 |
+   | TNT (5 sticks) |      10.00 |
+   +----------------+------------+
+   5 rows in set (0.00 sec)
+</code></pre>
+</li>
+<li>NULL 与不匹配<pre><code class="sql">   -- customers表中有如下数据
+   mysql&gt; SELECT cust_id, cust_name, cust_email FROM customers;
+   +---------+----------------+---------------------+
+   | cust_id | cust_name      | cust_email          |
+   +---------+----------------+---------------------+
+   |   10001 | Coyote Inc.    | ylee@coyote.com     |
+   |   10002 | Mouse House    | NULL                |
+   |   10003 | Wascals        | rabbit@wascally.com |
+   |   10004 | Yosemite Place | sam@yosemite.com    |
+   |   10005 | E Fudd         | NULL                |
+   +---------+----------------+---------------------+
+   5 rows in set (0.00 sec)
+   -- 如果我们我们希望找出cust_email不为ylee@coyote.com 的数据，预期应该有4条数据
+   mysql&gt; SELECT cust_id, cust_name, cust_email FROM customers where cust_email &lt;&gt; &#39;ylee@coyote.com&#39;;
+   +---------+----------------+---------------------+
+   | cust_id | cust_name      | cust_email          |
+   +---------+----------------+---------------------+
+   |   10003 | Wascals        | rabbit@wascally.com |
+   |   10004 | Yosemite Place | sam@yosemite.com    |
+   +---------+----------------+---------------------+
+   2 rows in set (0.00 sec)
+   -- 但实际上只出行了2条
+   -- 因为未知（null）具有特殊的含义，数据库不知道它们是否匹配，
+   -- 所以在匹配过滤或不匹配过滤时不返回它们。
+</code></pre>
+</li>
+</ol>
+<h1 id="第-7-章：过滤数据-——-组合-WHERE-IN-NOT"><a href="#第-7-章：过滤数据-——-组合-WHERE-IN-NOT" class="headerlink" title="第 7 章：过滤数据 —— 组合 WHERE,IN,NOT"></a>第 7 章：过滤数据 —— 组合 WHERE,IN,NOT</h1><ol>
+<li>WHERE<ul>
+<li>AND : 且</li>
+<li>OR ： 或</li>
+<li>计算次序: 括号 &gt; AND &gt; OR<ul>
+<li>WHERE A OR B AND C : B 和 C 的条件，或 A 的条件</li>
+<li>WHERE (A OR B) AND C : A 或 B 的条件满足后，还有满足 C 的条件</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>IN (A,B,C)<ul>
+<li>IN 操作符完成与 OR 相同的功能</li>
+<li>为什么要使用 IN 操作符<ul>
+<li>IN 操作符的语法更清楚且更直观</li>
+<li>计算的次序更容易管理</li>
+<li>IN 操作符一般比 OR 操作符清单执行更快</li>
+<li>IN 的最大优点是可以包含其他 SELECT 语句</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>NOT<ul>
+<li>NOT A : 否定 A 条件</li>
+<li>MySQL 支持使用 NOT 对 IN 、BETWEEN 和 EXISTS 子句取反</li>
+</ul>
+</li>
+</ol>
+<h1 id="第-8-章：用通配符进行搜索-——-LIKE"><a href="#第-8-章：用通配符进行搜索-——-LIKE" class="headerlink" title="第 8 章：用通配符进行搜索 —— LIKE"></a>第 8 章：用通配符进行搜索 —— LIKE</h1><ol>
+<li>名词解释<ul>
+<li>通配符（ wildcard ） 用来匹配值的一部分的特殊字符。</li>
+<li>搜索模式（search pattern）由字面值、通配符或两者组合构成的搜索条件。</li>
+<li>LIKE 是谓词（predicate）而不是操作符</li>
+</ul>
+</li>
+<li>百分号（%）通配符：%表示任何字符出现任意次数，可以是 1 次，多次，也可以是 0 次<ul>
+<li>LIKE ‘jet%’ : 查询 jet 开头的词</li>
+<li>LIKE ‘%anvil%’: 包含 anvil 的值，不论是开头还是结尾</li>
+<li>LIKE ‘s%e’: 以 s 开头，以 e 结尾</li>
+<li>LIKE ‘%’ : 匹配所有字符，除了 NULL</li>
+<li>注意字段结尾的空格</li>
+<li>MYSQL 默认是不区分大小写的，如果 LIKE ‘jet%’，那么 JetPack 也可以匹配得上</li>
+</ul>
+</li>
+<li>下划线（_）通配符：匹配单个字符，不能是 0 个<ul>
+<li>LIKE ‘_a’:<ul>
+<li>.a : 可以匹配</li>
+<li>a：不可以匹配</li>
+<li>b.a: 不可以匹配</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>注意事项<ul>
+<li>通配符搜索的处理一般要比前面讨论的其他搜索所花时间更长</li>
+<li>不要过度使用通配符。如果其他操作符能达到相同的目的，应该使用其他操作符。</li>
+<li>在确实需要使用通配符时，除非绝对有必要，否则不要把它们用在搜索模式的开始处。把通配符置于搜索模式的开始处，搜索起来是最慢的。（’%abc’）</li>
+<li>仔细注意通配符的位置。如果放错地方，可能不会返回想要的数据</li>
+</ul>
+</li>
+</ol>
+<h1 id="第-9-章：用正则表达式进行搜索-——-REGEXP"><a href="#第-9-章：用正则表达式进行搜索-——-REGEXP" class="headerlink" title="第 9 章：用正则表达式进行搜索 —— REGEXP"></a>第 9 章：用正则表达式进行搜索 —— REGEXP</h1><ol>
+<li><p>什么是正则表达式</p>
+<ul>
+<li>正则表达式是用来匹配文本的特殊的串（字符集合）</li>
+<li>MySql 所支持的正则表达式仅为正则表达式语言的一个子集</li>
+</ul>
+</li>
+<li><p>基本字符匹配</p>
+<pre><code class="SQL">   mysql&gt; SELECT prod_name FROM products WHERE prod_name REGEXP &#39;1000&#39;;
+   +--------------+
+   | prod_name    |
+   +--------------+
+   | JetPack 1000 |
+   +--------------+
+   1 row in set (0.00 sec)
+</code></pre>
+<p>REGEXP ‘1000’ 表示匹配 prod_name 中包含 1000 的字段</p>
+<pre><code class="SQL">   mysql&gt; SELECT prod_name FROM products WHERE prod_name REGEXP &#39;.000&#39;;
+   +--------------+
+   | prod_name    |
+   +--------------+
+   | JetPack 1000 |
+   | JetPack 2000 |
+   +--------------+
+   2 rows in set (0.00 sec)
+</code></pre>
+<p>这里的 <code>.</code> 表示：匹配任意<strong>一个</strong>字符</p>
+<p>LIKE 和 REGEXP 的区别：</p>
+<ul>
+<li>LIKE 是匹配整个字段，如果想匹配部分字段需要使用通配符 <code>%</code> 或者 <code>_</code></li>
+<li>REGEXP 是匹配部分字段，如果想匹配整个字段，需要使用定位符：<code>^</code> 和 <code>$</code></li>
+</ul>
+<p>MYSQL 的正则匹配不区分大小写，如果要区分，需要使用关键字 <strong>BINARY</strong></p>
+<pre><code class="sql">mysql&gt; SELECT prod_name FROM products WHERE prod_name REGEXP BINARY  &#39;jet&#39;;
+ERROR 3995 (HY000): Character set &#39;utf8mb4_0900_ai_ci&#39; cannot be used in conjunction with &#39;binary&#39; in call to regexp_like.
+</code></pre>
+<p><strong><em><font color=red>目前还不知道怎么处理</font></em></strong></p>
+</li>
+<li><p>进行 OR 匹配</p>
+<pre><code class="sql">mysql&gt; SELECT prod_name FROM products WHERE prod_name REGEXP  &#39;1000|2000&#39;;
++--------------+
+| prod_name    |
++--------------+
+| JetPack 1000 |
+| JetPack 2000 |
++--------------+
+2 rows in set (0.00 sec)
+</code></pre>
+<p>REGEXP ‘1000|2000’ 匹配包含 1000 或者 2000 的文本</p>
+</li>
+<li><p>匹配几个字符之一</p>
+<pre><code class="sql">-- [123] 表示匹配 ‘1’ ‘2’ ‘3’ 中的任意一个
+-- [123] Ton 相当于 &#39;1 Ton&#39;,&#39;2 Ton&#39;,&#39;3 Ton&#39;
+mysql&gt; SELECT prod_name FROM products WHERE prod_name REGEXP  &#39;[123] Ton&#39;;
++-------------+
+| prod_name   |
++-------------+
+| 1 ton anvil |
+| 2 ton anvil |
++-------------+
+2 rows in set (0.00 sec)
+
+-- [123] 是 [1|2|3] 的缩写
+mysql&gt; SELECT prod_name FROM products WHERE prod_name REGEXP  &#39;[1|2|3] Ton&#39;;
++-------------+
+| prod_name   |
++-------------+
+| 1 ton anvil |
+| 2 ton anvil |
++-------------+
+2 rows in set (0.00 sec)
+
+-- 如果不加[]含义会改变：
+-- 1|2|3 Ton 表示 匹配 1 或者 2 或者 3 Ton
+mysql&gt; SELECT prod_name FROM products WHERE prod_name REGEXP  &#39;1|2|3 Ton&#39;;
++---------------+
+| prod_name     |
++---------------+
+| 1 ton anvil   |
+| 2 ton anvil   |
+| JetPack 1000  |
+| JetPack 2000  |
+| TNT (1 stick) |
++---------------+
+5 rows in set (0.00 sec)
+
+-- [^A] 表示否定A集合的范围
+-- [^123] 除了&#39;1&#39;,&#39;2&#39;,&#39;3&#39;之外，都可以匹配，如&#39;5&#39;,&#39;6&#39;,&#39;7&#39;
+mysql&gt; SELECT prod_name FROM products WHERE prod_name REGEXP  &#39;[^123] Ton&#39;;
++--------------+
+| prod_name    |
++--------------+
+| .5 ton anvil |
++--------------+
+1 row in set (0.00 sec)
+</code></pre>
+</li>
+<li><p>匹配范围: <code>-</code><br>如<code>[0-9]</code>表示数字, <code>[a-z]</code> 表示任意小写字母，<code>[A-Z]</code> 表示任意大写字母</p>
+<pre><code class="sql">   mysql&gt; SELECT prod_name FROM products WHERE prod_name REGEXP  &#39;[1-5] Ton&#39;;
+   +--------------+
+   | prod_name    |
+   +--------------+
+   | .5 ton anvil |
+   | 1 ton anvil  |
+   | 2 ton anvil  |
+   +--------------+
+   3 rows in set (0.00 sec)
+</code></pre>
+</li>
+<li><p>匹配特殊字符 <code>\\</code></p>
+<p><code>\\.</code> 查找 <code>.</code></p>
+<p><code>\\-</code> 查找 <code>-</code></p>
+<p><code>\\\</code> 查找 <code>\</code></p>
+<p><code>\\f</code> 表示 换页</p>
+<p><code>\\n</code> 表示 换行</p>
+<p><code>\\r</code> 表示 回车</p>
+<p><code>\\t</code> 表示 制表</p>
+<p><code>\\v</code> 表示 纵向制表</p>
+<p>注意：多数正则表达式实现使用单个反斜杠转义特殊字符，以便能使用这些字符本身。但 MySQL 要求两个反斜杠（MySQL 自己解释一个，正则表达式库解释另一个）。</p>
+</li>
+<li><p>匹配字符类（character class）<br><code>[:alnum:]</code> 任意字母和数字（同[a-zA-Z0-9]）</p>
+<p><code>[:alpha:]</code> 任意字符（同[a-zA-Z]）</p>
+<p><code>[:blank:]</code> 空格和制表（同[\t]）</p>
+<p><code>[:cntrl:]</code> ASCII 控制字符（ASCII 0 到 31 和 127）</p>
+<p><code>[:digit:]</code> 任意数字（同[0-9]）</p>
+<p><code>[:graph:]</code> 与[:print:]相同，但不包括空格</p>
+<p><code>[:lower:]</code> 任意小写字母（同[a-z]）</p>
+<p><code>[:print:]</code> 任意可打印字符</p>
+<p><code>[:punct:]</code> 既不在[:alnum:]又不在[:cntrl:]中的任意字符</p>
+<p><code>[:space:]</code> 包括空格在内的任意空白字符（同[\f\n\r\t\v]）</p>
+<p><code>[:upper:]</code> 任意大写字母（同[A-Z]）</p>
+<p><code>[:xdigit:]</code> 任意十六进制数字（同[a-fA-F0-9]）</p>
+</li>
+<li><p>匹配多个实例</p>
+<p><code>*</code> 0 个或多个匹配</p>
+<p><code>+</code> 1 个或多个匹配（等于{1,}）</p>
+<p><code>?</code> 0 个或 1 个匹配（等于{0,1}）</p>
+<p><code>&#123;n&#125;</code> 指定数目的匹配</p>
+<p><code>&#123;n,&#125;</code> 不少于指定数目的匹配</p>
+<p><code>&#123;n,m&#125;</code> 匹配数目的范围（m 不超过 255）</p>
+<pre><code class="sql">mysql&gt; SELECT prod_name FROM products WHERE prod_name REGEXP  &#39;\\([0-9] sticks?\\)&#39;;
++----------------+
+| prod_name      |
++----------------+
+| TNT (1 stick)  |
+| TNT (5 sticks) |
++----------------+
+2 rows in set (0.00 sec)
+</code></pre>
+<p><code>\\( xxxx \\)</code> 表示 <code>()</code></p>
+<p><code>s?</code> 匹配 一个 s 或者零个 s，所有 <code>sticks?</code> 匹配 sticks 或者 stick</p>
+<pre><code class="sql">mysql&gt; SELECT prod_name FROM products WHERE prod_name REGEXP  &#39;[[:digit:]]&#123;4&#125;&#39;;
++--------------+
+| prod_name    |
++--------------+
+| JetPack 1000 |
+| JetPack 2000 |
++--------------+
+2 rows in set (0.00 sec)
+</code></pre>
+<p><code>[[:digit:]]</code> 表示 <code>[0-9]</code>, 也就是<code>[0-9]&#123;4&#125;</code>，匹配四个数字</p>
+</li>
+<li><p>定位符</p>
+<p><code>^</code> 文本的开始</p>
+<p><code>$</code> 文本的结尾</p>
+<p><code>[[:&lt;:]]</code> 词的开始</p>
+<p><code>[[:&gt;:]]</code> 词的结尾</p>
+<pre><code class="sql">mysql&gt; SELECT prod_name FROM products WHERE prod_name REGEXP  &#39;^[0-9\\.]&#39;;
++--------------+
+| prod_name    |
++--------------+
+| .5 ton anvil |
+| 1 ton anvil  |
+| 2 ton anvil  |
++--------------+
+3 rows in set (0.00 sec)
+</code></pre>
+<p>‘^[0-9\.]’ 表示以 数字或者<code>.</code> 开头。其中 <code>^</code> 表示匹配串的开始</p>
+<pre><code class="sql">mysql&gt; SELECT prod_name FROM products WHERE prod_name REGEXP  &#39;[[:&lt;:]]se&#39;;
+ERROR 3685 (HY000): Illegal argument to a regular expression.
+</code></pre>
+<p><strong><em><font color=red>目前还不知道怎么用</font></em></strong></p>
+</li>
+<li><p>简单的正则表达式测试</p>
+<pre><code class="sql">mysql&gt; SELECT &#39;HELLO&#39; REGEXP &#39;[0-9]&#39;;
++------------------------+
+| &#39;HELLO&#39; REGEXP &#39;[0-9]&#39; |
++------------------------+
+|                      0 |
++------------------------+
+1 row in set (0.00 sec)
+
+mysql&gt; SELECT &#39;HELLO&#39; REGEXP &#39;[a-z]&#39;;
++------------------------+
+| &#39;HELLO&#39; REGEXP &#39;[a-z]&#39; |
++------------------------+
+|                      1 |
++------------------------+
+1 row in set (0.00 sec)
+
+mysql&gt; SELECT &#39;HELLO&#39; REGEXP &#39;[A-Z]&#39;;
++------------------------+
+| &#39;HELLO&#39; REGEXP &#39;[A-Z]&#39; |
++------------------------+
+|                      1 |
++------------------------+
+1 row in set (0.00 sec)
+</code></pre>
+<ul>
+<li>0 表示不匹配</li>
+<li>1 表示匹配</li>
+</ul>
+</li>
+</ol>
+<h1 id="第-10-章：创建计算字段"><a href="#第-10-章：创建计算字段" class="headerlink" title="第 10 章：创建计算字段"></a>第 10 章：创建计算字段</h1><ol>
+<li><p>什么是计算字段</p>
+<ul>
+<li>不是表中原有的字段</li>
+<li>该字段通过原有字段的转换、计算或格式化而得到</li>
+<li>计算字段是运行时在 SELECT 语句内创建的</li>
+<li>在数据库服务器上完成这些操作比在客户机中完成要快得多，因为 DBMS 是设计来快速有效地完成这种处理的</li>
+</ul>
+</li>
+<li><p>拼接字段</p>
+<pre><code class="sql">mysql&gt; SELECT Concat(RTrim(vend_name), &#39; (&#39;, RTrim(vend_country), &#39;)&#39;) AS vend_titile  FROM vendors ORDER BY vend_name;
++-------------------------+
+| vend_titile             |
++-------------------------+
+| ACME (USA)              |
+| Anvils R Us (USA)       |
+| Furball Inc. (USA)      |
+| Jet Set (England)       |
+| Jouets Et Ours (France) |
+| LT Supplies (USA)       |
++-------------------------+
+6 rows in set (0.00 sec)
+</code></pre>
+<ul>
+<li>Concat(A,B,C) 得到 ABC，实现字符串的拼接</li>
+<li>去空格<ul>
+<li>RTrim() 去掉串右边的空格</li>
+<li>LTrim() 去掉串左边的空格</li>
+<li>Trim() 去掉串左右两边的空格</li>
+</ul>
+</li>
+<li>AS 取别名</li>
+</ul>
+</li>
+<li><p>执行算术计算</p>
+<pre><code class="sql">mysql&gt; SELECT prod_id, quantity, item_price, quantity * item_price AS expanded_price FROM orderitems WHERE order_num = 20005;
++---------+----------+------------+----------------+
+| prod_id | quantity | item_price | expanded_price |
++---------+----------+------------+----------------+
+| ANV01   |       10 |       5.99 |          59.90 |
+| ANV02   |        3 |       9.99 |          29.97 |
+| TNT2    |        5 |      10.00 |          50.00 |
+| FB      |        1 |      10.00 |          10.00 |
++---------+----------+------------+----------------+
+4 rows in set (0.01 sec)
+</code></pre>
+<ul>
+<li><code>+</code> 加； <code>-</code> 减；<code>*</code> 乘；<code>/</code> 除</li>
+</ul>
+</li>
+<li><p>使用 SELECT 测试函数</p>
+<pre><code class="sql">   mysql&gt; SELECT 3*4;
++-----+
+| 3*4 |
++-----+
+|  12 |
++-----+
+1 row in set (0.00 sec)
+
+mysql&gt; SELECT Trim(&#39;   abc    &#39;);
++--------------------+
+| Trim(&#39;   abc    &#39;) |
++--------------------+
+| abc                |
++--------------------+
+1 row in set (0.00 sec)
+
+mysql&gt; SELECT Now();
++---------------------+
+| Now()               |
++---------------------+
+| 2023-06-20 22:45:57 |
++---------------------+
+1 row in set (0.00 sec)
+</code></pre>
+</li>
+</ol>
+<h1 id="第-11-章：使用函数处理数据"><a href="#第-11-章：使用函数处理数据" class="headerlink" title="第 11 章：使用函数处理数据"></a>第 11 章：使用函数处理数据</h1><h2 id="1-文本处理函数"><a href="#1-文本处理函数" class="headerlink" title="1.文本处理函数"></a>1.文本处理函数</h2><pre><code class="sql">-- Lower() 将文本转换为小写; Upper()将文本转换为大写
+mysql&gt; SELECT Lower(&#39;ABCdef&#39;),Upper(&#39;ABCdef&#39;);
++-----------------+-----------------+
+| Lower(&#39;ABCdef&#39;) | Upper(&#39;ABCdef&#39;) |
++-----------------+-----------------+
+| abcdef          | ABCDEF          |
++-----------------+-----------------+
+1 row in set (0.02 sec)
+
+-- RTrim() 去掉串右边的空格; LTrim() 去掉串左边的空格; Trim() 去掉串左右两边的空格
+
+-- Length() 返回串的长度
+
+-- Left() 返回串左边的字符: Left（A,n）返回A字符串最左边n个字符串
+mysql&gt; SELECT left(&#39;123456&#39;,0) ,left(&#39;123456&#39;,1),left(&#39;123456&#39;,2);
++------------------+------------------+------------------+
+| left(&#39;123456&#39;,0) | left(&#39;123456&#39;,1) | left(&#39;123456&#39;,2) |
++------------------+------------------+------------------+
+|                  | 1                | 12               |
++------------------+------------------+------------------+
+1 row in set (0.00 sec)
+
+-- Right() 返回串右边的字符：Right（A,n）返回A字符串最右边n个字符串
+mysql&gt; SELECT Right(&#39;123456&#39;,0) ,Right(&#39;123456&#39;,1),Right(&#39;123456&#39;,2),Right(&#39;123456&#39;,4);
++-------------------+-------------------+-------------------+-------------------+
+| Right(&#39;123456&#39;,0) | Right(&#39;123456&#39;,1) | Right(&#39;123456&#39;,2) | Right(&#39;123456&#39;,4) |
++-------------------+-------------------+-------------------+-------------------+
+|                   | 6                 | 56                | 3456              |
++-------------------+-------------------+-------------------+-------------------+
+1 row in set (0.00 sec)
+
+-- Locate() : Locate(a,A): 找到子串a在字符串A中，第一次出现的位置，从1开始
+mysql&gt; SELECT Locate(&#39;2&#39;,&#39;12345&#39;),Locate(&#39;34&#39;,&#39;12345&#39;);
++---------------------+----------------------+
+| Locate(&#39;2&#39;,&#39;12345&#39;) | Locate(&#39;34&#39;,&#39;12345&#39;) |
++---------------------+----------------------+
+|                   2 |                    3 |
++---------------------+----------------------+
+1 row in set (0.00 sec)
+-- Locate() : Locate(a,A,n): 从字符串A的第n个位置开始找，找到子串a在字符串A中，第一次出现的位置，从1开始
+mysql&gt; SELECT Locate(&#39;2&#39;,&#39;12345&#39;,3),Locate(&#39;34&#39;,&#39;12345&#39;,3);
++-----------------------+------------------------+
+| Locate(&#39;2&#39;,&#39;12345&#39;,3) | Locate(&#39;34&#39;,&#39;12345&#39;,3) |
++-----------------------+------------------------+
+|                     0 |                      3 |
++-----------------------+------------------------+
+1 row in set (0.00 sec)
+
+-- SubString()
+-- SubString(A,n) 从字符串A的第n个位置开始，截取字符串。开始位是1
+mysql&gt; SELECT SubString(&#39;abcd&#39;,1),SubString(&#39;abcd&#39;,2);
++---------------------+---------------------+
+| SubString(&#39;abcd&#39;,1) | SubString(&#39;abcd&#39;,2) |
++---------------------+---------------------+
+| abcd                | bcd                 |
++---------------------+---------------------+
+1 row in set (0.00 sec)
+-- SubString(A,n,m) 从字符串A的第n个位置开始，截取字符串,截取m个，如果n+m &gt; A,就截取剩余的。开始位是1
+mysql&gt; SELECT Right(&#39;123456&#39;,0) ,Right(&#39;123456&#39;,1),Right(&#39;123456&#39;,2),Right(&#39;123456&#39;,4);
++-------------------+-------------------+-------------------+-------------------+
+| Right(&#39;123456&#39;,0) | Right(&#39;123456&#39;,1) | Right(&#39;123456&#39;,2) | Right(&#39;123456&#39;,4) |
++-------------------+-------------------+-------------------+-------------------+
+|                   | 6                 | 56                | 3456              |
++-------------------+-------------------+-------------------+-------------------+
+1 row in set (0.00 sec)
+</code></pre>
+<p>Soundex(): 书中是这么解释：。SOUNDEX 是一个将任何文本串转换为描述其语音表示的字母数字模式的算法。SOUNDEX 考虑了类似的发音字符和音节，使得能对串进行发音比较而不是字母比较。</p>
+<p>简单的说：Soundex()是获取字符串发音的编码，可以用来比较两个字符串的发音是否相似</p>
+<p>书中举了如下例子：</p>
+<pre><code class="sql">   mysql&gt;  SELECT Soundex(&#39;Y.Lie&#39; ),Soundex(&#39;Y.Lee&#39;);
+   +-------------------+------------------+
+   | Soundex(&#39;Y.Lie&#39; ) | Soundex(&#39;Y.Lee&#39;) |
+   +-------------------+------------------+
+   | Y400              | Y400             |
+   +-------------------+------------------+
+   1 row in set (0.00 sec)
+</code></pre>
+<p>但我在自己测试的时候遇到如下问题：</p>
+<p>第一，中文无法比较</p>
+<pre><code class="sql">mysql&gt;  SELECT Soundex(&#39;一&#39; ),Soundex(&#39;依&#39;);
++----------------+---------------+
+| Soundex(&#39;一&#39; ) | Soundex(&#39;依&#39;) |
++----------------+---------------+
+| 一000          | 依000         |
++----------------+---------------+
+1 row in set (0.00 sec)
+</code></pre>
+<p>第二，在英语中，两个发音一致的单词，也不一样</p>
+<pre><code class="sql">mysql&gt; SELECT Soundex(&#39;air&#39; ),Soundex(&#39;heir&#39;);
++-----------------+-----------------+
+| Soundex(&#39;air&#39; ) | Soundex(&#39;heir&#39;) |
++-----------------+-----------------+
+| A600            | H600            |
++-----------------+-----------------+
+1 row in set (0.00 sec)
+</code></pre>
+<h2 id="2-日期和时间处理函数"><a href="#2-日期和时间处理函数" class="headerlink" title="2.日期和时间处理函数"></a>2.日期和时间处理函数</h2><pre><code class="sql">-- CurDate() 返回当前日期;  CurTime() 返回当前时间;  Now() 返回当前日期和时间
+mysql&gt; SELECT CurDate();
++------------+
+| CurDate()  |
++------------+
+| 2023-06-22 |
++------------+
+1 row in set (0.00 sec)
+
+mysql&gt;
+mysql&gt; SELECT CurTime();
++-----------+
+| CurTime() |
++-----------+
+| 10:38:40  |
++-----------+
+1 row in set (0.00 sec)
+
+mysql&gt; SELECT Now();
++---------------------+
+| Now()               |
++---------------------+
+| 2023-06-22 10:38:59 |
++---------------------+
+1 row in set (0.00 sec)
+
+-- Date() 返回日期时间的日期部分; Year() 返回一个日期的年份部分;
+-- Month() 返回一个日期的月份部分; Day() 返回一个日期的天数部分
+mysql&gt; SELECT DATE(Now()),  Year(Now()),Month(Now()),Day(Now());
++-------------+-------------+--------------+------------+
+| DATE(Now()) | Year(Now()) | Month(Now()) | Day(Now()) |
++-------------+-------------+--------------+------------+
+| 2023-06-22  |        2023 |            6 |         22 |
++-------------+-------------+--------------+------------+
+1 row in set (0.00 sec)
+
+-- Time() 返回一个日期时间的时间部分;  Hour() 返回一个时间的小时部分
+-- Minute() 返回一个时间的分钟部分; Second() 返回一个时间的秒部分
+mysql&gt; SELECT Time(Now()),  Hour(Now()),Minute(Now()),Second(Now());
++-------------+-------------+---------------+---------------+
+| Time(Now()) | Hour(Now()) | Minute(Now()) | Second(Now()) |
++-------------+-------------+---------------+---------------+
+| 10:49:22    |          10 |            49 |            22 |
++-------------+-------------+---------------+---------------+
+1 row in set (0.00 sec)
+-- DayOfWeek() 对于一个日期，返回对应的星期几; 从星期天开始（1），到星期六结束（7）
+-- DayName() 星期几的名字
+mysql&gt; SELECT DayName(Now()),  DayOfWeek(Now());
++----------------+------------------+
+| DayName(Now()) | DayOfWeek(Now()) |
++----------------+------------------+
+| Thursday       |                5 |
++----------------+------------------+
+1 row in set (0.00 sec)
+
+-- Date_Format() 返回一个格式化的日期或时间串
+-- 常用：
+--       %a 缩写星期名  %W 星期名
+--       %b 缩写月名    %c 月，数值    %M 月名  %m 月，数值(00-12)
+--       %d 月的天，数值(00-31)  %e 月的天，数值(0-31)
+--       %Y 年，4 位    %y 年，2 位
+--       %H	小时 (00-23)   %h	小时 (01-12)   %I	小时 (01-12)
+--       %i	分钟，数值(00-59)
+--       %S	秒(00-59)   %s	秒(00-59)
+--       %p	AM 或 PM
+mysql&gt; SELECT DATE_FORMAT(NOW(),&#39;%b %d %Y %h:%i %p&#39;);
++----------------------------------------+
+| DATE_FORMAT(NOW(),&#39;%b %d %Y %h:%i %p&#39;) |
++----------------------------------------+
+| Jun 22 2023 10:59 AM                   |
++----------------------------------------+
+1 row in set (0.00 sec)
+-- DATE_ADD(date,INTERVAL expr type)
+--       date 参数是合法的日期表达式。expr 参数是您希望添加的时间间隔。
+--       type 参数可以是下列值：YEAR、MONTH、DAY、HOUR、MINUTE、SECOND、WEEK...
+mysql&gt; SELECT DATE_ADD(Now(),INTERVAL 1 YEAR);
++---------------------------------+
+| DATE_ADD(Now(),INTERVAL 1 YEAR) |
++---------------------------------+
+| 2024-06-22 11:13:20             |
++---------------------------------+
+1 row in set (0.00 sec)
+-- AddDate()默认增加1天，AddTime()默认增加1秒
+mysql&gt; SELECT NOW(), ADDDATE(Now(), 1 ),ADDTIME(Now(), 1 );
++---------------------+---------------------+---------------------+
+| NOW()               | ADDDATE(Now(), 1 )  | ADDTIME(Now(), 1 )  |
++---------------------+---------------------+---------------------+
+| 2023-06-22 11:16:16 | 2023-06-23 11:16:16 | 2023-06-22 11:16:17 |
++---------------------+---------------------+---------------------+
+1 row in set (0.00 sec)
+-- AddDate()默认增加1天，其他和DATE_ADD()类似
+mysql&gt; SELECT NOW(), ADDDATE(Now(),INTERVAL 1 MONTH );
++---------------------+----------------------------------+
+| NOW()               | ADDDATE(Now(),INTERVAL 1 MONTH ) |
++---------------------+----------------------------------+
+| 2023-06-22 11:26:33 | 2023-07-22 11:26:33              |
++---------------------+----------------------------------+
+1 row in set (0.00 sec)
+-- AddTime() 第二个参数是一个表达式，把相应的加起来
+mysql&gt; SELECT Now(), ADDTIME(Now(), &#39;1:2:1&#39; );
++---------------------+--------------------------+
+| Now()               | ADDTIME(Now(), &#39;1:2:1&#39; ) |
++---------------------+--------------------------+
+| 2023-06-22 11:35:40 | 2023-06-22 12:37:41      |
++---------------------+--------------------------+
+1 row in set (0.00 sec)
+-- 用 负数表示减
+mysql&gt; SELECT Now(), ADDTIME(Now(), -1 ),ADDDATE(Now(), -1 );
++---------------------+---------------------+---------------------+
+| Now()               | ADDTIME(Now(), -1 ) | ADDDATE(Now(), -1 ) |
++---------------------+---------------------+---------------------+
+| 2023-06-22 11:43:45 | 2023-06-22 11:43:44 | 2023-06-21 11:43:45 |
++---------------------+---------------------+---------------------+
+1 row in set (0.00 sec)
+-- DATE_SUB() 表示减
+mysql&gt; SELECT Now(), DATE_SUB(Now(),INTERVAL 1 YEAR);
++---------------------+---------------------------------+
+| Now()               | DATE_SUB(Now(),INTERVAL 1 YEAR) |
++---------------------+---------------------------------+
+| 2023-06-22 11:44:39 | 2022-06-22 11:44:39             |
++---------------------+---------------------------------+
+1 row in set (0.00 sec)
+
+-- DateDiff(A,B) 计算两个日期之差(A-B)
+mysql&gt; SELECT DateDiff(NOW(),&#39;2024-01-01&#39;);
++------------------------------+
+| DateDiff(NOW(),&#39;2024-01-01&#39;) |
++------------------------------+
+|                         -193 |
++------------------------------+
+1 row in set (0.00 sec)
+</code></pre>
+<h2 id="3-数值处理函数-很少用"><a href="#3-数值处理函数-很少用" class="headerlink" title="3.数值处理函数: 很少用"></a>3.数值处理函数: 很少用</h2><p>Abs() 返回一个数的绝对值</p>
+<p>Cos() 返回一个角度的余弦</p>
+<p>Exp() 返回一个数的指数值</p>
+<p>Mod() 返回除操作的余数</p>
+<p>Pi() 返回圆周率</p>
+<p>Rand() 返回一个随机数</p>
+<p>Sin() 返回一个角度的正弦</p>
+<p>Sqrt() 返回一个数的平方根</p>
+<p>Tan() 返回一个角度的正切</p>
+<h1 id="第-12-章：汇总数据"><a href="#第-12-章：汇总数据" class="headerlink" title="第 12 章：汇总数据"></a>第 12 章：汇总数据</h1><p>聚集函数</p>
+<ul>
+<li><p>AVG() 返回某列的平均值</p>
+<ul>
+<li>只用于单个列</li>
+<li>AVG()函数忽略列值为 NULL 的行</li>
+</ul>
+</li>
+<li><p>COUNT() 返回某列的行数</p>
+<ul>
+<li>使用 COUNT(*)对表中行的数目进行计数，不管表列中包含的是空值（NULL）还是非空值。</li>
+<li>使用 COUNT(column)对特定列中具有值的行进行计数，忽略 NULL 值。</li>
+</ul>
+</li>
+<li><p>MAX() 返回某列的最大值</p>
+<ul>
+<li>MAX()函数忽略列值为 NULL 的行。</li>
+<li>MAX()也可以用于文本列，</li>
+</ul>
+</li>
+<li><p>MIN() 返回某列的最小值</p>
+<ul>
+<li>MIN()函数忽略列值为 NULL 的行。</li>
+<li>MIN()也可以用于文本列，</li>
+</ul>
+</li>
+<li><p>SUM() 返回某列值之和</p>
+<ul>
+<li>SUM()函数忽略列值为 NULL 的行。</li>
+</ul>
+</li>
+</ul>
+<pre><code class="sql">-- 所有聚集函数都可用来执行多个列上的计算。
+mysql&gt; SELECT SUM(item_price * quantity)As total_price FROM orderitems ;
++-------------+
+| total_price |
++-------------+
+|     1368.34 |
++-------------+
+1 row in set (0.00 sec)
+</code></pre>
+<ul>
+<li><p>DISTINCT() 去重</p>
+<pre><code class="sql">-- DISTINCT（）函数和 DISTINCT关键字的去重效果是一样的
+-- 不去重前有7个
+mysql&gt; SELECT prod_price,prod_id FROM products WHERE vend_id = 1003;
++------------+---------+
+| prod_price | prod_id |
++------------+---------+
+|      13.00 | DTNTR   |
+|      10.00 | FB      |
+|       2.50 | FC      |
+|      50.00 | SAFE    |
+|       4.49 | SLING   |
+|       2.50 | TNT1    |
+|      10.00 | TNT2    |
++------------+---------+
+7 rows in set (0.00 sec)
+
+-- 对prod_price去重后还有7个，应该是prod_id影响了
+mysql&gt; SELECT DISTINCT(prod_price),prod_id FROM products WHERE vend_id = 1003;
++------------+---------+
+| prod_price | prod_id |
++------------+---------+
+|      13.00 | DTNTR   |
+|      10.00 | FB      |
+|       2.50 | FC      |
+|      50.00 | SAFE    |
+|       4.49 | SLING   |
+|       2.50 | TNT1    |
+|      10.00 | TNT2    |
++------------+---------+
+7 rows in set (0.00 sec)
+
+-- 去掉 prod_id 后，再去重，变成4条
+mysql&gt; SELECT DISTINCT(prod_price) FROM products WHERE vend_id = 1003;
++------------+
+| prod_price |
++------------+
+|      13.00 |
+|      10.00 |
+|       2.50 |
+|      50.00 |
+|       4.49 |
++------------+
+5 rows in set (0.00 sec)
+
+-- 可以和其他聚合函数一起使用
+mysql&gt; SELECT AVG( DISTINCT(prod_price)) FROM products WHERE vend_id = 1003;
++----------------------------+
+| AVG( DISTINCT(prod_price)) |
++----------------------------+
+|                  15.998000 |
++----------------------------+
+1 row in set (0.00 sec)
+</code></pre>
+</li>
+</ul>
+<h1 id="第-13-章：分组数据"><a href="#第-13-章：分组数据" class="headerlink" title="第 13 章：分组数据"></a>第 13 章：分组数据</h1><ol>
+<li><p>创建分组 GROUP BY</p>
+<pre><code class="sql">mysql&gt; SELECT vend_id, count(*) FROM products  GROUP BY vend_id ;
++---------+----------+
+| vend_id | count(*) |
++---------+----------+
+|    1001 |        3 |
+|    1002 |        2 |
+|    1003 |        7 |
+|    1005 |        2 |
++---------+----------+
+4 rows in set (0.00 sec)
+</code></pre>
+<ul>
+<li>形式为 SELECT a,b, 聚合函数 FROM 表 GROUP BY a,b<ul>
+<li>除了聚合函数和被 GROUP BY 的 a&#x2F;b,不能 SELECT 其他列</li>
+</ul>
+</li>
+<li>如果分组列中具有 NULL 值，则 NULL 将作为一个分组返回。如果列中有多行 NULL 值，它们将分为一组。</li>
+<li>SELECT … FROM … WHERE…GROUP BY … ORDER BY …</li>
+</ul>
+</li>
+<li><p>使用 WITH ROLLUP 关键字</p>
+<pre><code class="sql">-- WITH ROLLUP 的作用是对每个分组的结果进行统计
+mysql&gt; SELECT vend_id, count(*) FROM products  GROUP BY vend_id WITH ROLLUP;
++---------+----------+
+| vend_id | count(*) |
++---------+----------+
+|    1001 |        3 |
+|    1002 |        2 |
+|    1003 |        7 |
+|    1005 |        2 |
+|    NULL |       14 |
++---------+----------+
+5 rows in set (0.00 sec)
+</code></pre>
+</li>
+<li><p>可以根据多个字段进行分组</p>
+<p>GROUP BY A,B : 先根据 A 分组，再根据 B 分组</p>
+<pre><code class="sql">mysql&gt; SELECT vend_id,prod_price, count(*) FROM products  GROUP BY vend_id,prod_price WITH ROLLUP;
++---------+------------+----------+
+| vend_id | prod_price | count(*) |
++---------+------------+----------+
+|    1001 |       5.99 |        1 |
+|    1001 |       9.99 |        1 |
+|    1001 |      14.99 |        1 |
+|    1001 |       NULL |        3 |
+|    1002 |       3.42 |        1 |
+|    1002 |       8.99 |        1 |
+|    1002 |       NULL |        2 |
+|    1003 |       2.50 |        2 |
+|    1003 |       4.49 |        1 |
+|    1003 |      10.00 |        2 |
+|    1003 |      13.00 |        1 |
+|    1003 |      50.00 |        1 |
+|    1003 |       NULL |        7 |
+|    1005 |      35.00 |        1 |
+|    1005 |      55.00 |        1 |
+|    1005 |       NULL |        2 |
+|    NULL |       NULL |       14 |
++---------+------------+----------+
+17 rows in set (0.00 sec)
+</code></pre>
+</li>
+<li><p>过滤分组 HAVING： 起到 where 的作用</p>
+<pre><code class="sql">mysql&gt; SELECT prod_price ,vend_id, count(*) FROM products  GROUP BY prod_price,vend_id WITH ROLLUP HAVING prod_price &lt; 10 ;
++------------+---------+----------+
+| prod_price | vend_id | count(*) |
++------------+---------+----------+
+|       2.50 |    1003 |        2 |
+|       2.50 |    NULL |        2 |
+|       3.42 |    1002 |        1 |
+|       3.42 |    NULL |        1 |
+|       4.49 |    1003 |        1 |
+|       4.49 |    NULL |        1 |
+|       5.99 |    1001 |        1 |
+|       5.99 |    NULL |        1 |
+|       8.99 |    1002 |        1 |
+|       8.99 |    NULL |        1 |
+|       9.99 |    1001 |        1 |
+|       9.99 |    NULL |        1 |
++------------+---------+----------+
+12 rows in set (0.00 sec)
+
+mysql&gt; SELECT prod_price ,vend_id, count(*) FROM products  GROUP BY prod_price,vend_id WITH ROLLUP HAVING count(*) &gt;1 ;
++------------+---------+----------+
+| prod_price | vend_id | count(*) |
++------------+---------+----------+
+|       2.50 |    1003 |        2 |
+|       2.50 |    NULL |        2 |
+|      10.00 |    1003 |        2 |
+|      10.00 |    NULL |        2 |
+|       NULL |    NULL |       14 |
++------------+---------+----------+
+5 rows in set (0.00 sec)
+</code></pre>
+<ul>
+<li>首先 HAVING 是在 GROUP BY 之后才执行过滤</li>
+<li>HAVING 会 忽视 null 值</li>
+<li>SELECT … FROM … WHERE…GROUP BY … HAVING… ORDER BY … LIMIT…</li>
+</ul>
+</li>
+</ol>
+<h1 id="第-14-章：使用子查询"><a href="#第-14-章：使用子查询" class="headerlink" title="第 14 章：使用子查询"></a>第 14 章：使用子查询</h1><ol>
+<li>什么是子查询：嵌套在其他查询中的查询</li>
+<li>利用子查询进行过滤<pre><code class="sql">mysql&gt; SELECT cust_name,cust_contact FROM customers
+      WHERE cust_id IN
+         (SELECT cust_id FROM orders WHERE order_num IN
+               (SELECT order_num FROM orderitems WHERE prod_id = &#39;TNT2&#39;));
++----------------+--------------+
+| cust_name      | cust_contact |
++----------------+--------------+
+| Coyote Inc.    | Y Lee        |
+| Yosemite Place | Y Sam        |
++----------------+--------------+
+2 rows in set (0.01 sec)
+</code></pre>
+</li>
+<li>作为计算字段使用子查询<pre><code class="sql">mysql&gt; SELECT   cust_name,
+   -&gt;          cust_state,
+   -&gt;          (SELECT COUNT(*) FROM orders
+   -&gt;             WHERE orders.cust_id = customers.cust_id) AS orders
+   -&gt; FROM customers
+   -&gt; ORDER BY cust_name;
++----------------+------------+--------+
+| cust_name      | cust_state | orders |
++----------------+------------+--------+
+| Coyote Inc.    | MI         |      2 |
+| E Fudd         | IL         |      1 |
+| Mouse House    | OH         |      0 |
+| Wascals        | IN         |      1 |
+| Yosemite Place | AZ         |      1 |
++----------------+------------+--------+
+5 rows in set (0.00 sec)
+</code></pre>
+<ul>
+<li>该子查询执行了 5 次，因为检索出了 5 个客户</li>
+</ul>
+</li>
+<li>子查询有性能问题</li>
+</ol>
+<h1 id="第-15-章：联结表"><a href="#第-15-章：联结表" class="headerlink" title="第 15 章：联结表"></a>第 15 章：联结表</h1><ol>
+<li><p>使用 WHERE 子句定义联结</p>
+<pre><code class="sql">mysql&gt; SELECT cust_name,cust_contact
+   -&gt; FROM customers,orders,orderitems
+   -&gt; WHERE customers.cust_id = orders.cust_id
+   -&gt; AND orderitems.order_num = orders.order_num
+   -&gt; AND prod_id = &#39;TNT2&#39; ;
++----------------+--------------+
+| cust_name      | cust_contact |
++----------------+--------------+
+| Coyote Inc.    | Y Lee        |
+| Yosemite Place | Y Sam        |
++----------------+--------------+
+2 rows in set (0.00 sec)
+</code></pre>
+<ul>
+<li>该 sql 先是把三张表的每条数据做一一匹配，即 customers<em>orders</em>orderitems 条数据（笛卡尔积）</li>
+<li>接着再根据 WHERE 子句进行过滤</li>
+<li>这种处理非常消耗新能，因为如果没张表有 1000 条数据，那么三张表联结就会有 1000<em>1000</em>1000&#x3D;10 亿条数据</li>
+</ul>
+</li>
+<li><p>INNER JOIN 语法</p>
+<pre><code class="sql">mysql&gt; SELECT cust_name,cust_contact
+   -&gt; FROM customers
+   -&gt; INNER JOIN orders ON customers.cust_id = orders.cust_id
+   -&gt; INNER JOIN orderitems ON orderitems.order_num = orders.order_num
+   -&gt; WHERE  prod_id = &#39;TNT2&#39; ;
++----------------+--------------+
+| cust_name      | cust_contact |
++----------------+--------------+
+| Coyote Inc.    | Y Lee        |
+| Yosemite Place | Y Sam        |
++----------------+--------------+
+2 rows in set (0.00 sec)
+</code></pre>
+</li>
+<li><p>上述两种写法的区别<br>在《MySql 必知必会》这本书中，仅说明这是语法的差别，并给出如下建议：</p>
+<pre><code class="txt">使用哪种语法: ANSI SQL规范首选INNER JOIN语法。此外，尽管使用WHERE子句定义联结的确比较简单，
+但是使用明确的联结语法能够确保不会忘记联结条件，有时候这样做也能影响性能
+</code></pre>
+<p>但我在网上看到了如下的<a target="_blank" rel="noopener" href="https://blog.csdn.net/fengzyf/article/details/100080852">观点</a>：</p>
+<pre><code class="txt">where条件是在临时表生成好后，再对临时表进行过滤的条件。
+所以如果有两个表分别有10000条记录，一起做联结查询，就会有1亿条记录，接着再执行where，就需要从1亿条记录里面找出符合联结条件的数据
+这样会大大影响效率
+on条件是在生成临时表时使用的条件。所以在生成临时表的时候就已经筛选好了。认为这样会更有效率
+</code></pre>
+<p>但我实际测试，发现是一样快的, 而且效率有很高</p>
+<pre><code class="sql">select SQL_NO_CACHE * from test1 inner join test2 on test1.id=test2.link_id inner join test3 on test2.id=test3.link_id ;
+500 rows in set, 1 warning (0.00 sec)
+
+select SQL_NO_CACHE * from test1,test2,test3 where test1.id=test2.link_id and test2.id=test3.link_id;
+500 rows in set, 1 warning (0.00 sec)
+</code></pre>
+<p>所以我觉得 <code>where test1.id=test2.link_id and test2.id=test3.link_id</code> 与 <code> on test1.id=test2.link_id</code>,<code>on test2.id=test3.link_id</code> 起到的效果是一样的</p>
+<p>另外也我也发现以下情况：</p>
+<pre><code class="sql">-- 当我去掉一个条件时，查询时间明显变长
+select SQL_NO_CACHE * from test1,test2,test3 where test1.id=test2.link_id;
+250000 rows in set, 1 warning (0.21 sec)
+
+select SQL_NO_CACHE * from test1 inner join test2 on test1.id=test2.link_id inner join test3
+250000 rows in set, 1 warning (0.21 sec)
+</code></pre>
+<p><strong><em><font color=red>以上这些疑问需要后期继续深入学习才可以解开</font></em></strong></p>
+</li>
+</ol>
+<h1 id="第-16-章：创建高级联结"><a href="#第-16-章：创建高级联结" class="headerlink" title="第 16 章：创建高级联结"></a>第 16 章：创建高级联结</h1><ol>
+<li><p>内部联结（等值联结）: inner join &#x2F; FROM tableA,tableB</p>
+</li>
+<li><p>自联结: 自己联结自己</p>
+<pre><code class="sql">-- 背景：假如你发现某物品（其ID为DTNTR）存在问题，因此想知道生产该物品的供应商生产的其他物品是否也存在这些问题
+-- 使用子查询
+mysql&gt; SELECT prod_id, prod_name FROM products WHERE vend_id =
+   -&gt;    (SELECT vend_id FROM products WHERE prod_id = &#39;DTNTR&#39;) ;
+   +---------+----------------+
+   | prod_id | prod_name      |
+   +---------+----------------+
+   | DTNTR   | Detonator      |
+   | FB      | Bird seed      |
+   | FC      | Carrots        |
+   | SAFE    | Safe           |
+   | SLING   | Sling          |
+   | TNT1    | TNT (1 stick)  |
+   | TNT2    | TNT (5 sticks) |
+   +---------+----------------+
+   7 rows in set (0.02 sec)
+-- 使用自联结
+mysql&gt; SELECT p1.prod_id, p1.prod_name
+   -&gt; FROM products AS p1,products AS p2
+   -&gt; WHERE p1.vend_id = p2.vend_id
+   -&gt; AND p2.prod_id = &#39;DTNTR&#39;;
+   +---------+----------------+
+   | prod_id | prod_name      |
+   +---------+----------------+
+   | DTNTR   | Detonator      |
+   | FB      | Bird seed      |
+   | FC      | Carrots        |
+   | SAFE    | Safe           |
+   | SLING   | Sling          |
+   | TNT1    | TNT (1 stick)  |
+   | TNT2    | TNT (5 sticks) |
+   +---------+----------------+
+   7 rows in set (0.00 sec)
+-- 使用自联结必须用别名：因为单条SELECT语句中不能引用两次相同的表
+-- 作者建议：用自联结而不用子查询，因为效率更高
+</code></pre>
+</li>
+<li><p>自然联结（书中定义）</p>
+<ul>
+<li>少有一个列出现在不止一个表中（被联结的列）（存在联结条件）</li>
+<li>自然联结排除多次出现，使每个列只返回一次（SELECT 的结果不重复）</li>
+<li>内部联结都是自然联结</li>
+<li>在<a target="_blank" rel="noopener" href="https://blog.csdn.net/tanglincsdn/article/details/46274351">网上</a>看到如下定义：<br>自然连接(Natural join)是一种特殊的等值连接，要求两个关系表中进行比较的属性组必须是名称相同的属性组，并且在结果中把重复的属性列去掉（即：留下名称相同的属性组中的其中一组）。</li>
+</ul>
+<pre><code class="sql">SELECT c.*, o.order_num, o.order_date,oi.prod_id,oi.quantity,oi.item_price
+FROM customers AS c, orders AS o, orderitems AS oi
+WHERE c.cust_id = o.cust_id
+AND oi.order_num = o.order_num
+AND prod_id = &#39;FB&#39; ;
+
+-- 如果是两张表还可以用 natrual  join
+SELECT * FROM customers  natrual  join orders  ;
+</code></pre>
+</li>
+<li><p>外部联结</p>
+<ul>
+<li>外部联结与内联结的区别：外连接不仅返回匹配的行，也会返回不匹配的行</li>
+<li>LEFT OUTER JOIN：左联结，OUTER 可省略</li>
+<li>RIGHT OUTER JOIN：右联结，OUTER 可省略</li>
+</ul>
+<pre><code class="sql">-- 内联结
+mysql&gt; SELECT customers.cust_id, orders.order_num
+   -&gt; FROM customers INNER JOIN orders
+   -&gt; ON customers.cust_id = orders.cust_id;
++---------+-----------+
+| cust_id | order_num |
++---------+-----------+
+|   10001 |     20005 |
+|   10001 |     20009 |
+|   10003 |     20006 |
+|   10004 |     20007 |
+|   10005 |     20008 |
++---------+-----------+
+5 rows in set (0.00 sec)
+
+-- 左联结
+mysql&gt; SELECT customers.cust_id, orders.order_num
+   -&gt; FROM customers LEFT OUTER JOIN orders
+   -&gt; ON customers.cust_id = orders.cust_id;
++---------+-----------+
+| cust_id | order_num |
++---------+-----------+
+|   10001 |     20005 |
+|   10001 |     20009 |
+|   10002 |      NULL |
+|   10003 |     20006 |
+|   10004 |     20007 |
+|   10005 |     20008 |
++---------+-----------+
+6 rows in set (0.00 sec)
+
+-- 右联结
+mysql&gt; SELECT orders.order_num,customers.cust_id
+   -&gt; FROM orders RIGHT OUTER JOIN customers
+   -&gt; ON customers.cust_id = orders.cust_id;
++-----------+---------+
+| order_num | cust_id |
++-----------+---------+
+|     20005 |   10001 |
+|     20009 |   10001 |
+|      NULL |   10002 |
+|     20006 |   10003 |
+|     20007 |   10004 |
+|     20008 |   10005 |
++-----------+---------+
+6 rows in set (0.00 sec)
+</code></pre>
+</li>
+<li><p>使用带聚集函数的联结</p>
+<pre><code class="sql">-- 检索所有客户及每个客户所下的订单数
+mysql&gt; SELECT customers.cust_name,customers.cust_id, COUNT(orders.order_num) AS num_ord
+   -&gt; FROM customers INNER JOIN orders
+   -&gt; ON customers.cust_id = orders.cust_id
+   -&gt; GROUP BY customers.cust_id;
++----------------+---------+---------+
+| cust_name      | cust_id | num_ord |
++----------------+---------+---------+
+| Coyote Inc.    |   10001 |       2 |
+| Wascals        |   10003 |       1 |
+| Yosemite Place |   10004 |       1 |
+| E Fudd         |   10005 |       1 |
++----------------+---------+---------+
+4 rows in set (0.00 sec)
+</code></pre>
+<pre><code class="txt">总结： table A 和 table B
+A INNER JOIN B : 取 A和B的交集
+A LEFT OUTER JOIN B : 取 A
+A RIGHT OUTER JOIN B : 取 B
+</code></pre>
+</li>
+</ol>
+<h1 id="第-17-章：组合查询-UNION"><a href="#第-17-章：组合查询-UNION" class="headerlink" title="第 17 章：组合查询 UNION"></a>第 17 章：组合查询 UNION</h1><pre><code class="sql">mysql&gt; SELECT vend_id,prod_id,prod_price
+    -&gt; FROM products
+    -&gt; WHERE prod_price &lt;= 5
+    -&gt; UNION
+    -&gt; SELECT vend_id,prod_id,prod_price
+    -&gt; FROM products
+    -&gt; WHERE vend_id IN (1001,1002);
+   +---------+---------+------------+
+   | vend_id | prod_id | prod_price |
+   +---------+---------+------------+
+   |    1003 | FC      |       2.50 |
+   |    1002 | FU1     |       3.42 |
+   |    1003 | SLING   |       4.49 |
+   |    1003 | TNT1    |       2.50 |
+   |    1001 | ANV01   |       5.99 |
+   |    1001 | ANV02   |       9.99 |
+   |    1001 | ANV03   |      14.99 |
+   |    1002 | OL1     |       8.99 |
+   +---------+---------+------------+
+   8 rows in set (0.00 sec)
+
+-- UNION查询相同的表相当于使用多个WHERE条件
+-- SELECT vend_id,prod_id,prod_price FROM products WHERE prod_price&lt;=5 OR vend_id IN (1001,1002);
+
+-- UNION必须由两条或两条以上的SELECT语句组成
+
+-- UNION中的每个查询必须包含相同的列、表达式或聚集函数
+
+-- 列数据类型必须兼容
+
+-- UNION是去重的，用UNION ALL 是不去重的
+
+-- ORDER BY要放在最后一个SELECT后面，而且只能用一个ORDER BY
+mysql&gt; SELECT vend_id,prod_id,prod_price
+    -&gt; FROM products
+    -&gt; WHERE prod_price &lt;= 5
+    -&gt; UNION ALL
+    -&gt; SELECT vend_id,prod_id,prod_price
+    -&gt; FROM products
+    -&gt; WHERE vend_id IN (1001,1002)
+    -&gt; ORDER BY vend_id, prod_price;
+</code></pre>
+<h1 id="第-18-章：全文本搜索-Match-Against"><a href="#第-18-章：全文本搜索-Match-Against" class="headerlink" title="第 18 章：全文本搜索 Match() Against()"></a>第 18 章：全文本搜索 Match() Against()</h1><h2 id="1-如何理解全文本搜索"><a href="#1-如何理解全文本搜索" class="headerlink" title="1. 如何理解全文本搜索"></a>1. 如何理解全文本搜索</h2><ol>
+<li><p>为什么要使用全文本搜索</p>
+<ul>
+<li>模糊查询（LIKE,REGEXP）有许多缺点<ul>
+<li>性能问题: 会尝试匹配所有行，通常也没索引</li>
+<li>无法明确控制那些匹配哪些不匹配</li>
+<li>不智能，只会把所有匹配结果都搜出来，无法智能排序，也无法剔除一部分结果</li>
+</ul>
+</li>
+<li>全文搜索可以解决上述问题：在使用全文本搜索时，MySQL 不需要分别查看每个行，不需要分别分析和处理每个词。<br><strong>MySQL 创建指定列中各词的一个索引</strong>，搜索可以针对这些词进行。<br>这样，MySQL 可以快速有效地决定哪些词匹配（哪些行包含它们），哪些词不匹配，它们匹配的频率，等等。</li>
+</ul>
+<p>普通索引是针对每列做索引，全文搜索的索引是根据每列里面的每个词作索引。</p>
+</li>
+<li><p>并非所有引擎都支持全文本搜索</p>
+<ul>
+<li>InnoDB 不支持</li>
+<li>MyISAM 支持</li>
+</ul>
+</li>
+</ol>
+<h2 id="2-如何使用全文搜索"><a href="#2-如何使用全文搜索" class="headerlink" title="2. 如何使用全文搜索"></a>2. 如何使用全文搜索</h2><ol>
+<li><p>启用全文本搜索支持</p>
+<ul>
+<li>在建表的时候指定搜索引擎:ENGINE&#x3D;MyISAM</li>
+<li>同时设置要全文搜索的列：PRIMARY KEY(note_id), 会对 note_id 做索引<pre><code class="sql">CREATE TABLE productnotes
+(
+note_id    int           NOT NULL AUTO_INCREMENT,
+prod_id    char(10)      NOT NULL,
+note_date datetime       NOT NULL,
+note_text  text          NULL ,
+PRIMARY KEY(note_id),
+FULLTEXT(note_text)
+) ENGINE=MyISAM;
+</code></pre>
+</li>
+<li>也可以在建表之后指定 FULLTEXT</li>
+<li>如果建表后要导入数据，就不要再建表时用 FULLTEXT，因为更新索引要花时间</li>
+<li>FULLTEXT 可以索引单列也可以索引多列</li>
+</ul>
+</li>
+<li><p>进行全文本搜索</p>
+<pre><code class="sql">mysql&gt; SELECT note_id, note_text FROM productnotes WHERE Match(note_text) Against(&#39;rabbit&#39;);
++---------+-----------------------------------------------------------------------------------------------------------------------+
+| note_id | note_text                                                                                                             |
++---------+-----------------------------------------------------------------------------------------------------------------------+
+|     110 | Customer complaint: rabbit has been able to detect trap, food apparently less effective now.                          |
+|     104 | Quantity varies, sold by the sack load.All guaranteed to be bright and orange, and suitable for use as rabbit bait.   |
++---------+-----------------------------------------------------------------------------------------------------------------------+
+2 rows in set (0.00 sec)
+
+mysql&gt; SELECT note_id, note_text FROM productnotes WHERE note_text LIKE &#39;%rabbit%&#39; ;
++---------+-----------------------------------------------------------------------------------------------------------------------+
+| note_id | note_text                                                                                                             |
++---------+-----------------------------------------------------------------------------------------------------------------------+
+|     104 | Quantity varies, sold by the sack load.All guaranteed to be bright and orange, and suitable for use as rabbit bait.   |
+|     110 | Customer complaint: rabbit has been able to detect trap, food apparently less effective now.                          |
++---------+-----------------------------------------------------------------------------------------------------------------------+
+2 rows in set (0.00 sec)
+</code></pre>
+<ul>
+<li>Against()指定搜索文本</li>
+<li>传递给 Match() 的值必须与 FULLTEXT()定义中的相同。如果指定多个列，则必须列出它们，而且次序正确。</li>
+<li>搜索不区分大小写</li>
+<li>全文搜索和 LIKE 搜索的顺序不一样，是因为全文搜索根据算法进行了排序</li>
+</ul>
+<pre><code class="sql">mysql&gt; SELECT note_id, note_text, Match(note_text) Against(&#39;rabbit&#39;) AS ranks FROM productnotes;
++---------+----------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------+
+| note_id | note_text                                                                                                                                                | ranks              |
++---------+----------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------+
+|     101 | Customer complaint:Sticks not individually wrapped, too easy to mistakenly detonate all at once.Recommend individual wrapping.                           |                  0 |
+|     102 | Can shipped full, refills not available.Need to order new can if refill needed.                                                                          |                  0 |
+|     103 | Safe is combination locked, combination not provided with safe.This is rarely a problem as safes are typically blown up or dropped by customers.         |                  0 |
+|     104 | Quantity varies, sold by the sack load.All guaranteed to be bright and orange, and suitable for use as rabbit bait.                                      | 1.5905543565750122 |
+|     105 | Included fuses are short and have been known to detonate too quickly for some customers.Longer fuses are available (item FU1) and should be recommended. |                  0 |
+|     106 | Matches not included, recommend purchase of matches or detonator (item DTNTR).                                                                           |                  0 |
+|     107 | Please note that no returns will be accepted if safe opened using explosives.                                                                            |                  0 |
+|     108 | Multiple customer returns, anvils failing to drop fast enough or falling backwards on purchaser. Recommend that customer considers using heavier anvils. |                  0 |
+|     109 | Item is extremely heavy. Designed for dropping, not recommended for use with slings, ropes, pulleys, or tightropes.                                      |                  0 |
+|     110 | Customer complaint: rabbit has been able to detect trap, food apparently less effective now.                                                             | 1.6408053636550903 |
+|     111 | Shipped unassembled, requires common tools (including oversized hammer).                                                                                 |                  0 |
+|     112 | Customer complaint:Circular hole in safe floor can apparently be easily cut with handsaw.                                                                |                  0 |
+|     113 | Customer complaint:Not heavy enough to generate flying stars around head of victim. If being purchased for dropping, recommend ANV02 or ANV03 instead.   |                  0 |
+|     114 | Call from individual trapped in safe plummeting to the ground, suggests an escape hatch be added.Comment forwarded to vendor.                            |                  0 |
++---------+----------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------+
+14 rows in set (0.00 sec)
+</code></pre>
+<ul>
+<li>Match()和 Against()用来建立一个计算列（别名为 ranks），此列包含全文本搜索计算出的等级值</li>
+<li>where 会排除等级为 0 的行，然后根据等级降序排列</li>
+<li>等级由 MySQL 根据行中词的数目、唯一词的数目、整个索引中词的总数以及包含该词的行的数目计算出来</li>
+<li>在这个例子中：110 的 rabbit 出现的更早，所以等级会更高</li>
+</ul>
+</li>
+</ol>
+<h2 id="3-使用查询扩展-WITH-QUERY-EXPANSION"><a href="#3-使用查询扩展-WITH-QUERY-EXPANSION" class="headerlink" title="3.使用查询扩展 WITH QUERY EXPANSION"></a>3.使用查询扩展 WITH QUERY EXPANSION</h2><pre><code class="sql">mysql&gt; SELECT note_id, note_text FROM productnotes WHERE Match(note_text) Against(&#39;anvils&#39;);
++---------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
+| note_id | note_text                                                                                                                                                |
++---------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
+|     108 | Multiple customer returns, anvils failing to drop fast enough or falling backwards on purchaser. Recommend that customer considers using heavier anvils. |
++---------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql&gt; SELECT note_id, note_text FROM productnotes WHERE Match(note_text) Against(&#39;anvils&#39; WITH QUERY EXPANSION);
++---------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
+| note_id | note_text                                                                                                                                                |
++---------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
+|     108 | Multiple customer returns, anvils failing to drop fast enough or falling backwards on purchaser. Recommend that customer considers using heavier anvils. |
+|     101 | Customer complaint:Sticks not individually wrapped, too easy to mistakenly detonate all at once.Recommend individual wrapping.                           |
+|     113 | Customer complaint:Not heavy enough to generate flying stars around head of victim. If being purchased for dropping, recommend ANV02 or ANV03 instead.   |
+|     107 | Please note that no returns will be accepted if safe opened using explosives.                                                                            |
+|     110 | Customer complaint: rabbit has been able to detect trap, food apparently less effective now.                                                             |
+|     112 | Customer complaint:Circular hole in safe floor can apparently be easily cut with handsaw.                                                                |
+|     106 | Matches not included, recommend purchase of matches or detonator (item DTNTR).                                                                           |
++---------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
+7 rows in set (0.00 sec)
+</code></pre>
+<ul>
+<li>查询扩展会把与搜索词相关的词也查出来</li>
+<li>首先，进行一个基本的全文本搜索，找出与搜索条件匹配的所有行；</li>
+<li>其次，MySQL 检查这些匹配行并选择所有有用的词（作者没有详细解释什么是有用的词）</li>
+<li>再其次，MySQL 再次进行全文本搜索，这次不仅使用原来的条件，而且还使用所有有用的词。</li>
+</ul>
+<h2 id="4-布尔文本搜索-IN-BOOLEAN-MODE"><a href="#4-布尔文本搜索-IN-BOOLEAN-MODE" class="headerlink" title="4.布尔文本搜索 IN BOOLEAN MODE"></a>4.布尔文本搜索 IN BOOLEAN MODE</h2><ul>
+<li><p>全文本布尔操作符</p>
+<ul>
+<li><code>+</code> 包含，词必须存在</li>
+<li><code>-</code> 排除，词必须不出现</li>
+<li><code>&gt;</code> 包含，而且增加等级值</li>
+<li><code>&lt;</code> 包含，且减少等级值</li>
+<li><code>()</code> 把词组成子表达式（允许这些子表达式作为一个组被包含、排除、排列等）</li>
+<li><code>~</code> 取消一个词的排序值</li>
+<li><code>*</code> 词尾的通配符</li>
+<li><code>&quot;&quot;</code> 定义一个短语（与单个词的列表不一样，它匹配整个短语以便包含或排除这个短语）</li>
+</ul>
+</li>
+<li><p>案例</p>
+</li>
+</ul>
+<pre><code class="sql">-- 排除以rope开头的单词
+mysql&gt; SELECT note_id, note_text FROM productnotes WHERE Match(note_text) Against(&#39;heavy&#39; IN BOOLEAN MODE );
++---------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
+| note_id | note_text                                                                                                                                                |
++---------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
+|     109 | Item is extremely heavy. Designed for dropping, not recommended for use with slings, ropes, pulleys, or tightropes.                                      |
+|     113 | Customer complaint:Not heavy enough to generate flying stars around head of victim. If being purchased for dropping, recommend ANV02 or ANV03 instead.   |
++---------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
+2 rows in set (0.00 sec)
+
+mysql&gt; SELECT note_id, note_text FROM productnotes WHERE Match(note_text) Against(&#39;heavy -rope*&#39; IN BOOLEAN MODE );
++---------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
+| note_id | note_text                                                                                                                                                |
++---------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
+|     113 | Customer complaint:Not heavy enough to generate flying stars around head of victim. If being purchased for dropping, recommend ANV02 or ANV03 instead.   |
++---------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+</code></pre>
+<pre><code class="sql">-- +A +B : A和B都要包含
+mysql&gt; SELECT note_id, note_text FROM productnotes WHERE Match(note_text) Against(&#39;+shipped&#39; IN BOOLEAN MODE );
++---------+-----------------------------------------------------------------------------------+
+| note_id | note_text                                                                         |
++---------+-----------------------------------------------------------------------------------+
+|     102 | Can shipped full, refills not available.
+Need to order new can if refill needed. |
+|     111 | Shipped unassembled, requires common tools (including oversized hammer).          |
++---------+-----------------------------------------------------------------------------------+
+2 rows in set (0.00 sec)
+
+mysql&gt; SELECT note_id, note_text FROM productnotes WHERE Match(note_text) Against(&#39;+wrapping +shipped&#39; IN BOOLEAN MODE );
+Empty set (0.00 sec)
+</code></pre>
+<pre><code class="sql">-- &quot;rabbit customers&quot; 就变成搜索rabbit customers这个词组；而&#39;rabbit customers&#39;表示搜索rabbit这个单词，或者customers这个单词
+mysql&gt; SELECT note_id, note_text FROM productnotes WHERE Match(note_text) Against(&#39;rabbit customers&#39; IN BOOLEAN MODE );
++---------+------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| note_id | note_text                                                                                                                                                  |
++---------+------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|     103 | Safe is combination locked, combination not provided with safe.This is rarely a problem as safes are typically blown up or dropped by customers.           |
+|     104 | Quantity varies, sold by the sack load.All guaranteed to be bright and orange, and suitable for use as rabbit bait.                                        |
+|     105 | Included fuses are short and have been known to detonate too quickly for some customers.Longer fuses are available (item FU1) and should be recommended.   |
+|     110 | Customer complaint: rabbit has been able to detect trap, food apparently less effective now.                                                               |
++---------+------------------------------------------------------------------------------------------------------------------------------------------------------------+
+4 rows in set (0.00 sec)
+
+mysql&gt; SELECT note_id, note_text FROM productnotes WHERE Match(note_text) Against(&#39;&quot;rabbit customers&quot;&#39; IN BOOLEAN MODE );
+Empty set (0.00 sec)
+</code></pre>
+<pre><code class="sql">-- &gt;rabbit：如果查询到这个单词，就给这行增加等级；  &lt;customers：如果查询到这个单词，就给这行减少等级
+-- 在布尔方式中，不按等级值降序排序返回数据
+mysql&gt; SELECT note_text,Match(note_text) Against(&#39;rabbit customers&#39; IN BOOLEAN MODE ) AS ranks FROM productnotes WHERE Match(note_text) Against(&#39; rabbit customers&#39; IN BOOLEAN MODE );
++----------------------------------------------------------------------------------------------------------------------------------------------------------+-------+
+| note_text                                                                                                                                                | ranks |
++----------------------------------------------------------------------------------------------------------------------------------------------------------+-------+
+| Safe is combination locked, combination not provided with safe.This is rarely a problem as safes are typically blown up or dropped by customers.         |     1 |
+| Quantity varies, sold by the sack load.All guaranteed to be bright and orange, and suitable for use as rabbit bait.                                      |     1 |
+| Included fuses are short and have been known to detonate too quickly for some customers.Longer fuses are available (item FU1) and should be recommended. |     1 |
+| Customer complaint: rabbit has been able to detect trap, food apparently less effective now.                                                             |     1 |
++----------------------------------------------------------------------------------------------------------------------------------------------------------+-------+
+4 rows in set (0.00 sec)
+
+mysql&gt; SELECT note_text,Match(note_text) Against(&#39;&gt;rabbit &lt;customers&#39; IN BOOLEAN MODE ) AS ranks FROM productnotes WHERE Match(note_text) Against(&#39;&gt;rabbit &lt;customers&#39; IN BOOLEAN MODE );
++----------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------+
+| note_text                                                                                                                                                | ranks              |
++----------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------+
+| Safe is combination locked, combination not provided with safe.This is rarely a problem as safes are typically blown up or dropped by customers.         | 0.6666666865348816 |
+| Quantity varies, sold by the sack load.All guaranteed to be bright and orange, and suitable for use as rabbit bait.                                      |                1.5 |
+| Included fuses are short and have been known to detonate too quickly for some customers.Longer fuses are available (item FU1) and should be recommended. | 0.6666666865348816 |
+| Customer complaint: rabbit has been able to detect trap, food apparently less effective now.                                                             |                1.5 |
++----------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------+
+4 rows in set (0.00 sec)
+</code></pre>
+<pre><code class="sql">-- +(&lt;combination): ()使 + 和&lt; 共同作用在 combination上
+mysql&gt; SELECT  note_text,Match(note_text) Against(&#39;+safe +(&lt;combination)&#39; IN BOOLEAN MODE ) AS ranks FROM productnotes WHERE Match(note_text) Against(&#39;+safe +(&lt;combination)&#39; IN BOOLEAN MODE );
++----------------------------------------------------------------------------------------------------------------------------------------------------+--------------------+
+| note_text                                                                                                                                          | ranks              |
++----------------------------------------------------------------------------------------------------------------------------------------------------+--------------------+
+| Safe is combination locked, combination not provided with safe.This is rarely a problem as safes are typically blown up or dropped by customers.   | 0.8333333730697632 |
++----------------------------------------------------------------------------------------------------------------------------------------------------+--------------------+
+1 row in set (0.00 sec)
+</code></pre>
+<h2 id="5-全文本搜索的使用说明"><a href="#5-全文本搜索的使用说明" class="headerlink" title="5.全文本搜索的使用说明"></a>5.全文本搜索的使用说明</h2><ol>
+<li>在索引全文本数据时，短词被忽略且从索引中排除。短词定义为那些具有 3 个或 3 个以下字符的词</li>
+<li>MySQL 带有一个内建的非用词（stopword）列表，这些词在索引全文本数据时总是被忽略。<a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/5.7/en/fulltext-stopwords.html">MySql 文档</a></li>
+<li>许多词出现的频率很高，搜索它们没有用处（返回太多的结果）。因此，MySQL 规定了一条 50%规则，如果一个词出现在 50%以上的行中，则将它作为一个非用词忽略。50%规则不用于 IN BOOLEAN MODE。</li>
+<li>如果表中的行数少于 3 行，则全文本搜索不返回结果</li>
+<li>忽略词中的单引号。例如，don’t 索引为 dont。</li>
+<li>不具有词分隔符（包括日语和汉语）的语言不能恰当地返回全文本搜索结果。</li>
+<li>仅在 MyISAM 数据库引擎中支持全文本搜索</li>
+</ol>
+<h1 id="第-19-章：插入数据"><a href="#第-19-章：插入数据" class="headerlink" title="第 19 章：插入数据"></a>第 19 章：插入数据</h1><p><strong>插入完整的行</strong></p>
+<pre><code class="sql">-- 要按照表结构的顺序，不安全，不建议
+INSERT INTO Customers VALUES (NULL, &#39;Pep E. LaPew&#39;, &#39;100 Main Street&#39;, &#39;Los Angeles&#39;,&#39;CA&#39;, &#39;90046&#39;,&#39;USA&#39;,NULL,NULL);
+
+-- 自己定义字段的顺序和数量，比较安全，建议
+INSERT INTO customers(cust_name,cust_address, cust_city, cust_state, cust_zip, cust_country, cust_contact,cust_email )
+VALUES(&#39;Pep E. LaPew&#39;,&#39;100 Main Street&#39;,&#39;Los Angeles &#39;,&#39;CA&#39;,&#39;90046&#39;,&#39;USA&#39;, NULL, NULL) ;
+</code></pre>
+<p><strong>插入多个行</strong></p>
+<pre><code class="sql">-- 方式一
+INSERT INTO customers (cust_name,cust_address,cust_city,cust_state,cust_zip,cust_country)
+VALUES(&#39;Pep E. LaPew&#39;,&#39;100 Main Street&#39;, &#39;Los Angeles&#39;, &#39;CA&#39;, &#39;90046&#39;, &#39;USA&#39;) ;
+INSERT INTO customers (cust_name,cust_address,cust_city,cust_state,cust_zip,cust_country)
+VALUES(&#39;M. Martian&#39;,&#39;42 Galaxy Way&#39;,&#39;New York&#39;,&#39;NY&#39;,&#39;11213&#39;,&#39;USA&#39;);
+
+-- 方式二：这个性能更好，MySQL用单条INSERT语句处理多个插入比使用多条INSERT语句快。
+INSERT INTO customers (cust_name,cust_address,cust_city,cust_state,cust_zip,cust_country)
+VALUES(&#39;Pep E. LaPew&#39;,&#39;100 Main Street&#39;, &#39;Los Angeles&#39;, &#39;CA&#39;, &#39;90046&#39;, &#39;USA&#39;),
+(&#39;M. Martian&#39;,&#39;42 Galaxy Way&#39;,&#39;New York&#39;,&#39;NY&#39;,&#39;11213&#39;,&#39;USA&#39;);
+</code></pre>
+<p><strong>插入检索出的数据 INSERT SELECT</strong></p>
+<pre><code class="sql">INSERT INTO custnew (cust_id,cust_contact,cust_email,cust_name,cust_address,cust_city,cust_state,cust_zip,cust_country)
+SELECT cust_id,cust_contact,cust_email,cust_name,cust_address,cust_city,cust_state,cust_zip,cust_country FROM customers;
+</code></pre>
+<p>提高整体性能：如果数据检索是最重要的（通常是这样），则你可以通过在 INSERT 和 INTO 之间添加关键字 LOW_PRIORITY，指示 MySQL 降低 INSERT 语句的优先级，<br>如下所示：INSERT LOW_PRIORITY INTO。这也适用于 UPDATE 和 DELETE 语句。</p>
+<p>INSERT SELECT 是根据位置来填充值的，而不是列名</p>
+<h1 id="第-20-章：更新和删除数据"><a href="#第-20-章：更新和删除数据" class="headerlink" title="第 20 章：更新和删除数据"></a>第 20 章：更新和删除数据</h1><pre><code class="sql">-- 更新一列
+UPDATE customers SET cust_email = &#39;elmer@fudd.com&#39; WHERE cust_id = 10005;
+-- 更新多列
+UPDATE customers SET cust_name = &#39;The Fudds&#39;, cust_email = &#39;elmer@fudd.com&#39; WHERE cust_id = 10005;
+-- NULL用来去除某列中的值
+UPDATE customers SET cust_email = NULL WHERE cust_id = 10005;
+</code></pre>
+<pre><code class="sql">-- DELETE是一行一行删除
+DELETE FROM customers WHERE cust_id = 10006;
+-- truncate 删除原来的表并重新创建一个表, 效率高
+truncate table customers
+</code></pre>
+<h1 id="第-21-章：创建和操纵表"><a href="#第-21-章：创建和操纵表" class="headerlink" title="第 21 章：创建和操纵表"></a>第 21 章：创建和操纵表</h1><ol>
+<li><p>创建表</p>
+<pre><code class="sql">CREATE TABLE customers
+(
+cust_id      int       NOT NULL AUTO_INCREMENT,
+cust_name    char(50)  NOT NULL ,
+cust_address char(50)  NULL ,
+cust_city    char(50)  NULL ,
+cust_state   char(5)   NULL ,
+cust_zip     char(10)  NULL ,
+cust_country char(50)  NULL ,
+cust_contact char(50)  NULL ,
+cust_email   char(255) NULL ,
+PRIMARY KEY (cust_id)
+) ENGINE=InnoDB;
+
+CREATE TABLE orderitems
+(
+order_num  int          NOT NULL ,
+order_item int          NOT NULL ,
+prod_id    char(10)     NOT NULL ,
+quantity   int          NOT NULL  DEFAULT 0,
+item_price decimal(8,2) NOT NULL ,
+PRIMARY KEY (order_num, order_item)
+) ENGINE=InnoDB;
+</code></pre>
+<ul>
+<li>CREATE TABLE 表名：创建表()<ul>
+<li>如果重复创建<code>CREATE TABLE customers2 (...)</code>，数据库会报错：<code>1050 - Table &#39;customers2&#39; already exists</code></li>
+<li><code>CREATE TABLE  IF NOT EXISTS customers2</code> 加上<code>IF NOT EXISTS</code>之后，就不会报错，因为如果不存在才去创建</li>
+</ul>
+</li>
+<li>NOT NULL 不允许为 NULL，NULL 允许为 NULL（默认）</li>
+<li>PRIMARY KEY 指定主键，一个主键或者多个主键<ul>
+<li>PRIMARY KEY (order_num, order_item) 意味着 order_num 与 order_item 作为一个整体来判断是否一致</li>
+</ul>
+</li>
+<li>AUTO_INCREMENT 自增<ul>
+<li>如果一个 id 为 1000 的值修改为 2000,之后再插入数据的 id 就是 2001</li>
+<li>插入后如何获取自增 id：<code>SELECT LAST_INSERT_ID()</code><ul>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/Soinice/article/details/88845898">参考文章 1</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.yiibai.com/mysql/last_insert_id.html">参考文章 2</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/7013358349735428126">参考文章 3</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>DEFAULT 指定默认值</li>
+<li>ENGINE&#x3D;InnoDB 指定引擎<ul>
+<li>InnoDB 是一个可靠的事务处理引擎，它不支持全文本搜索（5.5 之后默认）</li>
+<li>MEMORY 在功能等同于 MyISAM，但由于数据存储在内存（不是磁盘）中，速度很快（特别适合于临时表）</li>
+<li>MyISAM 是一个性能极高的引擎，它支持全文本搜索，但不支持事务处理（5.5 之前默认）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>更新表</p>
+<pre><code class="sql">--  新增列
+ALTER TABLE vendors ADD vend_phone CHAR(20) ;
+
+-- 删除列
+ALTER TABLE vendors DROP COLUMN vend_phone;
+
+-- 增加外键
+ALTER TABLE orderitems ADD CONSTRAINT fk_orderitems_orders FOREIGN KEY (order_num) REFERENCES orders (order_num);
+</code></pre>
+</li>
+<li><p>重命名表</p>
+<pre><code class="sql">RENAME TABLE customers2 TO customers3;
+</code></pre>
+</li>
+<li><p>删除表</p>
+<pre><code class="sql">DROP TABLE customers3;
+</code></pre>
+</li>
+</ol>
+<h1 id="第-22-章：使用视图"><a href="#第-22-章：使用视图" class="headerlink" title="第 22 章：使用视图"></a>第 22 章：使用视图</h1><ol>
+<li><p>什么是视图</p>
+<ul>
+<li>视图仅仅是用来查看存储在别处的数据的一种设施</li>
+<li>视图是一种虚拟表，视图本身不包含数据</li>
+<li>对视图的新增、更新、删除会影响其基表的数据，对基表数据的新增、更新、删除同样会影响视图</li>
+<li>因为视图不包含数据，所以每次使用视图时，其实还是执行了一次构成视图的查询语句</li>
+</ul>
+</li>
+<li><p>视图的创建</p>
+<ul>
+<li>利用视图简化复杂的联结</li>
+</ul>
+<pre><code class="sql">CREATE VIEW productcustomers AS
+SELECT cust_name, cust_contact, prod_id
+FROM customers, orders, orderitems
+WHERE customers.cust_id = orders.cust_id
+AND orderitems.order_num = orders.order_num;
+
+mysql&gt; SELECT * FROM productcustomers;
++----------------+--------------+---------+
+| cust_name      | cust_contact | prod_id |
++----------------+--------------+---------+
+| Coyote Inc.    | Y Lee        | ANV01   |
+| Coyote Inc.    | Y Lee        | ANV02   |
+| Coyote Inc.    | Y Lee        | TNT2    |
+| Coyote Inc.    | Y Lee        | FB      |
+| Coyote Inc.    | Y Lee        | FB      |
+| Coyote Inc.    | Y Lee        | OL1     |
+| Coyote Inc.    | Y Lee        | SLING   |
+| Coyote Inc.    | Y Lee        | ANV03   |
+| Wascals        | Jim Jones    | JP2000  |
+| Yosemite Place | Y Sam        | TNT2    |
+| The Fudds      | E Fudd       | FC      |
++----------------+--------------+---------+
+11 rows in set (0.00 sec)
+</code></pre>
+<ul>
+<li>用视图重新格式化检索出的数据</li>
+</ul>
+<pre><code class="sql">mysql&gt; CREATE VIEW vendorlocations AS
+   -&gt; SELECT Concat(RTrim(vend_name),&#39; (&#39;, RTrim(vend_country),&#39;)&#39;)
+   -&gt; AS vend_title
+   -&gt; FROM vendors
+   -&gt; ORDER BY vend_name;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql&gt; SELECT * FROM vendorlocations;
++-------------------------+
+| vend_title              |
++-------------------------+
+| ACME (USA)              |
+| Anvils R Us (USA)       |
+| Furball Inc. (USA)      |
+| Jet Set (England)       |
+| Jouets Et Ours (France) |
+| LT Supplies (USA)       |
++-------------------------+
+6 rows in set (0.00 sec)
+</code></pre>
+<ul>
+<li>用视图过滤不想要的数据</li>
+</ul>
+<pre><code class="sql">mysql&gt; CREATE VIEW customeremaillist AS
+   -&gt; SELECT cust_id,cust_name, cust_email
+   -&gt; FROM customers
+   -&gt; WHERE cust_email IS NOT NULL ;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql&gt; SELECT * FROM customeremaillist;
++---------+----------------+---------------------+
+| cust_id | cust_name      | cust_email          |
++---------+----------------+---------------------+
+|   10001 | Coyote Inc.    | ylee@coyote.com     |
+|   10003 | Wascals        | rabbit@wascally.com |
+|   10004 | Yosemite Place | sam@yosemite.com    |
+|   10005 | The Fudds      | elmer@fudd.com      |
++---------+----------------+---------------------+
+4 rows in set (0.00 sec)
+</code></pre>
+<ul>
+<li>使用视图与计算字段</li>
+</ul>
+<pre><code class="sql">mysql&gt; CREATE VIEW orderitemsexpanded AS
+   -&gt; SELECT order_num,prod_id,quantity,item_price,quantity*item_price AS expanded_price
+   -&gt; FROM orderitems ;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql&gt; SELECT * FROM orderitemsexpanded;
++-----------+---------+----------+------------+----------------+
+| order_num | prod_id | quantity | item_price | expanded_price |
++-----------+---------+----------+------------+----------------+
+|     20005 | ANV01   |       10 |       5.99 |          59.90 |
+|     20005 | ANV02   |        3 |       9.99 |          29.97 |
+|     20005 | TNT2    |        5 |      10.00 |          50.00 |
+|     20005 | FB      |        1 |      10.00 |          10.00 |
+|     20006 | JP2000  |        1 |      55.00 |          55.00 |
+|     20007 | TNT2    |      100 |      10.00 |        1000.00 |
+|     20008 | FC      |       50 |       2.50 |         125.00 |
+|     20009 | FB      |        1 |      10.00 |          10.00 |
+|     20009 | OL1     |        1 |       8.99 |           8.99 |
+|     20009 | SLING   |        1 |       4.49 |           4.49 |
+|     20009 | ANV03   |        1 |      14.99 |          14.99 |
++-----------+---------+----------+------------+----------------+
+11 rows in set (0.00 sec)
+</code></pre>
+</li>
+<li><p><code>SHOW CREATE VIEW customeremaillist;</code>来查看创建视图的语句</p>
+</li>
+<li><p><code>DROP VIEW productcustomers;</code> 删除视图</p>
+</li>
+<li><p>更新视图</p>
+<pre><code class="sql">mysql&gt; CREATE OR REPLACE VIEW vendorlocations AS
+   -&gt; SELECT Concat(RTrim(vend_name),&#39; (&#39;, RTrim(vend_country),&#39;)----&#39;)
+   -&gt; AS vend_title
+   -&gt; FROM vendors
+   -&gt; ORDER BY vend_name;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql&gt; SELECT * FROM vendorlocations;
++-----------------------------+
+| vend_title                  |
++-----------------------------+
+| ACME (USA)----              |
+| Anvils R Us (USA)----       |
+| Furball Inc. (USA)----      |
+| Jet Set (England)----       |
+| Jouets Et Ours (France)---- |
+| LT Supplies (USA)----       |
++-----------------------------+
+6 rows in set (0.00 sec)
+</code></pre>
+<p>如果要更新的视图不存在, 就会新建视图</p>
+<p>如果要更新的视图存在，就会更新视图</p>
+</li>
+<li><p>对视图进行增删改查</p>
+<p>在 MySQL5 中 如果视图定义中有以下操作，则不能进行视图的增删改查：</p>
+<ul>
+<li>分组（使用 GROUP BY 和 HAVING）；</li>
+<li>联结 （在 MySQL8 中试了，可以）</li>
+<li>子查询</li>
+<li>并</li>
+<li>聚集函数（Min()、Count()、Sum()等</li>
+<li>DISTINCT</li>
+<li>导出（计算）列</li>
+</ul>
+<p><strong>一般，应该将视图用于检索（SELECT 语句）而不用于更新（INSERT、UPDATE 和 DELETE）。</strong></p>
+</li>
+</ol>
+<h1 id="第-23-章：使用存储过程"><a href="#第-23-章：使用存储过程" class="headerlink" title="第 23 章：使用存储过程"></a>第 23 章：使用存储过程</h1><h2 id="1-如何理解存储过程"><a href="#1-如何理解存储过程" class="headerlink" title="1.如何理解存储过程"></a>1.如何理解存储过程</h2><ol>
+<li><p>存储过程是什么：存储过程简单来说，就是为以后的使用而保存的一条或多条 MySQL 语句的集合。</p>
+</li>
+<li><p>为什么要使用存储过程：好处是把复杂的 SQL 代码都封装起来，这样带来以下 3 个好处</p>
+<ul>
+<li>简化复杂的操作</li>
+<li>保证了数据的完整性</li>
+<li>简化对变动的管理</li>
+</ul>
+</li>
+</ol>
+<h2 id="2-创建存储过程"><a href="#2-创建存储过程" class="headerlink" title="2.创建存储过程"></a>2.创建存储过程</h2><pre><code class="sql">-- 如果再图形界面操作，可以这么写
+CREATE PROCEDURE productpricing()
+BEGIN
+SELECT Avg(prod_price) AS priceaverage
+FROM products;
+END ;
+
+-- 如果再MySQL的命令行操作，需要重新定义分隔符
+-- DELIMITER // 把分隔符定义为 //
+-- END // 再end后面执行完
+-- DELIMITER ; 紧接着再把分隔符改回 ;
+mysql&gt; DELIMITER //
+mysql&gt; CREATE PROCEDURE productpricing()
+    -&gt; BEGIN
+    -&gt; SELECT Avg(prod_price) AS priceaverage
+    -&gt; FROM products;
+    -&gt; END //
+Query OK, 0 rows affected (0.02 sec)
+
+mysql&gt; DELIMITER ;
+</code></pre>
+<h2 id="3-执行存储过程"><a href="#3-执行存储过程" class="headerlink" title="3.执行存储过程"></a>3.执行存储过程</h2><pre><code class="sql">mysql&gt; CALL productpricing();
++--------------+
+| priceaverage |
++--------------+
+|    16.133571 |
++--------------+
+1 row in set (0.03 sec)
+
+Query OK, 0 rows affected (0.04 sec)
+</code></pre>
+<h2 id="4-删除存储过程"><a href="#4-删除存储过程" class="headerlink" title="4.删除存储过程"></a>4.删除存储过程</h2><pre><code class="sql">-- 删除
+mysql&gt; DROP PROCEDURE productpricing;
+Query OK, 0 rows affected (0.01 sec)
+
+-- 仅当存在时删除
+mysql&gt; DROP PROCEDURE productpricing;
+ERROR 1305 (42000): PROCEDURE temp.productpricing does not exist
+mysql&gt; DROP PROCEDURE IF EXISTS productpricing;
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+</code></pre>
+<h2 id="4-使用参数"><a href="#4-使用参数" class="headerlink" title="4.使用参数"></a>4.使用参数</h2><pre><code class="sql">-- 创建存储过程
+CREATE PROCEDURE productpricing(
+OUT pl DECIMAL(8,2),
+OUT ph DECIMAL(8,2),
+OUT pa DECIMAL(8,2)
+)
+BEGIN
+    SELECT Min(prod_price)
+    INTO pl
+    FROM products;
+    SELECT
+    Max(prod_price)
+    INTO ph
+    FROM
+    products;
+    SELECT Avg(prod_price)
+    INTO pa
+    FROM products;
+END;
+-- 调用存储过程，并将结果存储在 @pricelow,@pricehigh,@priceaverage 三个变量中
+mysql&gt; CALL productpricing(@pricelow,@pricehigh,@priceaverage);
+Query OK, 1 row affected, 1 warning (0.00 sec)
+-- 访问变量，获得结果
+mysql&gt; SELECT @pricelow,@pricehigh,@priceaverage;
++-----------+------------+---------------+
+| @pricelow | @pricehigh | @priceaverage |
++-----------+------------+---------------+
+|      2.50 |      55.00 |         16.13 |
++-----------+------------+---------------+
+1 row in set (0.00 sec)
+</code></pre>
+<ul>
+<li>变量&#x2F;参数 是按照顺序一一对应的，所以顺序要注意，数量不能变</li>
+<li>IN（传递给存储过程）</li>
+<li>OUT（从存储过程传出，如这里所用）</li>
+<li>INOUT（对存储过程传入和传出）</li>
+<li>INTO 将查询出来的值存储到变量中</li>
+</ul>
+<p><strong>【发现如下奇怪现象】</strong></p>
+<pre><code class="sql">-- 1. 我先是在Navicate里面创建了存储过程
+-- 2. 接着又调用存储过程
+-- 3. 然后再访问变量（SELECT），可以正常得到值
+-- 4. 接着我用MySQL自带的命令行访问变量（SELECT），得到的却是NULL
+mysql&gt; SELECT @pricelow,@pricehigh,@priceaverage;
++----------------------+------------------------+------------------------------+
+| @pricelow            | @pricehigh             | @priceaverage                |
++----------------------+------------------------+------------------------------+
+| NULL                 | NULL                   | NULL                         |
++----------------------+------------------------+------------------------------+
+1 row in set (0.00 sec)
+
+-- 于是猜想一：存储过程是放在客户端上的？结果执行如下命令
+mysql&gt; SHOW CREATE PROCEDURE productpricing ;
+-- 发现两边的存储过程的内容是一样的
+
+-- 接着猜想二：存储的变量是放在客户端的？
+-- 于是我在MySQL的自带的客户端再次执行调用命令：
+CALL productpricing(@pricelow,@pricehigh,@priceaverage);
+-- 接着再查询，就又得到了结果
+
+-- 很可能存储的变量是放在客户端上面，Navicate 和Mysql自带的客户端不是同一个客户端
+</code></pre>
+<pre><code class="sql">CREATE PROCEDURE ordertotal(
+    IN onumber INT ,
+    OUT otota1 DECIMAL(8,2)
+)
+BEGIN
+    SELECT Sum(item_price*quantity)
+    FROM orderitems
+    WHERE order_num = onumber
+    INTO otota1 ;
+END;
+
+mysql&gt; CALL ordertotal(20005,@total);
+Query OK, 1 row affected (0.01 sec)
+
+mysql&gt; SELECT @total;
++--------+
+| @total |
++--------+
+| 149.87 |
++--------+
+1 row in set (0.00 sec)
+</code></pre>
+<h2 id="5-建立智能存储过程-包含业务的，更复杂的存储过程"><a href="#5-建立智能存储过程-包含业务的，更复杂的存储过程" class="headerlink" title="5.建立智能存储过程(包含业务的，更复杂的存储过程)"></a>5.建立智能存储过程(包含业务的，更复杂的存储过程)</h2><p>【业务描述】你需要获得与以前一样的订单合计，但需要对合计增加营业税，不过只针对某些顾客（或许是你所在州中那些顾客）。那么，你需要做下面几件事情：</p>
+<ul>
+<li>获得合计（与以前一样）；</li>
+<li>把营业税有条件地添加到合计；</li>
+<li>返回合计（带或不带税）。</li>
+</ul>
+<pre><code class="sql">-- Name: ordertotal
+-- Parameters:  onumber = order number
+-- 							taxable = 0 if not taxable, l if taxable
+-- 							ototal = order total variable
+CREATE PROCEDURE ordertotal(
+IN onumber INT,
+IN taxable BOOLEAN,
+OUT ototal DECIMAL(8,2)
+) COMMENT &#39;Obtain order total,optionally adding tax&#39;
+
+BEGIN
+   -- Declare variable for total
+   DECLARE total DECIMAL(8,2);
+   -- Declare tax percentage
+   DECLARE taxrate INT DEFAULT 6;
+   -- Get the order total
+   SELECT Sum(item_price*quantity)
+   FROM orderitems
+   WHERE order_num = onumber
+   INTO total;
+
+   IF taxable THEN
+      -- Is this taxable?-- Yes，SO add taxrate to the tota l
+      SELECT total+(total /100*taxrate) INTO total ;
+   END IF;
+      -- And finally， save to out variable
+      SELECT total INTO ototal ;
+
+END;
+
+mysql&gt; CALL ordertotal (20005, 0, @total);
+Query OK, 1 row affected (0.00 sec)
+
+mysql&gt; SELECT @total ;
++--------+
+| @tota1 |
++--------+
+| 149.87 |
++--------+
+1 row in set (0.00 sec)
+</code></pre>
+<ol>
+<li><p>SHOW PROCEDURE STATUS 可以查到 Comment</p>
+</li>
+<li><p>BOOLEAN 值指定为 1 表示真（非 0 都为真），指定为 0 表示假</p>
+</li>
+<li><p>IF A THEN SQL 语句 END IF : 如果 A 为真，就执行 SQL 语句</p>
+</li>
+<li><p>用 DECLARE 语句定义了两个局部变量。DECLARE 要求指定变量名和数据类型，它也支持可选的默认值</p>
+</li>
+</ol>
+<h2 id="6-检查存储过程"><a href="#6-检查存储过程" class="headerlink" title="6.检查存储过程"></a>6.检查存储过程</h2><pre><code class="sql">SHOW CREATE PROCEDURE ordertotal ;
+SHOW PROCEDURE STATUS WHERE Name= &#39;ordertotal&#39;
+</code></pre>
+<h1 id="第-24-章：使用游标"><a href="#第-24-章：使用游标" class="headerlink" title="第 24 章：使用游标"></a>第 24 章：使用游标</h1><p>游标（cursor）是一个存储在 MySQL 服务器上的数据库查询，它不是一条 SELECT 语句，而是被该语句检索出来的结果集。在存储了游标之后，应用程序可以根据需要滚动或浏览其中的数据。</p>
+<p>相当于 SELECT 结果的集合</p>
+<pre><code class="sql">CREATE PROCEDURE processorders()
+BEGIN
+   -- Declare local variables
+   DECLARE done BOOLEAN DEFAULT 0;
+   DECLARE o INT;
+   DECLARE t DECIMAL (8,2);
+
+
+   -- Declare the cursor
+   DECLARE ordernumbers CURSOR
+   FOR
+   SELECT order_num FROM orders;
+
+   /*3.*/
+   -- Declare continue handler
+   DECLARE CONTINUE HANDLER FOR SQLSTATE &#39;02000&#39; SET done=1;
+   -- Create a table to store the results
+   CREATE TABLE IF NOT EXISTS ordertotals
+   (order_num INT, total DECIMAL(8,2));
+
+   -- Open the cursor
+   OPEN ordernumbers;
+
+         -- Loop through all rows
+         REPEAT
+             -- Get order number
+             FETCH ordernumbers INTO o;
+
+             -- Get the total for this order
+             CALL ordertotal(o, 1, t);
+             --
+             -- Insert order and total into ordertotals
+             INSERT INTO ordertotals (order_num, total)
+             VALUES(o, t);
+
+         -- End of loop
+         UNTIL done END REPEAT;
+   -- Close the cursor
+   CLOSE ordernumbers;
+END;
+
+mysql&gt; CALL processorders();
+Query OK, 1 row affected (0.04 sec)
+
+mysql&gt; SELECT * FROM ordertotals;
++-----------+---------+
+| order_num | total   |
++-----------+---------+
+|     20005 |  158.86 |
+|     20009 |   40.78 |
+|     20006 |   58.30 |
+|     20007 | 1060.00 |
+|     20008 |  132.50 |
+|     20008 |  132.50 |
++-----------+---------+
+6 rows in set (0.00 sec)
+</code></pre>
+<ol>
+<li>MySQL 游标只能用于存储过程（和函数）</li>
+<li><code>DECLARE ordernumbers CURSOR</code>: 声明游标，这个游标装着（FOR） SELECT order_num FROM orders 的结果集</li>
+<li><code>DECLARE CONTINUE HANDLER</code>定义了一个 CONTINUE HANDLER, 当满足<code>FOR SQLSTATE &#39;02000&#39;</code>这个条件时，会执行 <code>SET done=1</code><ul>
+<li>SQLSTATE 是 sql 执行的错误码，可见<a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/connector-j/8.0/en/connector-j-reference-error-sqlstates.html">官方文档</a>, 02000 表示未找到符合条件的数据</li>
+<li><code>done</code>在<code>UNTIL done END REPEAT;</code>中用到了，0 表示假，非 0 表示真。</li>
+<li>done 是代码开头定义的<code>DECLARE done BOOLEAN DEFAULT 0;</code></li>
+</ul>
+</li>
+<li><code>OPEN ordernumbers</code>开启路由</li>
+<li><code>REPEAT</code>重复执行代码，除了<code>REPEAT</code>还有<code>LEAVE</code>。作者推荐用<code>REPEAT</code></li>
+<li><code>UNTIL done END REPEAT;</code> 直到 done 为真时，结束循环</li>
+<li><code>FETCH ordernumbers INTO o;</code> FETCH 用来检索当前行的 order_num 列（将自动从第一行开始）到一个名为 o 的局部声明的变量中</li>
+<li><code>CALL ordertotal(o, 1, t);</code> 执行上一章生成的存储过程</li>
+<li><code>CLOSE ordernumbers;</code> 关闭游标。如果你不明确关闭游标，MySQL 将会在到达<code>END</code>语句时自动关闭它。</li>
+</ol>
+<h1 id="第-25-章：使用触发器"><a href="#第-25-章：使用触发器" class="headerlink" title="第 25 章：使用触发器"></a>第 25 章：使用触发器</h1><ol>
+<li><p>触发器是 MySQL 响应 DELETE、INSERT 或者 UPDATE 语句而自动执行的一条或多条 MySQL 语句</p>
+</li>
+<li><p>创建触发器</p>
+<pre><code class="sql">-- MySQL5早期版本是支持的，现在的新版本已经不支持这种写法。
+-- 触发器不允许出现SELECT *的形式，因为这会返回一个结果集，而这是不允许的，所以会报出这种错。
+mysql&gt; CREATE TRIGGER newproduct AFTER INSERT ON products
+   -&gt; FOR EACH ROW SELECT &#39;Product added&#39; ;
+ERROR 1415 (0A000): Not allowed to return a result set from a trigger
+
+-- 发器中可以使用SELECT  INTO的形式来进行查询，将结果放进一个变量，然后查询该变量。
+mysql&gt; CREATE TRIGGER newproduct AFTER INSERT ON products
+   -&gt; FOR EACH ROW SELECT &#39;Product added&#39; INTO @arg;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql&gt; INSERT INTO products VALUES(&#39;TNT3&#39;,1003,&#39;TNT (6 sticks)&#39;,10,&#39;test&#39;);
+Query OK, 1 row affected (0.01 sec)
+
+mysql&gt; SELECT @arg;
++---------------+
+| @arg          |
++---------------+
+| Product added |
++---------------+
+1 row in set (0.00 sec)
+</code></pre>
+<ul>
+<li>在 MySQL 5 中，触发器名必须在每个表中唯一，但不是在每个数据库中唯一。但是作者建议保持每个数据库的触发器名唯一</li>
+<li>只有表才支持触发器，视图不支持</li>
+<li>每个表最多支持 6 个触发器（每条 INSERT、UPDATE 和 DELETE 的之前和之后）</li>
+<li>如果 BEFORE 触发器失败，则 MySQL 将不执行请求的操作，也不执行 AFTER 触发器</li>
+<li>CREATE TRIGGER 名字： 创建触发器</li>
+<li>AFTER INSERT 在 INSERT 之后执行</li>
+<li>FOR EACH ROW 代码对每个插入行执行（也可以是删除或者修改）</li>
+</ul>
+</li>
+<li><p>删除触发器<code>DROP TRIGGER newproduct;</code></p>
+</li>
+<li><p>INSERT 触发器</p>
+<pre><code class="sql">mysql&gt; CREATE TRIGGER neworder AFTER INSERT ON orders
+   -&gt; FOR EACH ROW SELECT NEW.order_num;
+ERROR 1415 (0A000): Not allowed to return a result set from a trigger
+</code></pre>
+<pre><code class="sql">mysql&gt; CREATE TRIGGER neworder AFTER INSERT ON orders
+   -&gt; FOR EACH ROW SELECT NEW.order_num INTO @arg;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql&gt; INSERT INTO orders(order_date,cust_id)
+   -&gt; VALUES (Now(),10001) ;
+Query OK, 1 row affected (0.01 sec)
+
+mysql&gt; SELECT @arg;
++-------+
+| @arg  |
++-------+
+| 20010 |
++-------+
+1 row in set (0.00 sec)
+</code></pre>
+<ul>
+<li>在 INSERT 触发器代码内，可引用一个名为 NEW 的虚拟表，访问被插入的行；</li>
+<li>在 BEFORE INSERT 触发器中，NEW 中的值也可以被更新（允许更改被插入的值）；</li>
+<li>对于 AUTO_INCREMENT 列，NEW 在 INSERT 执行之前包含 0，在 INSERT 执行之后包含新的自动生成值。</li>
+</ul>
+</li>
+<li><p>DELETE 触发器</p>
+<pre><code class="sql">CREATE TRIGGER deleteorder BEFORE DELETE ON orders
+FOR EACH ROW
+BEGIN
+   INSERT INTO archive_orders (order_num, order_date, cust_id)
+   VALUES(OLD.order_num，OLD.order_date, OLD.cust_id) ;
+END;
+</code></pre>
+<ul>
+<li>这个有个<code>;</code>，所以不能直接在命令行里面执行</li>
+<li>在 DELETE 触发器代码内，你可以引用一个名为 OLD 的虚拟表，访问被删除的行；</li>
+<li>OLD 中的值全都是只读的，不能更新。</li>
+<li>BEGIN … END 可以容纳多条 SQL 语句，虽然这里只写了一条</li>
+</ul>
+</li>
+<li><p>UPDATE 触发器</p>
+<pre><code class="sql">mysql&gt; CREATE TRIGGER updatevendor BEFORE UPDATE ON vendors
+   -&gt; FOR EACH ROW SET NEW.vend_state = Upper(NEW.vend_state);
+Query OK, 0 rows affected (0.03 sec)
+
+mysql&gt; UPDATE vendors SET vend_state = &#39;aaa&#39; WHERE vend_id = 1005;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql&gt; SELECT vend_id, vend_state FROM vendors WHERE vend_id = 1005;
++---------+------------+
+| vend_id | vend_state |
++---------+------------+
+|    1005 | AAA        |
++---------+------------+
+1 row in set (0.00 sec)
+</code></pre>
+<ul>
+<li>在 UPDATE 触发器代码中，你可以引用一个名为 OLD 的虚拟表访问以前（UPDATE 语句前）的值，引用一个名为 NEW 的虚拟表访问新更新的值；</li>
+<li>在 BEFORE UPDATE 触发器中，NEW 中的值可能也被更新（允许更改将要用于 UPDATE 语句中的值）；</li>
+<li>OLD 中的值全都是只读的，不能更新。</li>
+</ul>
+</li>
+</ol>
+<h1 id="第-26-章：管理事务处理"><a href="#第-26-章：管理事务处理" class="headerlink" title="第 26 章：管理事务处理"></a>第 26 章：管理事务处理</h1><ol>
+<li><p>事务处理: 要么全部成功，要么全部失败</p>
+</li>
+<li><p>事务（transaction）指一组 SQL 语句；</p>
+</li>
+<li><p>回退（rollback）指撤销指定 SQL 语句的过程</p>
+</li>
+<li><p>提交（commit）指将未存储的 SQL 语句结果写入数据库表；</p>
+</li>
+<li><p>保留点（savepoint）指事务处理中设置的临时占位符（placeholder），你可以对它发布回退,也就是回退到保留点的位置，而不是全部回退。</p>
+</li>
+<li><p>使用 ROLLBACK</p>
+<pre><code class="sql">mysql&gt; SELECT * FROM ordertotals;
++-----------+---------+
+| order_num | total   |
++-----------+---------+
+|     20005 |  158.86 |
+|     20009 |   40.78 |
+|     20006 |   58.30 |
+|     20007 | 1060.00 |
+|     20008 |  132.50 |
+|     20008 |  132.50 |
++-----------+---------+
+6 rows in set (0.02 sec)
+
+mysql&gt; START TRANSACTION;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql&gt; DELETE FROM ordertotals;
+Query OK, 6 rows affected (0.00 sec)
+
+mysql&gt; SELECT * FROM ordertotals;
+Empty set (0.00 sec)
+
+mysql&gt; ROLLBACK;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql&gt; SELECT * FROM ordertotals;
++-----------+---------+
+| order_num | total   |
++-----------+---------+
+|     20005 |  158.86 |
+|     20009 |   40.78 |
+|     20006 |   58.30 |
+|     20007 | 1060.00 |
+|     20008 |  132.50 |
+|     20008 |  132.50 |
++-----------+---------+
+6 rows in set (0.00 sec)
+</code></pre>
+<ul>
+<li>START TRANSACTION 开启事物</li>
+<li>ROLLBACK 回退 START TRANSACTION 之后的命令</li>
+</ul>
+</li>
+<li><p>使用 COMMIT</p>
+<pre><code class="sql">mysql&gt; START TRANSACTION;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql&gt; SELECT * FROM orderitems  WHERE order_num = 20008;
++-----------+------------+---------+----------+------------+
+| order_num | order_item | prod_id | quantity | item_price |
++-----------+------------+---------+----------+------------+
+|     20008 |          1 | FC      |       50 |       2.50 |
++-----------+------------+---------+----------+------------+
+1 row in set (0.00 sec)
+
+mysql&gt; DELETE FROM orderitems WHERE order_num = 20008;
+Query OK, 1 row affected (0.02 sec)
+
+mysql&gt; SELECT * FROM orderitems  WHERE order_num = 20008;
+Empty set (0.00 sec)
+
+mysql&gt;
+mysql&gt; SELECT * FROM orders WHERE order_num = 20008;
++-----------+---------------------+---------+
+| order_num | order_date          | cust_id |
++-----------+---------------------+---------+
+|     20008 | 2005-10-03 00:00:00 |   10005 |
++-----------+---------------------+---------+
+1 row in set (0.00 sec)
+
+mysql&gt; DELETE FROM orders WHERE order_num = 20008;
+Query OK, 1 row affected (0.00 sec)
+
+mysql&gt; SELECT * FROM orders WHERE order_num = 20008;
+Empty set (0.00 sec)
+
+mysql&gt; COMMIT ;
+Query OK, 0 rows affected (0.02 sec)
+</code></pre>
+<ul>
+<li>隐含提交（implicit commit），即提交（写或保存）操作是自动进行的。</li>
+<li>在事务处理块中，提交不会隐含地进行。为进行明确的提交，使用 COMMIT 语句</li>
+<li>当 COMMIT 或 ROLLBACK 语句执行后，事务会自动关闭（将来的更改会隐含提交）。</li>
+</ul>
+</li>
+<li><p>使用保留点</p>
+<pre><code class="sql">mysql&gt; START TRANSACTION;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql&gt; UPDATE orderitems SET quantity = 11 WHERE prod_id=&#39;ANV01&#39;;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql&gt; SAVEPOINT update1;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql&gt; UPDATE ordertotals SET total=100 WHERE order_num = 20005 ;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql&gt; ROLLBACK TO update1;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql&gt; SELECT * FROM  orderitems WHERE prod_id=&#39;ANV01&#39;;
++-----------+------------+---------+----------+------------+
+| order_num | order_item | prod_id | quantity | item_price |
++-----------+------------+---------+----------+------------+
+|     20005 |          1 | ANV01   |       11 |       5.99 |
++-----------+------------+---------+----------+------------+
+1 row in set (0.00 sec)
+
+mysql&gt; SELECT * FROM  ordertotals WHERE  order_num = 20005;
++-----------+--------+
+| order_num | total  |
++-----------+--------+
+|     20005 | 158.86 |
++-----------+--------+
+1 row in set (0.00 sec)
+</code></pre>
+<ul>
+<li>可以回退到保留点位置</li>
+<li>保留点越多越好</li>
+<li>保留点在事务处理完成（执行一条 ROLLBACK 或 COMMIT）后自动释放。</li>
+<li>也可以用<code>RELEASE SAVEPOINT</code>明确地释放保留点。</li>
+</ul>
+</li>
+<li><p>更改默认的提交行为: <code>SET autocommit = 0;</code>。设置 autocommit 为 0（假）指示 MySQL 不自动提交更改</p>
+</li>
+</ol>
+<h1 id="第-27-章：全球化和本地化（字符集问题）"><a href="#第-27-章：全球化和本地化（字符集问题）" class="headerlink" title="第 27 章：全球化和本地化（字符集问题）"></a>第 27 章：全球化和本地化（字符集问题）</h1><ol>
+<li><p>字符集为字母和符号的集合；</p>
+</li>
+<li><p>编码为某个字符集成员的内部表示；</p>
+</li>
+<li><p>校对为规定<strong>字符如何比较</strong>的指令。</p>
+<ul>
+<li>影响排序（如用 ORDER BY 排序数据）</li>
+<li>影响搜索（例如，寻找 apple 的 WHERE 子句是否能找到 APPLE）</li>
+</ul>
+</li>
+<li><p>显示所有可用的字符集以及每个字符集的描述和默认校对。</p>
+</li>
+</ol>
+<pre><code class="sql">SHOW CHARACTER SET;
+
+SHOW CHARACTER SET LIKE &#39;UTF%&#39;;
+</code></pre>
+<ol start="5">
+<li>显示所有可用的校对，以及它们适用的字符集。可以看到有的字符集具有不止一种校对</li>
+</ol>
+<pre><code class="sql">SHOW COLLATION;
+SHOW COLLATION LIKE &#39;UTF%&#39;;
+</code></pre>
+<ol start="6">
+<li>通常系统管理在安装时定义一个默认的字符集和校对</li>
+<li>也可以在创建数据库时，指定默认的字符集和校对</li>
+<li>不同的表，甚至不同的列都可能需要不同的字符集</li>
+</ol>
+<pre><code class="sql">CREATE TABLE mytable
+(
+column1 INT,
+column2 VARCHAR(10),
+column3 VARCHAR(10) CHARACTER SET latin1 COLLATE latin1_general_ci
+) DEFAULT CHARACTER SET hebrew
+COLLATE hebrew_general_ci ;
+</code></pre>
+<ul>
+<li>如果指定 CHARACTER SET 和 COLLATE 两者，则使用这些值。</li>
+<li>如果只指定 CHARACTER SET，则使用此字符集及其默认的校对（如 SHOW CHARACTER SET 的结果中所示）。</li>
+<li>如果既不指定 CHARACTER SET，也不指定 COLLATE，则使用数据库默认</li>
+</ul>
+<ol start="9">
+<li>校对在对用 ORDER BY 子句检索出来的数据排序时起重要的作用。如果你需要用与创建表时不同的校对顺序排序特定的 SELECT 语句，可以在 SELECT 语句自身中进行：<strong>【已经不可以了】</strong></li>
+</ol>
+<pre><code class="sql">-- 已经不可以这么设置了
+SELECT * FROM customers ORDER BY cust_name COLLATE  latin1_general_cs;
+&gt; 1253 - COLLATION &#39;latin1_general_cs&#39; is not valid for CHARACTER SET &#39;utf8mb4&#39;
+
+-- 发现建表的时候设置的是  COLLATE=utf8mb4_0900_ai_ci
+show create table customers;
+
+-- 之后也只能这么查询
+SELECT * FROM customers ORDER BY cust_name COLLATE utf8mb4_0900_ai_ci;
+</code></pre>
+<h1 id="第-28-章：安全管理（管理用户和授权）"><a href="#第-28-章：安全管理（管理用户和授权）" class="headerlink" title="第 28 章：安全管理（管理用户和授权）"></a>第 28 章：安全管理（管理用户和授权）</h1><ol>
+<li>查看 MySQL 的用户</li>
+</ol>
+<pre><code class="sql">-- MySQL用户账号和信息存储在名为mysql的MySQL数据库中
+use mysql;
+SELECT user FROM user
+</code></pre>
+<ol start="2">
+<li><p>创建用户账号 <code>CREATE USER ben IDENTIFIED BY &#39;ben&#39;;</code></p>
+</li>
+<li><p>给账户重命名<code>RENAME USER ben TO ben2;</code></p>
+</li>
+<li><p>删除用户<code>DROP USER ben2;</code></p>
+</li>
+<li><p>设置访问权限</p>
+</li>
+</ol>
+<ul>
+<li>展示权限</li>
+</ul>
+<pre><code class="sql">-- USAGE表示根本没有权限
+mysql&gt; SHOW GRANTS FOR ben;
++---------------------------------+
+| Grants for ben@%                |
++---------------------------------+
+| GRANT USAGE ON *.* TO `ben`@`%` |
++---------------------------------+
+1 row in set (0.00 sec)
+</code></pre>
+<p>MySQL 的权限用用户名和主机名结合定义。如果不指定主机名，则使用默认的主机名%（授予用户访问权限而不管主机名）。</p>
+<ul>
+<li>授予权限<code>GRANT SELECT ON temp.* TO ben;</code></li>
+<li>撤销权限<code>REVOKE SELECT ON temp.* FROM ben;</code><ul>
+<li>GRANT 和 REVOKE 可在几个层次上控制访问权限：</li>
+<li>整个服务器，使用 GRANT ALL 和 REVOKE ALL；</li>
+<li>整个数据库，使用 ON database.*；</li>
+<li>特定的表，使用 ON database.table；</li>
+<li>特定的列；</li>
+<li>特定的存储过程</li>
+</ul>
+</li>
+<li>简化多次授权<code>GRANT SELECT,UPDATE ON temp.* TO ben;</code></li>
+</ul>
+<ol start="6">
+<li><p>更改口令</p>
+<pre><code class="sql">-- mysql 5.7.9 之后取消了password 函数，所以执行这个SQL会报错
+SET PASSWORD FOR ben = password(&#39;ben123&#39;);
+-- 正确的方式
+ALTER USER &#39;ben&#39; IDENTIFIED WITH mysql_native_password BY &#39;ben123&#39;;
+</code></pre>
+</li>
+</ol>
+<p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/2115190">MySQL8.0 正确修改密码的姿势–通俗易懂</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/chloneda/p/12449819.html">MySQL 8.0 修改密码</a></p>
+<h1 id="第-29-章：数据库维护"><a href="#第-29-章：数据库维护" class="headerlink" title="第 29 章：数据库维护"></a>第 29 章：数据库维护</h1><ol>
+<li><p>备份数据</p>
+</li>
+<li><p>进行数据库维护</p>
+<pre><code class="sql">-- ANALYZE TABLE，检查表是否正常
+mysql&gt; ANALYZE TABLE orders;
++-------------+---------+----------+----------+
+| Table       | Op      | Msg_type | Msg_text |
++-------------+---------+----------+----------+
+| temp.orders | analyze | status   | OK       |
++-------------+---------+----------+----------+
+1 row in set (0.03 sec)
+-- CHECK TABLE，检查表是否正常
+mysql&gt; CHECK TABLE orders,orderitems;
++-----------------+-------+----------+----------+
+| Table           | Op    | Msg_type | Msg_text |
++-----------------+-------+----------+----------+
+| temp.orders     | check | status   | OK       |
+| temp.orderitems | check | status   | OK       |
++-----------------+-------+----------+----------+
+2 rows in set (0.01 sec)
+</code></pre>
+</li>
+<li><p>诊断启动问题</p>
+<ul>
+<li>mysqld –help 显示帮助——一个选项列表；</li>
+<li>mysqld –safe-mode 装载减去某些最佳配置的服务器；</li>
+<li>mysqld –verbose 显示全文本消息（为获得更详细的帮助消息与–help 联合使用）；</li>
+<li>mysqld –version 显示版本信息然后退出。</li>
+</ul>
+</li>
+<li><p>查看日志文件</p>
+</li>
+</ol>
+<ul>
+<li>错误日志：日志通常名为 hostname.err，位于 data 目录中。此日志名可用 –log-error 命令行选项更改。</li>
+<li>查询日志：此日志通常名为 hostname.log，位于 data 目录中。此名字可以用–log 命令行选项更改。</li>
+<li>二进制日志：此日志通常名为 hostname-bin，位于 data 目录内。此名字可以用–log-bin 命令行选项更改</li>
+<li>缓慢查询日志：此日志<strong>记录执行缓慢的任何查询</strong>。这个日志在确定数据库何处需要优化很有用。此日志通常名为 hostname-slow.log ， 位于 data 目录中。此名字可以用–log-slow-queries 命令行选项更改。</li>
+</ul>
+<h1 id="第-30-章：改善性能"><a href="#第-30-章：改善性能" class="headerlink" title="第 30 章：改善性能"></a>第 30 章：改善性能</h1><ol>
+<li><p>MySQL 具有特定的硬件要求</p>
+</li>
+<li><p>关键的生产 DBMS 应该运行在自己的专用服务器上。</p>
+</li>
+<li><p>可以通过修改一些配置来提升性能（内存分配、缓冲区大小等）</p>
+<ul>
+<li><code>SHOW VARIABLES;</code>和<code>SHOW STATUS;</code>可以查看当前设置</li>
+</ul>
+</li>
+<li><p>MySQL 一个多用户多线程的 DBMS。如果发现性能问题，可使用<code>SHOW PROCESSLIST;</code>显示所有活动进程（以及它们的线程 ID 和执行时间）然后用<code>KILL</code>命令终结某个特定的进程</p>
+</li>
+<li><p>编写 SELEC 语句的方式不止一种，可以每个都试一下，比较性能</p>
+</li>
+<li><p>使用 EXPLAIN 语句让 MySQL 解释它将如何执行一条 SELECT 语句。</p>
+<pre><code class="sql">mysql&gt; EXPLAIN SELECT * FROM ordertotals;
++----+-------------+-------------+------------+------+---------------+------+---------+------+------+----------+-------+
+| id | select_type | table       | partitions | type | possible_keys | key  | key_len | ref  | rows | filtered | Extra |
++----+-------------+-------------+------------+------+---------------+------+---------+------+------+----------+-------+
+|  1 | SIMPLE      | ordertotals | NULL       | ALL  | NULL          | NULL | NULL    | NULL |    6 |   100.00 | NULL  |
++----+-------------+-------------+------------+------+---------------+------+---------+------+------+----------+-------+
+1 row in set, 1 warning (0.00 sec)
+</code></pre>
+</li>
+<li><p>存储过程效率高</p>
+</li>
+<li><p>使用正确的数据类型</p>
+</li>
+<li><p>不要用 SELECT *</p>
+</li>
+<li><p>有的操作（包括 INSERT）支持一个可选的 <code>DELAYED</code>关键字，如果使用它，将把控制立即返回给调用程序，并且一旦有可能就实际执行该操作。</p>
+</li>
+<li><p>在导入数据时，应该关闭自动提交。你可能还想删除索引（包括 FULLTEXT 索引），然后在导入完成后再重建它们。</p>
+</li>
+<li><p>必须索引数据库表以改善数据检索的性能</p>
+</li>
+<li><p>通过使用多条 SELECT 语句和连接它们的<code>UNION语句</code>替换<code>复杂的OR条件</code>可以提升效率</p>
+</li>
+<li><p>如果你有一些表，它们收集数据且不经常被搜索，则在有必要之前不要索引它们。（索引可根据需要添加和删除。）</p>
+</li>
+<li><p>LIKE 很慢。一般来说，最好是使用 FULLTEXT 而不是 LIKE。</p>
+</li>
+</ol>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 1909773034@qq.com </span>
+    </div>
+</article>
+
+
+<p>
+    <a  class="dashang" onclick="dashangToggle()">赏</a>
+</p>
+
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">
+    ©2017 XieShaoLin
+</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+
+<div class="hide_box" onclick="dashangToggle()"></div>
+<div class="shang_box">
+    <a class="shang_close"  onclick="dashangToggle()">×</a>
+    <div class="shang_tit">
+        <p>喜欢就点赞,疼爱就打赏</p>
+    </div>
+    <div class="shang_payimg">
+        <div class="pay_img">
+            <img src="/img/alipay.jpg" class="alipay" title="扫码支持">
+            <img src="/img/weixin.jpg" class="weixin" title="扫码支持">
+        </div>
+    </div>
+    <div class="shang_payselect">
+        <span><label><input type="radio" name="pay" checked value="alipay">支付宝</label></span><span><label><input type="radio" name="pay" value="weixin">微信</label></span>
+    </div>
+</div>
+
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
+
+<script src="/js/script.js?v=1.1.0" ></script>
+<script>
+    var img_resize = 'default';
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $("#post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+        $("input[name=pay]").on("click", function () {
+            if($("input[name=pay]:checked").val()=="weixin"){
+                $(".shang_box .shang_payimg .pay_img").addClass("weixin_img");
+            } else {
+                $(".shang_box .shang_payimg .pay_img").removeClass("weixin_img");
+            }
+        })
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+    function dashangToggle() {
+        $(".shang_box").fadeToggle();
+        $(".hide_box").fadeToggle();
+    }
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>
