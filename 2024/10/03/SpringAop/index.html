@@ -1,0 +1,1903 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Spring：AOP的使用 | Notes</title>
+  <meta name="keywords" content=" spring ">
+  <meta name="description" content="Spring：AOP的使用 | Notes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="引入问题  需要写一个计算器的接口 public interface Calculator &#123;          int add(int i, int j);          int sub(int i, int j);          int mul(int i, int j);          int div(int i, int j);      &#125;  其实现类不仅">
+<meta property="og:type" content="article">
+<meta property="og:title" content="设计模式：代理模式">
+<meta property="og:url" content="http://example.com/2024/10/03/AOPProxy/index.html">
+<meta property="og:site_name" content="Notes">
+<meta property="og:description" content="引入问题  需要写一个计算器的接口 public interface Calculator &#123;          int add(int i, int j);          int sub(int i, int j);          int mul(int i, int j);          int div(int i, int j);      &#125;  其实现类不仅">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2024/10/03/AOPProxy/AOPProxy/001.png">
+<meta property="og:image" content="http://example.com/2024/10/03/AOPProxy/AOPProxy/002.png">
+<meta property="og:image" content="http://example.com/2024/10/03/AOPProxy/AOPProxy/003.png">
+<meta property="og:image" content="http://example.com/2024/10/03/AOPProxy/AOPProxy/004.png">
+<meta property="og:image" content="http://example.com/2024/10/03/AOPProxy/AOPProxy/005.png">
+<meta property="og:image" content="http://example.com/2024/10/03/AOPProxy/AOPProxy/006.png">
+<meta property="article:published_time" content="2024-10-02T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-10-03T06:48:51.676Z">
+<meta property="article:author" content="XieShaoLin">
+<meta property="article:tag" content="spring">
+<meta property="article:tag" content="设计模式">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2024/10/03/AOPProxy/AOPProxy/001.png">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.1.0" rel="stylesheet">
+
+<link href="/css/hl_theme/github.css?v=1.1.0" rel="stylesheet">
+
+<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
+
+<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="/js/titleTip.js?v=1.1.0" ></script>
+
+<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.1.0" ></script>
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="">
+  <input class="theme_blog_path" value="">
+  <input id="theme_shortcut" value="true" />
+  <input id="theme_highlight_on" value="true" />
+  <input id="theme_code_copy" value="true" />
+</div>
+
+
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/"
+   class="avatar_target">
+    <img class="avatar"
+         src="/img/avatar.jpg"/>
+</a>
+<div class="author">
+    <span>XieShaoLin</span>
+</div>
+
+<div class="icon">
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            <a title="email"
+               href="mailto:1909773034@qq.com"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-email"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="qq"
+               href="http://wpa.qq.com/msgrd?v=3&uin=1909773034&site=qq&menu=yes"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-qq"></use>
+                    </svg>
+                
+            </a>
+        
+    
+</div>
+
+
+
+
+
+<ul>
+    <li>
+        <div class="all active" data-rel="全部文章">全部文章
+            
+                <small>(68)</small>
+            
+        </div>
+    </li>
+    
+        
+            
+                
+    <li>
+        <div data-rel="工具">
+            
+            工具
+            <small>(1)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="前端">
+            
+            前端
+            <small>(1)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="后端">
+            
+            后端
+            <small>(58)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="运维">
+            
+            运维
+            <small>(3)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="财经">
+            
+            财经
+            <small>(1)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="英语">
+            
+            英语
+            <small>(2)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+        
+            
+            
+            
+    </div>
+    <div>
+        
+        
+    </div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="68">
+<input type="hidden" id="yelog_site_word_count" value="329.1k">
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        友情链接
+        <i class="iconfont icon-left"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="http://yelog.org/">叶落阁</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <div class="right-top">
+        <div id="default-panel">
+            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
+            <div class="right-title">全部文章</div>
+            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
+        </div>
+        <div id="search-panel">
+            <i class="iconfont icon-left" data-title="返回"></i>
+            <input id="local-search-input" autocomplete="off"/>
+            <label class="border-line" for="input"></label>
+            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
+            <i class="iconfont icon-tag" data-title="标签"></i>
+        </div>
+        <div id="outline-panel" style="display: none">
+            <div class="right-title">大纲</div>
+            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
+        </div>
+    </div>
+
+    <div class="tags-list">
+    <input id="tag-search" />
+    <div class="tag-wrapper">
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>阿里云</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>跨域</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>前锋教育</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>设计模式</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>虚拟机</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>AOF</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>CentOS</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>docker</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>economy</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>element-ui</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>English</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>ES6</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>ESLint</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Feign</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>finalshell</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Getway</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>git</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>grammer</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>gulimall</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>hexo</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>idea</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>java</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>JavaScript</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>JDBC</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Jedis</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Js</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>JSR303</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Junit</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Linux</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>listening</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Log4j2</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>maven</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>mq</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Mysql</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>MySql</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>MySQL</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Nacos</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>node.js</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>NoSql</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>npm</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>nvm</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>OAuth2</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>OSS</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Prettier</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>python</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>RDB</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>redis</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>RedisTemplate</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>renren-fast</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>spring</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>springboot</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>SpringCloud</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>springSecurity</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>vue</a>
+            </li>
+        
+    </div>
+
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/10/03/AOPProxy/"
+           data-tag="spring,设计模式"
+           data-author="" >
+            <span class="post-title" title="设计模式：代理模式">设计模式：代理模式</span>
+            <span class="post-date" title="2024-10-03 00:00:00">2024/10/03</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/10/03/Log4j2QuickStart/"
+           data-tag="Log4j2"
+           data-author="" >
+            <span class="post-title" title="日志框架：Log4j2快速入门">日志框架：Log4j2快速入门</span>
+            <span class="post-date" title="2024-10-03 00:00:00">2024/10/03</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/10/03/SpringAop/"
+           data-tag="spring"
+           data-author="" >
+            <span class="post-title" title="Spring：AOP的使用">Spring：AOP的使用</span>
+            <span class="post-date" title="2024-10-03 00:00:00">2024/10/03</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/10/03/SpringDeclarativeTransaction/"
+           data-tag="spring"
+           data-author="" >
+            <span class="post-title" title="Spring：声明式事务">Spring：声明式事务</span>
+            <span class="post-date" title="2024-10-03 00:00:00">2024/10/03</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/10/03/SpringProgramaticTransaction/"
+           data-tag="spring"
+           data-author="" >
+            <span class="post-title" title="Spring：编程式事务">Spring：编程式事务</span>
+            <span class="post-date" title="2024-10-03 00:00:00">2024/10/03</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/10/03/spring6QuickStart/"
+           data-tag="spring"
+           data-author="" >
+            <span class="post-title" title="Spring快速入门">Spring快速入门</span>
+            <span class="post-date" title="2024-10-03 00:00:00">2024/10/03</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/10/03/springAnnotationBean/"
+           data-tag="spring"
+           data-author="" >
+            <span class="post-title" title="Spring：基于注解管理Bean">Spring：基于注解管理Bean</span>
+            <span class="post-date" title="2024-10-03 00:00:00">2024/10/03</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/10/03/springIOCPrinciple/"
+           data-tag="spring"
+           data-author="" >
+            <span class="post-title" title="Spring：IOC原理">Spring：IOC原理</span>
+            <span class="post-date" title="2024-10-03 00:00:00">2024/10/03</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/10/03/springJDBC/"
+           data-tag="spring,JDBC"
+           data-author="" >
+            <span class="post-title" title="Spring：整合JDBC">Spring：整合JDBC</span>
+            <span class="post-date" title="2024-10-03 00:00:00">2024/10/03</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/10/03/springJunit/"
+           data-tag="spring,Junit"
+           data-author="" >
+            <span class="post-title" title="Spring：整合Junit">Spring：整合Junit</span>
+            <span class="post-date" title="2024-10-03 00:00:00">2024/10/03</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/10/03/springTransactionField/"
+           data-tag="spring"
+           data-author="" >
+            <span class="post-title" title="Spring：事务的属性">Spring：事务的属性</span>
+            <span class="post-date" title="2024-10-03 00:00:00">2024/10/03</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/10/03/springXmlBean/"
+           data-tag="spring"
+           data-author="" >
+            <span class="post-title" title="Spring：基于xml管理Bean">Spring：基于xml管理Bean</span>
+            <span class="post-date" title="2024-10-03 00:00:00">2024/10/03</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/10/03/writeIOCByHand/"
+           data-tag="spring"
+           data-author="" >
+            <span class="post-title" title="Spring：手写IOC">Spring：手写IOC</span>
+            <span class="post-date" title="2024-10-03 00:00:00">2024/10/03</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/InstallMySQL8/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL的安装、卸载和启动">MySQL的安装、卸载和启动</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/MySQLLock/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：锁">MySQL：锁</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/MysqlIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL的索引原理和语法">MySQL的索引原理和语法</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/SQLTips/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：建议MySQL使用哪个索引">MySQL：建议MySQL使用哪个索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/SQLOptimization/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：SQL优化">MySQL：SQL优化</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/combinedIndexColumnIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL:联合索引和单列索引">MySQL:联合索引和单列索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/coveringIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：覆盖索引与回表">MySQL：覆盖索引与回表</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/indexDesign/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：如何设计索引">MySQL：如何设计索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/invalidIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：索引失效">MySQL：索引失效</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/mysqlEngine/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL的存储引擎">MySQL的存储引擎</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/performanceAnalysis/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：慢查询日志、profile、explain">MySQL：慢查询日志、profile、explain</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/25/prefixIndex/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL：前缀索引">MySQL：前缀索引</span>
+            <span class="post-date" title="2024-09-25 00:00:00">2024/09/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/22/redisPubSub/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="Redis订阅发布">Redis订阅发布</span>
+            <span class="post-date" title="2024-09-22 15:21:35">2024/09/22</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisProblem/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="Redis：缓存穿透、缓存击穿和缓存雪崩">Redis：缓存穿透、缓存击穿和缓存雪崩</span>
+            <span class="post-date" title="2024-09-17 16:33:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisPersistence/"
+           data-tag="redis,RDB,AOF"
+           data-author="" >
+            <span class="post-title" title="Redis持久化">Redis持久化</span>
+            <span class="post-date" title="2024-09-17 16:20:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisTransaction/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="redis的事务">redis的事务</span>
+            <span class="post-date" title="2024-09-17 16:12:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisType/"
+           data-tag="redis"
+           data-author="" >
+            <span class="post-title" title="redis常用数据类型">redis常用数据类型</span>
+            <span class="post-date" title="2024-09-17 16:04:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisBrief/"
+           data-tag="redis,NoSql"
+           data-author="" >
+            <span class="post-title" title="redis与NoSql的简单介绍">redis与NoSql的简单介绍</span>
+            <span class="post-date" title="2024-09-17 15:59:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redisSentinel/"
+           data-tag="Linux,CentOS,虚拟机,redis"
+           data-author="" >
+            <span class="post-title" title="Redis：主从复制与哨兵模式">Redis：主从复制与哨兵模式</span>
+            <span class="post-date" title="2024-09-17 15:59:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/redis7SpringBoot/"
+           data-tag="redis,springboot,Jedis,RedisTemplate"
+           data-author="" >
+            <span class="post-title" title="springboot整合redis">springboot整合redis</span>
+            <span class="post-date" title="2024-09-17 15:42:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 运维 "
+           href="/2024/09/17/redis7Install/"
+           data-tag="CentOS,redis,前锋教育"
+           data-author="" >
+            <span class="post-title" title="Redis的安装、卸载、启动和客户端">Redis的安装、卸载、启动和客户端</span>
+            <span class="post-date" title="2024-09-17 15:19:10">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 前端 "
+           href="/2024/09/17/BasicFrontend/"
+           data-tag="JavaScript,Js,ES6,vue,element-ui"
+           data-author="" >
+            <span class="post-title" title="前端：ES5和Vue的基本用法">前端：ES5和Vue的基本用法</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/OAuth2/"
+           data-tag="spring,OAuth2"
+           data-author="" >
+            <span class="post-title" title="OAuth2和spring">OAuth2和spring</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/SpringCloudBaseUse/"
+           data-tag="SpringCloud,Nacos,Feign,Getway"
+           data-author="" >
+            <span class="post-title" title="SpringCloud：基本使用">SpringCloud：基本使用</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/adminSystem/"
+           data-tag="element-ui,SpringCloud,Feign,gulimall,Prettier,ESLint,跨域,JSR303,OSS,阿里云"
+           data-author="" >
+            <span class="post-title" title="谷粒商城：后台管理系统要点">谷粒商城：后台管理系统要点</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/giliEnviroment/"
+           data-tag="docker,idea,maven,renren-fast,git,nvm,node.js,npm"
+           data-author="" >
+            <span class="post-title" title="谷粒商城：环境搭建">谷粒商城：环境搭建</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/17/springsecurity/"
+           data-tag="springSecurity"
+           data-author="" >
+            <span class="post-title" title="SpringSecurity">SpringSecurity</span>
+            <span class="post-date" title="2024-09-17 00:00:00">2024/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/09/16/MysqlTransaction/"
+           data-tag="Mysql"
+           data-author="" >
+            <span class="post-title" title="Mysql的事物">Mysql的事物</span>
+            <span class="post-date" title="2024-09-16 14:31:10">2024/09/16</span>
+        </a>
+        
+        
+        <a  class="全部文章 运维 "
+           href="/2024/09/08/finalshell/"
+           data-tag="finalshell,Linux,CentOS,虚拟机"
+           data-author="" >
+            <span class="post-title" title="finalshell与Linux虚拟机的网络配置">finalshell与Linux虚拟机的网络配置</span>
+            <span class="post-date" title="2024-09-08 22:19:10">2024/09/08</span>
+        </a>
+        
+        
+        <a  class="全部文章 英语 "
+           href="/2024/03/25/rabbitGrammer/"
+           data-tag="English,grammer"
+           data-author="" >
+            <span class="post-title" title="英语兔英语语法">英语兔英语语法</span>
+            <span class="post-date" title="2024-03-25 23:12:24">2024/03/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 工具 "
+           href="/2024/03/25/hexoStartFast/"
+           data-tag="hexo"
+           data-author="" >
+            <span class="post-title" title="hexo搭建静态博客">hexo搭建静态博客</span>
+            <span class="post-date" title="2024-03-25 22:14:10">2024/03/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2024/03/25/PythonBase/"
+           data-tag="python"
+           data-author="" >
+            <span class="post-title" title="Python语法基数">Python语法基数</span>
+            <span class="post-date" title="2024-03-25 22:08:07">2024/03/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 英语 "
+           href="/2023/12/14/heqiongListening/"
+           data-tag="listening"
+           data-author="" >
+            <span class="post-title" title="何琼雅思听力">何琼雅思听力</span>
+            <span class="post-date" title="2023-12-14 00:00:00">2023/12/14</span>
+        </a>
+        
+        
+        <a  class="全部文章 财经 "
+           href="/2023/05/23/EconomicMachine/"
+           data-tag="economy"
+           data-author="" >
+            <span class="post-title" title="经济机器是怎样运行的——RayDalio">经济机器是怎样运行的——RayDalio</span>
+            <span class="post-date" title="2023-05-23 00:00:00">2023/05/23</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-01-install/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:概述+安装">java:概述+安装</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-02-grammar/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:基本语法">java:基本语法</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-03-array/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:数组">java:数组</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-05-exception/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:异常">java:异常</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-06-thread/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:多线程">java:多线程</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-07-string/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:字符串">java:字符串</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-08-time/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:时间相关API">java:时间相关API</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-09-sort/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:比较器">java:比较器</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-10-enum/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:枚举">java:枚举</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-04-opp/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:面向对象">java:面向对象</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-11-annotation/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:注解">java:注解</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-12-collection/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:集合">java:集合</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-13-generics/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:泛型">java:泛型</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-14-IO/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:IO流">java:IO流</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-15-net/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:网络编程">java:网络编程</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/12/29/java-16-reflect/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java:反射">java:反射</span>
+            <span class="post-date" title="2020-12-29 00:00:00">2020/12/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 运维 "
+           href="/2020/07/13/dockerBase/"
+           data-tag="docker"
+           data-author="" >
+            <span class="post-title" title="docker 基础">docker 基础</span>
+            <span class="post-date" title="2020-07-13 20:46:25">2020/07/13</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/01/01/MySQLCrashCourse/"
+           data-tag="MySql"
+           data-author="" >
+            <span class="post-title" title="MySQL:必知必会">MySQL:必知必会</span>
+            <span class="post-date" title="2020-01-01 00:00:00">2020/01/01</span>
+        </a>
+        
+        
+        <a  class="全部文章 后端 "
+           href="/2020/01/01/RocketMq/"
+           data-tag="mq"
+           data-author="" >
+            <span class="post-title" title="RocketMq:分布式消息队列">RocketMq:分布式消息队列</span>
+            <span class="post-date" title="2020-01-01 00:00:00">2020/01/01</span>
+        </a>
+        
+        
+        <a  class="全部文章 "
+           href="/2019/09/29/java-17-new8/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java8新特性：lambda表达式+Stream流">java8新特性：lambda表达式+Stream流</span>
+            <span class="post-date" title="2019-09-29 00:00:00">2019/09/29</span>
+        </a>
+        
+        
+        <a  class="全部文章 "
+           href="/2019/09/29/java-18-above8/"
+           data-tag="java"
+           data-author="" >
+            <span class="post-title" title="java8以后的新特性">java8以后的新特性</span>
+            <span class="post-date" title="2019-09-29 00:00:00">2019/09/29</span>
+        </a>
+        
+        <div id="no-item-tips">
+
+        </div>
+    </nav>
+    <div id="outline-list">
+    </div>
+</div>
+
+    </div>
+    <div class="hide-list">
+        <div class="semicircle" data-title="切换全屏 快捷键 s">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div id="post">
+    <div class="pjax">
+        <article id="post-SpringAop" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">Spring：AOP的使用</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            <i class="iconfont icon-category"></i>
+            
+            
+            <a  data-rel="后端">后端</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            <i class="iconfont icon-tag"></i>
+            
+            <a class="color2">spring</a>
+            
+        </span>
+        
+    </div>
+    <div class="article-meta">
+        
+            发布时间 : <time class="date" title='最后更新: 2024-10-03 14:50:56'>2024-10-03 00:00</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        <span>字数:3.9k</span>
+        
+        
+        <span id="busuanzi_container_page_pv">
+            阅读 :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#AOP%E6%A6%82%E5%BF%B5%E5%8F%8A%E7%9B%B8%E5%85%B3%E6%9C%AF%E8%AF%AD"><span class="toc-text">AOP概念及相关术语</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-text">概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E6%9C%AF%E8%AF%AD"><span class="toc-text">相关术语</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%AA%E5%88%87%E5%85%B3%E6%B3%A8%E7%82%B9"><span class="toc-text">横切关注点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%9A%E7%9F%A5advice"><span class="toc-text">通知advice</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%87%E9%9D%A2-aspect"><span class="toc-text">切面 aspect</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9E%E6%8E%A5%E7%82%B9-joinpoint"><span class="toc-text">连接点 joinpoint</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%87%E5%85%A5%E7%82%B9-pointcut"><span class="toc-text">切入点 pointcut</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%AE%E6%A0%87"><span class="toc-text">目标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%90%86"><span class="toc-text">代理</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E6%B3%A8%E8%A7%A3%E7%9A%84AOP"><span class="toc-text">基于注解的AOP</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF%E8%AF%B4%E6%98%8E"><span class="toc-text">技术说明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="toc-text">准备工作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E4%BE%9D%E8%B5%96"><span class="toc-text">添加依赖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%86%E5%A4%87%E8%A2%AB%E4%BB%A3%E7%90%86%E7%9A%84%E7%9B%AE%E6%A0%87%E8%B5%84%E6%BA%90"><span class="toc-text">准备被代理的目标资源</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E9%85%8D%E7%BD%AE%E7%B1%BB"><span class="toc-text">创建配置类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%88%87%E9%9D%A2%E7%B1%BB"><span class="toc-text">创建切面类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%87%E5%85%A5%E7%82%B9%E8%A1%A8%E8%BE%BE%E5%BC%8F%E8%AF%AD%E6%B3%95"><span class="toc-text">切入点表达式语法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%99%E6%B5%8B%E8%AF%95%E7%B1%BB"><span class="toc-text">写测试类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E4%BA%94%E7%A7%8D%E9%80%9A%E7%9F%A5%E7%B1%BB%E5%9E%8B"><span class="toc-text">测试五种通知类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%8D%E7%BD%AE%E9%80%9A%E7%9F%A5%EF%BC%9A-Before"><span class="toc-text">前置通知：@Before</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E8%BF%9E%E6%8E%A5%E7%82%B9%E4%BF%A1%E6%81%AF%EF%BC%9AJoinPoint"><span class="toc-text">获取连接点信息：JoinPoint</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%8E%E7%BD%AE%E9%80%9A%E7%9F%A5%EF%BC%9A-After"><span class="toc-text">后置通知：@After</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%94%E5%9B%9E%E9%80%9A%E7%9F%A5%EF%BC%9A-AfterReturning"><span class="toc-text">返回通知：@AfterReturning</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%82%E5%B8%B8%E9%80%9A%E7%9F%A5%EF%BC%9A-AfterThrowing"><span class="toc-text">异常通知：@AfterThrowing</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8E%AF%E7%BB%95%E9%80%9A%E7%9F%A5%EF%BC%9A-Around"><span class="toc-text">环绕通知：@Around</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%8D%E7%94%A8%E5%88%87%E5%85%A5%E7%82%B9%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-text">复用切入点表达式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8%E5%90%8C%E4%B8%80%E4%B8%AA%E5%88%87%E9%9D%A2%E7%B1%BB%E4%B8%AD%EF%BC%9A"><span class="toc-text">在同一个切面类中：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8D%E5%9C%A8%E5%90%8C%E4%B8%80%E4%B8%AA%E7%B1%BB"><span class="toc-text">不在同一个类</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%84%E7%A7%8D%E9%80%9A%E7%9F%A5%E7%9A%84%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F"><span class="toc-text">各种通知的执行顺序</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Spring%E7%89%88%E6%9C%AC5-3-x%E4%BB%A5%E5%89%8D%EF%BC%9A"><span class="toc-text">Spring版本5.3.x以前：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Spring%E7%89%88%E6%9C%AC5-3-x%E4%BB%A5%E5%90%8E%EF%BC%9A"><span class="toc-text">Spring版本5.3.x以后：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%87%E9%9D%A2%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7"><span class="toc-text">切面的优先级</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8EXML%E7%9A%84AOP"><span class="toc-text">基于XML的AOP</span></a></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="AOP概念及相关术语"><a href="#AOP概念及相关术语" class="headerlink" title="AOP概念及相关术语"></a>AOP概念及相关术语</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>AOP（Aspect Oriented Programming）是一种<strong>设计思想</strong>，是软件设计领域中的<strong>面向切面编程</strong>，它是面向对象编程的一种补充和完善，它以通过<strong>预编译方式</strong>和<strong>运行期动态代理方式</strong>实现，在<strong>不修改源代码的情况下</strong>，给程序动态统一添加<strong>额外功能</strong>的一种技术。利用AOP可以对业务逻辑的各个部分进行隔离，从而使得业务逻辑各部分之间的耦合度降低，提高程序的可重用性，同时提高了开发的效率。</p>
+<p><strong>AOP的作用：</strong></p>
+<ul>
+<li>简化代码：把方法中固定位置的重复的代码<strong>抽取</strong>出来，让被抽取的方法更专注于自己的核心功能，提高内聚性。</li>
+<li>代码增强：把特定的功能封装到切面类中，看哪里有需要，就往上套，被<strong>套用</strong>了切面逻辑的方法就被切面给增强了。</li>
+</ul>
+<h2 id="相关术语"><a href="#相关术语" class="headerlink" title="相关术语"></a>相关术语</h2><h3 id="横切关注点"><a href="#横切关注点" class="headerlink" title="横切关注点"></a>横切关注点</h3><img src="SpringAop/001.png"  width="75%" />
+
+<p>AOP把软件系统分为两个部分：<strong>核心关注点</strong>和<strong>横切关注点</strong>。<strong>业务处理的主要流程是核心关注点</strong>，<strong>与之关系不大的部分是横切关注点</strong>。横切关注点的一个特点是，他们经常发生在核心关注点的多处，而各处基本相似，比如权限认证、日志、事务、异常等。AOP的作用在于分离系统中的各种关注点，将核心关注点和横切关注点分离开来。</p>
+<h3 id="通知advice"><a href="#通知advice" class="headerlink" title="通知advice"></a>通知advice</h3><p><strong>每一个横切关注点上要做的事情称为通知</strong>。通知需要写一个方法来实现。也被称为增强。</p>
+<ul>
+<li>前置通知：在被代理的目标方法<strong>前</strong>执行</li>
+<li>返回通知：在被代理的目标方法<strong>成功结束</strong>后执行（<strong>寿终正寝</strong>）</li>
+<li>异常通知：在被代理的目标方法<strong>异常结束</strong>后执行（<strong>死于非命</strong>）</li>
+<li>后置通知：在被代理的目标方法<strong>最终结束</strong>后执行（<strong>盖棺定论</strong>）</li>
+<li>环绕通知：使用<code>try...catch...finally</code>结构围绕<strong>整个</strong>被代理的目标方法，包括上面四种通知对应的所有位置</li>
+</ul>
+<img src="SpringAop/002.png"  width="75%" />
+
+<h3 id="切面-aspect"><a href="#切面-aspect" class="headerlink" title="切面 aspect"></a>切面 aspect</h3><p>封装通知方法的类。</p>
+<img src="SpringAop/003.png"  width="75%" />
+
+<h3 id="连接点-joinpoint"><a href="#连接点-joinpoint" class="headerlink" title="连接点 joinpoint"></a>连接点 joinpoint</h3><p>这是一个纯逻辑概念，不是语法定义的。</p>
+<p>把方法排成一排，每一个横切位置看成x轴方向，把方法从上到下执行的顺序看成y轴，x轴和y轴的交叉点就是连接点。<strong>通俗说，就是spring允许你使用通知的地方</strong></p>
+<img src="SpringAop/004.png"  width="75%" />
+
+<h3 id="切入点-pointcut"><a href="#切入点-pointcut" class="headerlink" title="切入点 pointcut"></a>切入点 pointcut</h3><p><strong>定位连接点的方式</strong>。</p>
+<p>是一个表达式，比如<code>execution(* com.spring.service.impl.*.*(..))</code>。符合条件的每个方法都是一个具体的连接点。</p>
+<h3 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h3><p>被代理的目标对象。</p>
+<h3 id="代理"><a href="#代理" class="headerlink" title="代理"></a>代理</h3><p>向目标对象应用通知之后创建的代理对象。</p>
+<h1 id="基于注解的AOP"><a href="#基于注解的AOP" class="headerlink" title="基于注解的AOP"></a>基于注解的AOP</h1><h2 id="技术说明"><a href="#技术说明" class="headerlink" title="技术说明"></a>技术说明</h2><ul>
+<li><p>动态代理分为JDK动态代理和cglib动态代理</p>
+</li>
+<li><p>当目标类有接口的情况使用JDK动态代理和cglib动态代理，没有接口时只能使用cglib动态代理</p>
+<img src="SpringAop/005.png"  width="45%" />
+</li>
+<li><p>JDK动态代理动态生成的代理类会在com.sun.proxy包下，类名为$proxy1，和目标类实现相同的接口</p>
+</li>
+<li><p>cglib动态代理动态生成的代理类会和目标在在相同的包下，会继承目标类</p>
+<img src="SpringAop/006.png"  width="75%" />
+</li>
+<li><p>动态代理（InvocationHandler）：JDK原生的实现方式，需要被代理的目标类必须实现接口。因为这个技术要求<strong>代理对象和目标对象实现同样的接口</strong>（兄弟两个拜把子模式）。</p>
+</li>
+<li><p>cglib：通过<strong>继承被代理的目标类</strong>（认干爹模式）实现代理，所以不需要目标类实现接口。</p>
+</li>
+<li><p>AspectJ：是AOP思想的一种实现。本质上是静态代理，<strong>将代理逻辑“织入”被代理的目标类编译得到的字节码文件</strong>，所以最终效果是动态的。weaver就是织入器。Spring只是借用了AspectJ中的注解。</p>
+</li>
+</ul>
+<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><h3 id="添加依赖"><a href="#添加依赖" class="headerlink" title="添加依赖"></a>添加依赖</h3><pre><code class="xml">&lt;dependencies&gt;
+    &lt;!--spring context依赖--&gt;
+    &lt;!--当你引入Spring Context依赖之后，表示将Spring的基础依赖引入了--&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-context&lt;/artifactId&gt;
+        &lt;version&gt;6.0.2&lt;/version&gt;
+    &lt;/dependency&gt;
+
+    &lt;!--spring aop依赖--&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-aop&lt;/artifactId&gt;
+        &lt;version&gt;6.0.2&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;!--spring aspects依赖--&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-aspects&lt;/artifactId&gt;
+        &lt;version&gt;6.0.2&lt;/version&gt;
+    &lt;/dependency&gt;
+
+    &lt;!--junit5测试--&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.junit.jupiter&lt;/groupId&gt;
+        &lt;artifactId&gt;junit-jupiter-api&lt;/artifactId&gt;
+        &lt;version&gt;5.3.1&lt;/version&gt;
+    &lt;/dependency&gt;
+
+    &lt;!--log4j2的依赖--&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.apache.logging.log4j&lt;/groupId&gt;
+        &lt;artifactId&gt;log4j-core&lt;/artifactId&gt;
+        &lt;version&gt;2.19.0&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.apache.logging.log4j&lt;/groupId&gt;
+        &lt;artifactId&gt;log4j-slf4j2-impl&lt;/artifactId&gt;
+        &lt;version&gt;2.19.0&lt;/version&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;
+</code></pre>
+<p>其中，有关于IOC的依赖如下：</p>
+<pre><code class="xml">&lt;!--spring aop依赖--&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-aop&lt;/artifactId&gt;
+    &lt;version&gt;6.0.2&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;!--spring aspects依赖--&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-aspects&lt;/artifactId&gt;
+    &lt;version&gt;6.0.2&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+<h3 id="准备被代理的目标资源"><a href="#准备被代理的目标资源" class="headerlink" title="准备被代理的目标资源"></a>准备被代理的目标资源</h3><p>接口：</p>
+<pre><code class="java">public interface Calculator &#123;
+    
+    int add(int i, int j);
+    
+    int sub(int i, int j);
+    
+    int mul(int i, int j);
+    
+    int div(int i, int j);
+    
+&#125;
+</code></pre>
+<p>实现类：</p>
+<pre><code class="java">@Component
+public class CalculatorImpl implements Calculator &#123;
+    
+    @Override
+    public int add(int i, int j) &#123;
+    
+        int result = i + j;
+    
+        System.out.println(&quot;方法内部 result = &quot; + result);
+    
+        return result;
+    &#125;
+    
+    @Override
+    public int sub(int i, int j) &#123;
+    
+        int result = i - j;
+    
+        System.out.println(&quot;方法内部 result = &quot; + result);
+    
+        return result;
+    &#125;
+    
+    @Override
+    public int mul(int i, int j) &#123;
+    
+        int result = i * j;
+    
+        System.out.println(&quot;方法内部 result = &quot; + result);
+    
+        return result;
+    &#125;
+    
+    @Override
+    public int div(int i, int j) &#123;
+    
+        int result = i / j;
+    
+        System.out.println(&quot;方法内部 result = &quot; + result);
+    
+        return result;
+    &#125;
+&#125;
+</code></pre>
+<h2 id="创建配置类"><a href="#创建配置类" class="headerlink" title="创建配置类"></a>创建配置类</h2><pre><code class="java">package com.lin.aop.annoaop;
+
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
+
+@Configuration
+// 表示开启包扫描
+@ComponentScan(basePackages = &quot;com.lin.aop.annoaop&quot;)
+// 开启AspectJ自动代理(AOP)
+@EnableAspectJAutoProxy
+public class AppConfig &#123;  
+
+&#125;
+</code></pre>
+<h2 id="创建切面类"><a href="#创建切面类" class="headerlink" title="创建切面类"></a>创建切面类</h2><pre><code class="java">//切面类
+@Aspect //切面类
+@Component //ioc容器
+public class LogAspect &#123;
+    
+&#125;
+</code></pre>
+<h2 id="切入点表达式语法"><a href="#切入点表达式语法" class="headerlink" title="切入点表达式语法"></a>切入点表达式语法</h2><img src="SpringAop/007.png"  width="95%" />
+
+<p>切入点表达式的作用：让切面找到要<strong>通知</strong>的目标方法</p>
+<h2 id="写测试类"><a href="#写测试类" class="headerlink" title="写测试类"></a>写测试类</h2><pre><code class="java">@Test
+public void testBefore() &#123;
+    ApplicationContext context =new AnnotationConfigApplicationContext(AppConfig.class);
+    Calculator calculator = context.getBean(Calculator.class);
+    calculator.add(2,3);
+&#125;
+</code></pre>
+<h2 id="测试五种通知类型"><a href="#测试五种通知类型" class="headerlink" title="测试五种通知类型"></a>测试五种通知类型</h2><h3 id="前置通知：-Before"><a href="#前置通知：-Before" class="headerlink" title="前置通知：@Before"></a>前置通知：@Before</h3><pre><code class="java">//切面类
+@Aspect //切面类
+@Component //ioc容器
+public class LogAspect &#123;
+    @Before(value = &quot;execution(public int com.lin.aop.annoaop.CalculatorImpl.*(..))&quot;)
+    public void beforeMethod() &#123;
+        System.out.println(&quot;Logger--&gt;前置通知，&quot;);
+    &#125;
+&#125;
+</code></pre>
+<p>日志：</p>
+<pre><code class="log">Logger--&gt;前置通知，
+方法内部 result = 5
+</code></pre>
+<h4 id="获取连接点信息：JoinPoint"><a href="#获取连接点信息：JoinPoint" class="headerlink" title="获取连接点信息：JoinPoint"></a>获取连接点信息：JoinPoint</h4><p>获取连接点信息（也就是目标方法相关的信息）可以在通知方法的参数位置设置JoinPoint类型的形参</p>
+<pre><code class="java">//切面类
+@Aspect //切面类
+@Component //ioc容器
+public class LogAspect &#123;
+    @Before(value = &quot;execution(public int com.lin.aop.annoaop.CalculatorImpl.*(..))&quot;)
+    public void beforeMethod(JoinPoint joinPoint) &#123;
+        // 获取连接点的签名信息
+        String methodName = joinPoint.getSignature().getName();
+        // 获取目标方法到的实参信息
+        Object[] args = joinPoint.getArgs();
+        System.out.println(&quot;Logger--&gt;前置通知，方法名称：&quot;+methodName+&quot;，参数：&quot;+Arrays.toString(args));
+    &#125;
+&#125;
+</code></pre>
+<p>日志：</p>
+<pre><code class="log">Logger--&gt;前置通知，方法名称：add，参数：[2, 3]
+方法内部 result = 5
+</code></pre>
+<h3 id="后置通知：-After"><a href="#后置通知：-After" class="headerlink" title="后置通知：@After"></a>后置通知：@After</h3><pre><code class="java">//切面类
+@Aspect //切面类
+@Component //ioc容器
+public class LogAspect &#123;
+    // 后置 @After()
+    @After(value = &quot;execution(public int com.lin.aop.annoaop.CalculatorImpl.*(..))&quot;)
+    public void afterMethod(JoinPoint joinPoint) &#123;
+        String methodName = joinPoint.getSignature().getName();
+        System.out.println(&quot;Logger--&gt;后置通知，方法名称：&quot;+methodName);
+    &#125;
+&#125;
+</code></pre>
+<p>日志</p>
+<pre><code class="log">方法内部 result = 5
+Logger--&gt;后置通知，方法名称：add
+</code></pre>
+<h3 id="返回通知：-AfterReturning"><a href="#返回通知：-AfterReturning" class="headerlink" title="返回通知：@AfterReturning"></a>返回通知：@AfterReturning</h3><pre><code class="java">// 相比后置通知，返回通知有一个返回结果
+// returning = &quot;result&quot; ====&gt; Object result
+@AfterReturning(value = &quot;execution(* com.lin.aop.annoaop.CalculatorImpl.*(..))&quot;,returning = &quot;result&quot;)
+public void afterReturningMethod(JoinPoint joinPoint,Object result) &#123;
+    String methodName = joinPoint.getSignature().getName();
+    System.out.println(&quot;Logger--&gt;返回通知，方法名称：&quot;+methodName+&quot;，返回结果：&quot;+result);
+&#125;
+</code></pre>
+<p>日志：</p>
+<pre><code class="log">方法内部 result = 5
+Logger--&gt;返回通知，方法名称：add，返回结果：5
+</code></pre>
+<h3 id="异常通知：-AfterThrowing"><a href="#异常通知：-AfterThrowing" class="headerlink" title="异常通知：@AfterThrowing"></a>异常通知：@AfterThrowing</h3><pre><code class="java">// @AfterThrowing中的属性throwing，用来将通知方法的某个形参，接收目标方法的异常
+// throwing = &quot;ex&quot; ====&gt; Throwable ex
+@AfterThrowing(value = &quot;execution(* com.lin.aop.annoaop.CalculatorImpl.*(..))&quot;,throwing = &quot;ex&quot;)
+public void afterThrowingMethod(JoinPoint joinPoint,Throwable ex) &#123;
+    String methodName = joinPoint.getSignature().getName();
+    System.out.println(&quot;Logger--&gt;异常通知，方法名称：&quot;+methodName+&quot;，异常信息：&quot;+ex);
+&#125;
+</code></pre>
+<p>日志</p>
+<pre><code class="log">方法内部 result = 5
+Logger--&gt;异常通知，方法名称：add，异常信息：java.lang.ArithmeticException: / by zero
+</code></pre>
+<h3 id="环绕通知：-Around"><a href="#环绕通知：-Around" class="headerlink" title="环绕通知：@Around"></a>环绕通知：@Around</h3><pre><code class="java">@Around(&quot;execution(* com.lin.aop.annoaop.CalculatorImpl.*(..))&quot;)
+public Object aroundMethod(ProceedingJoinPoint joinPoint) &#123;
+    String methodName = joinPoint.getSignature().getName();
+    Object[] args = joinPoint.getArgs();
+    String argString = Arrays.toString(args);
+    Object result = null;
+    try &#123;
+        System.out.println(&quot;环绕通知==目标方法之前执行&quot;);
+
+        //调用目标方法
+        result = joinPoint.proceed();
+
+        System.out.println(&quot;环绕通知==目标方法返回值之后&quot;);
+    &#125;catch (Throwable throwable) &#123;
+        throwable.printStackTrace();
+        System.out.println(&quot;环绕通知==目标方法出现异常执行&quot;);
+    &#125; finally &#123;
+        System.out.println(&quot;环绕通知==目标方法执行完毕执行&quot;);
+    &#125;
+    return result;
+&#125;
+</code></pre>
+<blockquote>
+<p>环绕通知用的是<code>ProceedingJoinPoint joinPoint</code>；而其他通知用的是<code>JoinPoint joinPoint</code></p>
+</blockquote>
+<p>日志</p>
+<pre><code class="log">环绕通知==目标方法之前执行
+方法内部 result = 5
+环绕通知==目标方法返回值之后
+环绕通知==目标方法执行完毕执行
+</code></pre>
+<h2 id="复用切入点表达式"><a href="#复用切入点表达式" class="headerlink" title="复用切入点表达式"></a>复用切入点表达式</h2><p>声明：</p>
+<pre><code class="java">@Pointcut(value = &quot;execution(* com.lin.aop.annoaop.CalculatorImpl.*(..))&quot;)
+public void pointCut() &#123;&#125;
+</code></pre>
+<h3 id="在同一个切面类中："><a href="#在同一个切面类中：" class="headerlink" title="在同一个切面类中："></a>在同一个切面类中：</h3><pre><code class="java">//切面类
+@Aspect //切面类
+@Component //ioc容器
+public class LogAspect &#123;
+    @Before(&quot;pointCut()&quot;)
+    public void afterMethod(JoinPoint joinPoint) &#123;
+        String methodName = joinPoint.getSignature().getName();
+        System.out.println(&quot;Logger--&gt;后置通知，方法名称：&quot;+methodName);
+    &#125;
+    
+    @Pointcut(value = &quot;execution(* com.lin.aop.annoaop.CalculatorImpl.*(..))&quot;)
+    public void pointCut() &#123;&#125;
+&#125;
+</code></pre>
+<h3 id="不在同一个类"><a href="#不在同一个类" class="headerlink" title="不在同一个类"></a>不在同一个类</h3><pre><code class="java">@Aspect //切面类
+@Component //ioc容器
+public class LogAspect2 &#123;
+    @Before(&quot;com.lin.aop.annoaop.LogAspect.pointCut()&quot;)
+    public void beforeMethod2(JoinPoint joinPoint) &#123;
+        String methodName = joinPoint.getSignature().getName();
+        Object[] args = joinPoint.getArgs();
+        System.out.println(&quot;不在同一个类--&gt;前置通知，方法名称：&quot;+methodName+&quot;，参数：&quot;+ Arrays.toString(args));
+    &#125;
+&#125;
+</code></pre>
+<p>日志：</p>
+<pre><code class="log">Logger--&gt;前置通知，方法名称：add，参数：[2, 3]
+不在同一个类--&gt;前置通知，方法名称：add，参数：[2, 3]
+方法内部 result = 5
+</code></pre>
+<h2 id="各种通知的执行顺序"><a href="#各种通知的执行顺序" class="headerlink" title="各种通知的执行顺序"></a>各种通知的执行顺序</h2><h3 id="Spring版本5-3-x以前："><a href="#Spring版本5-3-x以前：" class="headerlink" title="Spring版本5.3.x以前："></a>Spring版本5.3.x以前：</h3><ul>
+<li>前置通知</li>
+<li>目标操作</li>
+<li>后置通知</li>
+<li>返回通知或异常通知</li>
+</ul>
+<h3 id="Spring版本5-3-x以后："><a href="#Spring版本5-3-x以后：" class="headerlink" title="Spring版本5.3.x以后："></a>Spring版本5.3.x以后：</h3><ul>
+<li>前置通知</li>
+<li>目标操作</li>
+<li>返回通知或异常通知</li>
+<li>后置通知</li>
+</ul>
+<h2 id="切面的优先级"><a href="#切面的优先级" class="headerlink" title="切面的优先级"></a>切面的优先级</h2><p>使用<code>@Order</code>注解可以控制切面的优先级：</p>
+<ul>
+<li>@Order(较小的数)：优先级高</li>
+<li>@Order(较大的数)：优先级低</li>
+</ul>
+<p>相同目标方法上同时存在多个切面时，切面的优先级控制切面的<strong>内外嵌套</strong>顺序。</p>
+<ul>
+<li>优先级高的切面：外面</li>
+<li>优先级低的切面：里面</li>
+</ul>
+<img src="SpringAop/008.png"  width="55%" />
+
+<p>切面一：</p>
+<pre><code class="java">//切面类
+@Order(value = 1) // 数值小，优先级高，在外层
+@Aspect //切面类
+@Component //ioc容器
+public class LogAspect &#123;
+    @Before(&quot;pointCut()&quot;)
+    public void beforeMethod2(JoinPoint joinPoint) &#123;
+        String methodName = joinPoint.getSignature().getName();
+        Object[] args = joinPoint.getArgs();
+        System.out.println(&quot;Logger--&gt;前置通知，方法名称：&quot;+methodName+&quot;，参数：&quot;+Arrays.toString(args));
+    &#125;
+
+    @After(value = &quot;pointCut()&quot;)
+    public void afterMethod(JoinPoint joinPoint) &#123;
+        String methodName = joinPoint.getSignature().getName();
+        System.out.println(&quot;Logger--&gt;后置通知，方法名称：&quot;+methodName);
+    &#125;
+    @Pointcut(value = &quot;execution(* com.lin.aop.annoaop.CalculatorImpl.*(..))&quot;)
+    public void pointCut() &#123;&#125;
+&#125;
+</code></pre>
+<p>切面二：</p>
+<pre><code class="java">@Order(2) // 数字大，优先级低，在内层
+@Aspect //切面类
+@Component //ioc容器
+public class LogAspect2 &#123;
+    @Before(&quot;com.lin.aop.annoaop.LogAspect.pointCut()&quot;)
+    public void beforeMethod2(JoinPoint joinPoint) &#123;
+        String methodName = joinPoint.getSignature().getName();
+        Object[] args = joinPoint.getArgs();
+        System.out.println(&quot;不在同一个类--&gt;前置通知，方法名称：&quot;+methodName+&quot;，参数：&quot;+ Arrays.toString(args));
+    &#125;
+    @After(&quot;com.lin.aop.annoaop.LogAspect.pointCut()&quot;)
+    public void afterMethod2(JoinPoint joinPoint) &#123;
+        String methodName = joinPoint.getSignature().getName();
+        Object[] args = joinPoint.getArgs();
+        System.out.println(&quot;不在同一个类--&gt;后置通知，方法名称：&quot;+methodName+&quot;，参数：&quot;+ Arrays.toString(args));
+    &#125;
+&#125;
+</code></pre>
+<p>日志：</p>
+<pre><code class="log">Logger--&gt;前置通知，方法名称：add，参数：[2, 3]
+不在同一个类--&gt;前置通知，方法名称：add，参数：[2, 3]
+方法内部 result = 5
+不在同一个类--&gt;后置通知，方法名称：add，参数：[2, 3]
+Logger--&gt;后置通知，方法名称：add
+</code></pre>
+<h1 id="基于XML的AOP"><a href="#基于XML的AOP" class="headerlink" title="基于XML的AOP"></a>基于XML的AOP</h1><p>使用xml配置：①包扫描；②配置切面类</p>
+<pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+       xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
+       xmlns:aop=&quot;http://www.springframework.org/schema/aop&quot;
+       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd&quot;&gt;
+
+    &lt;!--开启组件扫描--&gt;
+    &lt;context:component-scan base-package=&quot;com.lin.aop.xmlaop&quot;&gt;&lt;/context:component-scan&gt;
+
+    &lt;!--配置aop五种通知类型--&gt;
+    &lt;aop:config&gt;
+        &lt;!--配置切面类--&gt;
+        &lt;aop:aspect ref=&quot;logAspect&quot;&gt;
+            &lt;!--配置切入点--&gt;
+            &lt;aop:pointcut id=&quot;pointcut&quot; expression=&quot;execution(* com.lin.aop.xmlaop.CalculatorImpl.*(..))&quot;/&gt;
+            &lt;!--配置五种通知类型--&gt;
+            &lt;!--前置通知--&gt;
+            &lt;aop:before method=&quot;beforeMethod&quot; pointcut-ref=&quot;pointcut&quot;&gt;&lt;/aop:before&gt;
+
+            &lt;!--后置通知--&gt;
+            &lt;aop:after method=&quot;afterMethod&quot; pointcut-ref=&quot;pointcut&quot;&gt;&lt;/aop:after&gt;
+
+            &lt;!--返回通知--&gt;
+            &lt;aop:after-returning method=&quot;afterReturningMethod&quot; returning=&quot;result&quot; pointcut-ref=&quot;pointcut&quot;&gt;&lt;/aop:after-returning&gt;
+
+            &lt;!--异常通知--&gt;
+            &lt;aop:after-throwing method=&quot;afterThrowingMethod&quot; throwing=&quot;ex&quot; pointcut-ref=&quot;pointcut&quot;&gt;&lt;/aop:after-throwing&gt;
+
+            &lt;!--环绕通知--&gt;
+            &lt;aop:around method=&quot;aroundMethod&quot; pointcut-ref=&quot;pointcut&quot;&gt;&lt;/aop:around&gt;
+        &lt;/aop:aspect&gt;
+    &lt;/aop:config&gt;
+&lt;/beans&gt;
+</code></pre>
+<p>切面类</p>
+<pre><code class="java">@Component //ioc容器
+public class LogAspect &#123;
+
+    //前置通知
+    public void beforeMethod(JoinPoint joinPoint) &#123;
+        String methodName = joinPoint.getSignature().getName();
+        Object[] args = joinPoint.getArgs();
+        System.out.println(&quot;Logger--&gt;前置通知，方法名称：&quot;+methodName+&quot;，参数：&quot;+Arrays.toString(args));
+    &#125;
+
+    // 后置通知
+    public void afterMethod(JoinPoint joinPoint) &#123;
+        String methodName = joinPoint.getSignature().getName();
+        System.out.println(&quot;Logger--&gt;后置通知，方法名称：&quot;+methodName);
+    &#125;
+
+    // 返回通知，获取目标方法的返回值
+    public void afterReturningMethod(JoinPoint joinPoint,Object result) &#123;
+        String methodName = joinPoint.getSignature().getName();
+        System.out.println(&quot;Logger--&gt;返回通知，方法名称：&quot;+methodName+&quot;，返回结果：&quot;+result);
+    &#125;
+
+    // 异常通知 获取到目标方法异常信息
+    //目标方法出现异常，这个通知执行
+    public void afterThrowingMethod(JoinPoint joinPoint,Throwable ex) &#123;
+        String methodName = joinPoint.getSignature().getName();
+        System.out.println(&quot;Logger--&gt;异常通知，方法名称：&quot;+methodName+&quot;，异常信息：&quot;+ex);
+    &#125;
+
+    // 环绕通知
+    public Object aroundMethod(ProceedingJoinPoint joinPoint) &#123;
+        String methodName = joinPoint.getSignature().getName();
+        Object[] args = joinPoint.getArgs();
+        String argString = Arrays.toString(args);
+        Object result = null;
+        try &#123;
+            System.out.println(&quot;环绕通知==目标方法之前执行&quot;);
+
+            //调用目标方法
+            result = joinPoint.proceed();
+
+            System.out.println(&quot;环绕通知==目标方法返回值之后&quot;);
+        &#125;catch (Throwable throwable) &#123;
+            throwable.printStackTrace();
+            System.out.println(&quot;环绕通知==目标方法出现异常执行&quot;);
+        &#125; finally &#123;
+            System.out.println(&quot;环绕通知==目标方法执行完毕执行&quot;);
+        &#125;
+        return result;
+    &#125;
+&#125;
+</code></pre>
+<p>测试</p>
+<pre><code class="java">@Test
+public void testAdd() &#123;
+    ApplicationContext context = new ClassPathXmlApplicationContext(&quot;beanaop.xml&quot;);
+    Calculator calculator = context.getBean(Calculator.class);
+    calculator.add(4,3);
+&#125;
+</code></pre>
+<p>日志</p>
+<pre><code class="log">Logger--&gt;前置通知，方法名称：add，参数：[4, 3]
+环绕通知==目标方法之前执行
+方法内部 result = 7
+环绕通知==目标方法返回值之后
+环绕通知==目标方法执行完毕执行
+Logger--&gt;返回通知，方法名称：add，返回结果：7
+Logger--&gt;后置通知，方法名称：add
+</code></pre>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 1909773034@qq.com </span>
+    </div>
+</article>
+
+
+<p>
+    <a  class="dashang" onclick="dashangToggle()">赏</a>
+</p>
+
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">
+    ©2017 XieShaoLin
+</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+
+<div class="hide_box" onclick="dashangToggle()"></div>
+<div class="shang_box">
+    <a class="shang_close"  onclick="dashangToggle()">×</a>
+    <div class="shang_tit">
+        <p>喜欢就点赞,疼爱就打赏</p>
+    </div>
+    <div class="shang_payimg">
+        <div class="pay_img">
+            <img src="/img/alipay.jpg" class="alipay" title="扫码支持">
+            <img src="/img/weixin.jpg" class="weixin" title="扫码支持">
+        </div>
+    </div>
+    <div class="shang_payselect">
+        <span><label><input type="radio" name="pay" checked value="alipay">支付宝</label></span><span><label><input type="radio" name="pay" value="weixin">微信</label></span>
+    </div>
+</div>
+
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
+
+<script src="/js/script.js?v=1.1.0" ></script>
+<script>
+    var img_resize = 'default';
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $("#post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+        $("input[name=pay]").on("click", function () {
+            if($("input[name=pay]:checked").val()=="weixin"){
+                $(".shang_box .shang_payimg .pay_img").addClass("weixin_img");
+            } else {
+                $(".shang_box .shang_payimg .pay_img").removeClass("weixin_img");
+            }
+        })
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+    function dashangToggle() {
+        $(".shang_box").fadeToggle();
+        $(".hide_box").fadeToggle();
+    }
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>
