@@ -2,9 +2,9 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>MySQL：SQL优化 | Notes</title>
-  <meta name="keywords" content=" MySQL ">
-  <meta name="description" content="MySQL：SQL优化 | Notes">
+  <title>总结：Java后端开发知识点 | Notes</title>
+  <meta name="keywords" content=" Java ">
+  <meta name="description" content="总结：Java后端开发知识点 | Notes">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="description" content="1 概述1.1 雅思听力概况时间：30分钟做题+10分钟誊答案（机考2分钟） 结构：1 Version&#x3D;4 Parts&#x3D;40 Questions  5.5：20-22 6：23-26 6.5：27-29 7：30-32     Parts 主题 形式 题型     Part 1 Survival English Dialogue 填空 最重视，最多错1~2个，最好全对   Pa">
 <meta property="og:type" content="article">
@@ -1596,9 +1596,9 @@
 </aside>
 <div id="post">
     <div class="pjax">
-        <article id="post-SQLOptimization" class="article article-type-post" itemscope itemprop="blogPost">
+        <article id="post-summaryOfJava" class="article article-type-post" itemscope itemprop="blogPost">
     
-        <h1 class="article-title">MySQL：SQL优化</h1>
+        <h1 class="article-title">总结：Java后端开发知识点</h1>
     
     <div class="article-meta">
         
@@ -1608,7 +1608,7 @@
             <i class="iconfont icon-category"></i>
             
             
-            <a  data-rel="后端">后端</a>
+            <a  data-rel="总结">总结</a>
             
         </span>
         
@@ -1616,19 +1616,19 @@
         <span class="tag">
             <i class="iconfont icon-tag"></i>
             
-            <a class="color1">MySQL</a>
+            <a class="color5">Java</a>
             
         </span>
         
     </div>
     <div class="article-meta">
         
-            发布时间 : <time class="date" title='最后更新: 2024-09-25 18:55:18'>2024-09-25 00:00</time>
+            发布时间 : <time class="date" title='最后更新: 2024-10-05 20:42:33'>2024-10-05 00:00</time>
         
     </div>
     <div class="article-meta">
         
-        <span>字数:4.5k</span>
+        <span>字数:578</span>
         
         
         <span id="busuanzi_container_page_pv">
@@ -1647,7 +1647,7 @@
     
     <div class="toc-ref">
     
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#insert%E4%BC%98%E5%8C%96"><span class="toc-text">insert优化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E6%AC%A1%E9%9C%80%E8%A6%81%E5%90%91%E8%A1%A8%E4%B8%AD%E6%8F%92%E5%85%A5%E5%A4%9A%E6%9D%A1%E6%95%B0%E6%8D%AE"><span class="toc-text">一次需要向表中插入多条数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%A7%E6%89%B9%E9%87%8F%E6%8F%92%E5%85%A5%E6%95%B0%E6%8D%AE"><span class="toc-text">大批量插入数据</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%94%E7%A4%BA"><span class="toc-text">演示</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%BB%E9%94%AE%E4%BC%98%E5%8C%96"><span class="toc-text">主键优化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%BB%84%E7%BB%87%E6%96%B9%E5%BC%8F"><span class="toc-text">数据组织方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B5%E5%88%86%E8%A3%82"><span class="toc-text">页分裂</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E9%94%AE%E9%A1%BA%E5%BA%8F%E6%8F%92%E5%85%A5%E6%95%88%E6%9E%9C"><span class="toc-text">主键顺序插入效果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E9%94%AE%E4%B9%B1%E5%BA%8F%E6%8F%92%E5%85%A5%E6%95%88%E6%9E%9C"><span class="toc-text">主键乱序插入效果</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B5%E5%90%88%E5%B9%B6"><span class="toc-text">页合并</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B4%A2%E5%BC%95%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99"><span class="toc-text">索引设计原则</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#order-by%E4%BC%98%E5%8C%96"><span class="toc-text">order by优化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%A4%E7%A7%8D%E6%8E%92%E5%BA%8F%E6%96%B9%E5%BC%8F"><span class="toc-text">两种排序方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95"><span class="toc-text">测试</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%86%E5%A4%87%E6%95%B0%E6%8D%AE"><span class="toc-text">准备数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%A7%E8%A1%8C%E6%8E%92%E5%BA%8FSQL"><span class="toc-text">执行排序SQL</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95"><span class="toc-text">创建索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95%E5%90%8E%EF%BC%8C%E6%A0%B9%E6%8D%AEage-phone%E8%BF%9B%E8%A1%8C%E5%8D%87%E5%BA%8F%E6%8E%92%E5%BA%8F"><span class="toc-text">创建索引后，根据age, phone进行升序排序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95%E5%90%8E%EF%BC%8C%E6%A0%B9%E6%8D%AEage-phone%E8%BF%9B%E8%A1%8C%E9%99%8D%E5%BA%8F%E6%8E%92%E5%BA%8F"><span class="toc-text">创建索引后，根据age, phone进行降序排序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%B9%E6%8D%AEphone%EF%BC%8Cage%E8%BF%9B%E8%A1%8C%E5%8D%87%E5%BA%8F%E6%8E%92%E5%BA%8F%EF%BC%8Cphone%E5%9C%A8%E5%89%8D%EF%BC%8Cage%E5%9C%A8%E5%90%8E%E3%80%82"><span class="toc-text">根据phone，age进行升序排序，phone在前，age在后。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%B9%E6%8D%AEage-phone%E8%BF%9B%E8%A1%8C%E9%99%8D%E5%BA%8F%E4%B8%80%E4%B8%AA%E5%8D%87%E5%BA%8F%EF%BC%8C%E4%B8%80%E4%B8%AA%E9%99%8D%E5%BA%8F"><span class="toc-text">根据age, phone进行降序一个升序，一个降序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E8%81%94%E5%90%88%E7%B4%A2%E5%BC%95-age-%E5%8D%87%E5%BA%8F%E6%8E%92%E5%BA%8F%EF%BC%8Cphone-%E5%80%92%E5%BA%8F%E6%8E%92%E5%BA%8F"><span class="toc-text">创建联合索引(age 升序排序，phone 倒序排序)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%87%E5%BA%8F-%E9%99%8D%E5%BA%8F%E8%81%94%E5%90%88%E7%B4%A2%E5%BC%95%E7%BB%93%E6%9E%84%E5%9B%BE%E7%A4%BA"><span class="toc-text">升序&#x2F;降序联合索引结构图示:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#order-by%E4%BC%98%E5%8C%96%E5%8E%9F%E5%88%99"><span class="toc-text">order by优化原则</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#group-by%E4%BC%98%E5%8C%96"><span class="toc-text">group by优化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%98%E5%8C%96%E5%8E%9F%E5%88%99"><span class="toc-text">优化原则</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#limit-%E4%BC%98%E5%8C%96"><span class="toc-text">limit 优化</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#count%E4%BC%98%E5%8C%96"><span class="toc-text">count优化</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#update%E4%BC%98%E5%8C%96"><span class="toc-text">update优化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A3%E5%B8%B8%E6%83%85%E5%86%B5"><span class="toc-text">正常情况</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%94%81%E8%A1%A8%E7%9A%84%E6%83%85%E5%86%B5"><span class="toc-text">锁表的情况</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%99name%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95"><span class="toc-text">给name创建索引</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80"><span class="toc-text">编程基础</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Java%E8%AF%AD%E8%A8%80"><span class="toc-text">Java语言</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Java%E5%9F%BA%E7%A1%80"><span class="toc-text">Java基础</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JVM-x"><span class="toc-text">JVM :x:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E7%BA%BF%E7%A8%8B-%E5%B9%B6%E5%8F%91-x"><span class="toc-text">多线程&#x2F;并发 :x:</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95-x"><span class="toc-text">数据结构和算法:x:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-x"><span class="toc-text">计算机网络 :x:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%88MySQL%EF%BC%89"><span class="toc-text">数据库（MySQL）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-x"><span class="toc-text">操作系统 :x:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-x"><span class="toc-text">设计模式 :x:</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%A0%94%E5%8F%91%E5%B7%A5%E5%85%B7"><span class="toc-text">研发工具</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9B%86%E6%88%90%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83"><span class="toc-text">集成开发环境</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Intellij-IDEA-x"><span class="toc-text">Intellij IDEA :x:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#VSCode-x"><span class="toc-text">VSCode :x:</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux-%E7%B3%BB%E7%BB%9F-x"><span class="toc-text">Linux 系统 :x:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7-Git-x"><span class="toc-text">代码管理工具 Git :x:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7-%E9%A1%B9%E7%9B%AE%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7"><span class="toc-text">项目管理工具&#x2F;项目构建工具</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Maven-x"><span class="toc-text">Maven :x:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Gradle-x"><span class="toc-text">Gradle  :x:</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E6%A1%86%E6%9E%B6"><span class="toc-text">应用框架</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Spring-%E5%AE%B6%E6%97%8F"><span class="toc-text">Spring 家族</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Spring"><span class="toc-text">Spring</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SpringMVC-x"><span class="toc-text">SpringMVC :x:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SpringBoot-x"><span class="toc-text">SpringBoot :x:</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%BD%AF%E4%BB%B6"><span class="toc-text">服务器软件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Web%E6%9C%8D%E5%8A%A1%E5%99%A8%E2%80%94%E2%80%94Nginx-x"><span class="toc-text">Web服务器——Nginx:x:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E6%9C%8D%E5%8A%A1%E5%99%A8-x"><span class="toc-text">应用服务器 :x:</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Tomcat-x"><span class="toc-text">Tomcat :x:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Jetty-x"><span class="toc-text">Jetty :x:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Undertow-x"><span class="toc-text">Undertow :x:</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%AD%E9%97%B4%E4%BB%B6"><span class="toc-text">中间件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%93%E5%AD%98%E2%80%94%E2%80%94Redis"><span class="toc-text">缓存——Redis</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97"><span class="toc-text">消息队列</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#RocketMQ"><span class="toc-text">RocketMQ</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#RabbitMQ"><span class="toc-text">RabbitMQ</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Kafka-x"><span class="toc-text">Kafka :x:</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RPC-%E6%A1%86%E6%9E%B6-x"><span class="toc-text">RPC 框架 :x:</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Dubbo-x"><span class="toc-text">Dubbo :x:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#gRPC-x"><span class="toc-text">gRPC :x:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Thrift-x"><span class="toc-text">Thrift :x:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Spring-Cloud-x"><span class="toc-text">Spring Cloud :x:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Netty-x"><span class="toc-text">Netty :x:</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E6%A1%86%E6%9E%B6"><span class="toc-text">数据库框架</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ORM%E5%B1%82%E6%A1%86%E6%9E%B6-x"><span class="toc-text">ORM层框架 :x:</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Mybatis-x"><span class="toc-text">Mybatis :x:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Hibernate-x"><span class="toc-text">Hibernate :x:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#JPA-x"><span class="toc-text">JPA :x:</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9E%E6%8E%A5%E6%B1%A0"><span class="toc-text">连接池</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Druid-x"><span class="toc-text">Druid :x:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#HikariCP-x"><span class="toc-text">HikariCP :x:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C3P0-x"><span class="toc-text">C3P0 :x:</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E5%BA%93%E5%88%86%E8%A1%A8-x"><span class="toc-text">分库分表 :x:</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#MyCat-x"><span class="toc-text">MyCat  :x:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Sharding-JDBC-x"><span class="toc-text">Sharding-JDBC :x:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Sharding-Sphere-x"><span class="toc-text">Sharding-Sphere :x:</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E-x"><span class="toc-text">搜索引擎 :x:</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ElasticSearch-x"><span class="toc-text">ElasticSearch :x:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Solr-x"><span class="toc-text">Solr :x:</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E4%B8%8E%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%9B%B8%E5%85%B3-x"><span class="toc-text">分布式与微服务相关 :x:</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E4%B8%8E%E5%8F%91%E7%8E%B0-x"><span class="toc-text">服务注册与发现 :x:</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Eureka-x"><span class="toc-text">Eureka :x:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Consul-x"><span class="toc-text">Consul :x:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Zookeeper-x"><span class="toc-text">Zookeeper :x:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Nacos-x"><span class="toc-text">Nacos :x:</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BD%91%E5%85%B3-x"><span class="toc-text">网关 :x:</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Zuul-x"><span class="toc-text">Zuul :x:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#GateWay-x"><span class="toc-text">GateWay :x:</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E8%B0%83%E7%94%A8-x"><span class="toc-text">服务调用 :x:</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Ribbon-x"><span class="toc-text">Ribbon :x:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Feign-x"><span class="toc-text">Feign :x:</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%86%94%E6%96%AD%E4%B8%8E%E9%99%8D%E7%BA%A7%EF%BC%9AHystrix-x"><span class="toc-text">熔断与降级：Hystrix :x:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83"><span class="toc-text">配置中心</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Confg"><span class="toc-text">Confg</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Apollo"><span class="toc-text">Apollo</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Nacos"><span class="toc-text">Nacos</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%A4%E8%AF%81%E5%92%8C%E9%89%B4%E6%9D%83"><span class="toc-text">认证和鉴权</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Shiro-x"><span class="toc-text">Shiro:x:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Spring-Security"><span class="toc-text">Spring Security</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#OAuth2"><span class="toc-text">OAuth2</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#SSO%E2%80%8B%E5%8D%95%E7%82%B9%E2%80%8B%E7%99%BB%E5%BD%95-x"><span class="toc-text">SSO​单点​登录:x:</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1-x"><span class="toc-text">分布式事务:x:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6-x"><span class="toc-text">任务调度:x:</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Quartz-x"><span class="toc-text">Quartz:x:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Elastic-Jop-x"><span class="toc-text">Elastic-Jop:x:</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%BE%E8%B7%AF%E8%BF%BD%E8%B8%AA%E4%B8%8E%E7%9B%91%E6%8E%A7-x"><span class="toc-text">链路追踪与监控 :x:</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Zipkin-x"><span class="toc-text">Zipkin:x:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Sleuth-x"><span class="toc-text">Sleuth:x:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Skywalking-x"><span class="toc-text">Skywalking:x:</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A5%E5%BF%97%E5%88%86%E6%9E%90%E4%B8%8E%E7%9B%91%E6%8E%A7-ELK-x"><span class="toc-text">日志分析与监控 ELK:x:</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5%E5%BF%97%E5%AD%98%E5%82%A8%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%9AElasticSearch-x"><span class="toc-text">日志存储与分析：ElasticSearch :x:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5%E5%BF%97%E6%94%B6%E9%9B%86%EF%BC%9ALogstash-x"><span class="toc-text">日志收集：Logstash:x:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5%E5%BF%97%E5%8F%AF%E8%A7%86%E5%8C%96%EF%BC%9AKibana-x"><span class="toc-text">日志可视化：Kibana:x:</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%99%9A%E6%8B%9F%E5%8C%96-%E5%AE%B9%E5%99%A8%E5%8C%96%E2%80%8B%E2%80%8B"><span class="toc-text">虚拟化&#x2F;容器化​​</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%B9%E5%99%A8%E6%8A%80%E6%9C%AF%E2%80%94%E2%80%94Docker"><span class="toc-text">容器技术——Docker</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%92%E6%8A%80%E6%9C%AF-x"><span class="toc-text">容器编排技术:x:</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Kubernetes-x"><span class="toc-text">Kubernetes:x:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Swarm-x"><span class="toc-text">Swarm:x:</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%90%E7%BB%B4%E7%9F%A5%E8%AF%86"><span class="toc-text">运维知识</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Web%E6%9C%8D%E5%8A%A1%E5%99%A8%E2%80%94%E2%80%94Nginx-x-1"><span class="toc-text">Web服务器——Nginx:x:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E6%9C%8D%E5%8A%A1%E5%99%A8-x-1"><span class="toc-text">应用服务器 :x:</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Tomcat-x-1"><span class="toc-text">Tomcat :x:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Jetty-x-1"><span class="toc-text">Jetty :x:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Undertow-x-1"><span class="toc-text">Undertow :x:</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CDN%E5%8A%A0%E9%80%9F-x"><span class="toc-text">CDN加速:x:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90-%E6%8C%81%E7%BB%AD%E5%8F%91%E5%B8%83%E2%80%94%E2%80%94Jenkins-x"><span class="toc-text">持续集成&#x2F;持续发布——Jenkins:x:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E8%B4%A8%E9%87%8F%E6%A3%80%E6%9F%A5%E2%80%94%E2%80%94sonar-x"><span class="toc-text">代码质量检查——sonar:x:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A5%E5%BF%97%E6%94%B6%E9%9B%86-%E5%88%86%E6%9E%90%E2%80%94%E2%80%94ELK-x"><span class="toc-text">日志收集&#x2F;分析——ELK:x:</span></a></li></ol></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -1663,497 +1663,26 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="insert优化"><a href="#insert优化" class="headerlink" title="insert优化"></a>insert优化</h1><h2 id="一次需要向表中插入多条数据"><a href="#一次需要向表中插入多条数据" class="headerlink" title="一次需要向表中插入多条数据"></a>一次需要向表中插入多条数据</h2><p>如果我们需要一次性往数据库表中插入多条记录，可以从以下三个方面进行优化。</p>
-<pre><code class="mysql">insert into tb_test values(1,&#39;tom&#39;);
-insert into tb_test values(2,&#39;cat&#39;);
-insert into tb_test values(3,&#39;jerry&#39;);
-.....
-</code></pre>
-<p>优化要点一：批量插入数据</p>
-<pre><code class="mysql">-- 一次性所插入的数据不建议超过1000条，500--1000条是比较合适的
-Insert into tb_test values(1,&#39;Tom&#39;),(2,&#39;1 Cat&#39;),(3,&#39;Jerry&#39;);
-</code></pre>
-<p>优化要点二：手动控制事务</p>
-<pre><code class="mysql">start transaction;
-insert into tb_test values(1,&#39;Tom&#39;),(2,&#39;Cat&#39;),(3,&#39;Jerry&#39;);
-insert into tb_test values(4,&#39;Tom&#39;),(5,&#39;Cat&#39;),(6,&#39;Jerry&#39;);
-insert into tb_test values(7,&#39;Tom&#39;),(8,&#39;Cat&#39;),(9,&#39;Jerry&#39;);
-commit;
-</code></pre>
-<p>优化要点三：主键顺序插入，性能要高于乱序插入。</p>
-<pre><code class="mysql">主键乱序插入 : 8 1 9 21 88 2 4 15 89 5 7 3
-主键顺序插入 : 1 2 3 4 5 7 8 9 15 21 88 89
-</code></pre>
-<h2 id="大批量插入数据"><a href="#大批量插入数据" class="headerlink" title="大批量插入数据"></a>大批量插入数据</h2><p>如果一次性需要插入大批量数据(比如: 几百万的记录)，使用insert语句插入性能较低，此时可以使用MySQL数据库提供的load指令进行插入。操作如下：</p>
-<img src="SQLOptimization/001.jpg"  width="100%" />
-
-<p>可以执行如下指令，将数据脚本文件中的数据加载到表结构中：</p>
-<pre><code class="mysql">-- 客户端连接服务端时，加上参数 -–local-infile
-mysql --local-infile -u root -p
--- 设置全局参数local_infile为1，开启从本地加载文件导入数据的开关
-set global local_infile = 1;
--- 查询该配置是否开启
-select @@local_infile;
--- 执行load指令将准备好的数据，加载到表结构中
--- fields terminated by &#39;,&#39; 表示每一个属性值是通过“,”分割的
--- lines terminated by &#39;\n&#39;  表示每一行使用 &#39;\n&#39;（换行）分割
-load data local infile &#39;文件路径&#39; into table &#39;表名&#39; fields terminated by &#39;,&#39; lines terminated by &#39;\n&#39; ;
-</code></pre>
-<h3 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h3><p>创建一张表：</p>
-<pre><code class="mysql">CREATE TABLE `tb_user2` (
-`id` INT(11) NOT NULL AUTO_INCREMENT,
-`username` VARCHAR(50) NOT NULL,
-`password` VARCHAR(50) NOT NULL,
-`name` VARCHAR(20) NOT NULL,
-`birthday` DATE DEFAULT NULL,
-`sex` CHAR(1) DEFAULT NULL,
-PRIMARY KEY (`id`),
-UNIQUE KEY `unique_user_username` (`username`)
-) ENGINE=INNODB DEFAULT CHARSET=utf8 ;
-</code></pre>
-<p>使用finalshell把脚本上传到服务器（虚拟机）上</p>
-<img src="SQLOptimization/002.png"  width="80%" />
-
-<p>放在根目录下就可以了</p>
-<pre><code class="mysql">[root@centos01 ~]# ll
-总用量 56328
--rw-r--r--  1 root root    18623 11月 17 2021 03.jpg
--rw-------. 1 root root     1246 9月  15 2021 anaconda-ks.cfg
-drwxr-xr-x  3 root root       18 11月 17 2021 docker-volumn
--rw-r--r--  1 root root       45 11月 18 2021 index.html
--rw-r--r--  1 root root 57650380 9月  23 00:02 load_user_100w_sort.sql
-</code></pre>
-<p><code>load_user_100w_sort.sql</code>里面文件内容的格式如下：</p>
-<pre><code class="sql">[root@centos01 ~]# head load_user_100w_sort.sql 
-1,jdTmmKQlwu1,jdTmmKQlwu,jdTmmKQlwu,2020-10-13,1
-2,BTJOeWjRiw2,BTJOeWjRiw,BTJOeWjRiw,2020-6-12,2
-3,waQTJIIlHI3,waQTJIIlHI,waQTJIIlHI,2020-6-2,0
-4,XmeFHwozIo4,XmeFHwozIo,XmeFHwozIo,2020-1-11,1
-5,xRrvQSHcZn5,xRrvQSHcZn,xRrvQSHcZn,2020-10-18,2
-6,gTDfGFNLEj6,gTDfGFNLEj,gTDfGFNLEj,2020-1-13,0
-7,nBETIlVCle7,nBETIlVCle,nBETIlVCle,2020-9-27,1
-8,vmePKKZjJU8,vmePKKZjJU,vmePKKZjJU,2020-10-20,2
-9,pWjaLhJVaB9,pWjaLhJVaB,pWjaLhJVaB,2020-5-7,0
-10,zimgGFPEQe10,zimgGFPEQe,zimgGFPEQe,2020-8-1,1
-</code></pre>
-<p>执行命令，只需要8秒就可以导入100w条数据</p>
-<pre><code class="mysql">mysql&gt; load data local infile &#39;/root/load_user_100w_sort.sql&#39; into table tb_user2 fields terminated by &#39;,&#39; lines terminated by &#39;\n&#39;;
-Query OK, 1000000 rows affected (8.09 sec)
-Records: 1000000  Deleted: 0  Skipped: 0  Warnings: 0
-</code></pre>
-<h1 id="主键优化"><a href="#主键优化" class="headerlink" title="主键优化"></a>主键优化</h1><h2 id="数据组织方式"><a href="#数据组织方式" class="headerlink" title="数据组织方式"></a>数据组织方式</h2><p>在InnoDB存储引擎中，表数据都是根据主键顺序组织存放的，这种存储方式的表称为索引组织表 (index organized table IOT)。</p>
-<img src="SQLOptimization/003.jpg"  width="8=100%" />
-
-<p>在InnoDB引擎中，数据行是记录在逻辑结构 page 页中的，而每一个页的大小是固定的，默认16K。那也就意味着， 一个页中所存储的行也是有限的，如果插入的数据行row在该页存储不小，将会存储到下一个页中，页与页之间会通过指针连接。</p>
-<h2 id="页分裂"><a href="#页分裂" class="headerlink" title="页分裂"></a>页分裂</h2><h3 id="主键顺序插入效果"><a href="#主键顺序插入效果" class="headerlink" title="主键顺序插入效果"></a>主键顺序插入效果</h3><p>从磁盘中申请页， 主键顺序插入</p>
-<img src="SQLOptimization/004.jpg"  width="8=100%" />
-
-<p>第一个页没有满，继续往第一页插入</p>
-<img src="SQLOptimization/005.jpg"  width="8=100%" />
-
-<p>当第一个也写满之后，再写入第二个页，页与页之间会通过指针连接</p>
-<img src="SQLOptimization/006.jpg"  width="8=100%" />
-
-<p>当第二页写满了，再往第三页写入</p>
-<img src="SQLOptimization/007.jpg"  width="8=100%" />
-
-<h3 id="主键乱序插入效果"><a href="#主键乱序插入效果" class="headerlink" title="主键乱序插入效果"></a>主键乱序插入效果</h3><p>加入1#,2#页都已经写满了，存放了如图所示的数据</p>
-<img src="SQLOptimization/008.jpg"  width="8=100%" />
-
-<p>此时再插入id为50的记录，我们来看看会发生什么现象</p>
-<img src="SQLOptimization/009.jpg"  width="8=100%" />
-
-<p>这个时候MySQL不会开启一个新页，因为，索引结构的叶子节点是有顺序的。按照顺序，应该存储在47之后。</p>
-<img src="SQLOptimization/010.jpg"  width="8=100%" />
-
-<p>但是47所在的1#页，已经写满了，存储不了50对应的数据了。 那么此时会开辟一个新的页 3#。</p>
-<img src="SQLOptimization/011.jpg"  width="8=100%" />
-
-<p>但是并不会直接将50存入3#页，而是会将1#页后<strong>一半的数据</strong>，移动到3#页，然后在3#页，插入50。</p>
-<img src="SQLOptimization/012.jpg"  width="8=100%" />
-
-<img src="SQLOptimization/013.jpg"  width="100%" />
-
-<p>移动数据，并插入id为50的数据之后，那么此时，这三个页之间的数据顺序是有问题的。 1#的下一个页，应该是3#， 3#的下一个页是2#。 所以，此时，<strong>需要重新设置链表指针</strong>。</p>
-<img src="SQLOptimization/014.jpg"  width="100%" />
-
-<p>上述的这种现象，称之为 “页分裂”，是比较耗费性能的操作。</p>
-<h2 id="页合并"><a href="#页合并" class="headerlink" title="页合并"></a>页合并</h2><p>目前表中已有数据的索引结构(叶子节点)如下：</p>
-<img src="SQLOptimization/015.jpg"  width="100%" />
-
-<p>当我们对已有数据进行删除时，具体的效果如下:</p>
-<p><strong>当删除一行记录时，实际上记录并没有被物理删除，只是记录被标记（flaged）为删除并且它的空间变得允许被其他记录声明使用。</strong></p>
-<img src="SQLOptimization/016.jpg"  width="100%" />
-
-<p>当我们继续删除2#的数据记录</p>
-<img src="SQLOptimization/017.jpg"  width="100%" />
-
-<p>当页中删除的记录达到 <strong>MERGE_THRESHOLD（默认为页的50%），InnoDB会开始寻找最靠近的页（前或后）看看是否可以将两个页合并以优化空间使用</strong>。</p>
-<img src="SQLOptimization/018.jpg"  width="100%" />
-
-<img src="SQLOptimization/019.jpg"  width="100%" />
-
-<p>删除数据，并将页合并之后，再次插入新的数据21，则直接插入3#页</p>
-<img src="SQLOptimization/020.jpg"  width="100%" />
-
-<p>这个里面所发生的合并页的这个现象，就称之为 “页合并”。</p>
-<p><strong>MERGE_THRESHOLD：合并页的阈值，可以自己设置，在创建表或者创建索引时指定。</strong></p>
-<h2 id="索引设计原则"><a href="#索引设计原则" class="headerlink" title="索引设计原则"></a>索引设计原则</h2><p>满足业务需求的情况下，尽量降低主键的长度。</p>
-<p>插入数据时，尽量选择顺序插入，选择使用AUTO_INCREMENT自增主键。</p>
-<p><strong>尽量不要使用UUID做主键或者是其他自然主键，如身份证号。</strong></p>
-<blockquote>
-<p>分布式系统：</p>
-<ul>
-<li><strong>UUID</strong>：非常适合分布式系统，因为它能够保证全局唯一性，无需额外的协调机制。</li>
-<li><strong>自增ID</strong>：在分布式系统中，如果直接使用自增ID作为主键，可能会遇到ID冲突的问题，需要额外的服务（如ID生成器服务）来确保ID的唯一性。</li>
-</ul>
-<p>文心一言的建议：</p>
-<ul>
-<li>如果你的应用是分布式的，或者你需要全局唯一的主键，那么UUID可能是一个更好的选择。</li>
-<li>如果你的应用是单体应用，或者对性能有较高要求，特别是在高并发的写入和范围查询场景下，自增ID可能更适合。</li>
-<li>在一些情况下，也可以考虑将UUID和自增ID结合使用，例如使用UUID作为业务ID，同时维护一个自增ID作为数据库主键，以满足不同的需求</li>
-</ul>
-</blockquote>
-<p>业务操作时，避免对主键的修改。</p>
-<h1 id="order-by优化"><a href="#order-by优化" class="headerlink" title="order by优化"></a>order by优化</h1><h2 id="两种排序方式"><a href="#两种排序方式" class="headerlink" title="两种排序方式"></a>两种排序方式</h2><p><code>Using filesort</code> : 通过表的索引或全表扫描，<strong>读取满足条件的数据行</strong>，<strong>然后在排序缓冲区sort buffer中完成排序操作</strong>，所有<strong>不是通过索引直接返回排序结果的排序都叫 FileSort 排序</strong>。</p>
-<p><code>Using index</code> : 通过<strong>有序索引顺序扫描直接返回有序数据</strong>，这种情况即为 using index，<strong>不需要额外排序，操作效率高</strong>。</p>
-<p>对于以上的两种排序方式，<code>Using index</code>的性能高，而<code>Using filesort</code>的性能低，我们在优化排序操作时，尽量要优化为 <code>Using index</code>。</p>
-<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><h3 id="准备数据"><a href="#准备数据" class="headerlink" title="准备数据"></a>准备数据</h3><p>把之前测试时，为tb_user表所建立的部分索引直接删除掉，保留如下：</p>
-<pre><code class="mysql">idx_user_pro_age_sta：`profession`, `age`, `status`
-idx_email_5：`email`(5)
-</code></pre>
-<h3 id="执行排序SQL"><a href="#执行排序SQL" class="headerlink" title="执行排序SQL"></a>执行排序SQL</h3><pre><code class="mysql">
-mysql&gt; explain select id,age,phone from tb_user order by age\G;
-*************************** 1. row ***************************
-           id: 1
-  select_type: SIMPLE
-        table: tb_user
-   partitions: NULL
-         type: ALL
-possible_keys: NULL
-          key: NULL
-      key_len: NULL
-          ref: NULL
-         rows: 24
-     filtered: 100.00
-        Extra: Using filesort 
-1 row in set, 1 warning (0.00 sec)
-
-mysql&gt; explain select id,age,phone from tb_user order by age, phone\G;
-*************************** 1. row ***************************
-           id: 1
-  select_type: SIMPLE
-        table: tb_user
-   partitions: NULL
-         type: ALL
-possible_keys: NULL
-          key: NULL
-      key_len: NULL
-          ref: NULL
-         rows: 24
-     filtered: 100.00
-        Extra: Using filesort
-1 row in set, 1 warning (0.00 sec)
-</code></pre>
-<p>由于 age, phone 都没有索引，所以此时再排序时，出现Using filesort， 排序性能较低。</p>
-<h3 id="创建索引"><a href="#创建索引" class="headerlink" title="创建索引"></a>创建索引</h3><pre><code class="mysql">create index idx_user_age_phone_aa on tb_user(age,phone);
-</code></pre>
-<h3 id="创建索引后，根据age-phone进行升序排序"><a href="#创建索引后，根据age-phone进行升序排序" class="headerlink" title="创建索引后，根据age, phone进行升序排序"></a>创建索引后，根据age, phone进行升序排序</h3><pre><code class="mysql">mysql&gt; explain select id,age,phone from tb_user order by age\G;
-*************************** 1. row ***************************
-           id: 1
-  select_type: SIMPLE
-        table: tb_user
-   partitions: NULL
-         type: index
-possible_keys: NULL
-          key: idx_user_age_phone_aa
-      key_len: 37
-          ref: NULL
-         rows: 24
-     filtered: 100.00
-        Extra: Using index
-1 row in set, 1 warning (0.00 sec)
-
-
-mysql&gt; explain select id,age,phone from tb_user order by age, phone\G;
-*************************** 1. row ***************************
-           id: 1
-  select_type: SIMPLE
-        table: tb_user
-   partitions: NULL
-         type: index
-possible_keys: NULL
-          key: idx_user_age_phone_aa
-      key_len: 37
-          ref: NULL
-         rows: 24
-     filtered: 100.00
-        Extra: Using index
-1 row in set, 1 warning (0.00 sec)
-</code></pre>
-<p>建立索引之后，再次进行排序查询，就由原来的Using filesort， 变为了 Using index，性能就是比较高的了。</p>
-<h3 id="创建索引后，根据age-phone进行降序排序"><a href="#创建索引后，根据age-phone进行降序排序" class="headerlink" title="创建索引后，根据age, phone进行降序排序"></a>创建索引后，根据age, phone进行降序排序</h3><pre><code class="mysql">mysql&gt; explain select id,age,phone from tb_user order by age desc , phone desc\G ;
-*************************** 1. row ***************************
-           id: 1
-  select_type: SIMPLE
-        table: tb_user
-   partitions: NULL
-         type: index
-possible_keys: NULL
-          key: idx_user_age_phone_aa
-      key_len: 37
-          ref: NULL
-         rows: 24
-     filtered: 100.00
-        Extra: Using index, Backward index scan
-1 row in set, 1 warning (0.00 sec)
-</code></pre>
-<p>也出现 <code>Using index</code>， 但是此时Extra中出现了 <code>Backward index scan</code>，这个<strong>代表反向扫描索引</strong>，因为在MySQL中我们创建的索引，默认索引的叶子节点是从小到大排序的，而此时我们查询排序时，是从大到小，所以，在扫描时，就是反向扫描，就会出现 Backward index scan。 </p>
-<p>在MySQL8版本中，支持降序索引，我们也可以创建降序索引</p>
-<h3 id="根据phone，age进行升序排序，phone在前，age在后。"><a href="#根据phone，age进行升序排序，phone在前，age在后。" class="headerlink" title="根据phone，age进行升序排序，phone在前，age在后。"></a>根据phone，age进行升序排序，phone在前，age在后。</h3><pre><code class="mysql">mysql&gt; explain select id,age,phone from tb_user order by phone , age\G;
-*************************** 1. row ***************************
-           id: 1
-  select_type: SIMPLE
-        table: tb_user
-   partitions: NULL
-         type: index
-possible_keys: NULL
-          key: idx_user_age_phone_aa
-      key_len: 37
-          ref: NULL
-         rows: 24
-     filtered: 100.00
-        Extra: Using index; Using filesort
-1 row in set, 1 warning (0.00 sec)
-</code></pre>
-<p>排序时,也需要满足最左前缀法则,否则也会出现 filesort。因为在创建索引的时候， <strong>age是第一个字段，phone是第二个字段，所以排序时，也就该按照这个顺序来，否则就会出现 Using filesort</strong>。这个和where过滤不一样，我想是因为<code>order by phone , age</code> 是有顺序的：先根据phone排序，然后再根据age排序</p>
-<h3 id="根据age-phone进行降序一个升序，一个降序"><a href="#根据age-phone进行降序一个升序，一个降序" class="headerlink" title="根据age, phone进行降序一个升序，一个降序"></a>根据age, phone进行降序一个升序，一个降序</h3><pre><code class="mysql">mysql&gt; explain select id,age,phone from tb_user order by age asc , phone desc\G;
-*************************** 1. row ***************************
-           id: 1
-  select_type: SIMPLE
-        table: tb_user
-   partitions: NULL
-         type: index
-possible_keys: NULL
-          key: idx_user_age_phone_aa
-      key_len: 37
-          ref: NULL
-         rows: 24
-     filtered: 100.00
-        Extra: Using index; Using filesort
-1 row in set, 1 warning (0.00 sec)
-</code></pre>
-<p>因为创建索引时，如果未指定顺序，默认都是按照升序排序的，而查询时，一个升序，一个降序，此时就会出现Using filesort。</p>
-<h3 id="创建联合索引-age-升序排序，phone-倒序排序"><a href="#创建联合索引-age-升序排序，phone-倒序排序" class="headerlink" title="创建联合索引(age 升序排序，phone 倒序排序)"></a>创建联合索引(age 升序排序，phone 倒序排序)</h3><p>为了解决上述的问题，我们可以创建一个索引，这个联合索引中 age 升序排序，phone 倒序排序。</p>
-<pre><code class="mysql">create index idx_user_age_phone_ad on tb_user(age asc ,phone desc);
-</code></pre>
-<img src="SQLOptimization/022.png"  width="100%" />
-
-<p>然后再次执行如下SQL</p>
-<pre><code class="mysql">mysql&gt; explain select id,age,phone from tb_user order by age asc , phone desc\G;
-*************************** 1. row ***************************
-           id: 1
-  select_type: SIMPLE
-        table: tb_user
-   partitions: NULL
-         type: index
-possible_keys: NULL
-          key: idx_user_age_phone_ad
-      key_len: 48
-          ref: NULL
-         rows: 24
-     filtered: 100.00
-        Extra: Using index
-1 row in set, 1 warning (0.00 sec)
-</code></pre>
-<h2 id="升序-降序联合索引结构图示"><a href="#升序-降序联合索引结构图示" class="headerlink" title="升序&#x2F;降序联合索引结构图示:"></a>升序&#x2F;降序联合索引结构图示:</h2><img src="SQLOptimization/023.jpg"  width="100%" />
-
-<img src="SQLOptimization/024.jpg"  width="100%" />
-
-<h2 id="order-by优化原则"><a href="#order-by优化原则" class="headerlink" title="order by优化原则"></a>order by优化原则</h2><p>根据排序字段建立合适的索引，多字段排序时，也遵循<strong>最左前缀法则</strong>。</p>
-<p>尽量使用<strong>覆盖索引</strong>。</p>
-<p>多字段排序, 一个升序一个降序，此时需要注意<strong>联合索引在创建时的规则（ASC&#x2F;DESC）</strong>。</p>
-<p>如果不可避免的出现filesort，大数据量排序时，**可以适当增大排序缓冲区大小sort_buffer_size(默认256k)**。</p>
-<ul>
-<li>临时修改（仅对当前会话有效）</li>
-</ul>
-<pre><code class="mysql">SET SESSION sort_buffer_size = 256*1024; -- 设置为256KB
-</code></pre>
-<ul>
-<li><p>运行时动态修改（对于支持动态变量的MySQL版本）</p>
-<pre><code class="mysql">SET GLOBAL sort_buffer_size = 8*1024*1024; -- 设置为8MB
-</code></pre>
-</li>
-<li><p>全局修改（对所有新会话有效）</p>
-<pre><code class="ini">[mysqld]  
-sort_buffer_size = 8M
-</code></pre>
-</li>
-</ul>
-<h1 id="group-by优化"><a href="#group-by优化" class="headerlink" title="group by优化"></a>group by优化</h1><p>把其他索引都删掉，只留下下面的索引</p>
-<pre><code class="mysql">idx_user_pro_age_sta： `profession`, `age`, `status`
-</code></pre>
-<p>接着，做如下实验</p>
-<pre><code class="mysql">mysql&gt; explain select profession , count(*) from tb_user group by profession\G;
-*************************** 1. row ***************************
-           id: 1
-  select_type: SIMPLE
-        table: tb_user
-   partitions: NULL
-         type: index
-possible_keys: idx_user_pro_age_sta
-          key: idx_user_pro_age_sta
-      key_len: 54
-          ref: NULL
-         rows: 24
-     filtered: 100.00
-        Extra: Using index
-1 row in set, 1 warning (0.01 sec)
-
-mysql&gt; explain select profession , count(*) from tb_user group by profession,age\G;
-*************************** 1. row ***************************
-           id: 1
-  select_type: SIMPLE
-        table: tb_user
-   partitions: NULL
-         type: index
-possible_keys: idx_user_pro_age_sta
-          key: idx_user_pro_age_sta
-      key_len: 54
-          ref: NULL
-         rows: 24
-     filtered: 100.00
-        Extra: Using index
-1 row in set, 1 warning (0.00 sec)
-
-mysql&gt; explain select age, count(*) from tb_user group by age\G;
-*************************** 1. row ***************************
-           id: 1
-  select_type: SIMPLE
-        table: tb_user
-   partitions: NULL
-         type: index
-possible_keys: idx_user_pro_age_sta
-          key: idx_user_pro_age_sta
-      key_len: 54
-          ref: NULL
-         rows: 24
-     filtered: 100.00
-        Extra: Using index; Using temporary
-1 row in set, 1 warning (0.00 sec)
-</code></pre>
-<p>我们发现，如果仅仅根据age分组，就会出现 Using temporary ；</p>
-<p>而如果是 根据 profession,age两个字段同时分组，则不会出现 Using temporary。</p>
-<p>原因是因为<strong>对于分组操作，在联合索引中，也是符合最左前缀法则的</strong>。</p>
-<h2 id="优化原则"><a href="#优化原则" class="headerlink" title="优化原则"></a>优化原则</h2><p>在分组操作时，可以通过索引来提高效率。</p>
-<p>分组操作时，索引的使用也是满足最左前缀法则的。</p>
-<h1 id="limit-优化"><a href="#limit-优化" class="headerlink" title="limit 优化"></a>limit 优化</h1><p>在数据量比较大时，<strong>如果进行limit分页查询，在查询时，越往后，分页查询效率越低。</strong></p>
-<p>为了便于测试，避免 MySQL 内的缓存机制干扰分析结果，我们在分析 SQL 语句时取消 SQL 语句的缓存功能。</p>
-<p>使用 <code>SQL_NO_CACHE</code> 关键字</p>
-<pre><code class="mysql">mysql&gt; select SQL_NO_CACHE * from tb_sku limit 1000,10;
-10 rows in set, 1 warning (0.00 sec)
-mysql&gt; select SQL_NO_CACHE * from tb_sku limit 1000000,10;
-10 rows in set, 1 warning (1.24 sec)
-mysql&gt; select SQL_NO_CACHE * from tb_sku limit 5000000,10;
-10 rows in set, 1 warning (5.97 sec)
-mysql&gt; select SQL_NO_CACHE * from tb_sku limit 9000000,10;
-10 rows in set, 1 warning (10.89 sec)
-</code></pre>
-<p>通过测试我们会看到，越往后，分页查询效率越低，这就是分页查询的问题所在。因为，当在进行分页查询时，<strong>如果执行 limit 2000000,10 ，此时需要MySQL排序前2000010 记录，仅仅返回 2000000 - 2000010 的记录，其他记录丢弃，查询排序的代价非常大</strong> 。</p>
-<p>优化思路: 一般分页查询时，通过创建 <strong>覆盖索引</strong> 能够比较好地提高性能，可以<strong>通过覆盖索引加子查询形式进行优化</strong>。</p>
-<pre><code class="mysql">select SQL_NO_CACHE * from tb_sku t , (select id from tb_sku order by id limit 9000000,10) a where t.id = a.id;
-10 rows in set, 1 warning (6.30 sec)
-</code></pre>
-<h1 id="count优化"><a href="#count优化" class="headerlink" title="count优化"></a>count优化</h1><p>count() 是一个聚合函数，对于返回的结果集，一行行地判断，如果 count 函数的参数不是NULL，累计值就加 1，否则不加，最后返回累计值。</p>
-<table>
-<thead>
-<tr>
-<th>count用法</th>
-<th>含义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>count(主键)</td>
-<td>InnoDB 引擎会遍历整张表，<strong>把每一行的 主键id 值都取出来</strong>，返回给服务层。服务层拿到主键后，直接按行进行累加(主键不可能为null)</td>
-</tr>
-<tr>
-<td>count(字段)</td>
-<td>没有not null 约束 : InnoDB 引擎会遍历整张<strong>表把每一行的字段值都取出来</strong>，返回给服务层，服务层判断是否为null，不为null，计数累加。<br />有not null 约束：InnoDB 引擎会遍历整张表把每一行的字段值都取出来，返回给服务层，直接按行进行累加。</td>
-</tr>
-<tr>
-<td>count(数字)</td>
-<td>InnoDB 引擎遍历整张表，但不取值。服务层对于返回的每一行，放一个数字“1”进去，直接按行进行累加。</td>
-</tr>
-<tr>
-<td>count(*)</td>
-<td>InnoDB引擎并不会把全部字段取出来，而是专门做了优化，不取值，服务层直接按行进行累加。</td>
-</tr>
-</tbody></table>
-<p>按照效率排序的话，<code>count(字段)</code> &lt;<code> count(主键 id)</code> &lt; <code>count(1)</code> ≈<code>count(*)</code>，所以尽量使用 <code>count(*)</code>。</p>
-<h1 id="update优化"><a href="#update优化" class="headerlink" title="update优化"></a>update优化</h1><p><strong>如果根据没有索引的字段去修改某个值，那么行锁会变成表所</strong></p>
-<h2 id="正常情况"><a href="#正常情况" class="headerlink" title="正常情况"></a>正常情况</h2><p>窗口A：修改id&#x3D;1的用户名字</p>
-<pre><code class="mysql">mysql&gt; begin;
-Query OK, 0 rows affected (0.00 sec)
-
-mysql&gt; update tb_user set name = &#39;a&#39; where id =1;
-Query OK, 1 row affected (0.00 sec)
-Rows matched: 1  Changed: 1  Warnings: 0
-
-mysql&gt; commit;
-Query OK, 0 rows affected (0.00 sec)
-</code></pre>
-<p>窗口B：修改id&#x3D;2的用户的名字</p>
-<pre><code class="mysql">mysql&gt; begin;
-Query OK, 0 rows affected (0.00 sec)
-
-mysql&gt; update tb_user set name = &#39;b&#39; where id =2;
-Query OK, 1 row affected (0.00 sec)
-Rows matched: 1  Changed: 1  Warnings: 0
-
-mysql&gt; commit;
-Query OK, 0 rows affected (0.01 sec)
-</code></pre>
-<p>两个都修改成功</p>
-<h2 id="锁表的情况"><a href="#锁表的情况" class="headerlink" title="锁表的情况"></a>锁表的情况</h2><p>窗口A：修改name&#x3D;a的用户名字，然后事务没提交</p>
-<pre><code class="mysql">mysql&gt; begin;
-Query OK, 0 rows affected (0.00 sec)
-
-mysql&gt; update tb_user set name = &#39;aa&#39; where name =&#39;a&#39;;
-Query OK, 1 row affected (0.00 sec)
-Rows matched: 1  Changed: 1  Warnings: 0
-</code></pre>
-<p>窗口B：修改id&#x3D;2的用户的名字</p>
-<pre><code class="mysql">mysql&gt; begin;
-Query OK, 0 rows affected (0.00 sec)
-
-mysql&gt; update tb_user set name = &#39;bb&#39; where id =2;
-ERROR 1205 (HY000): Lock wait timeout exceeded; try restarting transaction
-</code></pre>
-<p>这个时候tb_user 锁表了</p>
-<h2 id="给name创建索引"><a href="#给name创建索引" class="headerlink" title="给name创建索引"></a>给name创建索引</h2><p>创建索引：</p>
-<pre><code class="mysql">create index idx_user_name on tb_user(name);
-</code></pre>
-<p>窗口A：修改name&#x3D;a的用户名字，然后事务没提交</p>
-<pre><code class="mysql">mysql&gt; begin;
-Query OK, 0 rows affected (0.00 sec)
-
-mysql&gt; update tb_user set name = &#39;aa&#39; where name =&#39;a&#39;;
-Query OK, 1 row affected (0.00 sec)
-Rows matched: 1  Changed: 1  Warnings: 0
-</code></pre>
-<p>窗口B：修改id&#x3D;2的用户的名字，提交。成功修改</p>
-<pre><code class="mysql">mysql&gt; begin;
-Query OK, 0 rows affected (0.00 sec)
-
-mysql&gt; update tb_user set name = &#39;bb&#39; where id =2;
-Query OK, 1 row affected (0.00 sec)
-Rows matched: 1  Changed: 1  Warnings: 0
-
-mysql&gt; commit;
-Query OK, 0 rows affected (0.00 sec)
-</code></pre>
-<p><strong>InnoDB的行锁是针对索引加的锁，不是针对记录加的锁 ,并且该索引不能失效，否则会从行锁升级为表锁 。</strong></p>
-
+        <h1 id="编程基础"><a href="#编程基础" class="headerlink" title="编程基础"></a>编程基础</h1><h2 id="Java语言"><a href="#Java语言" class="headerlink" title="Java语言"></a>Java语言</h2><h3 id="Java基础"><a href="#Java基础" class="headerlink" title="Java基础"></a>Java基础</h3><ol>
+<li><a target="_blank" rel="noopener" href="https://xie-shaolin.github.io/2020/12/29/java-01-install/">JDk、JRE、JVM之间的关系</a></li>
+<li><a target="_blank" rel="noopener" href="https://xie-shaolin.github.io/2020/12/29/java-02-grammar/">8种基本数据类型和3种引用数据类型</a></li>
+<li><a target="_blank" rel="noopener" href="https://xie-shaolin.github.io/2020/12/29/java-02-grammar/">基本数据类型的字节数是多少？</a></li>
+<li><a target="_blank" rel="noopener" href="https://xie-shaolin.github.io/2020/12/29/java-02-grammar/">自动类型转换与强制转换</a></li>
+<li><a target="_blank" rel="noopener" href="https://xie-shaolin.github.io/2020/12/29/java-02-grammar/">++a 和 a++的区别</a></li>
+<li><a target="_blank" rel="noopener" href="https://xie-shaolin.github.io/2020/12/29/java-02-grammar/">分支结构：if-else，swich-case</a></li>
+<li><a target="_blank" rel="noopener" href="https://xie-shaolin.github.io/2020/12/29/java-02-grammar/">循环结构：3种基本的循环结构</a></li>
+<li><a target="_blank" rel="noopener" href="https://xie-shaolin.github.io/2020/12/29/java-03-array/">数组的静态初始化和动态初始化</a></li>
+<li><a target="_blank" rel="noopener" href="https://xie-shaolin.github.io/2020/12/29/java-03-array/">数组元素的默认初始化值</a></li>
+<li><a target="_blank" rel="noopener" href="https://xie-shaolin.github.io/2020/12/29/java-03-array/">数组的内存解析</a></li>
+<li><a target="_blank" rel="noopener" href="https://xie-shaolin.github.io/2020/12/29/java-03-array/">二维数组的声明和初始化</a></li>
+<li><a target="_blank" rel="noopener" href="https://xie-shaolin.github.io/2020/12/29/java-03-array/">二维数组的内存解析</a></li>
+<li><a target="_blank" rel="noopener" href="https://xie-shaolin.github.io/2020/12/29/java-03-array/">杨辉三角</a></li>
+<li><a target="_blank" rel="noopener" href="https://xie-shaolin.github.io/2020/12/29/java-03-array/">数组的二分查找：一个有序的数组，请用二分法查找某个数</a></li>
+<li><a target="_blank" rel="noopener" href="https://xie-shaolin.github.io/2020/12/29/java-03-array/">数组的冒泡排序</a></li>
+<li><a target="_blank" rel="noopener" href="https://xie-shaolin.github.io/2020/12/29/java-03-array/">数组的快速排序</a></li>
+<li><a target="_blank" rel="noopener" href="https://xie-shaolin.github.io/2020/12/29/java-03-array/">Arrays 工具类的使用</a></li>
+</ol>
+<h3 id="JVM-x"><a href="#JVM-x" class="headerlink" title="JVM :x:"></a>JVM :x:</h3><h3 id="多线程-并发-x"><a href="#多线程-并发-x" class="headerlink" title="多线程&#x2F;并发 :x:"></a>多线程&#x2F;并发 :x:</h3><h2 id="数据结构和算法-x"><a href="#数据结构和算法-x" class="headerlink" title="数据结构和算法:x:"></a>数据结构和算法:x:</h2><h2 id="计算机网络-x"><a href="#计算机网络-x" class="headerlink" title="计算机网络 :x:"></a>计算机网络 :x:</h2><h2 id="数据库（MySQL）"><a href="#数据库（MySQL）" class="headerlink" title="数据库（MySQL）"></a>数据库（MySQL）</h2><h2 id="操作系统-x"><a href="#操作系统-x" class="headerlink" title="操作系统 :x:"></a>操作系统 :x:</h2><h2 id="设计模式-x"><a href="#设计模式-x" class="headerlink" title="设计模式 :x:"></a>设计模式 :x:</h2><h1 id="研发工具"><a href="#研发工具" class="headerlink" title="研发工具"></a>研发工具</h1><h2 id="集成开发环境"><a href="#集成开发环境" class="headerlink" title="集成开发环境"></a>集成开发环境</h2><h3 id="Intellij-IDEA-x"><a href="#Intellij-IDEA-x" class="headerlink" title="Intellij IDEA :x:"></a>Intellij IDEA :x:</h3><h3 id="VSCode-x"><a href="#VSCode-x" class="headerlink" title="VSCode :x:"></a>VSCode :x:</h3><h2 id="Linux-系统-x"><a href="#Linux-系统-x" class="headerlink" title="Linux 系统 :x:"></a>Linux 系统 :x:</h2><h2 id="代码管理工具-Git-x"><a href="#代码管理工具-Git-x" class="headerlink" title="代码管理工具 Git :x:"></a>代码管理工具 Git :x:</h2><h2 id="项目管理工具-项目构建工具"><a href="#项目管理工具-项目构建工具" class="headerlink" title="项目管理工具&#x2F;项目构建工具"></a>项目管理工具&#x2F;项目构建工具</h2><h3 id="Maven-x"><a href="#Maven-x" class="headerlink" title="Maven :x:"></a>Maven :x:</h3><h3 id="Gradle-x"><a href="#Gradle-x" class="headerlink" title="Gradle  :x:"></a>Gradle  :x:</h3><h1 id="应用框架"><a href="#应用框架" class="headerlink" title="应用框架"></a>应用框架</h1><h2 id="Spring-家族"><a href="#Spring-家族" class="headerlink" title="Spring 家族"></a>Spring 家族</h2><h3 id="Spring"><a href="#Spring" class="headerlink" title="Spring"></a>Spring</h3><h3 id="SpringMVC-x"><a href="#SpringMVC-x" class="headerlink" title="SpringMVC :x:"></a>SpringMVC :x:</h3><h3 id="SpringBoot-x"><a href="#SpringBoot-x" class="headerlink" title="SpringBoot :x:"></a>SpringBoot :x:</h3><h2 id="服务器软件"><a href="#服务器软件" class="headerlink" title="服务器软件"></a>服务器软件</h2><h3 id="Web服务器——Nginx-x"><a href="#Web服务器——Nginx-x" class="headerlink" title="Web服务器——Nginx:x:"></a>Web服务器——Nginx:x:</h3><h3 id="应用服务器-x"><a href="#应用服务器-x" class="headerlink" title="应用服务器 :x:"></a>应用服务器 :x:</h3><h4 id="Tomcat-x"><a href="#Tomcat-x" class="headerlink" title="Tomcat :x:"></a>Tomcat :x:</h4><h4 id="Jetty-x"><a href="#Jetty-x" class="headerlink" title="Jetty :x:"></a>Jetty :x:</h4><h4 id="Undertow-x"><a href="#Undertow-x" class="headerlink" title="Undertow :x:"></a>Undertow :x:</h4><h2 id="中间件"><a href="#中间件" class="headerlink" title="中间件"></a>中间件</h2><h3 id="缓存——Redis"><a href="#缓存——Redis" class="headerlink" title="缓存——Redis"></a>缓存——Redis</h3><h3 id="消息队列"><a href="#消息队列" class="headerlink" title="消息队列"></a>消息队列</h3><h4 id="RocketMQ"><a href="#RocketMQ" class="headerlink" title="RocketMQ"></a>RocketMQ</h4><h4 id="RabbitMQ"><a href="#RabbitMQ" class="headerlink" title="RabbitMQ"></a>RabbitMQ</h4><h4 id="Kafka-x"><a href="#Kafka-x" class="headerlink" title="Kafka :x:"></a>Kafka :x:</h4><h3 id="RPC-框架-x"><a href="#RPC-框架-x" class="headerlink" title="RPC 框架 :x:"></a>RPC 框架 :x:</h3><h4 id="Dubbo-x"><a href="#Dubbo-x" class="headerlink" title="Dubbo :x:"></a>Dubbo :x:</h4><h4 id="gRPC-x"><a href="#gRPC-x" class="headerlink" title="gRPC :x:"></a>gRPC :x:</h4><h4 id="Thrift-x"><a href="#Thrift-x" class="headerlink" title="Thrift :x:"></a>Thrift :x:</h4><h4 id="Spring-Cloud-x"><a href="#Spring-Cloud-x" class="headerlink" title="Spring Cloud :x:"></a>Spring Cloud :x:</h4><h4 id="Netty-x"><a href="#Netty-x" class="headerlink" title="Netty :x:"></a>Netty :x:</h4><h2 id="数据库框架"><a href="#数据库框架" class="headerlink" title="数据库框架"></a>数据库框架</h2><h3 id="ORM层框架-x"><a href="#ORM层框架-x" class="headerlink" title="ORM层框架 :x:"></a>ORM层框架 :x:</h3><h4 id="Mybatis-x"><a href="#Mybatis-x" class="headerlink" title="Mybatis :x:"></a>Mybatis :x:</h4><h4 id="Hibernate-x"><a href="#Hibernate-x" class="headerlink" title="Hibernate :x:"></a>Hibernate :x:</h4><h4 id="JPA-x"><a href="#JPA-x" class="headerlink" title="JPA :x:"></a>JPA :x:</h4><h3 id="连接池"><a href="#连接池" class="headerlink" title="连接池"></a>连接池</h3><h4 id="Druid-x"><a href="#Druid-x" class="headerlink" title="Druid :x:"></a>Druid :x:</h4><h4 id="HikariCP-x"><a href="#HikariCP-x" class="headerlink" title="HikariCP :x:"></a>HikariCP :x:</h4><h4 id="C3P0-x"><a href="#C3P0-x" class="headerlink" title="C3P0 :x:"></a>C3P0 :x:</h4><h3 id="分库分表-x"><a href="#分库分表-x" class="headerlink" title="分库分表 :x:"></a>分库分表 :x:</h3><h4 id="MyCat-x"><a href="#MyCat-x" class="headerlink" title="MyCat  :x:"></a>MyCat  :x:</h4><h4 id="Sharding-JDBC-x"><a href="#Sharding-JDBC-x" class="headerlink" title="Sharding-JDBC :x:"></a>Sharding-JDBC :x:</h4><h4 id="Sharding-Sphere-x"><a href="#Sharding-Sphere-x" class="headerlink" title="Sharding-Sphere :x:"></a>Sharding-Sphere :x:</h4><h2 id="搜索引擎-x"><a href="#搜索引擎-x" class="headerlink" title="搜索引擎 :x:"></a>搜索引擎 :x:</h2><h3 id="ElasticSearch-x"><a href="#ElasticSearch-x" class="headerlink" title="ElasticSearch :x:"></a>ElasticSearch :x:</h3><h3 id="Solr-x"><a href="#Solr-x" class="headerlink" title="Solr :x:"></a>Solr :x:</h3><h2 id="分布式与微服务相关-x"><a href="#分布式与微服务相关-x" class="headerlink" title="分布式与微服务相关 :x:"></a>分布式与微服务相关 :x:</h2><h3 id="服务注册与发现-x"><a href="#服务注册与发现-x" class="headerlink" title="服务注册与发现 :x:"></a>服务注册与发现 :x:</h3><h4 id="Eureka-x"><a href="#Eureka-x" class="headerlink" title="Eureka :x:"></a>Eureka :x:</h4><h4 id="Consul-x"><a href="#Consul-x" class="headerlink" title="Consul :x:"></a>Consul :x:</h4><h4 id="Zookeeper-x"><a href="#Zookeeper-x" class="headerlink" title="Zookeeper :x:"></a>Zookeeper :x:</h4><h4 id="Nacos-x"><a href="#Nacos-x" class="headerlink" title="Nacos :x:"></a>Nacos :x:</h4><h3 id="网关-x"><a href="#网关-x" class="headerlink" title="网关 :x:"></a>网关 :x:</h3><h4 id="Zuul-x"><a href="#Zuul-x" class="headerlink" title="Zuul :x:"></a>Zuul :x:</h4><h4 id="GateWay-x"><a href="#GateWay-x" class="headerlink" title="GateWay :x:"></a>GateWay :x:</h4><h3 id="服务调用-x"><a href="#服务调用-x" class="headerlink" title="服务调用 :x:"></a>服务调用 :x:</h3><h4 id="Ribbon-x"><a href="#Ribbon-x" class="headerlink" title="Ribbon :x:"></a>Ribbon :x:</h4><h4 id="Feign-x"><a href="#Feign-x" class="headerlink" title="Feign :x:"></a>Feign :x:</h4><h3 id="熔断与降级：Hystrix-x"><a href="#熔断与降级：Hystrix-x" class="headerlink" title="熔断与降级：Hystrix :x:"></a>熔断与降级：Hystrix :x:</h3><h3 id="配置中心"><a href="#配置中心" class="headerlink" title="配置中心"></a>配置中心</h3><h4 id="Confg"><a href="#Confg" class="headerlink" title="Confg"></a>Confg</h4><h4 id="Apollo"><a href="#Apollo" class="headerlink" title="Apollo"></a>Apollo</h4><h4 id="Nacos"><a href="#Nacos" class="headerlink" title="Nacos"></a>Nacos</h4><h3 id="认证和鉴权"><a href="#认证和鉴权" class="headerlink" title="认证和鉴权"></a>认证和鉴权</h3><h4 id="Shiro-x"><a href="#Shiro-x" class="headerlink" title="Shiro:x:"></a>Shiro:x:</h4><h4 id="Spring-Security"><a href="#Spring-Security" class="headerlink" title="Spring Security"></a>Spring Security</h4><h4 id="OAuth2"><a href="#OAuth2" class="headerlink" title="OAuth2"></a>OAuth2</h4><h4 id="SSO​单点​登录-x"><a href="#SSO​单点​登录-x" class="headerlink" title="SSO​单点​登录:x:"></a>SSO​单点​登录:x:</h4><h3 id="分布式事务-x"><a href="#分布式事务-x" class="headerlink" title="分布式事务:x:"></a>分布式事务:x:</h3><h3 id="任务调度-x"><a href="#任务调度-x" class="headerlink" title="任务调度:x:"></a>任务调度:x:</h3><h4 id="Quartz-x"><a href="#Quartz-x" class="headerlink" title="Quartz:x:"></a>Quartz:x:</h4><h4 id="Elastic-Jop-x"><a href="#Elastic-Jop-x" class="headerlink" title="Elastic-Jop:x:"></a>Elastic-Jop:x:</h4><h3 id="链路追踪与监控-x"><a href="#链路追踪与监控-x" class="headerlink" title="链路追踪与监控 :x:"></a>链路追踪与监控 :x:</h3><h4 id="Zipkin-x"><a href="#Zipkin-x" class="headerlink" title="Zipkin:x:"></a>Zipkin:x:</h4><h4 id="Sleuth-x"><a href="#Sleuth-x" class="headerlink" title="Sleuth:x:"></a>Sleuth:x:</h4><h4 id="Skywalking-x"><a href="#Skywalking-x" class="headerlink" title="Skywalking:x:"></a>Skywalking:x:</h4><h3 id="日志分析与监控-ELK-x"><a href="#日志分析与监控-ELK-x" class="headerlink" title="日志分析与监控 ELK:x:"></a>日志分析与监控 ELK:x:</h3><h4 id="日志存储与分析：ElasticSearch-x"><a href="#日志存储与分析：ElasticSearch-x" class="headerlink" title="日志存储与分析：ElasticSearch :x:"></a>日志存储与分析：ElasticSearch :x:</h4><h4 id="日志收集：Logstash-x"><a href="#日志收集：Logstash-x" class="headerlink" title="日志收集：Logstash:x:"></a>日志收集：Logstash:x:</h4><h4 id="日志可视化：Kibana-x"><a href="#日志可视化：Kibana-x" class="headerlink" title="日志可视化：Kibana:x:"></a>日志可视化：Kibana:x:</h4><h2 id="虚拟化-容器化​​"><a href="#虚拟化-容器化​​" class="headerlink" title="虚拟化&#x2F;容器化​​"></a>虚拟化&#x2F;容器化​​</h2><h3 id="容器技术——Docker"><a href="#容器技术——Docker" class="headerlink" title="容器技术——Docker"></a>容器技术——Docker</h3><h3 id="容器编排技术-x"><a href="#容器编排技术-x" class="headerlink" title="容器编排技术:x:"></a>容器编排技术:x:</h3><h4 id="Kubernetes-x"><a href="#Kubernetes-x" class="headerlink" title="Kubernetes:x:"></a>Kubernetes:x:</h4><h4 id="Swarm-x"><a href="#Swarm-x" class="headerlink" title="Swarm:x:"></a>Swarm:x:</h4><h1 id="运维知识"><a href="#运维知识" class="headerlink" title="运维知识"></a>运维知识</h1><h2 id="Web服务器——Nginx-x-1"><a href="#Web服务器——Nginx-x-1" class="headerlink" title="Web服务器——Nginx:x:"></a>Web服务器——Nginx:x:</h2><h2 id="应用服务器-x-1"><a href="#应用服务器-x-1" class="headerlink" title="应用服务器 :x:"></a>应用服务器 :x:</h2><h3 id="Tomcat-x-1"><a href="#Tomcat-x-1" class="headerlink" title="Tomcat :x:"></a>Tomcat :x:</h3><h3 id="Jetty-x-1"><a href="#Jetty-x-1" class="headerlink" title="Jetty :x:"></a>Jetty :x:</h3><h3 id="Undertow-x-1"><a href="#Undertow-x-1" class="headerlink" title="Undertow :x:"></a>Undertow :x:</h3><h2 id="CDN加速-x"><a href="#CDN加速-x" class="headerlink" title="CDN加速:x:"></a>CDN加速:x:</h2><h2 id="持续集成-持续发布——Jenkins-x"><a href="#持续集成-持续发布——Jenkins-x" class="headerlink" title="持续集成&#x2F;持续发布——Jenkins:x:"></a>持续集成&#x2F;持续发布——Jenkins:x:</h2><h2 id="代码质量检查——sonar-x"><a href="#代码质量检查——sonar-x" class="headerlink" title="代码质量检查——sonar:x:"></a>代码质量检查——sonar:x:</h2><h2 id="日志收集-分析——ELK-x"><a href="#日志收集-分析——ELK-x" class="headerlink" title="日志收集&#x2F;分析——ELK:x:"></a>日志收集&#x2F;分析——ELK:x:</h2>
       
        <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 1909773034@qq.com </span>
     </div>
