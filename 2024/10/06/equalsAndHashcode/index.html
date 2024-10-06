@@ -2,9 +2,9 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>github:由于push了敏感字段被拒 | Notes</title>
-  <meta name="keywords" content=" github , hexo ">
-  <meta name="description" content="github:由于push了敏感字段被拒 | Notes">
+  <title>Java:重写了equals方法为什么又要重写hashcode方法 | Notes</title>
+  <meta name="keywords" content=" Java ">
+  <meta name="description" content="Java:重写了equals方法为什么又要重写hashcode方法 | Notes">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="description" content="重写了equals方法为什么又要重写hashcode方法首先这是Object类对hashCode()方法的契约（contract）的一部分，具体来说是：如果两个对象根据equals(Object o)方法是相等的，那么调用这两个对象中任一对象的hashCode()方法都必须产生相同的整数结果。 为什么会有这个要求？ 这主要是为了确保对象在使用基于哈希的集合（如HashSet、HashMap、Has">
 <meta property="og:type" content="article">
@@ -1599,9 +1599,9 @@
 </aside>
 <div id="post">
     <div class="pjax">
-        <article id="post-GH013" class="article article-type-post" itemscope itemprop="blogPost">
+        <article id="post-equalsAndHashcode" class="article article-type-post" itemscope itemprop="blogPost">
     
-        <h1 class="article-title">github:由于push了敏感字段被拒</h1>
+        <h1 class="article-title">Java:重写了equals方法为什么又要重写hashcode方法</h1>
     
     <div class="article-meta">
         
@@ -1611,7 +1611,7 @@
             <i class="iconfont icon-category"></i>
             
             
-            <a  data-rel="工具">工具</a>
+            <a  data-rel="后端">后端</a>
             
         </span>
         
@@ -1619,21 +1619,19 @@
         <span class="tag">
             <i class="iconfont icon-tag"></i>
             
-            <a class="color2">github</a>
-            
-            <a class="color5">hexo</a>
+            <a class="color5">Java</a>
             
         </span>
         
     </div>
     <div class="article-meta">
         
-            发布时间 : <time class="date" title='最后更新: 2024-10-04 19:58:24'>2024-09-17 16:19</time>
+            发布时间 : <time class="date" title='最后更新: 2024-10-06 13:07:05'>2024-10-06 00:00</time>
         
     </div>
     <div class="article-meta">
         
-        <span>字数:42</span>
+        <span>字数:1.1k</span>
         
         
         <span id="busuanzi_container_page_pv">
@@ -1652,7 +1650,7 @@
     
     <div class="toc-ref">
     
-        
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%87%8D%E5%86%99%E4%BA%86equals%E6%96%B9%E6%B3%95%E4%B8%BA%E4%BB%80%E4%B9%88%E5%8F%88%E8%A6%81%E9%87%8D%E5%86%99hashcode%E6%96%B9%E6%B3%95"><span class="toc-text">重写了equals方法为什么又要重写hashcode方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-text"></span></a></li></ol></li></ol></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -1668,11 +1666,51 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>我再执行<code>hexo d</code>命令的时候被GitHub拒绝了，下面是报错信息</p>
-<img src="GH013/001.png"  width="100%" />
-
-<p>之所以出现这个错误，是我配置了阿里云的密钥</p>
-
+        <h1 id="重写了equals方法为什么又要重写hashcode方法"><a href="#重写了equals方法为什么又要重写hashcode方法" class="headerlink" title="重写了equals方法为什么又要重写hashcode方法"></a>重写了equals方法为什么又要重写hashcode方法</h1><p>首先这是<code>Object</code>类对<code>hashCode()</code>方法的契约（contract）的一部分，具体来说是：<u>如果两个对象根据<code>equals(Object o)</code>方法是相等的，那么调用这两个对象中任一对象的<code>hashCode()</code>方法都必须产生相同的整数结果。</u></p>
+<p>为什么会有这个要求？</p>
+<p>这主要是为了确保对象在使用基于哈希的集合（如<code>HashSet</code>、<code>HashMap</code>、<code>Hashtable</code>和<code>LinkedHashSet</code>等）时能够正确地工作。</p>
+<p><strong>在讲解这个之前，我们需要简单说明一下HashMap的工作原理：</strong></p>
+<ul>
+<li><code>HashMap map = new HashMap():</code> 在实例化以后，<strong>底层创建了长度是16的一维数组Entry[] table</strong>。</li>
+<li><code>map.put(key1,value1)</code>：调用key1所在类的<strong>hashCode()计算key1哈希值，此哈希值经过某种算法计算以后，得到在Entry数组中的存放位置</strong>。<ul>
+<li>如果此位置上的数据为空，此时的key1-value1添加成功</li>
+<li>如果此位置上的数据不为空，(意味着此位置上存在一个或多个数据(以链表形式存在)),比较key1和已经存在的一个或多个数据的哈希值：<ul>
+<li>如果key1的哈希值与已经存在的数据的哈希值都不相同，此时key1-value1添加成功。—-情况2（以链表的方式存储）</li>
+<li>如果key1的哈希值和已经存在的某一个数据(key2-value2)的哈希值相同，继续比较：调用key1所在类的equals(key2)方法，比较：<ul>
+<li>如果equals()返回false:此时key1-value1添加成功。—-情况3 （以链表的方式存储）</li>
+<li>如果equals()返回true:使用value1替换value2</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>在不断的添加过程中，会涉及到扩容问题，当超出临界值(且要存放的位置非空)时，扩容。默认的扩容方式：<strong>扩容为原来容量的2倍，并将原有的数据复制过来</strong>。</li>
+<li><strong>jdk7底层结构只有：数组+链表。jdk8中底层结构：数组+链表+红黑树。</strong></li>
+<li>当数组的某一个索引位置上的元素以链表形式存在的<strong>数据个数&gt;8</strong> 且<strong>当前数组的长度&gt;64</strong>时，此时此索引位置上的所数据改为使用红黑树存储</li>
+<li><code>map.get(key1)</code>：<ul>
+<li>调用的key1的 <code>hashCode()</code> 方法来计算其哈希码</li>
+<li>通过哈希码计算出一个数组索引</li>
+<li>一旦计算出了索引位置，<code>HashMap</code> 就会遍历该位置上的链表或红黑树。<ul>
+<li>对于链表，它会逐个比较节点的键是否与传入的键相等（使用 <code>equals()</code> 方法）。</li>
+<li>对于红黑树，它会利用红黑树的特性来高效地搜索键。</li>
+</ul>
+</li>
+<li>如果找到了匹配的键，则返回对应的值；否则，返回 <code>null</code></li>
+</ul>
+</li>
+</ul>
+<p>如果不遵守这个约定，相等的对象有不同的哈希码，那么它们可能会被放置在不同的桶中，导致哈希表查找、插入和删除操作的性能下降，甚至在最坏的情况下退化为链表（链表冲突）。</p>
+<ul>
+<li>比如，我们要创建一个key为User，value为Order的HashMap，如果相同内容User（同一个用户）计算出不同的hashcode</li>
+<li>我原本要去覆盖之前的值，现在会变成新增一个值，也就是同一个key会产生多个值。如果我们想取出某个对象的时候，我们也可能取不出来。</li>
+</ul>
+<blockquote>
+<p>拓展问题： <strong>两个对象的<code>hashCode()</code>相同，则<code>equals()</code>是否也一定为 true ?</strong></p>
+<p>两个对象equals相等，则它们的hashcode必须相等，如果两个对象的 <code>hashCode()</code>相同，则<code>equals()</code>不一定为true。这是因为哈希码值的范围（<code>int</code>类型，即-2^31^到2^31-1^）是有限的，而对象可以是无限多的，因此不同的对象有可能具有相同的哈希码值（哈希冲突）。</p>
+<p>如果两个对象通过<code>equals()</code>方法比较是相等的，那么它们应该具有相同的哈希码值。这是<code>Object</code>类对<code>hashCode()</code>方法的契约（contract）的一部分，具体来说是：如果两个对象根据<code>equals(Object o)</code>方法是相等的，那么调用这两个对象中任一对象的<code>hashCode()</code>方法都必须产生相同的整数结果。</p>
+</blockquote>
+<h3 id=""><a href="#" class="headerlink" title=""></a></h3>
       
        <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 1909773034@qq.com </span>
     </div>
